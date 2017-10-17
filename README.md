@@ -29,6 +29,8 @@
     * 川名孝昌(tkms-kwn)
 * ヘリ落としゲーム【Game08_02】
     * 白﨑壮(kadokurakou)
+* サーフィステーション【Game09_01】
+    * 佐藤リベロ雄一(riverreal)
 * ドローポーカー【Bar04_01】
     * 籠谷勇彦(Rinneesterica)
 * ドローポーカー【Bar04_02】
@@ -39,5 +41,3 @@
     * ヨウシンシ(kokoro24)
 * バカラ【Bar07_01】
     * 上川敦也(atukamikawa)
-* サーフィステーション【Bar08_01】
-    * 佐藤リベロ雄一(riverreal)
