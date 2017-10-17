@@ -3,19 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class Splash : MonoBehaviour {
-    private GameController gameController = null;
+namespace Assets.Scripts {
+    public class Splash : MonoBehaviour {
+        private GameController _gameController = null;
 
-    void Start () {
-        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        void Start() {
+            _gameController = GameObject.Find("GameController").GetComponent<GameController>();
 
-        Observable.Timer(TimeSpan.FromSeconds(3)).Subscribe(_ => {
-            gameController.TransitionToHome();
-        }).AddTo(this);
+            Observable.Timer(TimeSpan.FromSeconds(3)).Subscribe(_ => {
+                _gameController.TransitionToHome();
+            }).AddTo(this);
+        }
     }
-
-    void Update () {
-	}
 }
