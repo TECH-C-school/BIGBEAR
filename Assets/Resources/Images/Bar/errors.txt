@@ -1,0 +1,1 @@
+[2017-10-15 22:52:41] layer "talk2.png": Duplicate path: talk2.png
