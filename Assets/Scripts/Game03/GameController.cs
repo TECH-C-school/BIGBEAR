@@ -11,3 +11,4 @@ namespace Assets.Scripts.Game03 {
     }
 }
 Debug.Log("A");
+Debug.log("B");
