@@ -7,6 +7,7 @@ namespace Assets.Scripts.Game07 {
     public class GameController : MonoBehaviour {
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
+            console.log("!!!!");
         }
     }
 }
