@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
         public void TransitionToResult() {
+            Debug.Log("test");
             SceneManager.LoadScene("Result");
         }
     }
