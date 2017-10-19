@@ -7,7 +7,7 @@ namespace Assets.Scripts.Game08 {
     public class GameController : MonoBehaviour {
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
-            Debug.Log（”あああ”）;
+            Debug.Log("あああ");
         }
     }
 }
