@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Game02 {
     public class GameController : MonoBehaviour {
         public void TransitionToResult() {
+            Debug.log("TestTakanashi");
             SceneManager.LoadScene("Result");
         }
     }
