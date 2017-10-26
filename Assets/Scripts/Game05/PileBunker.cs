@@ -13,7 +13,6 @@ namespace Assets.Scripts.Game05 {
         public float upValue;
         // Use this for initialization
         void Start() {
-            gc = GameObject.Find("GameController").GetComponent<GameController>();
             pile = this.transform.FindChild("Pile").gameObject.GetComponent<Rigidbody2D>();
             firstPos = pile.transform.position;
             powerGauge = GameObject.Find("PowerBar").GetComponent<Slider>();
@@ -34,7 +33,6 @@ namespace Assets.Scripts.Game05 {
             }
         }
 
-        
         IEnumerator PileShoot()
         {
             yield return new WaitForSecondsRealtime(0.5f);
@@ -42,6 +40,7 @@ namespace Assets.Scripts.Game05 {
             yield return new WaitForSecondsRealtime(5f);
             pile.velocity = Vector2.zero;
             pile.transform.position = firstPos;
+            powerGauge.value = 0;
             isTouch = false;
             yield break;
         }
