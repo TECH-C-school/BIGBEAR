@@ -26,7 +26,7 @@
     * 菊地誠(afresgamer)
     * 佐野始(hajimesano)
 * 物資キャッチゲーム【Game07_02】
-    * 木村巧(TakumiKimura)
+    * 木村巧(TakumiKimura)
 * ヘリ落としゲーム【Game08_01】
     * 川名孝昌(tkms-kwn)
 * ヘリ落としゲーム【Game08_02】
