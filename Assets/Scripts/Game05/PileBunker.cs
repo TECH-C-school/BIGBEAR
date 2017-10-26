@@ -28,13 +28,15 @@ namespace Assets.Scripts.Game05 {
             }
             if (Input.GetButtonDown("Fire1"))
             {
-                isTouch = true;
                 StartCoroutine(PileShoot());
             }
         }
 
         IEnumerator PileShoot()
         {
+            if(isTouch)
+                yield break;
+            isTouch = true;
             yield return new WaitForSecondsRealtime(0.5f);
             pile.AddForce(Vector2.left * powerGauge.value, ForceMode2D.Impulse);
             yield return new WaitForSecondsRealtime(5f);
