@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Game07
 {
@@ -15,7 +13,7 @@ namespace Assets.Scripts.Game07
         private float Min_X_P_Pos = 30;
         private float Max_Y_P_Pos = Screen.width - 30;
         [SerializeField, Header("プレイヤーのスピード")]
-        private float p_speed = 1;
+        private float p_speed = 1.0f;
 
         void Start()
         {
@@ -36,8 +34,7 @@ namespace Assets.Scripts.Game07
             transform.position = Vector2.MoveTowards(transform.position, mousePos, p_speed * 100 * Time.deltaTime);
             float anim_switch_num = transform.position.x > mousePos.x ? transform.position.x - mousePos.x : mousePos.x - transform.position.x;
             anim.SetBool(AnimMoveHash, anim_switch_num > 0);
-
-            Debug.Log(transform.position);
+            //Debug.Log(transform.position);
         }
     }
 }
