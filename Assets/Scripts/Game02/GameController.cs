@@ -25,7 +25,7 @@ namespace Assets.Scripts.Game02 {
 		}
 
 		private void TouchPoscheck() {
-			RaycastHit hit;
+//			RaycastHit hit;
 			var touchPos = Input.mousePosition;
 			var screenPos = Camera.main.ScreenToWorldPoint (touchPos);
 			screenPos.z = 0;
