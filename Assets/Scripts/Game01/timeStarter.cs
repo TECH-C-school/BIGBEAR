@@ -7,36 +7,74 @@ using UnityEngine.UI;
 
 public class timeStarter : MonoBehaviour
 {
-    public Text Timers;
+    private Text textR;
+    private Text textL;
 
-    int LeftTime;
-    float RightTime;
-    int OldRight;
-    
+    GameObject timerR;
+    GameObject timerL;
 
-    void Start ()
+    private float RightTime = 0; // 初期値は0
+    private float LeftTime = 0;
+
+    public string stringTimeR;
+    public string stringTimeL;
+
+    public Canvas canvas;
+    timeText _timetext;
+
+    void Start()
     {
-        LeftTime = 0;
-        RightTime = 0;
-        OldRight = 0;
-	}
-	
-	void Update ()
+        timerR = GameObject.Find("RightText");
+        timerL = GameObject.Find("LeftText");
+
+        textR = timerR.GetComponent<Text>();
+        textL = timerL.GetComponent<Text>();
+
+        // タイマーをfloatからstringに変換
+        textR.text = "00";
+        textL.text = "00";
+
+        _timetext = canvas.GetComponent<timeText>();
+    }
+
+    void Update()
     {
-        if(Time.timeScale > 0)
+        _timetext._SprTime((int)RightTime);
+        _timetext._SprTime((int)LeftTime);
+
+        if (Time.timeScale > 0)
         {
-            RightTime += Time.deltaTime * 60;
+            // 0から加算していく
+            RightTime += Time.deltaTime * 100f;
 
-            if(RightTime >= 60.0f)
+            if(RightTime < 10)
             {
-                LeftTime++;
-                RightTime = RightTime - 60;
+                textR.text = "0" + ((int)RightTime).ToString();
+            }
+            else if(10 <= RightTime)
+            {
+                textR.text = ((int)RightTime).ToString();
             }
 
-            if(RightTime != OldRight)
+            if (LeftTime < 10)
             {
-                //Timers.text = LeftTime.ToString("00") + "  " + 
+                textL.text = "0" + ((int)LeftTime).ToString();
+            }
+            else if (10 <= LeftTime)
+            {
+                textL.text = ((int)LeftTime).ToString();
+            }
+
+            stringTimeR = ((int)RightTime).ToString();
+
+            if(RightTime >= 98)
+            {
+                RightTime -= 99;
+                LeftTime += 1;
             }
         }
-	}
+
+        PlayerPrefs.SetString("TimeR", stringTimeR);
+        PlayerPrefs.SetString("TimeL", stringTimeL);
+    }
 }
