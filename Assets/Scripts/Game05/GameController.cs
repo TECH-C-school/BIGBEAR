@@ -71,5 +71,10 @@ namespace Assets.Scripts.Game05 {
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
+
+        void PowerDecision(Vector2 right, Vector2 left) {
+            var distance = (right - left).sqrMagnitude;
+            Debug.Log(distance); 
+        }
     }
 }
