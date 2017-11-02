@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Effect : MonoBehaviour {
+namespace Assets.Scripts.Game07
+{
+    public class Effect : MonoBehaviour
+    {
+        [SerializeField, Header("破壊される時間")]
+        private float destroy_time = 1;
+        private void Start()
+        {
+            Invoke("CreateAfterDestory", destroy_time);
+        }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        public void CreateAfterDestory()
+        {
+            Destroy(gameObject);
+        }
+        
+
+    }
 }
