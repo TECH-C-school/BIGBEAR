@@ -8,6 +8,19 @@ namespace Assets.Scripts.Game07
     {
         public enum CatchObj { Obj, Bullet }
         public CatchObj catchObj;
+        public GameObject bom;
+        GameObject boms;
+        Canvas can;
+
+        void Start()
+        {
+            can = GameObject.FindObjectOfType<Canvas>();//Canvas初期化
+        }
+
+        void Update()
+        {
+            Debug.Log(Player.isMove);
+        }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
@@ -23,8 +36,11 @@ namespace Assets.Scripts.Game07
                         break;
                     case CatchObj.Bullet:
                         GameController.instance.RemoveScore();
+                        boms = Instantiate(bom, transform.position, Quaternion.identity);
+                        boms.transform.SetParent(can.transform);//bomの生成位置指定
                         break;
                 }
+
             }
         }
     }
