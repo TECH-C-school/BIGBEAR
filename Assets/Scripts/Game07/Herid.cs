@@ -24,7 +24,7 @@ namespace Assets.Scripts.Game07
         void Update()
         {
             attachPoint = transform.GetChild(1).position;
-            transform.position += (transform.up * H_Speed / 2) + (-transform.right * H_Speed * 100 * Time.deltaTime);
+            transform.position += (transform.up * H_Speed / 3) + (-transform.right * H_Speed * 100 * Time.deltaTime);
         }
 
         IEnumerator CreateCatchObj()
