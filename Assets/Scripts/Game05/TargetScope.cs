@@ -25,7 +25,6 @@ namespace Assets.Scripts.Game05 {
 		}
 		void Start () {
 			trans = GetComponent<Transform>();
-			sequence = DOTween.Sequence();
 			SetAnimation();
 		}
 		
@@ -35,6 +34,7 @@ namespace Assets.Scripts.Game05 {
 		}
 
 		void SetAnimation() {
+			sequence = DOTween.Sequence();
 			switch(scope) {
 				case Scope.Right:
 				sequence.Append(
@@ -66,7 +66,7 @@ namespace Assets.Scripts.Game05 {
 		void OnDisable()
 		{
 			Debug.Log("shinda");
-			sequence.Complete();
+			sequence.Kill();
 		}
 	}
 }
