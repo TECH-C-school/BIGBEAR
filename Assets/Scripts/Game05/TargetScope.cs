@@ -14,7 +14,6 @@ namespace Assets.Scripts.Game05 {
 		private Scope scope;
 		private Transform trans;
 		private Sequence sequence;
-		
 		void OnEnable()
 		{
 			if(trans == null)
@@ -37,23 +36,29 @@ namespace Assets.Scripts.Game05 {
 			sequence = DOTween.Sequence();
 			switch(scope) {
 				case Scope.Right:
+				transform.localPosition = Vector3.left / 2;
 				sequence.Append(
 					trans.DOLocalMove(Vector3.right, 2.0f)
 					.SetEase(Ease.InOutCirc)
+					.SetRelative()
 				);
 				sequence.Append(
 					trans.DOLocalMove(Vector3.left, 2.0f)
 					.SetEase(Ease.InOutCirc)
+					.SetRelative()
 				);
 				break;
 				case Scope.Left:
+				transform.localPosition = Vector3.right / 2;
 				sequence.Append(
 					trans.DOLocalMove(Vector3.left, 2.0f)
 					.SetEase(Ease.InOutCirc)
+					.SetRelative()
 				);
 				sequence.Append(
 					trans.DOLocalMove(Vector3.right, 2.0f)
 					.SetEase(Ease.InOutCirc)
+					.SetRelative()
 				);
 				break;
 				default:
