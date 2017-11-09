@@ -27,15 +27,27 @@ namespace Assets.Scripts.Game06 {
 
 		public DIFFICULTY Difficulty; 
 
-		void Start () 
+		public enum GAMESTATES
 		{
-			Lottery ();
+			CUTIN = 0,
+			RELEASING,
 		}
 
-		public void TransitionToResult() {
-            SceneManager.LoadScene("Result");
-        }
+		public GAMESTATES GameStates;
 
+		[SerializeField]
+		public bool lotteryOnce = true;
+
+		void Update()
+		{
+			if ((GameStates == GAMESTATES.CUTIN) && lotteryOnce)
+			{
+				lotteryOnce = false;
+				Lottery ();
+			}
+		}
+
+		// 解除パスの抽選
 		void Lottery()
 		{
 			for (int i = 0; i < Lotteries; i++) 
@@ -43,5 +55,10 @@ namespace Assets.Scripts.Game06 {
 				passList.Add (Random.Range (0, 10));
 			}
 		}
+
+		public void TransitionToResult() {
+			SceneManager.LoadScene("Result");
+		}
+
     }
 }

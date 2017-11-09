@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Bar06{
+namespace Assets.Scripts.Game06{
 	public class LevelSelect : MonoBehaviour {
 
 		[HideInInspector]

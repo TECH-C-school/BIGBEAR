@@ -9,32 +9,25 @@ namespace Assets.Scripts.Game06{
 
 		List<int> tapKeyList = new List<int>();
 
+		/*
 		public List<int> TapKeyList
 		{
 			get { return this.tapKeyList; }
 			private set { this.tapKeyList = value; }
 		}
+		*/
 
 		int tapKeyNum = -1;
 
 		bool isCheck = true;
 
+		/*
 		public int TapKeyNum
 		{
 			get { return this.tapKeyNum; }
 			private set { this.tapKeyNum = value; }
 		}
-
-		void Start () 
-		{
-			
-		}
-
-		void Update () 
-		{
-
-
-		}
+		*/
 
 		public void Push_A()
 		{
@@ -105,16 +98,27 @@ namespace Assets.Scripts.Game06{
 
 		void CheckUnlockKey()
 		{
-			if ( _gameCtl.PassList.Count == tapKeyList.Count)
+			if ( _gameCtl.PassList.Count < tapKeyList.Count)
 			{
 				isCheck = false;
 			}
 
 			if ( isCheck && tapKeyList.Count >= 1 ) 
 			{
-				if (_gameCtl.PassList [TapKeyNum] == tapKeyList[TapKeyNum]) 
+				if (_gameCtl.PassList [tapKeyNum] == tapKeyList[tapKeyNum]) 
 				{
 					Debug.Log ("あってるで");
+					// 最後まであってたら
+					if (_gameCtl.PassList.Count == tapKeyList.Count) 
+					{
+						// GameStatesをCUTINに変える
+						_gameCtl.GameStates = GameController.GAMESTATES.CUTIN;
+						// 初期化
+						tapKeyList.Clear ();
+						tapKeyNum = -1;
+						_gameCtl.PassList.Clear ();
+						_gameCtl.lotteryOnce = true;
+					}
 				} 
 				else 
 				{
