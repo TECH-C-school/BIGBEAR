@@ -20,7 +20,6 @@ public class timeStarter : MonoBehaviour
     public string stringTimeL;
 
     public Canvas canvas;
-    timeText _timetext;
 
     void Start()
     {
@@ -33,8 +32,6 @@ public class timeStarter : MonoBehaviour
         // タイマーをfloatからstringに変換
         textR.text = "00";
         textL.text = "00";
-
-        _timetext = canvas.GetComponent<timeText>();
     }
 
     void Update()
