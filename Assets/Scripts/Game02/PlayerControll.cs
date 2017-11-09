@@ -13,32 +13,47 @@ namespace Assets.Scripts.Game02
     {
 
         [SerializeField]
-        ObservableEventTrigger trigger;
+        ObservableEventTrigger m_trigger;
 
-        []
+        [SerializeField]
+        SpriteRenderer m_scope;
 
         // Use this for initialization
         void Start()
         {
 #if !UNITY_EDITOR
-            trigger.OnDragAsObservable()
+            m_trigger.OnDragAsObservable()
                 .Subscribe(pointerEventData =>
                 {
-                    Debug.Log("a");
+                     m_scope.gameObject.SetActive(true);
+                     m_scope.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, (Input.mousePosition.y + 100.0f), 10));
+
                 }).AddTo(this);
+
+             m_trigger.OnPointerUpAsObservable()
+                .Subscribe(pointerEventData =>
+                {
+                    m_scope.gameObject.SetActive(false);
+                });
+
 #endif
 #if UNITY_EDITOR
-            trigger.OnMouseDragAsObservable()
+
+            m_trigger.OnMouseDragAsObservable()
                  .Subscribe(pointerEventData =>
                  {
+                     m_scope.gameObject.SetActive(true);
+                     m_scope.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, (Input.mousePosition.y + 100.0f), 10));
                      
                  }).AddTo(this);
-#endif
-        }
-        // Update is called once per frame
-        void Update()
-        {
 
+            m_trigger.OnMouseUpAsObservable()
+                .Subscribe(pointerEventData =>
+                {
+                    m_scope.gameObject.SetActive(false);
+                }).AddTo(this);
+           
+#endif
         }
     }
 }
