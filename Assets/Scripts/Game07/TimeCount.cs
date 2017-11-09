@@ -26,7 +26,11 @@ namespace Assets.Scripts.Game07
         void Update()
         {
              times -= TimerSpeed * Time.deltaTime;
+<<<<<<< HEAD
             if (times < 0)
+=======
+            if (times <= 0)
+>>>>>>> edf337af32907ce7d6d67ad5a64f221681a26f8d
             {
                 times = 0;
             }
