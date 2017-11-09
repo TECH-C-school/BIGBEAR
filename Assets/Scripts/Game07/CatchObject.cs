@@ -11,19 +11,26 @@ namespace Assets.Scripts.Game07
         public GameObject bom;
         GameObject boms;
         Canvas can;
+        public Rigidbody m_rb;
 
         void Start()
         {
+            m_rb = GetComponent<Rigidbody>();
             can = GameObject.FindObjectOfType<Canvas>();//Canvas初期化
         }
 
         void Update()
         {
             Debug.Log(Player.isMove);
+            if (!Player.isMove)
+            {
+                StartCoroutine("stopber");
+            }
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+
             if (collision.gameObject.tag == "Player")
             {
                 Destroy(gameObject);
@@ -38,10 +45,15 @@ namespace Assets.Scripts.Game07
                         GameController.instance.RemoveScore();
                         boms = Instantiate(bom, transform.position, Quaternion.identity);
                         boms.transform.SetParent(can.transform);//bomの生成位置指定
+                        Player.isMove = false;
                         break;
                 }
-
             }
+        }
+        IEnumerator stopber()
+        {
+            yield return new WaitForSeconds(1f);
+            Player.isMove = true;
         }
     }
 }
