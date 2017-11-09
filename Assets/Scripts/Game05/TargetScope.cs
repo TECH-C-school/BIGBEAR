@@ -5,17 +5,22 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 namespace Assets.Scripts.Game05 {
+	[System.Serializable]
+	public enum Scope {
+		Right = 0,
+		Left
+	}
 	public class TargetScope : MonoBehaviour {
-		enum Scope {
-			Right = 0,
-			Left
-		}
+		
 		[SerializeField]
-		private Scope scope;
+		private Scope _scope;
+		public Scope scope{
+			get { return _scope; }
+			set { _scope = value; }
+		}
 		private Transform trans;
 		private Sequence sequence;
-		void OnEnable()
-		{
+		void OnEnable() {
 			if(trans == null)
 				return;
 			else {
@@ -24,19 +29,14 @@ namespace Assets.Scripts.Game05 {
 		}
 		void Start () {
 			trans = GetComponent<Transform>();
-			SetAnimation();
-		}
-		
-		// Update is called once per frame
-		void Update () {
-			
+			gameObject.SetActive(false);
 		}
 
 		void SetAnimation() {
 			sequence = DOTween.Sequence();
-			switch(scope) {
+			switch(_scope) {
 				case Scope.Right:
-				transform.localPosition = Vector3.left / 2;
+				transform.localPosition = Vector3.left;
 				sequence.Append(
 					trans.DOLocalMove(Vector3.right * 2, 2.0f)
 					.SetEase(Ease.InOutCirc)
@@ -49,7 +49,7 @@ namespace Assets.Scripts.Game05 {
 				);
 				break;
 				case Scope.Left:
-				transform.localPosition = Vector3.right / 2;
+				transform.localPosition = Vector3.right;
 				sequence.Append(
 					trans.DOLocalMove(Vector3.left * 2, 2.0f)
 					.SetEase(Ease.InOutCirc)
