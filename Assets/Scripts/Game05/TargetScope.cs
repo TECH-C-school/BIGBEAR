@@ -18,6 +18,13 @@ namespace Assets.Scripts.Game05 {
 			get { return _scope; }
 			set { _scope = value; }
 		}
+
+		private float duration;
+		public float Duration {
+			get { return duration; }
+			set { duration = value; }
+		}
+
 		private Transform trans;
 		private Sequence sequence;
 		void OnEnable() {
@@ -36,27 +43,27 @@ namespace Assets.Scripts.Game05 {
 			sequence = DOTween.Sequence();
 			switch(_scope) {
 				case Scope.Right:
-				transform.localPosition = Vector3.left;
+				transform.localPosition = Vector3.left * 1.5f;
 				sequence.Append(
-					trans.DOLocalMove(Vector3.right * 2, 2.0f)
+					trans.DOLocalMove(Vector3.right * 3, duration)
 					.SetEase(Ease.InOutCirc)
 					.SetRelative()
 				);
 				sequence.Append(
-					trans.DOLocalMove(Vector3.left * 2, 2.0f)
+					trans.DOLocalMove(Vector3.left * 3, duration)
 					.SetEase(Ease.InOutCirc)
 					.SetRelative()
 				);
 				break;
 				case Scope.Left:
-				transform.localPosition = Vector3.right;
+				transform.localPosition = Vector3.right * 1.5f;
 				sequence.Append(
-					trans.DOLocalMove(Vector3.left * 2, 2.0f)
+					trans.DOLocalMove(Vector3.left * 3, duration)
 					.SetEase(Ease.InOutCirc)
 					.SetRelative()
 				);
 				sequence.Append(
-					trans.DOLocalMove(Vector3.right * 2, 2.0f)
+					trans.DOLocalMove(Vector3.right * 3, duration)
 					.SetEase(Ease.InOutCirc)
 					.SetRelative()
 				);
@@ -70,7 +77,6 @@ namespace Assets.Scripts.Game05 {
 
 		void OnDisable()
 		{
-			Debug.Log("shinda");
 			sequence.Kill();
 		}
 	}

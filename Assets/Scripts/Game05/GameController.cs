@@ -43,9 +43,8 @@ namespace Assets.Scripts.Game05 {
         private float posPadding = 3.15f;
 
         private readonly float[] DISTANCES = {
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+            1, 1.25f, 1.5f, 1.75f, 2, 2.25f, 2.5f, 2.75f, 3, 3.25f
         };
-
         private readonly float[] PERCENT = {
             1.0f, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f
         };
@@ -81,15 +80,15 @@ namespace Assets.Scripts.Game05 {
             switch (_difficult)
             {
                 case Difficulty.Amateur:
-                    powerGauge.upValue = 1f;
+                    powerGauge.UpValue = 1f;
                     GenerateTower(GameParam.Instance.easyNum);
                     break;
                 case Difficulty.Professional:
-                    powerGauge.upValue = 2f;
+                    powerGauge.UpValue = 2f;
                     GenerateTower(GameParam.Instance.normalNum);
                     break;
                 case Difficulty.Legend:
-                    powerGauge.upValue = 3f;
+                    powerGauge.UpValue = 3f;
                     GenerateTower(GameParam.Instance.hardNum);
                     break;
                 default:
@@ -116,6 +115,19 @@ namespace Assets.Scripts.Game05 {
             for(int i = 0; i < 2; i++) {
                 var cursor = Instantiate(scopeInstance, scopeParent);
                 cursor.GetComponent<TargetScope>().scope = (Scope)i;
+                switch(_difficult) {
+                    case Difficulty.Amateur:
+                    cursor.GetComponent<TargetScope>().Duration = GameParam.Instance.easyDuration;
+                    break;
+                case Difficulty.Professional:
+                    cursor.GetComponent<TargetScope>().Duration = GameParam.Instance.normalDuration;
+                    break;
+                case Difficulty.Legend:
+                    cursor.GetComponent<TargetScope>().Duration = GameParam.Instance.hardDuration;
+                    break;
+                default:
+                    break;
+                }
                 scopes.Add(cursor);
             }
         }
@@ -124,14 +136,25 @@ namespace Assets.Scripts.Game05 {
             var pParent = GameObject.Find("Pendulums").transform;
             var pendulum = Instantiate(pendulumInsance, pParent);
             var circle = Instantiate(circleInstance, pParent);
-            pendulum.GetComponent<Pendulum>().pState = PState.Pendulum;
-            circle.GetComponent<Pendulum>().pState = PState.Circle;
+            switch(_difficult) {
+                    case Difficulty.Amateur:
+                    pendulum.GetComponent<Pendulum>().Duration = GameParam.Instance.easyDuration;
+                    break;
+                case Difficulty.Professional:
+                    pendulum.GetComponent<Pendulum>().Duration = GameParam.Instance.normalDuration;
+                    break;
+                case Difficulty.Legend:
+                    pendulum.GetComponent<Pendulum>().Duration = GameParam.Instance.hardDuration;
+                    break;
+                default:
+                    break;
+                }
             pendulums.Add(pendulum);
             pendulums.Add(circle);
         }
 
         void PowerDecision() {
-            power = powerGauge.slider.value;
+            power = powerGauge.Slider.value;
             powerGauge.gameObject.SetActive(false);
             foreach(var obj in scopes) {
                 obj.SetActive(true);
@@ -161,7 +184,8 @@ namespace Assets.Scripts.Game05 {
             isTimingConf = true;
             PendulumMatch();
             yield return new WaitForSecondsRealtime(0.5f);
-            pile.AddForce((Vector2.left * power * tMatch * tMatch), ForceMode2D.Impulse);
+            Debug.Log("power : " + power + " tMatch : " + tMatch + " pMatch : " + pMatch);
+            pile.AddForce((Vector2.left * power * tMatch * pMatch), ForceMode2D.Impulse);
             yield return new WaitForSecondsRealtime(5f);
             pile.velocity = Vector2.zero;
             pile.transform.position = firstPos;
@@ -178,12 +202,15 @@ namespace Assets.Scripts.Game05 {
         float DistanceDecision(Vector3 right, Vector3 left) {
             float rNum = PERCENT[0];
             var distance = (right - left).sqrMagnitude;
+            bool isPass = false;
             for(int i = 0; i < DISTANCES.Length; i++) {
                 if(distance < DISTANCES[i] * DISTANCES[i]) {
                     rNum = PERCENT[i];
+                    isPass = true;
                     break;
                 }
             }
+            if(!isPass) rNum = PERCENT[9];
             return rNum;
         }
     }

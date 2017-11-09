@@ -17,6 +17,13 @@ namespace Assets.Scripts.Game05 {
 			get { return _pState; }
 			set { _pState = value; }
 		}
+
+		private float duration;
+		public float Duration {
+			get { return duration; }
+			set { duration = value; }
+		}
+
 		private Transform trans;
 		private Sequence sequence;
 		void OnEnable() {
@@ -34,15 +41,15 @@ namespace Assets.Scripts.Game05 {
 		void SetAnimation() {
 			sequence = DOTween.Sequence();
 			if(_pState == PState.Pendulum) {
-				transform.localPosition = Vector3.left;
+				transform.localPosition = Vector3.left * 2f;
 				sequence.Append(
-					trans.DOLocalMove(Vector3.right * 2, 2.0f)
-					.SetEase(Ease.InOutCirc)
+					trans.DOLocalMove(Vector3.right * 4, duration)
+					.SetEase(Ease.Flash)
 					.SetRelative()
 				);
 				sequence.Append(
-					trans.DOLocalMove(Vector3.left * 2, 2.0f)
-					.SetEase(Ease.InOutCirc)
+					trans.DOLocalMove(Vector3.left * 4, duration)
+					.SetEase(Ease.Flash)
 					.SetRelative()
 				);
 			}

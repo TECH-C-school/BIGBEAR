@@ -26,6 +26,9 @@ namespace Assets.Scripts.Game05
         public int easyNum;
         public int normalNum;
         public int hardNum;
+        public float easyDuration;
+        public float normalDuration;
+        public float hardDuration;
         
 #if UNITY_EDITOR
         
