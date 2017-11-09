@@ -39,9 +39,6 @@ public class timeStarter : MonoBehaviour
 
     void Update()
     {
-        _timetext._SprTime((int)RightTime);
-        _timetext._SprTime((int)LeftTime);
-
         if (Time.timeScale > 0)
         {
             // 0から加算していく
@@ -49,7 +46,7 @@ public class timeStarter : MonoBehaviour
 
             if(RightTime < 10)
             {
-                textR.text = "0" + ((int)RightTime).ToString();
+                textR.text = ((int)0).ToString() + ((int)RightTime).ToString();
             }
             else if(10 <= RightTime)
             {
@@ -58,7 +55,7 @@ public class timeStarter : MonoBehaviour
 
             if (LeftTime < 10)
             {
-                textL.text = "0" + ((int)LeftTime).ToString();
+                textL.text = ((int)0).ToString() + ((int)LeftTime).ToString();
             }
             else if (10 <= LeftTime)
             {

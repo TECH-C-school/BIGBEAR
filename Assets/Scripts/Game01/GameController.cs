@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Game01 {
-    public class GameController : MonoBehaviour {
-        public void TransitionToResult() {
+    public class GameController : MonoBehaviour
+    {
+        public void TransitionToResult()
+        {
             SceneManager.LoadScene("Result");
         }
     }
