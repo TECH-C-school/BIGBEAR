@@ -14,9 +14,10 @@ namespace Assets.Scripts.Game02
 
         [SerializeField]
         ObservableEventTrigger m_trigger;
-
         [SerializeField]
         SpriteRenderer m_scope;
+        [SerializeField]
+        GameObject m_swayObject;
 
         // Use this for initialization
         void Start()
@@ -43,7 +44,7 @@ namespace Assets.Scripts.Game02
                  .Subscribe(pointerEventData =>
                  {
                      m_scope.gameObject.SetActive(true);
-                     m_scope.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, (Input.mousePosition.y + 100.0f), 10));
+                     m_scope.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, (Input.mousePosition.y + (Input.mousePosition.y / 2)), 10));
                      
                  }).AddTo(this);
 
@@ -55,5 +56,19 @@ namespace Assets.Scripts.Game02
            
 #endif
         }
+
+        void Update()
+        {
+
+            //八の字の実装
+
+            float x = Mathf.Sin(Time.time) / 5;
+            float y = Mathf.Cos(Time.time) / 5;
+
+            m_swayObject.transform.position = new Vector3(x * m, y * m, 10);
+
+        }
     }
+
+   
 }
