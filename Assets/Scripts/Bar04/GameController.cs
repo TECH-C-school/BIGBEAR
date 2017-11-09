@@ -46,7 +46,7 @@ namespace Assets.Scripts.Bar04 {
             // カードを配る
             // 配列からランダムに５枚ずつプレイヤーとディーラーに渡す  配列から取り出す
         }
-
+        
         public void check()
         {
             int mark = Random.Range(1, 4);      // マーク
@@ -89,5 +89,4 @@ namespace Assets.Scripts.Bar04 {
             SceneManager.LoadScene("Result");
         }
     }
-
 }
