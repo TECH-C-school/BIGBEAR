@@ -5,11 +5,11 @@
 		Tags{ "Queue" = "Geometry-1" }
 		Lighting Off
 		Pass
-	{
-		ZWrite On
-		ZTest LEqual
-		ColorMask 0
-	}
+		{
+			ZWrite On
+			ZTest LEqual
+			ColorMask 0
+		}
 	}
 }
 
