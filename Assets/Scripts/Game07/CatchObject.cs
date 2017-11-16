@@ -24,7 +24,7 @@ namespace Assets.Scripts.Game07
             Debug.Log(Player.isMove);
             if (!Player.isMove)
             {
-                StartCoroutine("stopber");
+                StartCoroutine("Stopber");
             }
         }
 
@@ -50,7 +50,7 @@ namespace Assets.Scripts.Game07
                 }
             }
         }
-        IEnumerator stopber()
+        IEnumerator Stopber()
         {
             yield return new WaitForSeconds(1f);
             Player.isMove = true;

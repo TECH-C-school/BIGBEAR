@@ -29,7 +29,7 @@ namespace Assets.Scripts.Game07
                 GameObject heri =  Instantiate(HeridS[random_Herid], transform.position, HeridS[random_Herid].transform.rotation);
                 heri.transform.SetParent(canvas.transform);
             }
-            Debug.Log(Timer);
+            //Debug.Log(Timer);
         }
     }
 
