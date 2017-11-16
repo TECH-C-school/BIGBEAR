@@ -21,7 +21,7 @@ namespace Assets.Scripts.Game07
 
         void Update()
         {
-            Debug.Log(Player.isMove);
+            //Debug.Log(Player.isMove);
             if (!Player.isMove)
             {
                 StartCoroutine("Stopber");

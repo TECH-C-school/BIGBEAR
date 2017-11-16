@@ -12,6 +12,7 @@ namespace Assets.Scripts.Game07
         //生成時間間隔
         private float create_Time = 3;
         Canvas canvas;
+        public static bool IsTimeStart = false;
 
         void Start()
         {
@@ -20,16 +21,19 @@ namespace Assets.Scripts.Game07
 
         void Update()
         {
-            //カウント
-            Timer += Form_speed * Time.deltaTime;
-            int random_Herid = Random.Range(0, HeridS.Length);
-            if(Timer > create_Time)
+            if (IsTimeStart)
             {
-                Timer = 0;
-                GameObject heri =  Instantiate(HeridS[random_Herid], transform.position, HeridS[random_Herid].transform.rotation);
-                heri.transform.SetParent(canvas.transform);
+                // カウント
+                Timer += Form_speed * Time.deltaTime;
+                int random_Herid = Random.Range(0, HeridS.Length);
+                if (Timer > create_Time)
+                {
+                    GameObject heri = Instantiate(HeridS[random_Herid], transform.position, HeridS[random_Herid].transform.rotation);
+                    heri.transform.SetParent(canvas.transform);
+                    Timer = 0;
+                }
+                //Debug.Log(Timer);
             }
-            //Debug.Log(Timer);
         }
     }
 
