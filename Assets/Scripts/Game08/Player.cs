@@ -24,12 +24,16 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            touchStartPos = Input.mousePosition;
+            touchStartPos = new Vector3(Input.mousePosition.x,
+                                        Input.mousePosition.y,
+                                        Input.mousePosition.z);
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            touchEndPos = Input.mousePosition;
+            touchEndPos = new Vector3(Input.mousePosition.x,
+                                      Input.mousePosition.y,
+                                      Input.mousePosition.z);
             GetDirection();
         }
     }
@@ -72,6 +76,7 @@ public class Player : MonoBehaviour
             {
                     // タッチを検出
                     Direction = "touch";
+                Debug.Log("タッチ");
             }
         }
         switch (Direction)
