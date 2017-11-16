@@ -25,6 +25,8 @@ public class timeStarter : MonoBehaviour
 
     private Image Attack;
 
+    public int timerGo = 0;
+
     void Awake()
     {
         Attack = GameObject.Find("attack!").GetComponent<Image>();
@@ -32,7 +34,7 @@ public class timeStarter : MonoBehaviour
 
     void Start()
     {
-        maingame = GameObject.Find("GameController").GetComponent<mainGame>();
+        maingame = GameObject.Find("MainCanvas").GetComponent<mainGame>();
 
         timerR = GameObject.Find("RightText");
         timerL = GameObject.Find("LeftText");
@@ -52,38 +54,50 @@ public class timeStarter : MonoBehaviour
         if (Time.timeScale > 0 && maingame.timeStart == 10)
         {
             Attack.gameObject.SetActive(true);
-
-            // 0から加算していく
-            RightTime += Time.deltaTime * 100f;
-
-            if(RightTime < 10)
-            {
-                textR.text = ((int)0).ToString() + ((int)RightTime).ToString();
-            }
-            else if(10 <= RightTime)
-            {
-                textR.text = ((int)RightTime).ToString();
-            }
-
-            if (LeftTime < 10)
-            {
-                textL.text = ((int)0).ToString() + ((int)LeftTime).ToString();
-            }
-            else if (10 <= LeftTime)
-            {
-                textL.text = ((int)LeftTime).ToString();
-            }
-
-            stringTimeR = ((int)RightTime).ToString();
-
-            if(RightTime >= 98)
-            {
-                RightTime -= 99;
-                LeftTime += 1;
-            }
+            CountUp();
+        }
+        else if(Time.timeScale > 0 && maingame.timeStart == 0)
+        {
+            Attack.gameObject.SetActive(false);
+            Debug.Log("stop");
         }
 
         PlayerPrefs.SetString("TimeR", stringTimeR);
         PlayerPrefs.SetString("TimeL", stringTimeL);
+    }
+
+    void CountUp ()
+    {
+        timerGo = 10;
+        
+
+        // 0から加算していく
+        RightTime += Time.deltaTime * 100f;
+
+        if (RightTime < 10)
+        {
+            textR.text = ((int)0).ToString() + ((int)RightTime).ToString();
+        }
+        else if (10 <= RightTime)
+        {
+            textR.text = ((int)RightTime).ToString();
+        }
+
+        if (LeftTime < 10)
+        {
+            textL.text = ((int)0).ToString() + ((int)LeftTime).ToString();
+        }
+        else if (10 <= LeftTime)
+        {
+            textL.text = ((int)LeftTime).ToString();
+        }
+
+        stringTimeR = ((int)RightTime).ToString();
+
+        if (RightTime >= 98)
+        {
+            RightTime -= 99;
+            LeftTime += 1;
+        }
     }
 }

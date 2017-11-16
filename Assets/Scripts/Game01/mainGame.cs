@@ -12,10 +12,13 @@ public class mainGame : MonoBehaviour
     public float count = 0;
     public int timeStart = 0;
     public int randomCheck = 0;
+    public int touchStart = 0;
+    public int battleEnd = 0;
 
     float interval;
 
     private Image panel;
+    private Image white;
     private Image playerCut1;
     private Image playerCut2;
     private Image playerCut3;
@@ -23,9 +26,14 @@ public class mainGame : MonoBehaviour
     private Image enemyCut2;
     private Image enemyCut3;
 
+    public float cutSpeed = 1;
+
+    timeStarter timer;
+
     void Awake()
     {
         panel = GameObject.Find("BlackPanel").GetComponent<Image>();
+        white = GameObject.Find("WhitePanel").GetComponent<Image>();
         playerCut1 = GameObject.Find("Player_cut1").GetComponent<Image>();
         playerCut2 = GameObject.Find("Player_cut2").GetComponent<Image>();
         playerCut3 = GameObject.Find("Player_cut3").GetComponent<Image>();
@@ -36,7 +44,10 @@ public class mainGame : MonoBehaviour
 
     void Start ()
     {
+        timer = GameObject.Find("timerFrame").GetComponent<timeStarter>();
         panel.gameObject.SetActive(false);
+        white.gameObject.SetActive(false);
+        //StartCoroutine(GameLoop());
     }
 	
 	void Update ()
@@ -49,25 +60,57 @@ public class mainGame : MonoBehaviour
         }
 
         count += Time.deltaTime;
-        if(count >= interval)
+        if(count >= interval && timer.timerGo == 0)
         {
             count += 0;
             timeStart = 10;
         }
-	}
+
+        if(timeStart == 10)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                if(timer.timerGo == 0)
+                {
+
+                }
+                else if(timer.timerGo == 10)
+                {
+                    timeStart = 0;
+                    StartCoroutine(WhiteOut());
+                }
+            }
+        }
+    }
+
+    private IEnumerator WhiteOut ()
+    {
+        white.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.05f);
+        white.gameObject.SetActive(false);
+    }
 
     private IEnumerator GameLoop ()
     {
         yield return new WaitForSeconds(0.5f);
-        yield return StartCoroutine(CutIn());
+        StartCoroutine(CutIn());
+        //Debug.Log("test");
     }
-
+    
     private IEnumerator CutIn ()
     {
+        int wait = 0;
+
         if(round == 1)
         {
             panel.gameObject.SetActive(true);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.3f);
+            playerCut1.transform.position += new Vector3(180f * Time.deltaTime, 0, 0);
+            
+            enemyCut1.transform.position = new Vector3(
+                enemyCut1.transform.position.x - 180,
+                enemyCut1.transform.position.y,
+                enemyCut1.transform.position.z);
         }
     }
 }
