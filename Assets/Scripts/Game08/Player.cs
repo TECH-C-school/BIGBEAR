@@ -38,54 +38,60 @@ public class Player : MonoBehaviour
     {
         float directionX = touchEndPos.x - touchStartPos.x;
         float directionY = touchEndPos.y - touchStartPos.y;
-        string Direction;
+        string Direction = "";
 
         if (Mathf.Abs(directionY) < Mathf.Abs(directionX)) {
-            if (30 < directionX) {
+            if (30 < directionX)
+            {
                 // 右向きにフリック
                 Direction = "right";
                 Debug.Log("右");
-            } else if (-30 > directionX) {
+            }
+            else if (-30 > directionX)
+            {
                 // 左向きにフリック
                 Direction = "light";
                 Debug.Log("左");
-            } else if (Mathf.Abs(directionX) < Mathf.Abs(directionY)){
+            }
+            else if (Mathf.Abs(directionX) < Mathf.Abs(directionY))
+            {
                 if (30 < directionY)
                 {
                     // 上向きにフリック
                     Direction = "up";
-                } else if (-30 > directionY) {
+                }
+                else if (-30 > directionY)
+                {
                     // 下向きのフリック
                     Direction = "down";
                 }
-        }else{
+            }
+            else
+            {
                     // タッチを検出
                     Direction = "touch";
             }
-       }
+        }
+        switch (Direction)
+        {
+            case "up":
+                //上フリックされた時の処理
+                break;
+            case "down":
+                //下フリックされた時の処理
+                break;
+            case "right":
+                //右フリックされた時の処理
+
+                break;
+            case "left":
+                //左フリックされた時の処理
+
+                break;
+            case "touch":
+                //タッチされた時の処理
+                break;
+        }
     }
-
-
 }
 
-/*
-switch (Direction){
-     case "up":
-           //上フリックされた時の処理
-      　　 break;
-     case "down":
-           //下フリックされた時の処理
-    　　　 break;
-     case "right":
-　　　　　　//右フリックされた時の処理
-            
-     　　　break;
-     case "left":
-　　　　　　//左フリックされた時の処理
-            
-     　　　break;
-     case "touch":
-　　　　　 //タッチされた時の処理
-          break;
-}
-*/
