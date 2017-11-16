@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     private Vector3 touchStartPos;
     private Vector3 touchEndPos;
 
-    public float speed = 1.0f;
+    //public float speed = 1.0f;
     Rigidbody2D rd;
 
     void Start()
@@ -59,11 +59,13 @@ public class Player : MonoBehaviour
                 {
                     // 上向きにフリック
                     Direction = "up";
+                    Debug.Log("上");
                 }
                 else if (-30 > directionY)
                 {
                     // 下向きのフリック
                     Direction = "down";
+                    Debug.Log("下");
                 }
             }
             else
