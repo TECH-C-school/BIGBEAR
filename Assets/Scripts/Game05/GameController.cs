@@ -20,6 +20,9 @@ namespace Assets.Scripts.Game05 {
         [SerializeField]
         private GameObject circleInstance;
         private List<GameObject> pendulums = new List<GameObject>();
+		[SerializeField]
+		private float coolTime;
+		[HideInInspector]
 		public bool isStart = false;
         private bool isTimingConf = false;
         private Rigidbody2D pile;
@@ -171,7 +174,7 @@ namespace Assets.Scripts.Game05 {
             yield return new WaitForSecondsRealtime(0.5f);
             Debug.Log("power : " + power + " tMatch : " + tMatch + " pMatch : " + pMatch);
             pile.AddForce((Vector2.left * power * tMatch * pMatch), ForceMode2D.Impulse);
-            yield return new WaitForSecondsRealtime(5f);
+			yield return new WaitForSecondsRealtime(coolTime);
             pile.velocity = Vector2.zero;
             pile.transform.position = firstPos;
             isTimingConf = false;
