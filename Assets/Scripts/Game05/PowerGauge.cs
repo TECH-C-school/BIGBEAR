@@ -11,7 +11,7 @@ namespace Assets.Scripts.Game05 {
 		public Slider Slider {
 			get { return slider; }
 		}
-		private float upValue;
+		private float upValue = 0;
 		public float UpValue {
 			get { return upValue; }
 			set { upValue = value; }

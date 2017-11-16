@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 
 namespace Assets.Scripts.Game05 {
@@ -34,7 +33,7 @@ namespace Assets.Scripts.Game05 {
 			}
 		}
 		void Start () {
-			trans = GetComponent<Transform>();
+			trans = GetComponent<Transform> ();
 			transform.localPosition = Vector3.zero;
 			gameObject.SetActive(false);
 		}
@@ -44,12 +43,12 @@ namespace Assets.Scripts.Game05 {
 				transform.localPosition = Vector3.left * 2f;
 				sequence.Append(
 					trans.DOLocalMove(Vector3.right * 4, duration)
-					.SetEase(Ease.Flash)
+					.SetEase(Ease.InOutCirc)
 					.SetRelative()
 				);
 				sequence.Append(
 					trans.DOLocalMove(Vector3.left * 4, duration)
-					.SetEase(Ease.Flash)
+					.SetEase(Ease.InOutCirc)
 					.SetRelative()
 				);
 			}

@@ -7,13 +7,6 @@ using UniRx;
 using UniRx.Triggers;
 
 namespace Assets.Scripts.Game05 {
-    [System.Serializable]
-    public enum Difficulty
-    {
-        Amateur,
-        Professional,
-        Legend
-    }
     public class GameController : MonoBehaviour {
         [SerializeField]
         private GameObject towerInstance;
@@ -27,6 +20,7 @@ namespace Assets.Scripts.Game05 {
         [SerializeField]
         private GameObject circleInstance;
         private List<GameObject> pendulums = new List<GameObject>();
+		public bool isStart = false;
         private bool isTimingConf = false;
         private Rigidbody2D pile;
         private PowerGauge powerGauge;
@@ -34,23 +28,12 @@ namespace Assets.Scripts.Game05 {
         private float power;
         private float tMatch;
         private float pMatch;
-        private Difficulty _difficult = Difficulty.Amateur;
-        public Difficulty difficult
-        {
-            get { return _difficult; }
-        }
-
-        private float posPadding = 3.15f;
-
-        private readonly float[] DISTANCES = {
-            1, 1.25f, 1.5f, 1.75f, 2, 2.25f, 2.5f, 2.75f, 3, 3.25f
-        };
-        private readonly float[] PERCENT = {
-            1.0f, 0.9f, 0.8f, 0.7f, 0.6f, 0.5f, 0.4f, 0.3f, 0.2f, 0.1f
-        };
+		private Difficult difficult;
+		private float posPadding = 3.15f;
 
         void Start()
         {
+			difficult = GetComponent<Difficult> ();
             powerGauge = GameObject.Find("Gauge").GetComponent<PowerGauge>();
             pile = GameObject.Find("Pile").GetComponent<Rigidbody2D>();
             firstPos = pile.transform.position;
@@ -58,26 +41,26 @@ namespace Assets.Scripts.Game05 {
             tMatch = 0f;
             pMatch = 0f;
             var barTap = this.UpdateAsObservable().Where(_ => Input.GetButtonDown("Fire1"))
+				.Where(_ => isStart == true)
                 .Select(_ => 1).Scan((count, add) => count + add)
                 .Where(tap => tap % 3 == 1)
                 .Do(_ => PowerDecision());
             var pTap = this.UpdateAsObservable().Where(_ => Input.GetButtonDown("Fire1"))
-                .Select(_ => 1).Scan((count, add) => count + add)
+				.Where(_ => isStart == true)
+				.Select(_ => 1).Scan((count, add) => count + add)
                 .Where(tap => tap % 3 == 2)
                 .Do(_ => TargetMatch());
             var pendulumTap = this.UpdateAsObservable().Where(_ => Input.GetButtonDown("Fire1"))
-                .Select(_ => 1).Scan((count, add) => count + add)
+				.Where(_ => isStart == true)
+				.Select(_ => 1).Scan((count, add) => count + add)
                 .Where(tap => tap % 3 == 0)
                 .Do(_ => StartCoroutine(PileShoot()));
             var taps = Observable.Merge(barTap, pTap, pendulumTap).Subscribe();
-            SetDifficult();
-            GenerateScopes();
-            GeneratePendulums();
         }
 
-        void SetDifficult()
+		public void SetDifficult()
         {
-            switch (_difficult)
+			switch (difficult.Diff)
             {
                 case Difficulty.Amateur:
                     powerGauge.UpValue = 1f;
@@ -94,6 +77,8 @@ namespace Assets.Scripts.Game05 {
                 default:
                     break;
             }
+			GenerateScopes ();
+			GeneratePendulums ();
         }
 
         void GenerateTower(int num) {
@@ -115,7 +100,7 @@ namespace Assets.Scripts.Game05 {
             for(int i = 0; i < 2; i++) {
                 var cursor = Instantiate(scopeInstance, scopeParent);
                 cursor.GetComponent<TargetScope>().scope = (Scope)i;
-                switch(_difficult) {
+				switch(difficult.Diff) {
                     case Difficulty.Amateur:
                     cursor.GetComponent<TargetScope>().Duration = GameParam.Instance.easyDuration;
                     break;
@@ -136,7 +121,7 @@ namespace Assets.Scripts.Game05 {
             var pParent = GameObject.Find("Pendulums").transform;
             var pendulum = Instantiate(pendulumInsance, pParent);
             var circle = Instantiate(circleInstance, pParent);
-            switch(_difficult) {
+			switch(difficult.Diff) {
                     case Difficulty.Amateur:
                     pendulum.GetComponent<Pendulum>().Duration = GameParam.Instance.easyDuration;
                     break;
@@ -200,17 +185,19 @@ namespace Assets.Scripts.Game05 {
         }
 
         float DistanceDecision(Vector3 right, Vector3 left) {
-            float rNum = PERCENT[0];
+			var distances = Distance.Instance.DISTANCES;
+			var percent = Distance.Instance.PERCENT;
+			float rNum = percent[0];
             var distance = (right - left).sqrMagnitude;
             bool isPass = false;
-            for(int i = 0; i < DISTANCES.Length; i++) {
-                if(distance < DISTANCES[i] * DISTANCES[i]) {
-                    rNum = PERCENT[i];
+            for(int i = 0; i < distances.Length; i++) {
+				if(distance < distances[i] * distances[i]) {
+					rNum = percent[i];
                     isPass = true;
                     break;
                 }
             }
-            if(!isPass) rNum = PERCENT[9];
+			if(!isPass) rNum = percent[9];
             return rNum;
         }
     }
