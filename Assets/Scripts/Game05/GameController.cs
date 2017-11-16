@@ -197,7 +197,7 @@ namespace Assets.Scripts.Game05 {
                     break;
                 }
             }
-			if(!isPass) rNum = percent[9];
+			if(!isPass) rNum = percent[percent.Length - 1];
             return rNum;
         }
     }
