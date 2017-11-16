@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Card
+namespace Assets.Scripts.Bar05
 {
     public class Card : MonoBehaviour
     {
