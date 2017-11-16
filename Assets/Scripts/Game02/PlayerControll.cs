@@ -43,9 +43,16 @@ namespace Assets.Scripts.Game02
             m_trigger.OnMouseDragAsObservable()
                  .Subscribe(pointerEventData =>
                  {
+                     float x = Mathf.Sin(Time.time) /10 + (Mathf.Sin(Time.time) * Mathf.Sin(Time.time) / 10 * 2);
+                     float y = Mathf.Cos(Time.time) /10 + (Mathf.Cos(Time.time) * Mathf.Cos(Time.time) / 10 * 2);
+
+                     m_swayObject.transform.position = new Vector3(x, y, 10);
+
                      m_scope.gameObject.SetActive(true);
-                     m_scope.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, (Input.mousePosition.y + (Input.mousePosition.y / 2)), 10));
-                     
+                     m_scope.transform.localPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x , (Input.mousePosition.y + (m_scope.sprite.rect.height/ 3f)), 10));
+
+                   
+
                  }).AddTo(this);
 
             m_trigger.OnMouseUpAsObservable()
@@ -59,14 +66,6 @@ namespace Assets.Scripts.Game02
 
         void Update()
         {
-
-            //八の字の実装
-
-            float x = Mathf.Sin(Time.time) / 5;
-            float y = Mathf.Cos(Time.time) / 5;
-
-            m_swayObject.transform.position = new Vector3(x * m, y * m, 10);
-
         }
     }
 
