@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class timeStarter : MonoBehaviour
 {
+    mainGame maingame;
+
     private Text textR;
     private Text textL;
 
@@ -21,8 +23,17 @@ public class timeStarter : MonoBehaviour
 
     public Canvas canvas;
 
+    private Image Attack;
+
+    void Awake()
+    {
+        Attack = GameObject.Find("attack!").GetComponent<Image>();
+    }
+
     void Start()
     {
+        maingame = GameObject.Find("GameController").GetComponent<mainGame>();
+
         timerR = GameObject.Find("RightText");
         timerL = GameObject.Find("LeftText");
 
@@ -32,12 +43,16 @@ public class timeStarter : MonoBehaviour
         // タイマーをfloatからstringに変換
         textR.text = "00";
         textL.text = "00";
+
+        Attack.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        if (Time.timeScale > 0)
+        if (Time.timeScale > 0 && maingame.timeStart == 10)
         {
+            Attack.gameObject.SetActive(true);
+
             // 0から加算していく
             RightTime += Time.deltaTime * 100f;
 
