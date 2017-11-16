@@ -17,18 +17,25 @@ namespace Assets.Scripts.Game06
 
 		[SerializeField]
 		private Sprite[] passSprite = new Sprite[10];
+		[SerializeField]
+		private Sprite[] countSprite = new Sprite[3];
 
 		public GameObject cutInObj;
 		public GameObject passObj;
 		public GameObject cutInText;
-		private Image passImg;
+		public GameObject countObj;
 
-		private bool isDsipPass = false;
+		private Image passImg;
+		private Image countImag;
+
+		private bool isDispPass = false;
 		private bool dispOnce = true;
+		private bool isDispCount = false;
 
 		void Start()
 		{
 			passImg = passObj.GetComponent<Image> ();
+			countImag = countObj.GetComponent<Image> ();
 		}
 
 		void Update()
@@ -49,21 +56,29 @@ namespace Assets.Scripts.Game06
 				{
 					// カットイン中のテキストを非表示にする
 					cutInText.SetActive (false);
-					isDsipPass = true;
-				}
-
-				if (isDsipPass) 
-				{
-					// 解除コードを表示する
-					StartCoroutine (DispPass ());
+					isDispCount = true;
 				}
 			}
 			// GameStatesが変わったら
-			else 
+			else if(_gameCtl.GameStates == GameController.GAMESTATES.RELEASING)
 			{
 				// 初期化
 				cutInObj.SetActive (false);
 				cutInText.SetActive (true);
+			}
+
+			if (isDispCount) 
+			{
+				_gameCtl.GameStates = GameController.GAMESTATES.COUNTDOWN;
+				countObj.SetActive (true);
+				StartCoroutine (CountDown ());
+			}
+
+			if (isDispPass) 
+			{
+				_gameCtl.GameStates = GameController.GAMESTATES.DISPPASS;
+				// 解除コードを表示する
+				StartCoroutine (DispPass ());
 			}
 		}
 
@@ -73,26 +88,47 @@ namespace Assets.Scripts.Game06
 			if (dispOnce)
 			{
 				// 何回表示させるか
-				for (int i = 0; i < 3; i++) 
+				for (int i = 0; i < _gameCtl.PassCount[(int)_gameCtl.Difficulty]; i++) 
 				{
 					dispOnce = false;
-					// １秒時間を置いて
+					// n秒時間を置いて
 					yield return new WaitForSeconds (0.5f);
 					// 解除コードの画像の差し替え
 					passImg.sprite = passSprite [_gameCtl.PassList [i]];
 					// 解除コードを表示させる
 					passObj.SetActive (true);
 					// n秒たったら
-					yield return new WaitForSeconds (1);
+					yield return new WaitForSeconds (viewSpeed[(int)_gameCtl.Difficulty]);
 					// 非表示にする
 					passObj.SetActive (false);
 					dispOnce = true;
 					// 最後の解除キーまで表示したら
-					if (i >= 2) 
+					if (i >= (_gameCtl.PassCount[(int)_gameCtl.Difficulty] - 1)) 
 					{
-						isDsipPass = false;
+						isDispPass = false;
 						// GamestesをRELEASINGに変える
 						_gameCtl.GameStates = GameController.GAMESTATES.RELEASING;
+					}
+				}
+			}
+		}
+
+		// カウントダウンの処理
+		IEnumerator CountDown()
+		{
+			if (dispOnce) 
+			{
+				dispOnce = false;
+				for (int i = 0; i < countSprite.Length; i++) 
+				{
+					countImag.sprite = countSprite [i];
+					yield return new WaitForSeconds (1);
+					if (i >= (countSprite.Length - 1)) 
+					{
+						isDispCount = false;
+						countObj.SetActive (false);
+						dispOnce = true;
+						isDispPass = true;
 					}
 				}
 			}

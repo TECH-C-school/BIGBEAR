@@ -8,26 +8,10 @@ namespace Assets.Scripts.Game06{
 		public GameController _gameCtl;
 
 		List<int> tapKeyList = new List<int>();
-
-		/*
-		public List<int> TapKeyList
-		{
-			get { return this.tapKeyList; }
-			private set { this.tapKeyList = value; }
-		}
-		*/
-
+		
 		int tapKeyNum = -1;
 
 		bool isCheck = true;
-
-		/*
-		public int TapKeyNum
-		{
-			get { return this.tapKeyNum; }
-			private set { this.tapKeyNum = value; }
-		}
-		*/
 
 		public void Push_A()
 		{

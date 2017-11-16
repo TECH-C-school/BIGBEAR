@@ -8,15 +8,23 @@ namespace Assets.Scripts.Game06 {
 	{
 
 		[SerializeField]
-		List<int> passList = new List<int>();
+		private List<int> passList = new List<int>();
 
 		public List<int> PassList
 		{
 			get { return this.passList;}
 			private set { this.passList = value; }
 		}
-
-		public int Lotteries = 0;
+			
+		/// <summary>
+		/// 解除キーの数
+		/// </summary>
+		[SerializeField]
+		private int[] passCount = { 3, 5, 7 };
+		public int[] PassCount
+		{
+			get{ return this.passCount;}
+		}
 
 		public enum DIFFICULTY
 		{
@@ -30,6 +38,8 @@ namespace Assets.Scripts.Game06 {
 		public enum GAMESTATES
 		{
 			CUTIN = 0,
+			COUNTDOWN,
+			DISPPASS,
 			RELEASING,
 		}
 
@@ -47,10 +57,10 @@ namespace Assets.Scripts.Game06 {
 			}
 		}
 
-		// 解除パスの抽選
+		// 解除パスの抽選(難易度によって回数変動)
 		void Lottery()
 		{
-			for (int i = 0; i < Lotteries; i++) 
+			for (int i = 0; i < passCount[(int)Difficulty]; i++) 
 			{
 				passList.Add (Random.Range (0, 10));
 			}
