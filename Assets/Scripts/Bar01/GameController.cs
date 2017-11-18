@@ -11,9 +11,13 @@ namespace Assets.Scripts.Bar01 {
 
         private GameObject deck;
         private GameObject flame;
+        private Queue<Card> dackArray = new Queue<Card>();
+        private Stack<Card>[] stageArray = new Stack<Card>[7];
 
         public float marginTop = 0;
         public float marginside = 0;
+        public Vector3 startPosition = new Vector3(-4.8f, 0.09f, 0);
+        public Vector3 endPosition = new Vector3(4.78f, 0.09f, 0);
 
         private float scrennRatio = 1;
 
@@ -26,12 +30,13 @@ namespace Assets.Scripts.Bar01 {
             //初期化
             Initialization();
             //カード生成
-            CreateCard();
+            CreateCard(startPosition,endPosition,6,0.08f);
+
         }
 
-        private void Start()
+        private void Update()
         {
-            
+            ChackCard();
         }
 
         /// <summary>
@@ -75,9 +80,80 @@ namespace Assets.Scripts.Bar01 {
         /// <summary>
         /// カードを生成します。
         /// </summary>
-        private void CreateCard()
+        private void CreateCard(Vector3 startPoint, Vector3 endPoint, int sprit, float interval)
         {
+            //トランプのすべて
+            Card[] allCard = RandomNumber();
+            //トランプのカードオブジェクト
+            GameObject cardObject = Resources.Load<GameObject>("Prefabs/Bar01/Card");
+            //場のトランプとトランプの間隔
+            float setPostion = (endPosition.x - startPoint.x) /sprit;
+            float setPostionX = startPosition.x;
+            float setPostionY = startPosition.y;
+            //デッキのカード
+            for(int i = 0; i < 24; i++)
+            {
+                dackArray.Enqueue(allCard[i]);
+            }
+            //場の初期カード
+            int count = 24;
+            for(int i = 0; i < 7; i++)
+            {
+                stageArray[i] = new Stack<Card>();
+                for(int i2 = 0; i2 < i + 1; i2++)
+                {
+                    stageArray[i].Push(allCard[count]);
+                    GameObject createObject = Instantiate(cardObject, new Vector3(setPostionX,setPostionY - interval * i2,-i2), Quaternion.identity);
+                    Card card = createObject.GetComponent<Card>();
+                    card.SetCard(allCard[count]);
+                    if (i2 == i)
+                    {
+                        card.TurnCard(true);
+                    }
+                    count++;
+                }
+                setPostionX += setPostion;
+            }
+        }
 
+
+        /// <summary>
+        /// トランプの種類をシャッフルします。
+        /// </summary>
+        /// <returns></returns>
+        private Card[] RandomNumber()
+        {
+            Card[] numbers = new Card[52];
+            int counter = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                for(int c = 0; c < 13; c++)
+                {
+                    numbers[counter] = new Card((Card.CardTypes)i, c + 1);
+                    counter++;
+                }
+            }
+            counter = 0;
+            while (counter < 52)
+            {
+                int index = Random.Range(counter, numbers.Length);
+                Card tmp = numbers[counter];
+                numbers[counter] = numbers[index];
+                numbers[index] = tmp;
+                //Debug.Log(numbers[counter].CardType + "," + numbers[counter].CardNumber);
+                counter++;
+            }
+            return numbers;
+        }
+
+        private void ChackCard()
+        {
+            if (!Input.GetMouseButtonDown(0)) { return; }
+            Collider2D hit = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (!hit) { return; }
+            if (!hit.GetComponent<Card>()) { return; }
+            Card card = hit.GetComponent<Card>();
+            card.CardSelect();   
         }
 
         public void TransitionToResult() {
