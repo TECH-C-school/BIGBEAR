@@ -7,10 +7,10 @@ namespace Assets.Scripts.Game07 {
         public static GameController instance;
         //ゲーム状態 goto マウスクリックするまではReady状態　クリックしたらPlay状態
         public enum GameState { Ready, Play, Result }
-        public static GameState gameState = GameState.Ready;
+        public static GameState m_gameState = GameState.Ready;
         //ゲーム難易度
-        public enum GameLevel { Easy = 1, Normal = 3, Hard = 5 }
-        public static GameLevel gameLevel = GameLevel.Easy;
+        public enum m_GameLevel { Easy, Normal, Hard }
+        public static m_GameLevel m_gameLevel;
         //スコア関係
         const int plus_score = 1;
         const int minus_score = 10;
@@ -20,6 +20,12 @@ namespace Assets.Scripts.Game07 {
         GameObject GameStartButton;
         [SerializeField, Header("ゲーム07フォント")]
         GameObject GameStartFont;
+        [SerializeField, Header("難易度簡単ボタン")]
+        private GameObject easyButton;
+        [SerializeField, Header("難易度普通ボタン")]
+        private GameObject NormalButton;
+        [SerializeField, Header("難易度難しいボタン")]
+        private GameObject HardButton;
 
         //シングルトン化処理
         void Awake()
@@ -39,20 +45,6 @@ namespace Assets.Scripts.Game07 {
             HeridController.IsTimeStart = false;
             TimeCount.isCount = false;
         }
-
-        //void Update()
-        //{
-        //    switch (gameState)
-        //    {
-        //        case GameState.Ready:
-        //            break;
-        //        case GameState.Play:
-        //            break;
-        //        case GameState.Result:
-        //            break;
-        //    }
-        //}
-
         /// <summary>
         /// スコア用関数
         /// </summary>
@@ -66,20 +58,34 @@ namespace Assets.Scripts.Game07 {
             return m_score;
         }
 
-        public void Ready()
+        public void GameSelect()
+        {
+            //難易度決定ボタン表示
+            GameStartButton.SetActive(false);
+            easyButton.SetActive(true);
+            NormalButton.SetActive(true);
+            HardButton.SetActive(true);
+        }
+
+        public void Ready(int level)
         {
             //ゲームスタート処理
-            gameState = GameState.Play;
+            //難易度決定
+            m_gameState = GameState.Play;
             Player.isMove = true;
             HeridController.IsTimeStart = true;
+            TimeCount.times *= level;
             TimeCount.isCount = true;
-            GameStartButton.SetActive(false);
+            //UI非表示処理
+            easyButton.SetActive(false);
+            NormalButton.SetActive(false);
+            HardButton.SetActive(false);
             GameStartFont.SetActive(false);
         }
 
         public void GamePlay()
         {
-            gameState = GameState.Result;
+            m_gameState = GameState.Result;
             //ここで難易度設定(各クラスに値を渡す)
         }
 

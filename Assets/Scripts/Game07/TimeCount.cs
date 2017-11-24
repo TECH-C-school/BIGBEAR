@@ -9,8 +9,8 @@ namespace Assets.Scripts.Game07
     {
         [SerializeField, Header("タイマーのスピード")]
         private float TimerSpeed = 1;
-        [SerializeField,Header("制限時間")]
-        float times = 10;//これが制限時間
+        [Header("制限時間")]
+        public static float times = 10;//これが制限時間
         [SerializeField,Header("白のマスク画像")]
         GameObject backImage;
         [SerializeField,Header("")]
@@ -26,10 +26,10 @@ namespace Assets.Scripts.Game07
 
         void Update()
         {
-            if(GameController.gameState == GameController.GameState.Ready)
+            if(GameController.m_gameState == GameController.GameState.Ready)
             {
                 backImage.SetActive(true);
-            }else if(GameController.gameState == GameController.GameState.Play)
+            }else if(GameController.m_gameState == GameController.GameState.Play)
             {
                 backImage.SetActive(false);
             }
