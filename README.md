@@ -42,6 +42,8 @@
     * 角じおん(sumijion12)
 * クロンダイク【Bar01_04】
     * 高橋虎汰(natuto1998)
+* クロンダイク【Bar01_05】
+    * zhoufangzheng(kazeyuki1876)
 * ピラミッド【Bar02_01】
     * 堀江美紅(supikaH)
 * ピラミッド【Bar02_02】
