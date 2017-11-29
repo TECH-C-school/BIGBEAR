@@ -12,14 +12,54 @@ namespace Assets.Scripts.Bar01
         private Sprite frontSprite;
         private Sprite backSprite;
         private SpriteRenderer cardRenderer;
-        private bool select = false; 
-
+        [SerializeField]
+        private Vector3 fromPosition;
+        private int column;
+        private bool select = false;
+        private bool front = false;
+        [SerializeField]
+        private CardTypes cardType;
+        [SerializeField]
+        private int cardNumber;
         public enum CardTypes
         {
             Diamond,
             Clover,
             Heart,
             Spade
+        }
+
+        public int Column
+        {
+            get { return column; }
+            set { column = value; }
+        }
+
+        public bool Front
+        {
+            get { return front; }
+        }
+
+        public Vector3 From
+        {
+            get { return fromPosition; }
+            set { fromPosition = value; }
+        }
+        
+        public CardTypes CardType
+        {
+            get { return cardType; }
+        }
+        
+        public int CardNumber
+        {
+            get { return cardNumber; }
+        }
+
+        public Card(CardTypes mack, int number)
+        {
+            cardType = mack;
+            cardNumber = number;
         }
 
         private void Start()
@@ -35,27 +75,7 @@ namespace Assets.Scripts.Bar01
             transform.position = mousePosition;
         }
 
-        [SerializeField]
-        private CardTypes cardType;
-
-        public CardTypes CardType
-        {
-            get { return cardType; }
-        }
-        [SerializeField]
-        private int cardNumber;
-
-        public int CardNumber
-        {
-            get { return cardNumber; }
-        }
-
-        public Card(CardTypes mack, int number)
-        {
-            cardType = mack;
-            cardNumber = number;
-        }
-
+        
         public void SetCard(Card setCard)
         {
             cardNumber = setCard.CardNumber;
@@ -77,6 +97,7 @@ namespace Assets.Scripts.Bar01
 
         private void CardFront()
         {
+            front = true;
             if (!frontSprite)
             {
                 char[] markChar = new char[] { 'd', 'c', 'h', 's' };
@@ -92,12 +113,17 @@ namespace Assets.Scripts.Bar01
 
         private void CardBack()
         {
-
+            front = false;
         }
 
         public void CardSelect()
         {
             select = !select;
+            if (select)
+            {
+                fromPosition = transform.position;
+            }
+            GetComponent<BoxCollider2D>().enabled = !select;
         }
     }
 }
