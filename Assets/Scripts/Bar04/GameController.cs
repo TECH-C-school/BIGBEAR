@@ -6,6 +6,16 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar04_06
 {
     public class GameController : MonoBehaviour {
+
+
+        enum suit
+        {
+            clover,
+            dia,
+            heart,
+            spade,
+            joker
+        }
         enum TrumpCards
         {
             c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13,
@@ -14,9 +24,12 @@ namespace Assets.Scripts.Bar04_06
             s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13,
             joker,
         }
+
+        
         /// <summary>
         /// enumの中身をシャッフルする
         /// </summary>
+        
 
         /// <summary>
         /// シャッフルされたカードを上から配っていく
