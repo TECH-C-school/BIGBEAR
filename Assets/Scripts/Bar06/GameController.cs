@@ -4,13 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
-    public class GameController : MonoBehaviour {
-        public void TransitionToResult() {
-            SceneManager.LoadScene("Result");
-        }
-        public void button()
+    public class GameController : MonoBehaviour
+    {
+        public void TransitionToResult()
         {
-            Debug.Log("Button Push !!");
+            SceneManager.LoadScene("Result");
         }
     }
 }
