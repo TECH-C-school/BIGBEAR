@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * 場札のカードだけ名前を変えて、1枚ごとにひっくり返しやすくしたい
+ * /
+
 namespace Assets.Scripts.Bar05 {
     public class GameController : MonoBehaviour {
 
@@ -10,6 +14,15 @@ namespace Assets.Scripts.Bar05 {
         {
             InitGame();
             MakeCards();
+        }
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                SceneManager.LoadSceneAsync("MainMenu");
+                Debug.Log("<color=#00ff00>Scene is MainMenu</color>");
+            }
         }
 
         //カード周りここから

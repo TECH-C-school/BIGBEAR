@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Card : MonoBehaviour {
 
-    //カードのナンバー管理beta版
+    //カードのナンバー管理
     string[] Cards1 = { "c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "c11", "c12", "c13", };
     string[] Cards2 = { "d01", "d02", "d03", "d04", "d05", "d06", "d07", "d08", "d09", "d10", "d11", "d12", "d13", };
     string[] Cards3 = { "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13", };
@@ -115,7 +115,7 @@ public class Card : MonoBehaviour {
         //場札を非表示にしておく
         if(_parent.name == "CardStacks")
         {
-            gameObject.SetActive(false);
+            StackView(false);
         }
 
         //ここからデバッグ用
@@ -140,6 +140,19 @@ public class Card : MonoBehaviour {
         else
         {
             Debug.Log("エラー");
+        }
+    }
+
+    //場札のカードを表示したりしなかったりする
+    public void StackView(bool CardActive)
+    {
+        if(CardActive)
+        {
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            gameObject.SetActive(false);
         }
     }
 
