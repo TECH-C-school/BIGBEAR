@@ -15,7 +15,9 @@ public class Cards : MonoBehaviour {
 
         for (int i = 0; i < 5; i++)
         {
-            var cardObject = Instantiate(gameObject, transform.position, Quaternion.identity);
+            var cardObject = Instantiate(cardprefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(i * 1.27f - 3.84f,0);
+            cardObject.transform.parent = cardObject.transform;
         }
     }
 		
