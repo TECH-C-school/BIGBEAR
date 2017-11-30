@@ -2,12 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Game06 {
     public class GameController : MonoBehaviour 
 	{
 
-		[SerializeField]
+		public GameObject e_flame;
+		public GameObject cover;
+		public GameObject restObj;
+		public GameObject scoreObj;
+
+		public Sprite[] numSprite = new Sprite[4];
+		public Sprite[] linesSprite = new Sprite[2];
+
+		[HideInInspector]
+		public Image restImg;
+		[HideInInspector]
+		public Image scoreImag;
+		public Image[] linesImag = new Image[2];
+
+		public Text resultText;
+
 		private List<int> passList = new List<int>();
 
 		public List<int> PassList
@@ -25,6 +41,13 @@ namespace Assets.Scripts.Game06 {
 		{
 			get{ return this.passCount;}
 		}
+		private int restCount = 3;
+		public int RestCount
+		{
+			get { return this.restCount;}
+			set { this.restCount = value;}
+		}
+
 
 		public enum DIFFICULTY
 		{
@@ -41,6 +64,7 @@ namespace Assets.Scripts.Game06 {
 			COUNTDOWN,
 			DISPPASS,
 			RELEASING,
+			GAMEEND
 		}
 
 		public GAMESTATES GameStates;
@@ -48,12 +72,23 @@ namespace Assets.Scripts.Game06 {
 		[SerializeField]
 		public bool lotteryOnce = true;
 
+		void Start()
+		{
+			restImg = restObj.GetComponent<Image> ();
+			scoreImag = scoreObj.GetComponent<Image> ();
+		}
+
 		void Update()
 		{
 			if ((GameStates == GAMESTATES.CUTIN) && lotteryOnce)
 			{
 				lotteryOnce = false;
 				Lottery ();
+			}
+				
+			if (restCount == 0) 
+			{
+				resultText.enabled = true;
 			}
 		}
 
