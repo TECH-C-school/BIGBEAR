@@ -9,22 +9,26 @@ public class mainGame : MonoBehaviour
     // カットインは400pxずつ画面内に入れるように移動
 
     public int round = 1;
-    public float count = 0;
+    float count = 0;
     public int timeStart = 0;
-    public int randomCheck = 0;
+    int randomCheck = 0;
     public int touchStart = 0;
     public int battleEnd = 0;
+    public int battleLost = 0;
 
     float interval;
 
+    private Image Player;
     private Image panel;
     private Image white;
-    private Image playerCut1;
-    private Image playerCut2;
-    private Image playerCut3;
+    private Image playerCut;
     private Image enemyCut1;
     private Image enemyCut2;
     private Image enemyCut3;
+
+    public Sprite player_cut1;
+    public Sprite player_cut2;
+    public Sprite player_cut3;
 
     public float cutSpeed = 1;
 
@@ -34,9 +38,7 @@ public class mainGame : MonoBehaviour
     {
         panel = GameObject.Find("BlackPanel").GetComponent<Image>();
         white = GameObject.Find("WhitePanel").GetComponent<Image>();
-        playerCut1 = GameObject.Find("Player_cut1").GetComponent<Image>();
-        playerCut2 = GameObject.Find("Player_cut2").GetComponent<Image>();
-        playerCut3 = GameObject.Find("Player_cut3").GetComponent<Image>();
+        playerCut = GameObject.Find("Player_cut").GetComponent<Image>();
         enemyCut1 = GameObject.Find("Enemy_cut1").GetComponent<Image>();
         enemyCut2 = GameObject.Find("Enemy_cut2").GetComponent<Image>();
         enemyCut3 = GameObject.Find("Enemy_cut3").GetComponent<Image>();
@@ -66,19 +68,31 @@ public class mainGame : MonoBehaviour
             timeStart = 10;
         }
 
-        if(timeStart == 10)
+        if(round == 1)
         {
-            if(Input.GetMouseButtonDown(0))
+            if (timeStart == 10)
             {
-                if(timer.timerGo == 0)
+                if (Input.GetMouseButtonDown(0))
                 {
+                    touchStart = 10;
 
+                    if (timer.timerGo == 0)
+                    {
+
+                    }
+                    else if (timer.timerGo == 10)
+                    {
+                        timeStart = 0;
+                        StartCoroutine(WhiteOut());
+                    }
                 }
-                else if(timer.timerGo == 10)
-                {
-                    timeStart = 0;
-                    StartCoroutine(WhiteOut());
-                }
+            }
+
+            if(timer.timerGo == 20 && battleLost == 0)
+            {
+                battleLost = 10;
+
+                StartCoroutine(WhiteOut());
             }
         }
     }
@@ -105,7 +119,8 @@ public class mainGame : MonoBehaviour
         {
             panel.gameObject.SetActive(true);
             yield return new WaitForSeconds(0.3f);
-            playerCut1.transform.position += new Vector3(180f * Time.deltaTime, 0, 0);
+            playerCut.sprite = player_cut1;
+            playerCut.transform.position += new Vector3(180f * Time.deltaTime, 0, 0);
             
             enemyCut1.transform.position = new Vector3(
                 enemyCut1.transform.position.x - 180,

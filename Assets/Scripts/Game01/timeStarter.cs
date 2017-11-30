@@ -15,8 +15,8 @@ public class timeStarter : MonoBehaviour
     GameObject timerR;
     GameObject timerL;
 
-    private float RightTime = 0; // 初期値は0
-    private float LeftTime = 0;
+    public float RightTime = 0; // 初期値は0
+    public float LeftTime = 0;
 
     public string stringTimeR;
     public string stringTimeL;
@@ -51,15 +51,25 @@ public class timeStarter : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale > 0 && maingame.timeStart == 10)
+        if(maingame.battleEnd == 0)
         {
-            Attack.gameObject.SetActive(true);
-            CountUp();
+            if (Time.timeScale > 0 && maingame.timeStart == 10)
+            {
+                Attack.gameObject.SetActive(true);
+                CountUp();
+            }
+            else if (Time.timeScale > 0 && maingame.timeStart == 0)
+            {
+                Attack.gameObject.SetActive(false);
+                Debug.Log("stop");
+            }
         }
-        else if(Time.timeScale > 0 && maingame.timeStart == 0)
+        
+        if(maingame.round == 1 && LeftTime == 5)
         {
+            timerGo = 20;
             Attack.gameObject.SetActive(false);
-            Debug.Log("stop");
+            RightTime = 0;
         }
 
         PlayerPrefs.SetString("TimeR", stringTimeR);
@@ -69,35 +79,38 @@ public class timeStarter : MonoBehaviour
     void CountUp ()
     {
         timerGo = 10;
+
+        if(timerGo != 20)
+        {
+            // 0から加算していく
+            RightTime += Time.deltaTime * 100f;
+
+            if (RightTime < 10)
+            {
+                textR.text = ((int)0).ToString() + ((int)RightTime).ToString();
+            }
+            else if (10 <= RightTime)
+            {
+                textR.text = ((int)RightTime).ToString();
+            }
+
+            if (LeftTime < 10)
+            {
+                textL.text = ((int)0).ToString() + ((int)LeftTime).ToString();
+            }
+            else if (10 <= LeftTime)
+            {
+                textL.text = ((int)LeftTime).ToString();
+            }
+
+            stringTimeR = ((int)RightTime).ToString();
+
+            if (RightTime >= 98)
+            {
+                RightTime -= 99;
+                LeftTime += 1;
+            }
+        }
         
-
-        // 0から加算していく
-        RightTime += Time.deltaTime * 100f;
-
-        if (RightTime < 10)
-        {
-            textR.text = ((int)0).ToString() + ((int)RightTime).ToString();
-        }
-        else if (10 <= RightTime)
-        {
-            textR.text = ((int)RightTime).ToString();
-        }
-
-        if (LeftTime < 10)
-        {
-            textL.text = ((int)0).ToString() + ((int)LeftTime).ToString();
-        }
-        else if (10 <= LeftTime)
-        {
-            textL.text = ((int)LeftTime).ToString();
-        }
-
-        stringTimeR = ((int)RightTime).ToString();
-
-        if (RightTime >= 98)
-        {
-            RightTime -= 99;
-            LeftTime += 1;
-        }
     }
 }
