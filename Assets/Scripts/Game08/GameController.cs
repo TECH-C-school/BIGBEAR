@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,15 +22,29 @@ namespace Assets.Scripts.Game08 {
 
         void Update()
         {
+            StartCoroutine(DelayMethod(1f, () =>
+            {
+                click = true;
+                Debug.Log(click);
+            }));
             //if (GetComponent<TimeCount>().timeCounter == 0)
             //{
             //    onclick();
-                
+
             //}
+        }
+
+        
+        private IEnumerator DelayMethod(float waitTime, Action action)
+        {
+            
+            yield return new WaitForSeconds(waitTime);
+            action();
         }
 
         void onclick() {
             click = false;
+            
             return;
         }
 
