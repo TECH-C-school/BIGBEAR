@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using UniRx.Triggers;
@@ -18,6 +19,10 @@ namespace Assets.Scripts.Game02
         SpriteRenderer m_scope;
         [SerializeField]
         GameObject m_swayObject;
+        [SerializeField]
+        LayerMask m_enemyLayer;
+        [SerializeField]
+        Button m_shotButton;
 
         // Use this for initialization
         void Start()
@@ -50,7 +55,12 @@ namespace Assets.Scripts.Game02
 
                      m_scope.gameObject.SetActive(true);
                      m_scope.transform.localPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x , (Input.mousePosition.y + (m_scope.sprite.rect.height/ 3f)), 10));
-
+                    
+                     RaycastHit2D hit = Physics2D.Raycast(m_scope.transform.position, m_scope.transform.forward, 10,m_enemyLayer);
+                     if (hit.collider)
+                     {
+                         
+                     }
                    
 
                  }).AddTo(this);
@@ -60,14 +70,14 @@ namespace Assets.Scripts.Game02
                 {
                     m_scope.gameObject.SetActive(false);
                 }).AddTo(this);
-           
 #endif
         }
 
-        void Update()
+        public void ShotBullet()
         {
-        }
-    }
 
-   
+        }
+
+
+    } 
 }
