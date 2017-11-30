@@ -8,6 +8,8 @@ namespace Assets.Scripts.Bar05
     {
         public int number;
 
+        public GameObject selectCard;
+
         public enum Suit
         {
             Spade,
@@ -22,8 +24,10 @@ namespace Assets.Scripts.Bar05
 
         void Start()
         {
-            GameObject card = (GameObject)Resources.Load("Prefabs/Bar_05/back");
-            var Card = GameObject.Find("Card");
+            //GameObject card = (GameObject)Resources.Load("Prefabs/Bar_05/back");
+            selectCard = gameObject.transform.FindChild("cardselect").gameObject;
+            selectCard.transform.position = gameObject.transform.position;
+            selectCard.SetActive(false);
         }
 
         // Update is called once per frame
@@ -37,6 +41,19 @@ namespace Assets.Scripts.Bar05
             string card = ""+ cardInfo;
 
             return card;
+        }
+
+        private void SelectCard()
+        {
+            selectCard = transform.FindChild("cardselect").gameObject;
+            if (selectCard.activeSelf == false)
+            {
+                selectCard.SetActive(true);
+            }
+            else if (selectCard.activeSelf == true)
+            {
+                selectCard.SetActive(false);
+            }
         }
     }
 }

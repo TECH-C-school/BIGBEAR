@@ -5,6 +5,7 @@ using UnityEngine;
 public class Phase : MonoBehaviour {
 
     public GameObject card;
+    public GameObject selectCard;
 
     public enum PhaseEnum
     {
@@ -29,7 +30,7 @@ public class Phase : MonoBehaviour {
 
     void Start()
     {
-        card = Resources.Load("Prefabs/Bar05/back") as GameObject;
+        MakeCard();
     }
 
 	void Update ()
@@ -44,25 +45,59 @@ public class Phase : MonoBehaviour {
     {
         int[] randomNumbers = MakeRandomNumbers();
 
-        var cardPrefab = Resources.Load<GameObject>("Prefab/Card");
         var BoardCard = new GameObject("Board");
         var HandCard = new GameObject("Hand");
         var EnemyHand = new GameObject("EnemyHand");
 
-        for (int i = 0;i < 2; i++)
+        for (int i = 1;i <= 9; i++)
         {
-            
             {
-                var cardObject = Instantiate(cardPrefab,transform.position,Quaternion.identity);
+                var cardObject = Instantiate(card,transform.position,Quaternion.identity);
+                var selCard = Instantiate(selectCard);
+                selCard.name = selectCard.name;
+                selCard.transform.parent = cardObject.transform;
 
-                cardObject.transform.position = new Vector3();
-
-                //cardObject.transform.parent = CreateCard.transform;
+                switch (i)
+                {
+                    case 1 :
+                        cardObject.name = "Hand" + i;
+                        cardObject.transform.position = new Vector3(-0.7f,-2.08f,-0.01f);
+                        break;
+                    case 2 :
+                        cardObject.name = "Hand" + i;
+                        cardObject.transform.position = new Vector3(0.65f, -2.08f, -0.01f);
+                        break;
+                    case 3:
+                        cardObject.name = "Board 1";
+                        cardObject.transform.position = new Vector3(-2.7f, 0, -0.01f);
+                        break;
+                    case 4:
+                        cardObject.name = "Board 2";
+                        cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
+                        break;
+                    case 5:
+                        cardObject.name = "Board 3";
+                        cardObject.transform.position = new Vector3(0f, 0, -0.01f);
+                        break;
+                    case 6:
+                        cardObject.name = "Board 4";
+                        cardObject.transform.position = new Vector3(1.35f, 0, -0.01f);
+                        break;
+                    case 7:
+                        cardObject.name = "Board 5";
+                        cardObject.transform.position = new Vector3(2.7f, 0, -0.01f);
+                        break;
+                    case 8:
+                        cardObject.name = "EnemyHand 1";
+                        cardObject.transform.position = new Vector3(-0.7f, 2.08f, -0.01f);
+                        break;
+                    case 9:
+                        cardObject.name = "EnemyHand 2";
+                        cardObject.transform.position = new Vector3(0.65f, 2.08f, -0.01f);
+                        break;
+                }
             }
-
-
         }
-        
     }
 
     public int[] MakeRandomNumbers()
