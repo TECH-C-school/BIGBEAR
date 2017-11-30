@@ -15,6 +15,7 @@ public class mainGame : MonoBehaviour
     public int touchStart = 0;
     public int battleEnd = 0;
     public int battleLost = 0;
+    public int battleDraw = 0;
 
     float interval;
 
@@ -70,7 +71,7 @@ public class mainGame : MonoBehaviour
 
         if(round == 1)
         {
-            if (timeStart == 10)
+            if (timeStart == 10 && battleLost == 0 && battleEnd == 0 && battleDraw == 0)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -84,6 +85,17 @@ public class mainGame : MonoBehaviour
                     {
                         timeStart = 0;
                         StartCoroutine(WhiteOut());
+                        battleEnd = 1;
+
+                        timer.Attack.gameObject.SetActive(false);
+                    }
+
+                    if(timer.LeftTime == 5)
+                    {
+                        battleDraw = 10;
+                        StartCoroutine(WhiteOut());
+
+                        timer.Attack.gameObject.SetActive(false);
                     }
                 }
             }
@@ -91,7 +103,6 @@ public class mainGame : MonoBehaviour
             if(timer.timerGo == 20 && battleLost == 0)
             {
                 battleLost = 10;
-
                 StartCoroutine(WhiteOut());
             }
         }

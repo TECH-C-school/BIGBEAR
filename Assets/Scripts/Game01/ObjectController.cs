@@ -95,12 +95,19 @@ public class ObjectController : MonoBehaviour
                 player1_win.gameObject.SetActive(true);
                 enemy1_lost.gameObject.SetActive(true);
             }
-            if (timer.timerGo == 20 && maingame.battleEnd == 0)
+            if (timer.timerGo == 20 && maingame.battleLost == 10)
             {
                 player1_stand.gameObject.SetActive(false);
                 enemy1_stand.gameObject.SetActive(false);
                 player1_lost.gameObject.SetActive(true);
                 enemy1_win.gameObject.SetActive(true);
+            }
+            if(maingame.battleDraw == 10)
+            {
+                player1_stand.gameObject.SetActive(false);
+                enemy1_stand.gameObject.SetActive(false);
+                player1_draw.gameObject.SetActive(true);
+                enemy1_draw.gameObject.SetActive(true);
             }
         }
     }

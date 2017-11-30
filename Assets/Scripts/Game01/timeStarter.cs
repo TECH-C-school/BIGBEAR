@@ -23,7 +23,7 @@ public class timeStarter : MonoBehaviour
 
     public Canvas canvas;
 
-    private Image Attack;
+    public Image Attack;
 
     public int timerGo = 0;
 
