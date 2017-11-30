@@ -23,24 +23,28 @@ namespace Assets.Scripts.Bar02 {
         /// </summary>
         private void CardSet()
         {
+
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Cards");
 
             int countNumber = 6;
-            int countCardNum = 0;
+            int countCardNum = 20;
+            string[] cardNum = MakeRandCard();
+            SpriteRenderer sr = cardPrefab.GetComponent<SpriteRenderer>();
+            sr.sortingOrder = 21;
+
 
             for (int i = 1; i <= 6; i++)
             {
                 for (int j = 1; j <= countNumber; j++)
                 {
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                    cardObject.transform.position = new Vector3(
-                        j - countNumber * 0.5f - 0.5f,
-                        i * 0.5f - 1f,
-                        0);
-                    string[] cardNum = MakeRandCard();
+                    cardObject.transform.position = new Vector2(
+                        j - countNumber * 0.5f - 0.5f ,
+                        i * 0.5f - 1f);
                     Sprite card = Resources.Load<Sprite>("Images/Bar/Cards/"+ cardNum[countCardNum] );
-                    SpriteRenderer sr = cardPrefab.GetComponent<SpriteRenderer>();
                     sr.sprite = card;
+                    sr.sortingOrder = countCardNum;
+                    countCardNum--;
                 }
                 countNumber--;
             }
@@ -91,13 +95,20 @@ namespace Assets.Scripts.Bar02 {
             var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Debug.Log(tapPoint);
 
+            //あたり判定があるか判断 prefabにあたり判定付ける。
             if (!Physics2D.OverlapPoint(tapPoint)) return;
 
+            //クリックされた場所の画面にgameObjectがあるか判断
             var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
             if (!hitObject) return;
 
-            //var card = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
-            //Debug.Log("hit object is" + card.Sprite);
+            var card = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
+            Debug.Log("hit object is " + card.sprite);
+
+
+
+            //Destroy(card.gameObject);
         }
+                
     }
 }
