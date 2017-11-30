@@ -7,7 +7,14 @@ namespace Assets.Scripts.Bar01
 {
     public class Card : MonoBehaviour
     {
-
+        public enum CardTypes
+        {
+            None = -1,
+            Diamond,
+            Clover,
+            Heart,
+            Spade
+        }
         [SerializeField]
         private Sprite frontSprite;
         private Sprite backSprite;
@@ -21,13 +28,7 @@ namespace Assets.Scripts.Bar01
         private CardTypes cardType;
         [SerializeField]
         private int cardNumber;
-        public enum CardTypes
-        {
-            Diamond,
-            Clover,
-            Heart,
-            Spade
-        }
+        public bool dack;
 
         public int Column
         {
@@ -101,12 +102,18 @@ namespace Assets.Scripts.Bar01
             if (!frontSprite)
             {
                 char[] markChar = new char[] { 'd', 'c', 'h', 's' };
-                string cardString = "";
-                if(cardNumber < 10)
-                {
-                    cardString = "0";
-                }
-                frontSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + markChar[(int)cardType] + cardString + cardNumber);
+                frontSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + markChar[(int)cardType] + cardNumber.ToString("d2"));
+            }
+            cardRenderer.sprite = frontSprite;
+        }
+
+        public void CardFront(bool chang = true)
+        {
+            front = true;
+            if (chang)
+            {
+                char[] markChar = new char[] { 'd', 'c', 'h', 's' };
+                frontSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + markChar[(int)cardType] + cardNumber.ToString("d2"));
             }
             cardRenderer.sprite = frontSprite;
         }

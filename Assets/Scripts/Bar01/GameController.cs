@@ -12,12 +12,15 @@ namespace Assets.Scripts.Bar01 {
 
         private GameObject deck;
         private GameObject flame;
+        private GameObject cardObject;
         private Queue<Card> dackArray = new Queue<Card>();
+        private Stack<Card> dackOut = new Stack<Card>();
         private Stack<Card>[] stageArray = new Stack<Card>[7];
         private Stack<Card>[] outArray = new Stack<Card>[4];
         private int[] outArray1 = new int[] { 1,1,1,1};
         private GameObject selectCard;
         private GameObject[] firstPositions = new GameObject[7];
+        private GameObject[] dackCards = new GameObject[3];
 
         public float marginTop = 0;
         public float marginside = 0;
@@ -41,6 +44,7 @@ namespace Assets.Scripts.Bar01 {
 
         private void Update()
         {
+            ClickChackDeck();
             ClickChackCard();
             ClickUpChackCard();
         }
@@ -62,6 +66,14 @@ namespace Assets.Scripts.Bar01 {
             setObject.transform.localScale *= scrennRatio;
             //カードフレームの配置
             setObject = Instantiate(deck);
+            Transform deckTransform = setObject.transform;
+            for (int i = 0; i < 3; i++)
+            {
+                setObject = new GameObject("DackCard" + i);
+                setObject.transform.parent = deckTransform;
+                setObject.transform.localPosition = Vector3.zero + new Vector3(2.5f + (i * 0.5f), 0, -i);
+                dackCards[i] = setObject;
+            }
             //カードの保管場所の設置
             Vector3 centerPoint = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 10));
             float space = 1.6f;
@@ -92,7 +104,7 @@ namespace Assets.Scripts.Bar01 {
             //トランプのすべて
             Card[] allCard = RandomNumber();
             //トランプのカードオブジェクト
-            GameObject cardObject = Resources.Load<GameObject>("Prefabs/Bar01/Card");
+            cardObject = Resources.Load<GameObject>("Prefabs/Bar01/Card");
             //場のトランプとトランプの間隔
             float setPostion = (endPosition.x - startPoint.x) /sprit;
             float setPostionX = startPosition.x;
@@ -100,6 +112,7 @@ namespace Assets.Scripts.Bar01 {
             //デッキのカード
             for(int i = 0; i < 24; i++)
             {
+                allCard[i].dack = true;
                 dackArray.Enqueue(allCard[i]);
             }
             //場の初期カード
@@ -185,6 +198,46 @@ namespace Assets.Scripts.Bar01 {
             card.CardSelect();
         }
 
+        /// <summary>
+        /// デッキをクリックしたとき
+        /// </summary>
+        private void ClickChackDeck()
+        {
+            //マウスをクリックしたとき
+            if (!Input.GetMouseButtonDown(0)) { return; }
+            Collider2D hit = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (!hit) { return; }
+            if(hit.name != "Deck(Clone)") { return; }
+            for(int i = 0; i < 3; i++)
+            {
+                if (dackOut.Count != 0)
+                {
+                    Debug.Log(dackOut.Count);
+                    Debug.Log(dackOut.Peek().CardNumber + "" + dackOut.Peek().CardType);
+                    GameObject desCard = dackOut.Pop().gameObject;
+                    dackArray.Enqueue(desCard.GetComponent<Card>());
+                    Destroy(desCard);
+                }
+            }
+            for(int i = 0; i < 3; i++)
+            {
+                if(dackArray.Count == 0)
+                {
+                    hit.transform.Find("back").GetComponent<SpriteRenderer>().enabled = false;
+                    continue;
+                }
+                GameObject card = Instantiate(cardObject);
+                card.transform.position = dackCards[i].transform.position;
+                card.GetComponent<Card>().SetCard(dackArray.Dequeue());
+                card.GetComponent<Card>().dack = true;
+                card.GetComponent<Card>().TurnCard(true);
+                dackOut.Push(card.GetComponent<Card>());
+            }
+
+        }
+
+
+
         private void ClickUpChackCard()
         {
             //選択したトランプをチェック
@@ -205,7 +258,7 @@ namespace Assets.Scripts.Bar01 {
                 selectCard = null;
                 return;
             }
-            Debug.Log(hit.name);
+            //Debug.Log(hit.name);
             Vector3 setPosition = ChackCard(hit);
             selectCard.transform.position = setPosition;
             if (setPosition != card.From)
@@ -217,6 +270,7 @@ namespace Assets.Scripts.Bar01 {
             for (int i = 0; i < selectCard.transform.childCount; i++)
             {
                 selectCard.transform.GetChild(i).GetComponent<BoxCollider2D>().enabled = true;
+                selectCard.transform.GetChild(i).GetComponent<Card>().From = selectCard.transform.GetChild(i).parent.transform.position + new Vector3(0, -0.3f, -1);
             }
             selectCard = null;
             return;
@@ -233,7 +287,8 @@ namespace Assets.Scripts.Bar01 {
             Card card = selectCard.GetComponent<Card>();
             if (hit.GetComponent<Card>())
             {
-                Debug.Log("chackCard" + chackCard.CardType + "," + chackCard.CardNumber);
+                if (!chackCard.Front) { return card.From; }
+                //Debug.Log("chackCard" + chackCard.CardType + "," + chackCard.CardNumber);
                 switch (chackCard.CardType)
                 {
                     case Card.CardTypes.Clover:
@@ -241,6 +296,7 @@ namespace Assets.Scripts.Bar01 {
                         if (card.CardType == Card.CardTypes.Spade || card.CardType == Card.CardTypes.Clover) { return card.From; }
                         if (card.CardNumber != chackCard.CardNumber - 1) { return card.From; }
                         CardMove(card, stageArray[chackCard.Column]);
+                        card.Column = chackCard.Column;
                         return chackCard.From + new Vector3(0,-0.3f,-1);
                     case Card.CardTypes.Diamond:
                     case Card.CardTypes.Heart:
@@ -261,10 +317,11 @@ namespace Assets.Scripts.Bar01 {
                 {
                     if(hit.transform.position == firstPositions[i].transform.position)
                     {
+                        CardMove(card, stageArray[i]);
                         break;
                     }
                 }
-                ChangCardDate(selectCard.GetComponent<Card>(), i);
+                
                 return hit.transform.position;
             }
             else if(hit.name == "CardFlame")
@@ -296,50 +353,7 @@ namespace Assets.Scripts.Bar01 {
             }
             return card.From;
         }
-
-        /// <summary>
-        /// Cardのデータを更新します。
-        /// </summary>
-        /// <param name="from">操作元のカード</param>
-        /// <param name="to">移動先のカード</param>
-        private void ChangCardDate(Card from, Card to)
-        {
-            Card[] stagelist = stageArray[from.Column].ToArray();
-            Card[] movecards = new Card[30];
-            int i = 0;
-            for(i = 0; i < stagelist.Length; i++)
-            {
-                if(stagelist[i] == from)
-                {
-                    break;
-                }
-            }
-            for(int t = i; t >= 0; t--)
-            {
-                Debug.Log("hogehoge");
-                Debug.Log("ho" + stageArray[from.Column].Peek().CardNumber + "," + stageArray[from.Column].Peek().CardType);
-                Card outCard = stageArray[from.Column].Pop();
-                if (stageArray[from.Column].Count != 0)
-                {
-                    outCard = stageArray[from.Column].Peek();
-                    outCard.TurnCard(true);
-                }
-                movecards[i - t] = stagelist[t];
-            }
-            for(i = 0; movecards[i] != null; i++)
-            {
-                movecards[i].Column = to.Column;
-                stageArray[to.Column].Push(movecards[i]);
-            }
-            Debug.Log("de" + stageArray[from.Column].Peek().CardNumber + "," + stageArray[from.Column].Peek().CardType);
-            Debug.Log(stageArray[to.Column].Peek().CardNumber + "," + stageArray[to.Column].Peek().CardType);
-            Card card;
-            if ((card = stageArray[from.Column].Peek()).Front)
-            {
-                Debug.Log(card.CardNumber + "," + card.CardType);
-            }
-            
-        }
+       
         /// <summary>
         /// Cardのデータを更新します。
         /// </summary>
@@ -359,8 +373,6 @@ namespace Assets.Scripts.Bar01 {
             }
             for (int t = i; t >= 0; t--)
             {
-                Debug.Log("hogehoge");
-                Debug.Log("ho" + stageArray[from.Column].Peek().CardNumber + "," + stageArray[from.Column].Peek().CardType);
                 Card outCard = stageArray[from.Column].Pop();
                 if (stageArray[from.Column].Count != 0)
                 {
@@ -374,12 +386,11 @@ namespace Assets.Scripts.Bar01 {
                 movecards[i].Column = to;
                 stageArray[to].Push(movecards[i]);
             }
-            Debug.Log("de" + stageArray[from.Column].Peek().CardNumber + "," + stageArray[from.Column].Peek().CardType);
-            Debug.Log(stageArray[to].Peek().CardNumber + "," + stageArray[to].Peek().CardType);
+            
             Card card;
             if ((card = stageArray[from.Column].Peek()).Front)
             {
-                Debug.Log(card.CardNumber + "," + card.CardType);
+                
             }
 
         }
@@ -393,21 +404,32 @@ namespace Assets.Scripts.Bar01 {
         {
             List<Card> moveCardList = new List<Card>();
             //移動するカードデータを選択
-            do
+            if (fromCard.dack)
             {
-                moveCardList.Add(stageArray[fromCard.Column].Peek());
-            } while (fromCard != stageArray[fromCard.Column].Pop());
-            if (stageArray[fromCard.Column].Count != 0)
-            {
-                Debug.Log("de" + stageArray[fromCard.Column].Peek().CardNumber + "," + stageArray[fromCard.Column].Peek().CardType);
-                stageArray[fromCard.Column].Peek().TurnCard(true);
+                //Debug.Log("dack");
+                //Debug.Log(dackOut.Peek().CardType + "," + dackOut.Peek().CardNumber);
+                Card card = dackOut.Pop();
+                //Debug.Log(card.From);
+                //Debug.Log(dackOut.Peek().CardType + "," + dackOut.Peek().CardNumber);
+                card.dack = false;
+                moveCardList.Add(card);
+
             }
-            
+            else
+            {
+                do
+                {
+                    moveCardList.Add(stageArray[fromCard.Column].Peek());
+                } while (fromCard != stageArray[fromCard.Column].Pop());
+                if (stageArray[fromCard.Column].Count != 0)
+                {
+                    stageArray[fromCard.Column].Peek().TurnCard(true);
+                }
+            }
             for(int i = 0; i < moveCardList.Count; i++)
             {
                 toCardBox.Push(moveCardList[i]);
             }
-
         }
 
         public void TransitionToResult() {
