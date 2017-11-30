@@ -8,15 +8,20 @@ namespace Assets.Scripts.Bar05 {
 
         private void Start()
         {
+            InitGame();
             MakeCards();
-            
         }
 
         //カード周りここから
+        
+        public void InitGame()
+        {
+            
+        }
 
         /// <summary>
         /// 自分と相手のカードを配置する
-        /// iはプレイヤー人数によって変更(i = プレイヤー人数)
+        /// forのiはプレイヤー人数によって変更(i = プレイヤー人数 + 1)
         /// いつか変数で管理したい
         /// </summary>
         public void MakeCards()
@@ -30,7 +35,7 @@ namespace Assets.Scripts.Bar05 {
 
             //PrefabをLoadする
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar05/Card");
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 //自分のカード生成
                 if (i == 0)
@@ -47,14 +52,16 @@ namespace Assets.Scripts.Bar05 {
                         //カードのナンバー指定
                         var card = cardObject.GetComponent<Card>();
                         card.Number = Deck[deckPlace];
+                        //カード出すよ
                         card.CardMake();
+                        //山札1枚減るよ
                         deckPlace++;
                         Debug.Log("<color=green>自分のカード生成</color>" + (x + 1) + "枚目");
                     }
                     Debug.Log("<color=blue>自分のカード生成完了</color>");
                 }
                 //相手のカード生成
-                else
+                else if(i == 1)
                 {
                     var cardsObject2 = GameObject.Find("Player2_Cards");
                     for (int x = 0; x < 2; x++)
@@ -62,14 +69,36 @@ namespace Assets.Scripts.Bar05 {
                         var cardObject = Instantiate(cardPrefab);
                         cardObject.transform.position = new Vector3((x * 2 - 1), 3.4f, 0);
                         cardObject.transform.parent = cardsObject2.transform;
+                        var card = cardObject.GetComponent<Card>();
+                        card.Number = Deck[deckPlace];
+                        card.CardMake();
+                        deckPlace++;
                         Debug.Log("<color=green>相手のカード生成</color>" + (x + 1) + "枚目");
                     }
                     Debug.Log("<color=red>相手のカード生成完了</color>");
+                }
+                //場札を生成
+                else
+                {
+                    var cardsObject3 = GameObject.Find("CardStacks");
+                    for(int x = 0; x < 5; x++)
+                    {
+                        var cardObject = Instantiate(cardPrefab);
+                        cardObject.transform.position = new Vector3((x * 2 - 4), 0, 0);
+                        cardObject.transform.parent = cardsObject3.transform;
+                        var card = cardObject.GetComponent<Card>();
+                        card.Number = Deck[deckPlace];
+                        card.CardMake();
+                        deckPlace++;
+                        Debug.Log("<color=green>場札のカード生成</color>" + (x + 1) + "枚目");
+                    }
+                    Debug.Log("<color=yellow>場札のカード生成完了</color>");
                 }
             }
         }
         /// <summary>
         /// カードのナンバー管理
+        /// ここいる？
         /// </summary>
         private enum CardsNum
         {
@@ -78,7 +107,6 @@ namespace Assets.Scripts.Bar05 {
             h01, h02, h03, h04, h05, h06, h07, h08, h09, h10, h11, h12, h13,
             s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13,
         }
-
         /// <summary>
         /// カードをシャッフルする
         /// </summary>

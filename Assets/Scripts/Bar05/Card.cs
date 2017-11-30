@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class Card : MonoBehaviour {
 
+    //カードのナンバー管理beta版
+    string[] Cards1 = { "c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "c11", "c12", "c13", };
+    string[] Cards2 = { "d01", "d02", "d03", "d04", "d05", "d06", "d07", "d08", "d09", "d10", "d11", "d12", "d13", };
+    string[] Cards3 = { "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13", };
+    string[] Cards4 = { "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13", };
+
     //ナンバーを持ってきてセットする
     private int _number;
 
@@ -13,17 +19,8 @@ public class Card : MonoBehaviour {
         get { return _number; }
         set { _number = value; }
     }
-
-    //カードのナンバー管理beta版
-    string[] Cards1 = { "c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "c11", "c12", "c13", };
-    string[] Cards2 = { "d01", "d02", "d03", "d04", "d05", "d06", "d07", "d08", "d09", "d10", "d11", "d12", "d13", };
-    string[] Cards3 = { "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13", };
-    string[] Cards4 = { "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13", };
-
-    /// <summary>
-    /// 割り当てられたナンバーをCardKeyに変換
-    /// </summary>
-    /// <returns></returns>
+    
+    // 割り当てられたナンバーをCardKeyに変換
     string cardtype()
     {
         //カードのマーク
@@ -63,22 +60,91 @@ public class Card : MonoBehaviour {
         return CardKey;
     }
 
-    /// <summary>
-    /// カードを表示するよ
-    /// </summary>
+
+    //親を調べよう
+    private GameObject _parent;
+    //カードをひっくり返すための変数
+    private bool whoCards;
+    private void getParent()
+    {
+        //親を取得
+        _parent = transform.root.gameObject;
+        //相手のカードであればtrueにする
+        if (_parent.name == "Player1_Cards")
+        {
+            whoCards = false;
+        }
+        else if(_parent.name == "CardStacks")
+        {
+            whoCards = false;
+        }
+        else
+        {
+            whoCards = true;
+        }
+
+        //デバッグ用
+        /*
+        if (whoCards)
+        {
+            Debug.Log("相手のカードです");
+        }
+        else
+        {
+            Debug.Log("自分のカードです");
+        }
+        */
+    }
+
+    //カードを表示するよ
     public void CardMake()
     {
         Sprite cardSprite = null;
-        cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardtype());
+        getParent();
+        if (whoCards)
+        {
+            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+        }
+        else
+        {
+            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardtype());
+        }
         var spriteRenderer = transform.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = cardSprite;
-        Debug.Log(cardSprite);
+
+        //場札を非表示にしておく
+        if(_parent.name == "CardStacks")
+        {
+            gameObject.SetActive(false);
+        }
+
+        //ここからデバッグ用
+        string cardDebug = cardtype();
+        string cardMark = cardDebug.Substring(0, 1);
+        if(cardMark == "c")
+        {
+            Debug.Log("クローバー " + cardDebug.Substring(1, 2));
+        }
+        else if (cardMark == "d")
+        {
+            Debug.Log("ダイヤ " + cardDebug.Substring(1, 2));
+        }
+        else if (cardMark == "h")
+        {
+            Debug.Log("ハート " + cardDebug.Substring(1, 2));
+        }
+        else if (cardMark == "s")
+        {
+            Debug.Log("スペード " + cardDebug.Substring(1, 2));
+        }
+        else
+        {
+            Debug.Log("エラー");
+        }
     }
 
-    /// <summary>
-    /// カードのナンバー管理のつもりだった
-    /// もしかして --> もういらない
-    /// </summary>
+
+    // カードのナンバー管理のつもりだった
     private enum CardsNum
     {
         c01 = 0, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13,
