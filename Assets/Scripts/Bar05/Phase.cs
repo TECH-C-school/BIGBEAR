@@ -7,6 +7,10 @@ public class Phase : MonoBehaviour {
     public GameObject card;
     public GameObject selectCard;
 
+    public List<GameObject> boardList = new List<GameObject>();
+    public List<GameObject> handCard = new List<GameObject>();
+    public List<GameObject> enemyHand = new List<GameObject>();
+
     public enum PhaseEnum
     {
         プリフロップ,
@@ -44,10 +48,6 @@ public class Phase : MonoBehaviour {
     private void MakeCard()
     {
         int[] randomNumbers = MakeRandomNumbers();
-
-        var BoardCard = new GameObject("Board");
-        var HandCard = new GameObject("Hand");
-        var EnemyHand = new GameObject("EnemyHand");
 
         for (int i = 1;i <= 9; i++)
         {
