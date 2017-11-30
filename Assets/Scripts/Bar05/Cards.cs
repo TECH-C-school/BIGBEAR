@@ -30,18 +30,24 @@ public class Cards : MonoBehaviour
     }
     private string Card1t()
     {
-        int y = Random.Range(0, 4);
+        int y = Random.Range(1, 4);
         string z = "";
-        if (y == 0) {};
-        if (y == 0) { Debug.Log(Deck.diamond)};
+        if (y == 1)
+        {
+            return z = "c";
+        }
+        else if (y == 2)
+        {
+            return z = "a";
+        }
+        else if (y == 3)
+        {
+            return z = "h";
+        }
+        else
+        {
+            return z = "s";
+        }
+        Debug.Log(z);
     }
-
-        public enum Deck
-    {
-        diamond,
-        clubs,
-        hearts,
-        spade
-    }
-    
 }
