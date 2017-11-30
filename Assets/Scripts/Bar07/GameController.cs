@@ -32,7 +32,7 @@ namespace Assets.Scripts.Bar07
                 else
                 {
 
-                    Debug.Log(outcard.Count);
+                   // Debug.Log(outcard.Count);
                 }
             }
             outcard.Add(_card);
@@ -50,9 +50,12 @@ namespace Assets.Scripts.Bar07
             }
             playercard.Add(outcard[0]);
             playercard.Add(outcard[1]);
-            dealercard.Add(outcard[2]);
+            playercard.Add(outcard[2]);
             dealercard.Add(outcard[3]);
             dealercard.Add(outcard[4]);
+            dealercard.Add(outcard[5]);
+            
+
             int playerPwer;
             int dealerPwer;
             playerPwer = Calculation(playercard[0]) + Calculation(playercard[1]);
@@ -84,14 +87,32 @@ namespace Assets.Scripts.Bar07
                     Debug.Log("引き分け");
                 }
             }
+
             if (!natural)
             {
-                if (dealerPwer == 0)
+                if (playerPwer < 6)
                 {
-                    dealerPwer = dealerPwer + Calculation(dealercard[3]);
-                    Debug.Log("dealerPwer");
+                    playerPwer = playerPwer + Calculation(playercard[2]);
+                    Debug.Log("びく");
                 }
             }
+
+            if (!natural)
+            {
+                if (dealerPwer < 3)
+                {
+
+
+                    {
+                        dealerPwer = dealerPwer + Calculation(dealercard[2]);
+                        Debug.Log("ひく");
+                    }
+                }
+                else if(dealerPwer == )
+            }
+         
+            Debug.Log(playerPwer);
+            Debug.Log(dealerPwer);
         }
 
         int Calculation(card c)
