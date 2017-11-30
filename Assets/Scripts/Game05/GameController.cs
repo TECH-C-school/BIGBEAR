@@ -71,6 +71,7 @@ namespace Assets.Scripts.Game05 {
 			GenerateScopes (GameParam.Instance.durations[(int)difficult.Diff]);
 			GeneratePendulums (GameParam.Instance.durations[(int)difficult.Diff]);
 			powerGauge.UpValue = GameParam.Instance.upValues[(int)difficult.Diff] * VALUEMAG;
+			Debug.Log (maxMoving);
         }
 
         void GenerateTower(int num) {
@@ -85,7 +86,7 @@ namespace Assets.Scripts.Game05 {
 				newPos.y = POSPADDING * num - (i + 1);
                 tower.transform.localPosition = newPos;
             }
-			maxMoving = GameParam.Instance.maxMove * num;
+			maxMoving = GameParam.Instance.maxMove * (num + 1);
         }
 
 		void GenerateScopes(float duration) {
