@@ -5,7 +5,7 @@ namespace Assets.Scripts.Game07
     public class Player : MonoBehaviour
     {
         //プレイヤーが動けるかどうか
-        public static bool isMove = true;
+        public static bool isMove = true;//CatchObjectとこのソースに使われている
         Animator anim;
         private static int AnimMoveHash = Animator.StringToHash("Move");
         private float X_P_Pos;
@@ -34,8 +34,17 @@ namespace Assets.Scripts.Game07
             transform.position = Vector2.MoveTowards(transform.position, mousePos, p_speed * 100 * Time.deltaTime);
             float anim_switch_num = transform.position.x > mousePos.x ? transform.position.x - mousePos.x : mousePos.x - transform.position.x;
             anim.SetBool(AnimMoveHash, anim_switch_num > 0);
-            //Debug.Log(transform.position);
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "CatchObj")
+            {
+                anim.SetBool("HitDown", true);
+            }
+        }
+
     }
+
 }
 

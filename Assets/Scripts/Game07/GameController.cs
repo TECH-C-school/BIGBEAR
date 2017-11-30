@@ -92,7 +92,7 @@ namespace Assets.Scripts.Game07 {
         public void Result()
         {
             //ヘリと物資を削除
-            CatchObject[] catchObj = FindObjectsOfType<CatchObject>();
+            CatchObject[] catchObj = FindObjectsOfType<CatchObject>();/*HierarchyのCatchObject全取得*/
             foreach (var s_catchObj in catchObj)
             {
                 Destroy(s_catchObj.gameObject);

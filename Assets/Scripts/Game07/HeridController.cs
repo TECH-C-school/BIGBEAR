@@ -12,7 +12,7 @@ namespace Assets.Scripts.Game07
         //生成時間間隔
         private float create_Time = 3;
         Canvas canvas;
-        public static bool IsTimeStart = false;
+        public static bool IsTimeStart = false;//GameControllerとこのソースに使われている
 
         void Start()
         {

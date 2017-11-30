@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game07
         private float destroy_time = 1;
         private void Start()
         {
-            Invoke("CreateAfterDestory", destroy_time);
+            Invoke("CreateAfterDestory", destroy_time);//CreateAfterDestoryを1秒後に呼び出す
         }
 
         public void CreateAfterDestory()

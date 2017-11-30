@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Game07
 {
@@ -12,7 +13,6 @@ namespace Assets.Scripts.Game07
         GameObject boms;
         Canvas can;
         public Rigidbody m_rb;
-
         void Start()
         {
             m_rb = GetComponent<Rigidbody>();
@@ -45,6 +45,7 @@ namespace Assets.Scripts.Game07
                         GameController.instance.RemoveScore();
                         boms = Instantiate(bom, transform.position, Quaternion.identity);
                         boms.transform.SetParent(can.transform);//bomの生成位置指定
+                        
                         Player.isMove = false;
                         break;
                 }

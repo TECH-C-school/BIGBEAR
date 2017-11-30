@@ -31,7 +31,7 @@ namespace Assets.Scripts.Game07
         {
             while (true)
             {
-                yield return new WaitForSeconds(m_Count_Speed);
+                yield return new WaitForSeconds(m_Count_Speed);//この下の処理が()内の数値によって動く
                 GameObject _catchObj = Instantiate(Prefab, attachPoint, Quaternion.identity);
                 _catchObj.transform.SetParent(canvas.transform);
             }
