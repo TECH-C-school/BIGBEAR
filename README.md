@@ -132,3 +132,5 @@
     * 上川敦也(atukamikawa)
 * バカラ【Bar07_02】
     * 佐藤和樹(sato-kazuki)
+* バカラ【Bar07_03】
+    * コウシコウ(hzk1994)
