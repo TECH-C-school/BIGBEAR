@@ -1,17 +1,15 @@
 fileFormatVersion: 2
-guid: 607e0fbfa11e8a44e959e56f0986db4e
-timeCreated: 1510826314
+guid: 0578955977bfc76458399b3e888ba2f6
+timeCreated: 1512018020
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Cylinder
-    100002: //RootNode
-    400000: Cylinder
-    400002: //RootNode
-    2300000: Cylinder
-    3300000: Cylinder
-    4300000: Cylinder
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Circle
   materials:
     importMaterials: 1
     materialName: 0
