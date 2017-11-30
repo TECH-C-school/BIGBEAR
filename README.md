@@ -42,10 +42,14 @@
     * 角じおん(sumijion12)
 * クロンダイク【Bar01_04】
     * 高橋虎汰(natuto1998)
+* クロンダイク【Bar01_05】
+    * zhoufangzheng(kazeyuki1876)
 * ピラミッド【Bar02_01】
     * 堀江美紅(supikaH)
 * ピラミッド【Bar02_02】
     * 根本拓哉(Daikeeeee)
+* ピラミッド【Bar02_03】
+    * 高田浩輝(tkdhiroki)
 * スパイダー【Bar03_01】
     * 君田宙(muxu1118)
 * スパイダー【Bar03_02】
@@ -120,6 +124,8 @@
     * 瀧川僚(LieIA)
 * ブラックジャック【Bar06_14】
     * チョウコウセイ(kousei1026)
+* ブラックジャック【Bar06_15】
+    * 岩崎一也(yuuki0523)
 * バカラ【Bar07_01】
     * 上川敦也(atukamikawa)
 * バカラ【Bar07_02】
