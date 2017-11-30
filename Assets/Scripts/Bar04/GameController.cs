@@ -6,8 +6,15 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar0404 {
     public class GameController : MonoBehaviour {
 
+        //UI関係のGameObjectの設定
+        public GameObject StartButton;
+
+        //カード関係の変数
         public int[] shuffulCards;
         public List<GameObject> Card;
+        int nextCard=0;
+
+
         public void TransitionToResult(){
             SceneManager.LoadScene("Result");
         }
@@ -29,10 +36,10 @@ namespace Assets.Scripts.Bar0404 {
         //山札をシャッフルするための乱数生成
         public int[] MakeRundumNumber(){
             int[] values = new int[53];
-            for (int i = 0; i < 53; i++){
+            for (int i = 0; i < 52; i++){
                 values[i] = i;
             }
-            for (int i = 0; i < 53; i++)
+            for (int i = 0; i < 52; i++)
             {
                 int abc = UnityEngine.Random.Range(0, values.Length);
                 int xyz;
@@ -49,16 +56,17 @@ namespace Assets.Scripts.Bar0404 {
             //山札をシャッフル
             shuffulCards = MakeRundumNumber();
             MakeFirstCards();
-
+            StartButton.SetActive(false);
         }
 
         //最初のカードを配る        
         public void MakeFirstCards(){
 
             for (int i = 0; i < Card.Count; i++){
-                Card[i].SetActive(true);
                 var cardsprict = Card[i].GetComponent<Card>();
+                cardsprict.Number = shuffulCards[nextCard];
                 cardsprict.TurnCardFlont();
+                nextCard++;
             }
 
         }
