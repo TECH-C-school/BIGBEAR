@@ -9,13 +9,7 @@ public class CardNum_und_Mark : MonoBehaviour {
 
     void Start()
     {
-        for (int i = 0; i < 2; i++)
-        {
-            int setNum = Random.Range(1, 14);
-            int setMark = Random.Range(1, 5);
-            setCard[i] = setNum;
-            setCard2[i] = setMark;
-        }
+       
     }
          
 }
