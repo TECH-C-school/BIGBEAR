@@ -32,7 +32,11 @@ namespace Assets.Scripts.Game05 {
         private float tMatch;
         private float pMatch;
 		private Difficult difficult;
-		private float posPadding = 3.15f;
+		private float moveingPos = 0f;
+		private float maxMoving = 0f;
+
+		private const float POSPADDING = 3.15f;
+		private const float VALUEMAG = 1.5f;
 
         void Start()
         {
@@ -63,86 +67,49 @@ namespace Assets.Scripts.Game05 {
 
 		public void SetDifficult()
         {
-			switch (difficult.Diff)
-            {
-                case Difficulty.Amateur:
-                    powerGauge.UpValue = 1f;
-                    GenerateTower(GameParam.Instance.easyNum);
-                    break;
-                case Difficulty.Professional:
-                    powerGauge.UpValue = 2f;
-                    GenerateTower(GameParam.Instance.normalNum);
-                    break;
-                case Difficulty.Legend:
-                    powerGauge.UpValue = 3f;
-                    GenerateTower(GameParam.Instance.hardNum);
-                    break;
-                default:
-                    break;
-            }
-			GenerateScopes ();
-			GeneratePendulums ();
+			GenerateTower (GameParam.Instance.createNum [(int)difficult.Diff]);
+			GenerateScopes (GameParam.Instance.durations[(int)difficult.Diff]);
+			GeneratePendulums (GameParam.Instance.durations[(int)difficult.Diff]);
+			powerGauge.UpValue = GameParam.Instance.upValues[(int)difficult.Diff] * VALUEMAG;
         }
 
         void GenerateTower(int num) {
             var towerParent = GameObject.Find("Towers").transform;
             var top = Instantiate(towerTop, towerParent);
             var lastPos = Vector3.zero;
-            lastPos.y = posPadding * num;
+			lastPos.y = POSPADDING * num;
             top.transform.localPosition = lastPos;
             for(int i = 0; i < num; i++) {
                 var tower = Instantiate(towerInstance, towerParent);
                 var newPos = Vector3.zero;
-                newPos.y = posPadding * num - (i + 1);
+				newPos.y = POSPADDING * num - (i + 1);
                 tower.transform.localPosition = newPos;
             }
+			maxMoving = GameParam.Instance.maxMove * num;
         }
 
-        void GenerateScopes() {
+		void GenerateScopes(float duration) {
             var scopeParent = GameObject.Find("Cursors").transform;
             for(int i = 0; i < 2; i++) {
                 var cursor = Instantiate(scopeInstance, scopeParent);
                 cursor.GetComponent<TargetScope>().scope = (Scope)i;
-				switch(difficult.Diff) {
-                    case Difficulty.Amateur:
-                    cursor.GetComponent<TargetScope>().Duration = GameParam.Instance.easyDuration;
-                    break;
-                case Difficulty.Professional:
-                    cursor.GetComponent<TargetScope>().Duration = GameParam.Instance.normalDuration;
-                    break;
-                case Difficulty.Legend:
-                    cursor.GetComponent<TargetScope>().Duration = GameParam.Instance.hardDuration;
-                    break;
-                default:
-                    break;
-                }
+				cursor.GetComponent<TargetScope> ().Duration = duration;
                 scopes.Add(cursor);
             }
         }
 
-        void GeneratePendulums() {
+		void GeneratePendulums(float duration) {
             var pParent = GameObject.Find("Pendulums").transform;
             var pendulum = Instantiate(pendulumInsance, pParent);
             var circle = Instantiate(circleInstance, pParent);
-			switch(difficult.Diff) {
-                    case Difficulty.Amateur:
-                    pendulum.GetComponent<Pendulum>().Duration = GameParam.Instance.easyDuration;
-                    break;
-                case Difficulty.Professional:
-                    pendulum.GetComponent<Pendulum>().Duration = GameParam.Instance.normalDuration;
-                    break;
-                case Difficulty.Legend:
-                    pendulum.GetComponent<Pendulum>().Duration = GameParam.Instance.hardDuration;
-                    break;
-                default:
-                    break;
-                }
+			pendulum.GetComponent<Pendulum> ().Duration = duration;
             pendulums.Add(pendulum);
             pendulums.Add(circle);
         }
 
         void PowerDecision() {
             power = powerGauge.Slider.value;
+			//power = powerGauge.Slider.maxValue;
             powerGauge.gameObject.SetActive(false);
             foreach(var obj in scopes) {
                 obj.SetActive(true);
@@ -203,5 +170,10 @@ namespace Assets.Scripts.Game05 {
 			if(!isPass) rNum = percent[percent.Length - 1];
             return rNum;
         }
+
+		public void AddScore(float score, string type) {
+			Debug.LogFormat ("Score : {0}\nType : {1}", score, type);
+			moveingPos += score;
+		}
     }
 }

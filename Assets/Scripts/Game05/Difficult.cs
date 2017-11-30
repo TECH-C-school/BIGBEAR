@@ -9,7 +9,7 @@ namespace Assets.Scripts.Game05 {
 	[System.Serializable]
 	public enum Difficulty
 	{
-		Amateur,
+		Amateur = 0,
 		Professional,
 		Legend
 	}
@@ -32,22 +32,22 @@ namespace Assets.Scripts.Game05 {
 			gc = GetComponent<GameController> ();
 			easy.OnClickAsObservable ().Subscribe (_ => {
 				diff = Difficulty.Amateur;
-				bg.SetActive(false);
-				gc.isStart = true;
-				gc.SetDifficult();
+				PlayGame();
 			});
 			normal.OnClickAsObservable ().Subscribe (_ => {
 				diff = Difficulty.Professional;
-				bg.SetActive(false);
-				gc.isStart = true;
-				gc.SetDifficult();
+				PlayGame();
 			});
 			hard.OnClickAsObservable ().Subscribe (_ => {
 				diff = Difficulty.Legend;
-				bg.SetActive(false);
-				gc.isStart = true;
-				gc.SetDifficult();
+				PlayGame();
 			});
+		}
+
+		void PlayGame() {
+			bg.SetActive(false);
+			gc.isStart = true;
+			gc.SetDifficult();
 		}
 	}
 }

@@ -23,13 +23,10 @@ namespace Assets.Scripts.Game05
                 return _instance;
             }
         }
-        public int easyNum;
-        public int normalNum;
-        public int hardNum;
-        public float easyDuration;
-        public float normalDuration;
-        public float hardDuration;
-        
+        public int[] createNum;
+        public float[] durations;
+        public float[] upValues;
+		[Range(150, 250)]public float maxMove = 200;
 #if UNITY_EDITOR
         
         static void CreateParam()
