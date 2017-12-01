@@ -7,19 +7,22 @@ namespace Assets.Scripts.Game07 {
         public static GameController instance;
         //ゲーム状態 goto マウスクリックするまではReady状態　クリックしたらPlay状態
         public enum GameState { Ready, Play, Result }
-        public static GameState m_gameState = GameState.Ready;
+        [HideInInspector]
+        public GameState m_gameState = GameState.Ready;
         //ゲーム難易度
         public enum m_GameLevel { Easy, Normal, Hard }
-        public static m_GameLevel m_gameLevel;
+        [HideInInspector]
+        public m_GameLevel m_gameLevel;
         //スコア関係
         const int plus_score = 1;
         const int minus_score = 10;
-        public static int m_score = 0;
+        [HideInInspector]
+        public int m_score = 0;
         //UI情報
         [SerializeField,Header("ゲームスタートボタン")]
-        GameObject GameStartButton;
+        private GameObject GameStartButton;
         [SerializeField, Header("ゲーム07フォント")]
-        GameObject GameStartFont;
+        private GameObject GameStartFont;
         [SerializeField, Header("難易度簡単ボタン")]
         private GameObject easyButton;
         [SerializeField, Header("難易度普通ボタン")]

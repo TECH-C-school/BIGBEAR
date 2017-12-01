@@ -26,10 +26,10 @@ namespace Assets.Scripts.Game07
 
         void Update()
         {
-            if(GameController.m_gameState == GameController.GameState.Ready)
+            if(GameController.instance.m_gameState == GameController.GameState.Ready)
             {
                 backImage.SetActive(true);
-            }else if(GameController.m_gameState == GameController.GameState.Play)
+            }else if(GameController.instance.m_gameState == GameController.GameState.Play)
             {
                 backImage.SetActive(false);
             }
@@ -45,14 +45,15 @@ namespace Assets.Scripts.Game07
                     times = 0;
                     backImage.SetActive(true);//BackImageの表示
                     backText.SetActive(true);
-                    backText.GetComponent<Text>().text = "Score" + ((int)GameController.m_score).ToString();
-                    // 永田がここの部分書きました。採用するかあとで決めてください
+                    backText.GetComponent<Text>().text = "Score" + ((int)GameController.instance.m_score).ToString();
+                    // 永田がここの部分書きました。採用するかあとで決めてください 
+                    // なんで永田先輩に書かしてるんだ　コラ 取りあえずはここは後で修正。
                     int num = 0;
-                    if (GameController.m_score >= 0 && GameController.m_score <= 10)//0以上で10以下の時
+                    if (GameController.instance.m_score >= 0 && GameController.instance.m_score <= 10)//0以上で10以下の時
                         num = 1;
-                    else if (GameController.m_score >= 11 && GameController.m_score <= 20)//11以上で20以下の時
+                    else if (GameController.instance.m_score >= 11 && GameController.instance.m_score <= 20)//11以上で20以下の時
                         num = 2;
-                    else if (GameController.m_score >= 21 && GameController.m_score <= 30)//21以上で30以下の時
+                    else if (GameController.instance.m_score >= 21 && GameController.instance.m_score <= 30)//21以上で30以下の時
                         num = 3;
                     for(int i = 0; i < num; i++) // numの数だけRizarutImageを表示する
                         items[i].SetActive(true);

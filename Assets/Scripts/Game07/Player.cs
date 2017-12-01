@@ -36,6 +36,9 @@ namespace Assets.Scripts.Game07
             anim.SetBool(AnimMoveHash, anim_switch_num > 0);
         }
 
+        /// <summary>
+        ///  佐野先輩この↓バグになるので、修正お願いします。
+        /// </summary>
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.tag == "CatchObj")

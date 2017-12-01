@@ -45,7 +45,6 @@ namespace Assets.Scripts.Game07
                         GameController.instance.RemoveScore();
                         boms = Instantiate(bom, transform.position, Quaternion.identity);
                         boms.transform.SetParent(can.transform);//bomの生成位置指定
-                        
                         Player.isMove = false;
                         break;
                 }
