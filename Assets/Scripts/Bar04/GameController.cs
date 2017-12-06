@@ -37,12 +37,17 @@ namespace Assets.Scripts.Bar04
             for (int cardCounter = 0; cardCounter < 5; cardCounter++)
             {
                 var cardObject = Instantiate(myCardPrefab, transform.position, Quaternion.identity);
+
+                cardObject.name = myCardPrefab.name+cardCounter;
                 cardObject.transform.position = new Vector3(-4.7f + cardCounter * 1.7f, -0.4f, 0f);
+                //cardObject.
             }
             for (var cardCounter = 0; cardCounter < 5; cardCounter++)
             {
-                var cardObject = Instantiate(youCardPrefab, transform.position, Quaternion.Euler(0,0,180));
+                var cardObject = Instantiate(youCardPrefab, transform.position, Quaternion.Euler(0, 0, 180));
+                cardObject.name = youCardPrefab.name + cardCounter;
                 cardObject.transform.position = new Vector3(-0.91f + cardCounter * 1.2f, 2.17f, 0f);
+            
             }
         }
         /// <summary>
