@@ -113,10 +113,7 @@ public class Card : MonoBehaviour {
         spriteRenderer.sprite = cardSprite;
 
         //場札を非表示にしておく
-        if(_parent.name == "CardStacks")
-        {
-            StackView(false);
-        }
+        //**/if(_parent.name == "CardStacks"){StackView(false);}
 
         //ここからデバッグ用
         string cardDebug = cardtype();
@@ -155,7 +152,6 @@ public class Card : MonoBehaviour {
             gameObject.SetActive(false);
         }
     }
-
 
     // カードのナンバー管理のつもりだった
     private enum CardsNum

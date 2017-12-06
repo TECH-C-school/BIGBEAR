@@ -4,33 +4,30 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 場札のカードだけ名前を変えて、1枚ごとにひっくり返しやすくしたい
- * /
+ * 次回作業 --> Player1CardListのカード一覧をわかりやすく把握出来るようにする
+ *              Player1CardList内のカードのマーク内訳を取り出す関数作成
+ *              その他慣性でおなしゃす
+ */
 
 namespace Assets.Scripts.Bar05 {
     public class GameController : MonoBehaviour {
 
         private void Start()
         {
-            InitGame();
             MakeCards();
         }
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonDown(0))
             {
-                SceneManager.LoadSceneAsync("MainMenu");
-                Debug.Log("<color=#00ff00>Scene is MainMenu</color>");
+                Debug.Log("mouseLeftKeyDown");
             }
         }
 
         //カード周りここから
         
-        public void InitGame()
-        {
-            
-        }
+
 
         /// <summary>
         /// 自分と相手のカードを配置する
@@ -44,7 +41,7 @@ namespace Assets.Scripts.Bar05 {
             int[] Deck = Cardsshuffle();
 
             //デバッグ用
-            //for(int i = 0; i < Deck.Length; i++){Debug.Log(Deck[i]);} Debug.Log("--------------------");
+            //**/for(int i = 0; i < Deck.Length; i++){Debug.Log(Deck[i]);} Debug.Log("--------------------");
 
             //PrefabをLoadする
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar05/Card");
@@ -65,12 +62,35 @@ namespace Assets.Scripts.Bar05 {
                         //カードのナンバー指定
                         var card = cardObject.GetComponent<Card>();
                         card.Number = Deck[deckPlace];
+                        //カードの名前を変更する
+                        int ObjCount = cardsObject1.transform.childCount;
+                        cardObject.name = "player1Card" + ObjCount;
                         //カード出すよ
                         card.CardMake();
                         //山札1枚減るよ
                         deckPlace++;
                         Debug.Log("<color=green>自分のカード生成</color>" + (x + 1) + "枚目");
                     }
+                    //プレイヤーもしくは場札のカードリストを作る
+                    string[] cardList_p1 = new string[cardsObject1.transform.childCount];
+                    for(int x = 1; x < cardsObject1.transform.childCount + 1; x++)
+                    {
+                        //なんか("player1Card" + x + 1 + "")にするとぬるぽしちゃったから
+                        //こうなってる すまんな俺
+                        var cardObject = GameObject.Find("player1Card" + x + "");
+                        var card = cardObject.GetComponent<Card>();
+                        var cardNumber = card.Number;
+                        string cardNum = cardNumber.ToString();
+                        //めんどくさいというか分かりづらいね
+                        cardList_p1[x - 1] = cardNum;
+                    }
+                    //役を判定する関数にカードリストを渡す
+                    PlayerCards(Player1Cards, cardList_p1);
+
+                    //デバッグ
+                    //毎回アルファベッド+数字に戻したほうがわかりやすいかね
+                    //**/for (int x = 0; x < cardList_p1.Length; x++){Debug.Log(cardList_p1[x]);}
+
                     Debug.Log("<color=blue>自分のカード生成完了</color>");
                 }
                 //相手のカード生成
@@ -84,6 +104,8 @@ namespace Assets.Scripts.Bar05 {
                         cardObject.transform.parent = cardsObject2.transform;
                         var card = cardObject.GetComponent<Card>();
                         card.Number = Deck[deckPlace];
+                        int ObjCount = cardsObject2.transform.childCount;
+                        cardObject.name = "player2Card" + ObjCount;
                         card.CardMake();
                         deckPlace++;
                         Debug.Log("<color=green>相手のカード生成</color>" + (x + 1) + "枚目");
@@ -101,10 +123,26 @@ namespace Assets.Scripts.Bar05 {
                         cardObject.transform.parent = cardsObject3.transform;
                         var card = cardObject.GetComponent<Card>();
                         card.Number = Deck[deckPlace];
+                        int ObjCount = cardsObject3.transform.childCount;
+                        cardObject.name = "StackCard" + ObjCount;
                         card.CardMake();
                         deckPlace++;
                         Debug.Log("<color=green>場札のカード生成</color>" + (x + 1) + "枚目");
                     }
+
+                    string[] cardList_St = new string[cardsObject3.transform.childCount];
+                    for (int x = 1; x < cardsObject3.transform.childCount + 1; x++)
+                    {
+                        var cardObject = GameObject.Find("StackCard" + x + "");
+                        var card = cardObject.GetComponent<Card>();
+                        var cardNumber = card.Number;
+                        string cardNum = cardNumber.ToString();
+                        //めんどくさいというか分かりづらいね
+                        cardList_St[x - 1] = cardNum;
+                    }
+                    //役を判定する関数にカードリストを渡す
+                    PlayerCards(StackCards, cardList_St);
+
                     Debug.Log("<color=yellow>場札のカード生成完了</color>");
                 }
             }
@@ -145,6 +183,59 @@ namespace Assets.Scripts.Bar05 {
         }
 
         //カード周りここまで
+
+        //役の判定ここから
+
+        //各プレイヤー・場札のカードをリスト化
+
+        //変数置き場
+        int[] Player1Cards = new int[2];
+        int[] Player2Cards = new int[2];
+        int[] StackCards = new int[5];
+
+        private void PlayerCards(int[] Affiliation, string[] List)
+        {
+            for(int i = 0; i < Affiliation.Length; i++)
+            {
+                var ListX = List[i];
+                Affiliation[i] = int.Parse(ListX);
+            }
+            //デバッグ用
+            //**/for(int i=0;i<Affiliation.Length;i++){Debug.Log(Affiliation[i]);}
+
+            //仮入れ
+            CardLists(Player1Cards, Player1CardList);
+        }
+
+        //プレイヤーの役を作るための準備
+
+        //変数置き場
+        int[] Player1CardList = new int[7];
+        int[] Player2CardList = new int[7];
+
+        private void CardLists(int[]Player, int[] List)
+        {
+            for(int i = 0; i < List.Length; i++)
+            {
+                if(i < Player.Length)
+                {
+                    List[i] = Player[i];
+                }
+                else
+                {
+                    List[i] = StackCards[i - 2];
+                }
+            }
+            for(int i = 0; i < List.Length; i++)
+            {
+                Debug.Log(List[i]);
+            }
+        }
+
+
+
+
+        //役の判定ここまで
 
         //ゲーム進行ここから
 
