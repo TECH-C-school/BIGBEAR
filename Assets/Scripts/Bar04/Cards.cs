@@ -28,7 +28,7 @@ public class Cards : MonoBehaviour
 
     public GameObject PlayerCardsPrefab;
 
-    private void Start()
+    /*private void Start()
     {
         for (int i = 0; i < 5; i++)
         {
@@ -41,8 +41,10 @@ public class Cards : MonoBehaviour
 
             PlayerCards.transform.position = new Vector2(Random.Range(-7,7), Random.Range(-4,4));
         }
-    }
+    }*/
     
+
+
     public Cards(int number,PalayingCards s)
 {
     Number = number;
@@ -50,12 +52,12 @@ public class Cards : MonoBehaviour
 
 }
 
-/*private void Start()
+private void Start()
 {
     //C# tostring 書式で調べる
     string path = CardType.ToString() + Number.ToString("d2");
     Debug.Log(path);
 
 }
-*/
+
 }

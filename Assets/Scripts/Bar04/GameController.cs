@@ -16,10 +16,16 @@ namespace Assets.Scripts.Bar04 {
              Debug.Log("カード生成");
              Debug.Log(card.Number);
              Debug.Log(card.CardType);
+
+            SceneManager.LoadScene("Start Screen");
+
          }
+
          public void TransitionToResult() {
              SceneManager.LoadScene("Result");
+
+            
          }
-     }
+       }
 
     }
