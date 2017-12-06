@@ -21,6 +21,7 @@ namespace Assets.Scripts.Bar01 {
         private GameObject selectCard;
         private GameObject[] firstPositions = new GameObject[7];
         private GameObject[] dackCards = new GameObject[3];
+        private Card[] selectCards;
 
         public float marginTop = 0;
         public float marginside = 0;
@@ -93,6 +94,7 @@ namespace Assets.Scripts.Bar01 {
                 setMark.transform.parent = setObject.transform;
                 setMark.transform.localPosition = Vector2.zero;
                 setMark.transform.localScale = new Vector3(1, 1, 1);
+                outArray[i] = new Stack<Card>();
             }
         }
 
@@ -191,10 +193,34 @@ namespace Assets.Scripts.Bar01 {
             Card card = hit.GetComponent<Card>();
             if (!card.Front) { return; }
             selectCard = hit.gameObject;
-            for(int i = 0; i < selectCard.transform.childCount; i++)
+            List<Card> selectCardList = new List<Card>();
+            //カードが外に出ていた場合
+            if (card.OutCard)
             {
-                selectCard.transform.GetChild(i).GetComponent<BoxCollider2D>().enabled = false;
+                selectCardList.Add(outArray[(int)card.CardType].Pop());
+                selectCards = selectCardList.ToArray();
+                card.CardSelect();
+                return;
             }
+            //カードが場のカードだった場合
+            if (card.dack)
+            {
+                selectCardList.Add(card);
+                selectCards = selectCardList.ToArray();
+                card.CardSelect();
+                return;
+            }
+            //カードがステージ場のカードだった場合
+            do
+            {
+                selectCardList.Add(stageArray[card.Column].Peek());
+            } while (card != stageArray[card.Column].Pop());
+            selectCards = selectCardList.ToArray();
+            for(int i = 0; i < selectCardList.Count; i++)
+            {
+                selectCardList[i].GetComponent<BoxCollider2D>().enabled = false;
+            }
+            Debug.Log("selectCardCount" + selectCards.Length);
             card.CardSelect();
         }
 
@@ -233,11 +259,11 @@ namespace Assets.Scripts.Bar01 {
                 card.GetComponent<Card>().TurnCard(true);
                 dackOut.Push(card.GetComponent<Card>());
             }
-
         }
 
-
-
+        /// <summary>
+        /// マウスを離したときに当たり判定のチェック
+        /// </summary>
         private void ClickUpChackCard()
         {
             //選択したトランプをチェック
@@ -249,28 +275,73 @@ namespace Assets.Scripts.Bar01 {
             Collider2D hit = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             if (!hit)
             {
-                card.CardSelect();
                 selectCard.transform.position = selectCard.GetComponent<Card>().From;
-                for (int i = 0; i < selectCard.transform.childCount; i++)
+                CardsMove(selectCards, stageArray[selectCards[0].Column]);
+            }
+            else if (hit.GetComponent<Card>())
+            {
+                Card hitCard = hit.GetComponent<Card>();
+                Vector3 setPosition = ChackCard(hitCard);
+                selectCard.transform.position = setPosition;
+                if (setPosition != card.From)
                 {
-                    selectCard.transform.GetChild(i).GetComponent<BoxCollider2D>().enabled = true;
+                    selectCard.transform.parent = hit.transform;
+                    card.From = setPosition;
+                    CardsMove(selectCards, stageArray[hitCard.Column]);
+                    for (int i = 0; i < selectCards.Length; i++)
+                    {
+                        selectCards[i].Column = hitCard.Column;
+                    }
                 }
-                selectCard = null;
-                return;
+                else
+                {
+                    Debug.Log(selectCards.Length);
+                    CardsMove(selectCards, stageArray[selectCards[0].Column]);
+                }
             }
-            //Debug.Log(hit.name);
-            Vector3 setPosition = ChackCard(hit);
-            selectCard.transform.position = setPosition;
-            if (setPosition != card.From)
+            else if(hit.name.IndexOf("firstColumn") != -1)
             {
-                selectCard.transform.parent = hit.transform;
-                card.From = setPosition;
+                if (selectCard.GetComponent<Card>().CardNumber != 13)
+                {
+                    selectCard.transform.position = selectCard.GetComponent<Card>().From;
+                    CardsMove(selectCards, stageArray[selectCards[0].Column]);
+                }
+                else
+                {
+                    int i = 0;
+                    for (i = 0; i < firstPositions.Length; i++)
+                    {
+                        if (hit.transform.position == firstPositions[i].transform.position)
+                        {
+                            CardsMove(selectCards, stageArray[i]);
+                            break;
+                        }
+                    }
+                    for (int t = 0; t < selectCards.Length; t++)
+                    {
+                        selectCards[t].Column = i;
+                        selectCards[t].From = firstPositions[i].transform.position;
+                        selectCard.transform.position = firstPositions[i].transform.position;
+                    }
+                    selectCards[0].gameObject.transform.position += new Vector3(0, 0, -1);
+                }
             }
+            else
+            {
+                selectCard.transform.position = selectCard.GetComponent<Card>().From;
+                CardsMove(selectCards, stageArray[selectCards[0].Column]);
+            }
+            
             card.CardSelect();
-            for (int i = 0; i < selectCard.transform.childCount; i++)
-            {
-                selectCard.transform.GetChild(i).GetComponent<BoxCollider2D>().enabled = true;
-                selectCard.transform.GetChild(i).GetComponent<Card>().From = selectCard.transform.GetChild(i).parent.transform.position + new Vector3(0, -0.3f, -1);
+            
+            for (int i = 0; i < selectCards.Length; i++)
+            {    
+                selectCards[i].GetComponent<BoxCollider2D>().enabled = true;
+                if (selectCards[i].gameObject.transform.parent)
+                {
+                    selectCards[i].From = selectCards[i].gameObject.transform.parent.transform.position + new Vector3(0, -0.3f, -1);
+                }
+                
             }
             selectCard = null;
             return;
@@ -281,13 +352,14 @@ namespace Assets.Scripts.Bar01 {
         /// </summary>
         /// <param name="chackCard">調べ先のカード</param>
         /// <returns>置けますか</returns>
-        private Vector3 ChackCard(Collider2D hit)
+        private Vector3 ChackCard(Card hitCard)
         {
-            Card chackCard = hit.GetComponent<Card>();
+            Card chackCard = hitCard;
             Card card = selectCard.GetComponent<Card>();
-            if (hit.GetComponent<Card>())
+            if (chackCard)
             {
                 if (!chackCard.Front) { return card.From; }
+                if (chackCard.dack) { return card.From; }
                 //Debug.Log("chackCard" + chackCard.CardType + "," + chackCard.CardNumber);
                 switch (chackCard.CardType)
                 {
@@ -295,62 +367,58 @@ namespace Assets.Scripts.Bar01 {
                     case Card.CardTypes.Spade:
                         if (card.CardType == Card.CardTypes.Spade || card.CardType == Card.CardTypes.Clover) { return card.From; }
                         if (card.CardNumber != chackCard.CardNumber - 1) { return card.From; }
-                        CardMove(card, stageArray[chackCard.Column]);
-                        card.Column = chackCard.Column;
                         return chackCard.From + new Vector3(0,-0.3f,-1);
                     case Card.CardTypes.Diamond:
                     case Card.CardTypes.Heart:
                         if (card.CardType == Card.CardTypes.Diamond || card.CardType == Card.CardTypes.Heart) { return card.From; }
                         if (card.CardNumber != chackCard.CardNumber - 1) { return card.From; }
-                        CardMove(card, stageArray[chackCard.Column]);
-                        card.Column = chackCard.Column;
                         return chackCard.From + new Vector3(0, -0.3f, -1);
                     default:
                         return card.From;
                 }
             }
-            else if(hit.name.IndexOf("firstColumn") != -1)
-            {
-                if (selectCard.GetComponent<Card>().CardNumber != 13) { return selectCard.GetComponent<Card>().From; }
-                int i = 0;
-                for(i = 0; i < firstPositions.Length; i++)
-                {
-                    if(hit.transform.position == firstPositions[i].transform.position)
-                    {
-                        CardMove(card, stageArray[i]);
-                        break;
-                    }
-                }
+            //else if(hitCard.name.IndexOf("firstColumn") != -1)
+            //{
+            //    if (selectCard.GetComponent<Card>().CardNumber != 13) { return selectCard.GetComponent<Card>().From; }
+            //    int i = 0;
+            //    for(i = 0; i < firstPositions.Length; i++)
+            //    {
+            //        if(hit.transform.position == firstPositions[i].transform.position)
+            //        {
+            //            CardMove(card, stageArray[i]);
+            //            break;
+            //        }
+            //    }
                 
-                return hit.transform.position;
-            }
-            else if(hit.name == "CardFlame")
-            {
-                switch (hit.transform.GetChild(0).name)
-                {
-                    case "d":
-                        if(card.CardType != Card.CardTypes.Diamond) { return card.From; }
-                        if(card.CardNumber != outArray1[0]) { return card.From; }
-                        outArray1[0]++;
-                        return hit.transform.position;
-                    case "s":
-                        if(card.CardType != Card.CardTypes.Spade) { return card.From; }
-                        if (card.CardNumber != outArray1[1]) { return card.From; }
-                        outArray1[1]++;
-                        return hit.transform.position;
-                    case "h":
-                        if(card.CardType != Card.CardTypes.Heart) { return card.From; }
-                        if (card.CardNumber != outArray1[2]) { return card.From; }
-                        outArray1[2]++;
-                        return hit.transform.position;
-                    case "c":
-                        if(card.CardType != Card.CardTypes.Clover) { return card.From; }
-                        if (card.CardNumber != outArray1[3]) { return card.From; }
-                        outArray1[3]++;
-                        return hit.transform.position;
-                }
-                return selectCard.GetComponent<Card>().From;
-            }
+            //    return hit.transform.position;
+            //}
+            //else if(hitCard.name == "CardFlame")
+            //{
+            //    switch (hit.transform.GetChild(0).name)
+            //    {
+            //        case "d":
+            //            if(card.CardType != Card.CardTypes.Diamond) { return card.From; }
+            //            if(card.CardNumber != outArray1[0]) { return card.From; }
+            //            outArray1[0]++;
+            //            return hit.transform.position;
+            //        case "s":
+            //            if(card.CardType != Card.CardTypes.Spade) { return card.From; }
+            //            if (card.CardNumber != outArray1[1]) { return card.From; }
+            //            outArray1[1]++;
+            //            return hit.transform.position;
+            //        case "h":
+            //            if(card.CardType != Card.CardTypes.Heart) { return card.From; }
+            //            if (card.CardNumber != outArray1[2]) { return card.From; }
+            //            outArray1[2]++;
+            //            return hit.transform.position;
+            //        case "c":
+            //            if(card.CardType != Card.CardTypes.Clover) { return card.From; }
+            //            if (card.CardNumber != outArray1[3]) { return card.From; }
+            //            outArray1[3]++;
+            //            return hit.transform.position;
+            //    }
+            //    return selectCard.GetComponent<Card>().From;
+            //}
             return card.From;
         }
        
@@ -429,6 +497,25 @@ namespace Assets.Scripts.Bar01 {
             for(int i = 0; i < moveCardList.Count; i++)
             {
                 toCardBox.Push(moveCardList[i]);
+            }
+        }
+
+        private void CardsMove(Card[] selectCards, Stack<Card> toCardBox)
+        {
+            for(int i = 0; i < selectCards.Length; i++)
+            {
+                if (selectCards[i].dack)
+                {
+                    dackOut.Pop();
+                    selectCards[i].dack = false;
+                }
+                toCardBox.Push(selectCards[i]);
+            }
+            if (stageArray[selectCards[0].Column].Count != 0)
+            {
+                Debug.Log(stageArray[selectCards[0].Column].Peek().CardType + " :" + stageArray[selectCards[0].Column].Peek().CardNumber);
+                Debug.Log(toCardBox.Peek().CardType + ":" + toCardBox.Peek().CardNumber);
+                stageArray[selectCards[0].Column].Peek().TurnCard(true);
             }
         }
 

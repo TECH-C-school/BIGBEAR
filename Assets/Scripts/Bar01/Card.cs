@@ -24,6 +24,7 @@ namespace Assets.Scripts.Bar01
         private int column;
         private bool select = false;
         private bool front = false;
+        private bool outCard = false;
         [SerializeField]
         private CardTypes cardType;
         [SerializeField]
@@ -55,6 +56,12 @@ namespace Assets.Scripts.Bar01
         public int CardNumber
         {
             get { return cardNumber; }
+        }
+
+        public bool OutCard
+        {
+            get{ return outCard; }
+            set{ outCard = value; }
         }
 
         public Card(CardTypes mack, int number)
