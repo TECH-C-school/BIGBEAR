@@ -4,10 +4,16 @@ using UnityEngine;
 
 namespace Assets.Scripts.Bar0404
 {
-
+    
 
     public class Card : MonoBehaviour
     {
+
+        GameObject mainCamera;
+        Camera main;
+        
+        public GameObject Select;
+        bool m_select;
 
         string[] Cards = {
             "c01","c02","c03","c04","c05","c06","c07","c08","c09","c10","c11","c12","c13",
@@ -31,6 +37,13 @@ namespace Assets.Scripts.Bar0404
             set { m_Number = value; }
         }
 
+        void Start(){
+            mainCamera = GameObject.Find("Main Camera");
+        }
+
+        void Update(){
+            
+        }
 
 
         public void TurnCardFlont() {
@@ -54,6 +67,20 @@ namespace Assets.Scripts.Bar0404
             spriteRenderer.sprite = Cardsprite;
         }
 
+        public void CardSelect(){
+            if (!m_select){
+
+                m_select = true;
+                Select.SetActive(true);
+
+            }
+            else if(m_select){
+                m_select = false;
+                Select.SetActive(false);
+            }
+        }
+
+       
     }
 
 }
