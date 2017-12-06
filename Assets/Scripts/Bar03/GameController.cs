@@ -46,10 +46,9 @@ namespace Assets.Scripts.Bar03 {
         "Images/Bar/Cards/s12","Images/Bar/Cards/s13"} ;
         void Start()
         {
+            cardset();
             MakeBackCards();
             BackGroundMake();
-            
-            
         }
         public void TransitionToResult()
         {
@@ -64,20 +63,63 @@ namespace Assets.Scripts.Bar03 {
             GameObject cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar03/Back");
             for (int x = 0; x < 10; x++)
             {
-                for (int y = 0; y < 6; y++)
+                int n = 4;
+                if( x < 4)
                 {
-
+                    n = 5;
+                }
+                
+                for (int y = 0; y < n; y++)
+                {
                     var cardObject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
                     cardObject.transform.position = new Vector3(
                         x * 1.76f - 7.97f,
-                        y * 0.31f + 2.06f,
-                        0);
+                        -y * 0.31f + 3.66f,
+                        -y * 0.1f);
                     cardObject.transform.parent = parentObject;
-
-                    Cards cardSet = cardObject.GetComponent<Cards>();
-                    
                     count++;
                 }
+            }
+        }
+        private void cardset()
+        {
+            int[] card = new int[52];
+
+            for (int i = 0; i < card.Length; i++)
+            {
+
+                card[i] = i;
+
+            }
+
+            Random random = new Random();
+
+            for (int i = 0; i < card.Length; i++)
+
+            {
+
+                int ransu = Random.Range(1,52);
+
+                int kari = card[i];
+
+                card[i] = card[ransu];
+
+                card[ransu] = kari;
+
+            }
+
+            int kazu = 0;
+            
+            string[] mark = new string[] { "H", "D", "S", "C" };
+
+            for (int i = 0; i < card.Length; i++)
+
+            {
+        
+                kazu = card[i] % 13 + 1;
+                
+                Debug.Log(mark[card[i] / 13] + kazu);
+
             }
         }
         private void BackGroundMake()
