@@ -24,8 +24,9 @@ namespace Assets.Scripts.Bar05
 
         void Start()
         {
-            //GameObject card = (GameObject)Resources.Load("Prefabs/Bar_05/back");
-            selectCard = gameObject.transform.FindChild("cardselect").gameObject;
+            selectCard = (GameObject)Resources.Load("Prefabs/Bar05/cardselect");
+            //selectCard = gameObject.transform.FindChild("cardselect").gameObject;
+            
             selectCard.transform.position = gameObject.transform.position;
             selectCard.SetActive(false);
         }
