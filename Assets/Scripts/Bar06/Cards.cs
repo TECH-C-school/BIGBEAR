@@ -2,32 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cards : MonoBehaviour {
+public class Cards : MonoBehaviour
+{
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() { }
 
 
-        //数字とマークの表示
-        string[] mark = new string[] { "S", "C", "H", "D" };
-        for (int i = 1; i <= 52; i++)
+
+
+    /*private int[] MakeRandomNumbers() {
+        int[] numbers = new int[52];
+
+        for (int i = 0; i < numbers.Length; i++)
         {
-            var rndnumber = Random.Range(1, 14);
-            var rndMark = Random.Range(0, 4);
-
-            Debug.Log(mark[rndMark] + rndnumber);
+            numbers[i] = i + 1;
         }
-    }
+        var counter = 0;
+        while (counter < 52)
+        {
+            var index = Random.Range(counter, numbers.Length);
+            var tmp = numbers[counter];
+            numbers[counter] = numbers[index];
+            numbers[index] = tmp;
 
 
-
-
-
-    // Update is called once per frame
-
-    public GameObject c;
-    void Update() {
-        c = GameObject.Find("C12");
-    }
+            counter++;
+        }
+    }*/
 }
+            public enum mark
+            {
+                S = 0,
+                C = 1,
+                H = 2,
+                D = 3
+            }
+            
+
+    
