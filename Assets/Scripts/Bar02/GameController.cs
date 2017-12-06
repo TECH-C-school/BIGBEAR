@@ -15,7 +15,7 @@ namespace Assets.Scripts.Bar02 {
 
         private void Update()
         {
-            ClickCard();
+            checkCard();
         }
 
         /// <summary>
@@ -30,8 +30,7 @@ namespace Assets.Scripts.Bar02 {
             int countCardNum = 20;
             string[] cardNum = MakeRandCard();
             SpriteRenderer sr = cardPrefab.GetComponent<SpriteRenderer>();
-            sr.sortingOrder = 21;
-
+            sr.sortingOrder = countCardNum+1;
 
             for (int i = 1; i <= 6; i++)
             {
@@ -88,26 +87,39 @@ namespace Assets.Scripts.Bar02 {
         }
 
 
-        private void ClickCard()
+        
+
+        /// <summary>
+        /// クリック判定
+        /// </summary>
+        private void checkCard()
         {
+            //クリック判定
             if (!Input.GetMouseButtonDown(0)) return;
 
-            var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //クリック場所取得
+            Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Debug.Log(tapPoint);
 
-            //あたり判定があるか判断 prefabにあたり判定付ける。
-            if (!Physics2D.OverlapPoint(tapPoint)) return;
+            //重なり合うオブジェクト取得
+            Collider2D[] hitObjects = Physics2D.OverlapPointAll(tapPoint);
+            if (hitObjects.Length <= 0) return;
 
-            //クリックされた場所の画面にgameObjectがあるか判断
-            var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
-            if (!hitObject) return;
+            var maxCard = hitObjects[0].GetComponent<SpriteRenderer>();
 
-            var card = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
-            Debug.Log("hit object is " + card.sprite);
+            for (int i = 1; i < hitObjects.Length; i++)
+            {
+                var card = hitObjects[i].GetComponent<SpriteRenderer>();
 
+                //1番手前のオブジェクト取得(oederInLayerの数値が一番大きいものを取得)
+                if (maxCard.sortingOrder < card.sortingOrder) maxCard = card;
+            }
 
+            Debug.Log(maxCard.sprite);
 
-            //Destroy(card.gameObject);
+            //spriteのカード番号の数字取得
+            int maxCardNum = int.Parse(maxCard.sprite.ToString().Substring(1, 2));
+            Debug.Log(maxCardNum);
         }
                 
     }
