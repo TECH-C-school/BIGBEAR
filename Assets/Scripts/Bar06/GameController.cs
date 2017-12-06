@@ -1,44 +1,66 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
-using System.Linq;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
 
-        private void MakeCards()
+        public enum Mark
         {
-            var cardPrefab = Resources.Load<GameObject>("Image/Bar/Cards/back");
-            var cardsObject = GameObject.Find("back");
-
-            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector2(1.27f, 1.27f);
-
-            cardObject.transform.parent = cardObject.transform;
-
-            var card = cardObject.GameObject<back>(); 
+            Clover,
+            Diamond,
+            Heart,
+            Spade,
         }
 
-
-        class randam 
+        public struct MakeCards
         {
-            static void Main()
+            public int number;
+            public Mark mark;
+        }
+
+        //カード生成
+        public void Start()
+        {
+            MakeCards card1_1 = new MakeCards();
+            MakeCards card1_2 = new MakeCards();
+            MakeCards card2_1 = new MakeCards();
+            MakeCards card2_2 = new MakeCards();
+        }
+
+        //乱数作成
+        private int[] MakeRandomNumbers()
+        {
+            int[] numbers = new int[51];
+            for (int i = 0; i <= 51; i++)
             {
-                const int max = 52;
-                int r = 0;
-                Debug.Log("l");
-                foreach (int i in Enumerable.Range(1,max).OrderBy(x => Guid.NewGuid()))
-                {
-                    Debug.Log("{0,2}", i);
-                    if (++r < 52) Debug.Log(",");
-                }
-                Debug.Log("l");
+                numbers[i] = i + 1;
+            }
+            var counter = 0;
+            while (counter < 51)
+            {
+                var index = Random.Range(counter, numbers.Length);
+                var tmp = numbers[counter];
+                numbers[counter] = numbers[index];
+                numbers[index] = tmp;
+
+                counter++;
+
+                var a = index % 13 +1;
+            }
+            return numbers;
+        }
+        //ボタン
+        public void ClickDrowButton()
+        {
+            var cardsObject = GameObject.Find("Cards").transform;
+            foreach (Transform cardObject in cardsObject)
+            {
+                var card = cardsObject.GetComponent<MakeCards>();
+                
             }
         }
-    
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
