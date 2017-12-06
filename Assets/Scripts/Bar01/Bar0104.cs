@@ -51,50 +51,24 @@ public class Bar0104: MonoBehaviour
         int count = 0;
         int[] randomNumbers = RandomNunbers();
 
-        var cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
-        var cardsObject = GameObject.Find("Cards");
+        var cardPrefab = Resources.Load<GameObject>("Images/Bar/Cards");
+        var cardsObject = GameObject.Find("c01/c02/c03/c04/c05/c06/c07");
 
         for (var i = 0; i < 6; i++)
         {
             for (var j = 0; j < 5; j++)
-            {
-                for (var a = 0; a < 4; a++)
-                {
+            {                          
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                    cardObject.transform.position = new Vector4(
+                    cardObject.transform.position = new Vector3(
                         i * 1.8f - 5.3f,
-                        j * 1.8f - 3.5f,
-                        a * 1.8f - 3.5f,
+                        j * 1.8f - 4.3f,                      
                         0);
                     cardObject.transform.parent = Cards.transform;
 
                     var card = cardObject.GetComponent<Card>();
                     card.Number = randomNumbers[count];
                     card.TurnCardFaceDown();
-                    count++;
-
-                }
-            }
-        }
-        for (var b = 0; b < 3; b++)
-        {
-            for (var c = 0; c < 2; c++)
-            {
-                for (var d = 0; d < 2; d++)
-                {
-                    var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                    cardObject.transform.position = new Vector4(
-                        b * 1.8f - 5.3f,
-                        c * 1.8f - 3.5f,
-                        d * 1.8f - 3.5f,
-                        0);
-                    cardObject.transform.parent = Cards.transform;
-
-                    var card = cardObject.GetComponent<Card>();
-                    card.Number = randomNumbers[count];
-                    card.TurnCardFaceDown();
-                    count++;
-                }
+                    count++;              
             }
         }
     }
