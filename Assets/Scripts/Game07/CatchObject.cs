@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.Game07
 {
@@ -12,11 +10,11 @@ namespace Assets.Scripts.Game07
         public GameObject bom;
         GameObject boms;
         Canvas can;
-        public Rigidbody m_rb;
+        Rigidbody2D rb2d;
         void Start()
         {
-            m_rb = GetComponent<Rigidbody>();
-            can = GameObject.FindObjectOfType<Canvas>();//Canvas初期化
+            can = FindObjectOfType<Canvas>();//Canvas初期化
+
         }
 
         void Update()
@@ -31,7 +29,7 @@ namespace Assets.Scripts.Game07
         private void OnCollisionEnter2D(Collision2D collision)
         {
 
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.name == "Player")
             {
                 Destroy(gameObject);
                 ///Herib.isCreate = false;
@@ -44,6 +42,7 @@ namespace Assets.Scripts.Game07
                     case CatchObj.Bullet:
                         GameController.instance.RemoveScore();
                         boms = Instantiate(bom, transform.position, Quaternion.identity);
+                        boms.name = "Bom";
                         boms.transform.SetParent(can.transform);//bomの生成位置指定
                         Player.isMove = false;
                         break;

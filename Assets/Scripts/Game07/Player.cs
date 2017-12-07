@@ -34,19 +34,19 @@ namespace Assets.Scripts.Game07
             transform.position = Vector2.MoveTowards(transform.position, mousePos, p_speed * 100 * Time.deltaTime);
             float anim_switch_num = transform.position.x > mousePos.x ? transform.position.x - mousePos.x : mousePos.x - transform.position.x;
             anim.SetBool(AnimMoveHash, anim_switch_num > 0);
+            anim.SetBool("HitDown", false);
         }
 
         /// <summary>
-        ///  佐野先輩この↓バグになるので、修正お願いします。
+        ///  佐野先輩 このバグ自分修正します。
         /// </summary>
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (other.gameObject.tag == "CatchObj")
+            if (collision.gameObject.name == "Bullet")
             {
                 anim.SetBool("HitDown", true);
             }
         }
-
     }
 
 }

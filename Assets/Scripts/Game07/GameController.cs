@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Game07 {
+namespace Assets.Scripts.Game07
+{
     public class GameController : MonoBehaviour {
         //シングルトン化
         public static GameController instance;
@@ -45,7 +46,7 @@ namespace Assets.Scripts.Game07 {
         {
             //ゲームの初期化
             Player.isMove = false;
-            HeridController.IsTimeStart = false;
+            HeridController.instance.IsTimeStart = false;
             TimeCount.isCount = false;
         }
         /// <summary>
@@ -76,7 +77,7 @@ namespace Assets.Scripts.Game07 {
             //難易度決定
             m_gameState = GameState.Play;
             Player.isMove = true;
-            HeridController.IsTimeStart = true;
+            HeridController.instance.IsTimeStart = true;
             TimeCount.times *= level;
             TimeCount.isCount = true;
             //UI非表示処理
@@ -107,7 +108,7 @@ namespace Assets.Scripts.Game07 {
             }
             //プレイヤーとヘリ生成を終了
             Player.isMove = false;
-            HeridController.IsTimeStart = false;
+            HeridController.instance.IsTimeStart = false;
         }
 
         public void TransitionToResult() {
