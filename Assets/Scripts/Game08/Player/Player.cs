@@ -22,6 +22,6 @@ public class Player : MonoBehaviour {
         // マウス位置座標をスクリーン座標からワールド座標に変換する
         _screenPo = Camera.main.ScreenToWorldPoint(_position);
         // ワールド座標に変換されたマウス座標を代入
-        transform.position = new Vector3(Mathf.Lerp(transform.position.x, _screenPo.x, 0.1f), transform.position.y, transform.position.z);  
+        transform.position = new Vector3(Mathf.Lerp(transform.position.x, _screenPo.x, 0.027f), transform.position.y, transform.position.z);  
 	}
 }
