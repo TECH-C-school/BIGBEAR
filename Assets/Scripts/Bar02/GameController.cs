@@ -2,149 +2,109 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
 
 namespace Assets.Scripts.Bar02
 {
     public class GameController : MonoBehaviour
     {
-        public enum Gamestate
-        {
-            Prepare = 1,
-            Start,
-            Finish
-        }
-
-        public int choice = 0;
         void Start()
         {
-            MakeCards();
-            SettingCards();
-        }
-        void Update()
-        {
-            ClickCard(); 
+            MakeNumber();
         }
         public class cardy
         {
-            public string mark;
+            public char mark;
             public int num;
         }
-        public void MakeCards()
+        public void MakeNumber()
         {
             cardy[] trump = new cardy[52];
             for (int k = 0; k < 52; k++)
             {
                 trump[k] = new cardy();
             }
-
+            
             for (int i = 0; i < 13; i++)
             {
-                trump[i + 0].mark = "s";
-                trump[i + 13].mark = "d";
-                trump[i + 26].mark = "h";
-                trump[i + 39].mark = "c";
+                trump[i + 0].mark = 's';
+                trump[i + 13].mark = 'd';
+                trump[i + 26].mark = 'h';
+                trump[i + 39].mark = 'c';
 
-                trump[i + 0].num = i;
-                trump[i + 13].num = i;
-                trump[i + 26].num = i;
-                trump[i + 39].num = i;
+                trump[i + 0].num = i + 1;
+                trump[i + 13].num = i + 1;
+                trump[i + 26].num = i + 1;
+                trump[i + 39].num = i + 1;
             }
             int[] values = new int[52];
 
 
             var counter = 0;
-            //マークと数字をバラバラに
-            while (counter < 52)
-            {
-                int index = UnityEngine.Random.Range(counter, values.Length);
-                var tmp = trump[counter].mark;
-                trump[counter].mark = trump[index].mark;
-                trump[index].mark = tmp;
+            //while (counter < 52)
+            //{
+            //    int index = Random.Range(counter, values.Length);
+            //    var tmp = trump[counter];
+            //    trump[counter] = trump[index];
+            //    trump[index] = tmp;
 
-                counter++;
+            //    counter++;
+            //}
+             while (counter < 52)
+             {
+                 int index = Random.Range(counter, values.Length);
+                 var tmp = trump[counter].mark;
+                 trump[counter].mark = trump[index].mark;
+                 trump[index].mark = tmp;
+
+                 counter++;
+             }
+             counter = 0;
+             while (counter < 52)
+             {
+                 int index = Random.Range(counter, values.Length);
+                 var tmp = trump[counter].num;
+                 trump[counter].num = trump[index].num;
+                 trump[index].num = tmp;
+
+                 counter++;
+             }
+            for (int y = 0; y < 52; y++)
+            {
+                Debug.Log(trump[y].mark);
             }
-            counter = 0;
-            while (counter < 52)
-            {
-                int index = UnityEngine.Random.Range(counter, values.Length);
-                var tmp = trump[counter].num;
-                trump[counter].num = trump[index].num;
-                trump[index].num = tmp;
+        }
 
-                counter++;
-            }
+      /*  public void MakeCards()
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
+            var cardsObject = GameObject.Find("Cards");
 
-            var fieldcard = GameObject.Find("FieldCards");
-            var twenycard = GameObject.Find("TwentyCards");
+            int count = 0;
+            //関数取得
+            int[] num = MakeRandomNumbers();
 
-            for (int k = 0; k < 52; k++)
+            for (int x = 0; x < 5; x++)
             {
-                GameObject markObject = GameObject.Find("Mark").transform.Find(trump[k].mark).gameObject;
-                var numberObject = markObject.transform.GetChild(trump[k].num).gameObject;
-                GameObject cardObject = Instantiate(numberObject, transform.position, Quaternion.identity);
-                cardObject.transform.parent = fieldcard.transform;
-            }
-            counter = 1;
-            for (int x = 0; x < 7; x++)
-            {
-                for (int y = 0; y < counter; y++)
+                for (int y = 0; y < count + 1; y++)
                 {
-                    var numpos = fieldcard.transform.GetChild(choice).gameObject;
-                    GameObject cardpos = Instantiate(numpos, transform.position, Quaternion.identity);
+                    GameObject cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                    cardObject.transform.position = new Vector3(
+                        x * 1.27f - 3.87f,
+                        y * 1.27f - 2.54f,
+                        0);
+                    //親参照
+                    cardObject.transform.parent = cardsObject.transform;
 
-                    cardpos.transform.position = new Vector3(
-                    -0.64f * x + 1.32f * y,
-                    2.90f - 0.80f * x,
-                    0);
-
-                    cardpos.GetComponent<Renderer>().sortingOrder = counter;
-                    cardpos.transform.parent = twenycard.transform;
-                    choice++;
+                    //別スクリプト内の関数取得
+                    var card = cardObject.GetComponent<Card>();
+                    //CardスクリプトのNumberにMakeRandomの値代入
+                    card.Number = num[count];
+                    card.TurnCardFaceDown();
+                    count++;
                 }
-                counter++;
             }
-        }
+        }*/
 
-        public void SettingCards()
-        {
-            GameObject backCard = GameObject.Find("Back");
-
-            backCard.transform.position = new Vector3(
-            6.0f,
-            3.9f,
-            0);
-
-        }
-
-        public void ClickCard()
-        {
-            var discount = 7;
-
-            //マウスクリックの判定
-            if (!Input.GetMouseButtonDown(0)) return; //左クリックされていなければreturn
-
-            //クリックされた位置を取得
-            var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            tapPoint.z = 0;
-            //ScreenToWorldPoint(位置(Vector3)):スクリーン座標をワールド座標に変換する
-
-
-            //Collinder2D上のクリックの判定
-            if (!Physics2D.OverlapPoint(tapPoint)) return;
-
-            //クリックした位置のオブジェクトを取得
-            var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
-            if (!hitObject) return;
-
-            if (hitObject.collider.gameObject.GetComponent<Renderer>().sortingOrder != discount) return;
-
-            //クリックされた位置にflameを装着
-            var Flame = GameObject.Find("cardflame");
-            Flame.transform.position = tapPoint;
-
-
-        }
         /* public void TransitionToResult()
          {
              SceneManager.LoadScene("Result");
