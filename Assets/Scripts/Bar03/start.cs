@@ -1,14 +1,99 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class start : MonoBehaviour {
+
+    List<string> Row = new List<string>();
+    List<string> Row2 = new List<string>();
+    List<string> Row3 = new List<string>();
+    List<string> Row4 = new List<string>();
+    List<string> Row5 = new List<string>();
+    List<string> Row6 = new List<string>();
+    List<string> Row7 = new List<string>();
+    List<string> Row8 = new List<string>();
+    List<string> Row9 = new List<string>();
+    List<string> Row10 = new List<string>();
+    List<string> Beck = new List<string>();
+
+    struct Cards
+    {
+        public int Number;
+        public string Mark;
+        public bool Decision;
+    }
+
 
     // Use this for initialization
     void Start() {
         string[] numbers = MakeRandomNumbers();
         MakeRow(numbers);
-        //MakeCards();
+        MakeCards();
+
+        for(var i = 0; i < 13; i++)
+        {
+            Cards student = new Cards();
+            student.Number = i;
+            student.Mark = "c";
+            student.Decision = true;
+        }
+
+        for (var i = 0; i < 13; i++)
+        {
+            Cards student = new Cards();
+            student.Number = i;
+            student.Mark = "d";
+            student.Decision = true;
+        }
+
+        for (var i = 0; i < 13; i++)
+        {
+            Cards student = new Cards();
+            student.Number = i;
+            student.Mark = "h";
+            student.Decision = true;
+        }
+
+        for (var i = 0; i < 13; i++)
+        {
+            Cards student = new Cards();
+            student.Number = i;
+            student.Mark = "s";
+            student.Decision = true;
+        }
+
+        for (var i = 0; i < 13; i++)
+        {
+            Cards student = new Cards();
+            student.Number = i;
+            student.Mark = "c";
+            student.Decision = true;
+        }
+
+        for (var i = 0; i < 13; i++)
+        {
+            Cards student = new Cards();
+            student.Number = i;
+            student.Mark = "d";
+            student.Decision = true;
+        }
+
+        for (var i = 0; i < 13; i++)
+        {
+            Cards student = new Cards();
+            student.Number = i;
+            student.Mark = "h";
+            student.Decision = true;
+        }
+
+        for (var i = 0; i < 13; i++)
+        {
+            Cards student = new Cards();
+            student.Number = i;
+            student.Mark = "s";
+            student.Decision = true;
+        }
 
     }
 
@@ -22,46 +107,103 @@ public class start : MonoBehaviour {
     /// </summary>
     private void MakeCards()
     {
+        
         /// <summary>
         /// 上のカード生成(54枚)
         /// </summary>
-        for (int i = 0; i < 4; i++)
-        {
-            var cardPrefab = Resources.Load<GameObject>("Prefabs / Bar03 / Card");
-            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(i * 1.745f - 7.85f, 1.97f, 0);
-        }
-        for (int i = 0; i < 4; i++)
+ 
+        for (int i = 0; i < 6; i++)
         {
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(i * 1.745f - 7.85f, 2.32f, 0);
+            cardObject.transform.position = new Vector3(-7.85f, i * 0.31f - -2.05f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row[i]);
         }
         for (int i = 0; i < 6; i++)
         {
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(i * 1.745f - 0.87f, 2.32f, 0);
+            cardObject.transform.position = new Vector3(-6.11f, i * 0.31f - -2.05f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row2[i]);
         }
-        for (int j = 0; j < 4; j++)
+        for (int i = 0; i < 6; i++)
         {
-            for (int i = 0; i < 10; i++)
-            {
-                var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.position = new Vector3(i * 1.745f - 7.85f, j * 0.32f - -2.65f, 0);
-            }
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(-4.37f, i * 0.31f - -2.05f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row3[i]);
         }
-        /// <summary>
-        /// DECKのカード生成(50枚)
-        /// </summary>
+        for (int i = 0; i < 6; i++)
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(-2.633f, i * 0.31f - -2.05f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row4[i]);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(-0.87f, i * 0.31f - -2.362f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row5[i]);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(0.87f, i * 0.31f - -2.362f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row6[i]);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(2.62f, i * 0.31f - -2.362f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row7[i]);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(4.37f, i * 0.31f - -2.362f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row8[i]);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(6.11f, i * 0.31f - -2.362f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row9[i]);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(7.85f, i * 0.31f - -2.362f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row10[i]);
+        }
         for (int i = 0; i < 50; i++)
         {
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(0 - 7.87f, -2.85f, 0);
+            cardObject.transform.position = new Vector3(-7.85f, 0 - 2.85f, 0);
+            var renderer = cardObject.GetComponent<SpriteRenderer>();
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Beck[i]);
         }
+
     }
+
+
     /// <summary>
     /// カードをランダムにする。
     /// </summary>
@@ -78,7 +220,7 @@ public class start : MonoBehaviour {
         System.Random random = new System.Random();
         for (var i = 0; i < numbers.Length; i++)
         {
-            int rnd = UnityEngine.Random.Range(1, 105);
+            int rnd = UnityEngine.Random.Range(i, numbers.Length);
             var temp = numbers[i];
             numbers[i] = numbers[rnd];
             numbers[rnd] = temp;        
@@ -88,56 +230,48 @@ public class start : MonoBehaviour {
     }
     private void MakeRow(string[] numbers)
     {
-        List<string> Row = new List<string>();
 
         for(int i = 0; i < 6; i++)
         {
             Row.Add(numbers[i]);
         }
 
-        List<string> Row2 = new List<string>();
 
         for (int i = 0; i < 6; i++)
         {
             Row2.Add(numbers[6 + i]);
         }
 
-        List<string> Row3 = new List<string>();
 
         for (int i = 0; i < 6; i++)
         {
             Row3.Add(numbers[12 + i]);
         }
 
-        List<string> Row4 = new List<string>();
 
         for (int i = 0; i < 6; i++)
         {
             Row4.Add(numbers[18 + i]);
         }
 
-        List<string> Row5 = new List<string>();
 
         for (int i = 0; i < 5; i++)
         {
             Row5.Add(numbers[24 + i]);
         }
 
-        List<string> Row6 = new List<string>();
 
         for (int i = 0; i < 5; i++)
         {
             Row6.Add(numbers[29 + i]);
         }
 
-        List<string> Row7 = new List<string>();
 
         for (int i = 0; i < 5; i++)
         {
             Row7.Add(numbers[34 + i]);
         }
 
-        List<string> Row8 = new List<string>();
 
         for (int i = 0; i < 5; i++)
         {
@@ -145,21 +279,18 @@ public class start : MonoBehaviour {
         }
 
 
-        List<string> Row9 = new List<string>();
 
         for (int i = 0; i < 5; i++)
         {
             Row9.Add(numbers[44 + i]);
         }
 
-        List<string> Row10 = new List<string>();
 
         for (int i = 0; i < 5; i++)
         {
             Row10.Add(numbers[49 + i]);
         }
 
-        List<string> Beck = new List<string>();
 
         for (int i = 0; i < 50; i++)
         {
