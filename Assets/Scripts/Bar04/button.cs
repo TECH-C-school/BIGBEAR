@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class button : MonoBehaviour
 {
+
+    //SceneManager.LoadScene()でシーンを読み込む
     public void clickstartbutton()
     {
-        SceneManager.LoadScene("Bar04");
+        SceneManager.LoadScene("Game Screen");
     }
 }
