@@ -22,6 +22,16 @@ namespace Assets.Scripts.Game08 {
 
         void Update()
         {
+            //StartCoroutine(DelayMethod(1f, () =>
+            //{
+            //    click = true;
+            //    Debug.Log(click);
+            //}));
+            
+        }
+
+
+        public void buttonclick() {
             StartCoroutine(DelayMethod(1f, () =>
             {
                 click = true;
@@ -34,7 +44,10 @@ namespace Assets.Scripts.Game08 {
             //}
         }
 
-        
+
+
+
+
         private IEnumerator DelayMethod(float waitTime, Action action)
         {
             

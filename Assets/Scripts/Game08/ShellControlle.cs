@@ -36,7 +36,8 @@ public class ShellControlle : MonoBehaviour {
         action();
     }
 
-    public void onclick() {
+    public void onclick()
+    {
         {
             StartCoroutine(DelayMethod(1f, () =>//1f後に実行
                 {
@@ -46,18 +47,24 @@ public class ShellControlle : MonoBehaviour {
             shot.interactable = false;
             GameObject shelll = Instantiate(shell, new Vector2(Bear.transform.position.x, Bear.transform.position.y), Quaternion.identity);
 
+            if (shelll)//弾がヘリに当たって消えた時。これが出来てない
+            {
+                shot.interactable = true;//ヘリに当たったら弾が消える。ボタンも再び押せるようになる。
+                Debug.Log("papapapapa");
+            }
             if (shelll)//弾が生成された時
             {
-
                 Destroy(shelll, 1f);
                 //GetComponent<ShellControlle>().shot.interactable = true;
             }
-            else
-            {
-                shot.interactable = true;//ヘリに当たったら弾が消える。ボタンも再び押せるようになる。
-                Debug.Log("papapapapa");//ここ呼び出されてない！要修正！
-            }
         }
-        
     }
+
+    //public void OnTriggerEnter2D(Collider2D shell)
+    //{
+    //    if (shell) {
+    //        shot.interactable = true;
+    //        Debug.Log("apppppppp");
+    //    }
+    //}
 }
