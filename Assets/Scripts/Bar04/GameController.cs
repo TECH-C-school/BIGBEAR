@@ -8,6 +8,7 @@ namespace Assets.Scripts.Bar0404 {
 
         //UI関係のGameObjectの設定
         public GameObject StartButton;
+        public GameObject ChangeButton;
 
         //カード関係の変数
         public int[] shuffulCards;
@@ -57,6 +58,20 @@ namespace Assets.Scripts.Bar0404 {
             shuffulCards = MakeRundumNumber();
             MakeFirstCards();
             StartButton.SetActive(false);
+            ChangeButton.SetActive(true);
+        }
+
+        public void CardChange() {
+            for (int i = 0; i < Card.Count; i++){
+                var cardsprict = Card[i].GetComponent<Card>();
+                if (cardsprict.Select){
+                    cardsprict.Number = shuffulCards[nextCard];
+                    cardsprict.TurnCardFlont();
+                    nextCard++;
+                    cardsprict.CardSelect();
+
+                }
+            }
         }
 
         //最初のカードを配る        

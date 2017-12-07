@@ -12,7 +12,7 @@ namespace Assets.Scripts.Bar0404
         GameObject mainCamera;
         Camera main;
         
-        public GameObject Select;
+        public GameObject SelectFlame;
         bool m_select;
 
         string[] Cards = {
@@ -35,6 +35,11 @@ namespace Assets.Scripts.Bar0404
         public int Number{
             get { return m_Number; }
             set { m_Number = value; }
+        }
+
+        public bool Select {
+            get { return m_select; }
+            set { m_select = value; }
         }
 
         void Start(){
@@ -71,12 +76,12 @@ namespace Assets.Scripts.Bar0404
             if (!m_select){
 
                 m_select = true;
-                Select.SetActive(true);
+                SelectFlame.SetActive(true);
 
             }
             else if(m_select){
                 m_select = false;
-                Select.SetActive(false);
+                SelectFlame.SetActive(false);
             }
         }
 
