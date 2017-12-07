@@ -80,7 +80,8 @@ public class Card : MonoBehaviour {
         }
         else
         {
-            whoCards = true;
+            //今はfalseにしてる
+            whoCards = false;
         }
 
         //デバッグ用

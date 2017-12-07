@@ -4,9 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 次回作業 --> Player1CardListのカード一覧をわかりやすく把握出来るようにする
+ * 次回作業 --> 役判定の作成(続き)
+ */
+
+/*
+ * 今回作業 --> Player1CardListのカード一覧をわかりやすく把握出来るようにする
  *              Player1CardList内のカードのマーク内訳を取り出す関数作成
- *              その他慣性でおなしゃす
+ *              ついでに相手の方も実装しといた
+ *              役判定の作成(フラッシュ)
+ *              NumberManager(それぞれの数字の枚数を表示する)の作成
  */
 
 namespace Assets.Scripts.Bar05 {
@@ -15,6 +21,8 @@ namespace Assets.Scripts.Bar05 {
         private void Start()
         {
             MakeCards();
+            MakeLists();
+            CHL();
         }
 
         private void Update()
@@ -28,7 +36,6 @@ namespace Assets.Scripts.Bar05 {
         //カード周りここから
         
 
-
         /// <summary>
         /// 自分と相手のカードを配置する
         /// forのiはプレイヤー人数によって変更(i = プレイヤー人数 + 1)
@@ -36,12 +43,14 @@ namespace Assets.Scripts.Bar05 {
         /// </summary>
         public void MakeCards()
         {
+            //みやすいよね？ね？
+            Debug.Log("--------------------");
             //山札を作る
             int deckPlace = 0;
             int[] Deck = Cardsshuffle();
 
             //デバッグ用
-            //**/for(int i = 0; i < Deck.Length; i++){Debug.Log(Deck[i]);} Debug.Log("--------------------");
+            //**/for(int i = 0; i < Deck.Length; i++){Debug.Log(Deck[i]);}
 
             //PrefabをLoadする
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar05/Card");
@@ -92,6 +101,7 @@ namespace Assets.Scripts.Bar05 {
                     //**/for (int x = 0; x < cardList_p1.Length; x++){Debug.Log(cardList_p1[x]);}
 
                     Debug.Log("<color=blue>自分のカード生成完了</color>");
+                    Debug.Log("--------------------");
                 }
                 //相手のカード生成
                 else if(i == 1)
@@ -110,7 +120,20 @@ namespace Assets.Scripts.Bar05 {
                         deckPlace++;
                         Debug.Log("<color=green>相手のカード生成</color>" + (x + 1) + "枚目");
                     }
+
+                    string[] cardList_P2 = new string[cardsObject2.transform.childCount];
+                    for (int x = 1; x < cardsObject2.transform.childCount + 1; x++)
+                    {
+                        var cardObject = GameObject.Find("player2Card" + x + "");
+                        var card = cardObject.GetComponent<Card>();
+                        var cardNumber = card.Number;
+                        string cardNum = cardNumber.ToString();
+                        cardList_P2[x - 1] = cardNum;
+                    }
+                    PlayerCards(Player2Cards, cardList_P2);
+
                     Debug.Log("<color=red>相手のカード生成完了</color>");
+                    Debug.Log("--------------------");
                 }
                 //場札を生成
                 else
@@ -137,31 +160,17 @@ namespace Assets.Scripts.Bar05 {
                         var card = cardObject.GetComponent<Card>();
                         var cardNumber = card.Number;
                         string cardNum = cardNumber.ToString();
-                        //めんどくさいというか分かりづらいね
                         cardList_St[x - 1] = cardNum;
                     }
-                    //役を判定する関数にカードリストを渡す
                     PlayerCards(StackCards, cardList_St);
 
                     Debug.Log("<color=yellow>場札のカード生成完了</color>");
+                    Debug.Log("--------------------");
                 }
             }
         }
-        /// <summary>
-        /// カードのナンバー管理
-        /// ここいる？
-        /// </summary>
-        private enum CardsNum
-        {
-            c01 = 0, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13,
-            d01, d02, d03, d04, d05, d06, d07, d08, d09, d10, d11, d12, d13,
-            h01, h02, h03, h04, h05, h06, h07, h08, h09, h10, h11, h12, h13,
-            s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13,
-        }
-        /// <summary>
-        /// カードをシャッフルする
-        /// </summary>
-        /// <returns></returns>
+        
+        // カードをシャッフルする
         private int[] Cardsshuffle()
         {
             int[] decks = new int[52];
@@ -186,6 +195,31 @@ namespace Assets.Scripts.Bar05 {
 
         //役の判定ここから
 
+        //関数群ここから
+
+        //リストを作る関数群
+        public void MakeLists()
+        {
+            Debug.Log("<color=blue>自分と場札のカード内訳</color>");
+            CardLists(Player1Cards, Player1CardList, Player1Marks);
+            Debug.Log("--------------------");
+            Debug.Log("<color=red>相手と場札のカード内訳</color>");
+            CardLists(Player2Cards, Player2CardList, Player2Marks);
+            Debug.Log("--------------------");
+        }
+
+        //役の判定関数群
+        public void CHL()
+        {
+            CheckHandLevel(Player1HandLevel, Player1CardList, Player1NumberManager, Player1Marks);
+            Debug.Log("--------------------");
+            CheckHandLevel(Player2HandLevel, Player2CardList, Player2NumberManager, Player2Marks);
+            Debug.Log("--------------------");
+        }
+
+
+        //関数群ここまで
+
         //各プレイヤー・場札のカードをリスト化
 
         //変数置き場
@@ -202,9 +236,6 @@ namespace Assets.Scripts.Bar05 {
             }
             //デバッグ用
             //**/for(int i=0;i<Affiliation.Length;i++){Debug.Log(Affiliation[i]);}
-
-            //仮入れ
-            CardLists(Player1Cards, Player1CardList);
         }
 
         //プレイヤーの役を作るための準備
@@ -212,8 +243,11 @@ namespace Assets.Scripts.Bar05 {
         //変数置き場
         int[] Player1CardList = new int[7];
         int[] Player2CardList = new int[7];
+        int[] Player1Marks = new int[4];
+        int[] Player2Marks = new int[4];
 
-        private void CardLists(int[]Player, int[] List)
+        //役の候補になるカードのリスト
+        private void CardLists(int[]Player, int[] List, int[] MList)
         {
             for(int i = 0; i < List.Length; i++)
             {
@@ -226,12 +260,134 @@ namespace Assets.Scripts.Bar05 {
                     List[i] = StackCards[i - 2];
                 }
             }
-            for(int i = 0; i < List.Length; i++)
+
+            //ここまでだと数字しか出なくて分かりづらいので、絵柄:数字 みたいにする
+
+            for (int i = 0; i < List.Length; i++)
             {
-                Debug.Log(List[i]);
+                int ListX = List[i];
+                int CardNum = (ListX + 1) % 13;
+                if(CardNum == 0)
+                {
+                    CardNum = 13;
+                }
+                List[i] = CardNum;
+                //ここでマークと数字を分解してそれぞれで管理しても問題ないと思った
+                int CardMark = (ListX - CardNum + 1) / 13 + 1;
+                switch (CardMark)
+                {
+                    case 1:
+                        //**/Debug.Log("クローバー");
+                        MList[0] = MList[0] + 1;
+                        break;
+                    case 2:
+                        //**/Debug.Log("ダイヤ");
+                        MList[1] = MList[1] + 1;
+                        break;
+                    case 3:
+                        //**/Debug.Log("ハート");
+                        MList[2] = MList[2] + 1;
+                        break;
+                    case 4:
+                        //**/Debug.Log("スペード");
+                        MList[3] = MList[3] + 1;
+                        break;
+                }
             }
+
+            //デバッグ用
+            // /*
+            string db = "";
+            for (int i = 0; i < List.Length; i++)
+            {
+                switch(List[i])
+                {
+                    case 1:
+                        db = db + "A" + ":";
+                        break;
+                    case 11:
+                        db = db + "J" + ":";
+                        break;
+                    case 12:
+                        db = db + "Q" + ":";
+                        break;
+                    case 13:
+                        db = db + "K" + ":";
+                        break;
+                    default:
+                        db = db + List[i] + ":";
+                        break;
+                }
+            }
+            Debug.Log(db);
+
+            string db2 = "";
+            for (int i = 0; i < MList.Length; i++)
+            {
+                db2 = db2 + MList[i] + ":";
+            }
+            Debug.Log(db2);
+            Debug.Log("クローバー:ダイヤ:ハート:スペード");
+
+            // */
         }
 
+        //役判定するゾ～
+
+        /* 役一覧(handLevel)
+         * ハイカード(0)
+         * ワンペア(1)
+         * ツーペア(2)
+         * スリーカード(3)
+         * ストレート(4)
+         * フラッシュ(5)
+         * フルハウス(6)
+         * フォーカード(7)
+         * ストレートフラッシュ(8)
+         * ロイヤルストレートフラッシュ(9)
+         */
+
+        //変数置き場
+        int Player1HandLevel = 0;
+        int Player2HandLevel = 0;
+        int[] Player1NumberManager = new int[13];
+        int[] Player2NumberManager = new int[13];
+
+        public void CheckHandLevel(int PlayerHandLevel, int[]CardList, int[]NumberManager, int[]Marks)
+        {
+            //CardListを1～13の配列に入れてわかりやすくする
+            for (int i = 0; i < CardList.Length; i++)
+            {
+                NumberManager[CardList[i] - 1] = NumberManager[CardList[i] - 1] + 1;
+            }
+
+            //デバッグ用
+            string db = "";
+            for(int i = 0; i < NumberManager.Length; i++)
+            {
+                db = db + NumberManager[i] + ":";
+            }
+            Debug.Log(db);
+
+            //それぞれのマークの枚数が5枚以上ならフラッシュ(5)
+            int x = 0;
+            while (x < Marks.Length)
+            {
+                if(Marks[x] >= 5)
+                {
+                    PlayerHandLevel = 5;
+                    Debug.Log("フラッシュ");
+                    break;
+                }
+                x++;
+            }
+            //その後はストレートフラッシュ以上を軽く見るだけ
+            if(PlayerHandLevel == 5)
+            {
+                //処理
+            }
+            
+        }
 
 
 
@@ -257,7 +413,7 @@ namespace Assets.Scripts.Bar05 {
 }
 
 /*
- * 判定アルゴリズム雑記
+ * 判定アルゴリズム雑記(のはずだった)
  * 
  * ルールはご存知の通り手札+場札の7枚の内最適な5枚の役で勝負する
  * ではどうやってその役を見分けるか
