@@ -7,6 +7,11 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
         
+        struct card
+        {
+            public int number;
+            public int mark;
+        }
         void Start()
         {
 
@@ -20,23 +25,15 @@ namespace Assets.Scripts.Bar04 {
             var FightButton = GameObject.Find("b_s");
             FightButton.transform.position = new Vector3(6.5f,-3.5f,-1);
 
+            var c01 = Resources.Load<GameObject>("Images/Bar/Cards/joker");
+            var card = Instantiate(c01, transform.position, Quaternion.identity);
+            card.transform.position = new Vector3(6.0f, 0.5f, -1);
         }
         
         void Update()
         {
             Click();
             
-        }
-
-        private int MakeRandomNumbers()
-        {
-            int Num = UnityEngine.Random.Range(1, 14);
-            return Num;
-        }
-        private int MakeRandomMark()
-        {
-            int Num = UnityEngine.Random.Range(1, 5);
-            return Num;
         }
         private void returnCard(int x, int y)
         {
@@ -265,7 +262,14 @@ namespace Assets.Scripts.Bar04 {
         }
         private void MakeDeck()
         {
-            int[] deck = new int[53];
+            int[] Deck = new int[52];
+            for (int i = 0; i < 52; i++)
+            {
+                card deck = new card();
+                deck.number = UnityEngine.Random.Range(0, 13);
+                deck.mark = UnityEngine.Random.Range(0, 4);
+                
+            }
         }
 
 
