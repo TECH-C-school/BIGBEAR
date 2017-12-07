@@ -43,19 +43,51 @@ namespace Assets.Scripts.Bar02 {
             Card[] trump = new Card[21];
             for (int i = 0; i < 21; i++)
             {
+               
                 //19
-                trump[i].number = ????;
-                trump[i].mark = ???;
+                trump[i].number = (cards[i] - 1) % 13 + 1;
+                trump[i].mark = (Mark)((cards[i] - 1) / 13);
             }
 
 
 
             //21枚のカードを表示する
+            var counterForTrump = 0;
             var cardsObject = GameObject.Find("Cards").transform;
             foreach (Transform cardObject in cardsObject.transform)
             {
+                var fileName = "";
+
+                switch(trump[counterForTrump].mark)
+                {
+                    case Mark.Spade:
+                        fileName += "s";
+                        break;
+                    case Mark.Heart:
+                        fileName += "h";
+                        break;
+                    case Mark.Clover:
+                        fileName += "c";
+                        break;
+                    default:
+                        fileName += "d";
+                        break;
+                }
+
+                if (trump[counterForTrump].number < 10)
+                {
+                    fileName += "0" + trump[counterForTrump].number;
+                } else
+                {
+                    fileName += trump[counterForTrump].number;
+                }
+
+
+
                 var cardSpriteRenderer = cardObject.GetComponent<SpriteRenderer>();
-                cardSpriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/c02");
+                cardSpriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + fileName);
+
+                counterForTrump++;
             }
             
 
