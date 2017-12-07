@@ -32,30 +32,33 @@ namespace Assets.Scripts.Game05 {
 		private float power;
 		private float tMatch;
 		private float pMatch;
+		private GameObject tapField;
 
 		// Use this for initialization
 		void Start () {
-			gc = GetComponent<GameController> ();
+			gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController> ();
 			powerGauge = GameObject.Find("Gauge").GetComponent<PowerGauge>();
 			pile = GameObject.Find("Pile").GetComponent<Rigidbody2D>();
+			tapField = GameObject.Find ("TapField");
 			firstPos = pile.transform.position;
 			power = 0f;
 			tMatch = 0f;
 			pMatch = 0f;
-			var barTap = this.UpdateAsObservable().Where(_ => Input.GetButtonDown("Fire1"))
-				.Where(_ => !gc.isPause && gc.isStart == true)
+			var field = tapField.AddComponent<ObservableEventTrigger> ();
+			var barTap = field.OnPointerDownAsObservable()
+				.Where(_ => gc.isStart == true)
 				.Select(_ => 1).Scan((count, add) => count + add)
-				.Where(tap => tap % 3 == 1 && !gc.isPause)
+				.Where(tap => tap % 3 == 1)
 				.Do(_ => PowerDecision());
-			var pTap = this.UpdateAsObservable().Where(_ => Input.GetButtonDown("Fire1"))
-				.Where(_ => !gc.isPause && gc.isStart == true)
+			var pTap = field.OnPointerDownAsObservable()
+				.Where(_ => gc.isStart == true)
 				.Select(_ => 1).Scan((count, add) => count + add)
-				.Where(tap => tap % 3 == 2 && !gc.isPause)
+				.Where(tap => tap % 3 == 2)
 				.Do(_ => TargetMatch());
-			var pendulumTap = this.UpdateAsObservable().Where(_ => Input.GetButtonDown("Fire1"))
-				.Where(_ => !gc.isPause && gc.isStart == true)
+			var pendulumTap = field.OnPointerDownAsObservable()
+				.Where(_ => gc.isStart == true)
 				.Select(_ => 1).Scan((count, add) => count + add)
-				.Where(tap => tap % 3 == 0 && !gc.isPause)
+				.Where(tap => tap % 3 == 0)
 				.Do(_ => StartCoroutine(PileShoot()));
 			var taps = Observable.Merge(barTap, pTap, pendulumTap).Subscribe();
 		}
@@ -86,8 +89,8 @@ namespace Assets.Scripts.Game05 {
 		}
 
 		void PowerDecision() {
-			power = powerGauge.Slider.value;
-			//power = powerGauge.Slider.maxValue;
+			//power = powerGauge.Slider.value;
+			power = powerGauge.Slider.maxValue;
 			powerGauge.gameObject.SetActive(false);
 			foreach(var obj in scopes) {
 				obj.SetActive(true);

@@ -16,19 +16,23 @@ namespace Assets.Scripts.Game05 {
 			get { return upValue; }
 			set { upValue = value; }
 		}
+		private GameController gc;
 		void OnEnable() {
 			if(slider == null) return;
 			slider.value = 0;
 		}
 
 		void Start () {
+			gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
 			slider = transform.FindChild("PowerBar").gameObject.GetComponent<Slider>();
 		}
 		// Update is called once per frame
 		void Update () {
-			slider.value += upValue;
-			if(slider.value >= slider.maxValue || slider.value <= slider.minValue)
-				upValue *= -1;
+			if (!gc.isPause) {
+				slider.value += upValue;
+				if (slider.value >= slider.maxValue || slider.value <= slider.minValue)
+					upValue *= -1;
+			}
 		}
 	}
 }

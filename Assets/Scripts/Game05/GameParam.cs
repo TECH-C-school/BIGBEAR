@@ -26,7 +26,7 @@ namespace Assets.Scripts.Game05
         public int[] createNum;
         public float[] durations;
         public float[] upValues;
-		[Range(150, 250)]public float maxMove = 200;
+		public float maxMove = 80;
 #if UNITY_EDITOR
         
         static void CreateParam()

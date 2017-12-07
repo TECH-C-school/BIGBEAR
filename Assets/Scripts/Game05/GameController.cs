@@ -13,6 +13,8 @@ namespace Assets.Scripts.Game05 {
         [SerializeField]
         private GameObject towerTop;
 		[SerializeField]
+		private GameObject playerInstance;
+		[SerializeField]
 		private Button pauseButton;
 		[SerializeField]
 		private GameObject pauseBack;
@@ -29,8 +31,6 @@ namespace Assets.Scripts.Game05 {
 		private const float VALUEMAG = 1.5f;
 
         void Start() {
-			difficult = GetComponent<Difficult> ();
-			pc = GetComponent<PlayerController> ();
 			pauseButton.OnClickAsObservable ()
 				.Subscribe (_ => {
 					isPause = !isPause;
@@ -39,7 +39,11 @@ namespace Assets.Scripts.Game05 {
 					else
 						Time.timeScale = 0;
 					pauseBack.SetActive(!pauseBack.activeSelf);
-			});
+				});
+			difficult = GetComponent<Difficult> ();
+			var player = Instantiate (playerInstance);
+			player.name = "Player";
+			pc = player.GetComponent<PlayerController> ();
 		}
 
 		public void SetDifficult() {

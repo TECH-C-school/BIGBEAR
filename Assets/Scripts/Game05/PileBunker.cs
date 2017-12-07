@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game05 {
 		private PlayerController pc;
         // Use this for initialization
         void Start() {
-			pc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<PlayerController> ();
+			pc = GameObject.Find ("Player").GetComponent<PlayerController> ();
         }
 
         // Update is called once per frame
