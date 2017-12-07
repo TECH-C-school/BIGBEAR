@@ -5,8 +5,8 @@ using UnityEngine;
 public class Card : MonoBehaviour {
 
     // Use this for initialization
-    public int _number;
-    public string _mark;
+    private int _number;
+    private string _mark;
     public Sprite cardSprite = null;
 
     public int Number
@@ -42,7 +42,9 @@ public class Card : MonoBehaviour {
     }
     public void OnClick()
     {
-        Mark();
+
+        Debug.Log(_number);
+        Debug.Log(_mark);
 
     }
 }

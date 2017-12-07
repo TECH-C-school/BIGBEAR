@@ -12,6 +12,7 @@ namespace Assets.Scripts.Bar06 {
         private int zmai = 0;
         private int tmai = 0;
         public int tgou = 0;
+        public int syotop = 0;
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
@@ -56,9 +57,11 @@ namespace Assets.Scripts.Bar06 {
         }
         private void makecard()
         {
+            var cardsObject = GameObject.Find("Cards");
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-0.3f*zmai, -1, -1*zmai);
+            cardObject.transform.parent = cardsObject.transform;
 
             int mark;
             if (num[mai] % 13 == 0) { mark = (num[mai] / 13); } else { mark = (num[mai] / 13) + 1; }
@@ -84,9 +87,11 @@ namespace Assets.Scripts.Bar06 {
         }
         private void tmakecard(int n)
         {
+            var cardsObject = GameObject.Find("Cards2");
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-0.3f * tmai, 1.8f, -1 * tmai);
+            cardObject.transform.parent = cardsObject.transform;
 
             int mark;
             if (num[mai] % 13 == 0) { mark = (num[mai] / 13); } else { mark = (num[mai] / 13) + 1; }
@@ -110,5 +115,32 @@ namespace Assets.Scripts.Bar06 {
 
 
         }
+
+        public void clClick()
+        {
+            var cardsObject = GameObject.Find("Cards2").transform;
+            foreach (Transform cardObject in cardsObject)
+            {
+                Destroy(cardObject.gameObject);
+            }
+            Debug.Log(tmai);
+            int maimai = tmai;
+            int maimaimai = mai;
+            mai = 1;
+            tmai = 0;
+            for (int i = 0; i < maimai; i++)
+            {
+                tmakecard(1);
+                mai += 1;
+            }
+            mai = maimaimai;
+
+
+        }
+
+
+
+
+
     }
 }
