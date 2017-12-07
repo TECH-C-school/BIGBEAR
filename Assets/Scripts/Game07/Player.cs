@@ -8,6 +8,7 @@ namespace Assets.Scripts.Game07
         public static bool isMove = true;//CatchObjectとこのソースに使われている
         Animator anim;
         private static int AnimMoveHash = Animator.StringToHash("Move");
+        private static int HitDown = Animator.StringToHash("HitDown");
         private float X_P_Pos;
         private float Y_P_Pos = 120;
         private float Min_X_P_Pos = 30;
@@ -34,7 +35,7 @@ namespace Assets.Scripts.Game07
             transform.position = Vector2.MoveTowards(transform.position, mousePos, p_speed * 100 * Time.deltaTime);
             float anim_switch_num = Mathf.Abs(transform.position.x - mousePos.x);
             anim.SetBool(AnimMoveHash, anim_switch_num > 0 || mousePos != (Vector2)transform.position);
-            anim.SetBool("HitDown", false);
+            if (anim.GetBool(HitDown)) { anim.SetBool(HitDown, false); }
         }
 
 
@@ -42,7 +43,7 @@ namespace Assets.Scripts.Game07
         {
             if(collision.gameObject.name == "Bullet")
             {
-                anim.SetBool("HitDown", true);
+                anim.SetBool(HitDown, true);
             }
         }
     }
