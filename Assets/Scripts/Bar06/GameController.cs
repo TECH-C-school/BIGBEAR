@@ -27,7 +27,7 @@ namespace Assets.Scripts.Bar06
             for (var i = 0; i < 2; i++)
             {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.position = new Vector2(i * 0f - 1f,0);
+                cardObject.transform.position = new Vector3(i * 0f - 1f,0);
                 cardObject.transform.parent = cardObject.transform;
             }
         }
