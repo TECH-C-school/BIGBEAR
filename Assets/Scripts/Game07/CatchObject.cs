@@ -14,7 +14,6 @@ namespace Assets.Scripts.Game07
         void Start()
         {
             can = FindObjectOfType<Canvas>();//Canvas初期化
-
         }
 
         void Update()
@@ -26,7 +25,7 @@ namespace Assets.Scripts.Game07
             }
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
 
             if (collision.gameObject.name == "Player")

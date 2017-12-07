@@ -25,11 +25,17 @@ namespace Assets.Scripts.Game07
         [SerializeField, Header("ゲーム07フォント")]
         private GameObject GameStartFont;
         [SerializeField, Header("難易度簡単ボタン")]
-        private GameObject easyButton;
+        private GameObject EasyButton;
         [SerializeField, Header("難易度普通ボタン")]
         private GameObject NormalButton;
         [SerializeField, Header("難易度難しいボタン")]
         private GameObject HardButton;
+        [Header("Pauseボタン")]
+        public GameObject PauseButton;
+        [Header("Retryボタン")]
+        public GameObject RetryButton;
+        [Header("Continueボタン")]
+        public GameObject ContinueButton;
 
         //シングルトン化処理
         void Awake()
@@ -40,14 +46,20 @@ namespace Assets.Scripts.Game07
                 DontDestroyOnLoad(gameObject);
             }
             else { Destroy(gameObject); }
-        }
 
-        void Start()
-        {
             //ゲームの初期化
             Player.isMove = false;
             HeridController.instance.IsTimeStart = false;
             TimeCount.isCount = false;
+            PauseButton.SetActive(false);
+            RetryButton.SetActive(false);
+            ContinueButton.SetActive(false);
+            m_score = 0;
+        }
+
+        void Start()
+        {
+            
         }
         /// <summary>
         /// スコア用関数
@@ -66,7 +78,7 @@ namespace Assets.Scripts.Game07
         {
             //難易度決定ボタン表示
             GameStartButton.SetActive(false);
-            easyButton.SetActive(true);
+            EasyButton.SetActive(true);
             NormalButton.SetActive(true);
             HardButton.SetActive(true);
         }
@@ -81,10 +93,11 @@ namespace Assets.Scripts.Game07
             TimeCount.times *= level;
             TimeCount.isCount = true;
             //UI非表示処理
-            easyButton.SetActive(false);
+            EasyButton.SetActive(false);
             NormalButton.SetActive(false);
             HardButton.SetActive(false);
             GameStartFont.SetActive(false);
+            PauseButton.SetActive(true);
         }
 
         public void GamePlay()
@@ -93,6 +106,23 @@ namespace Assets.Scripts.Game07
             //ここで難易度設定(各クラスに値を渡す)
         }
 
+        public void Pause()
+        {
+            Time.timeScale = 0;
+            //RetryButton.SetActive(true);
+            ContinueButton.SetActive(true);
+        }
+        public void Retry()
+        {
+            SceneManager.LoadScene("Game07");
+            PauseButton.SetActive(false);
+        }
+        public void Continue()
+        {
+            Time.timeScale = 1;
+            RetryButton.SetActive(false);
+            ContinueButton.SetActive(false);
+        }
         public void Result()
         {
             //ヘリと物資を削除

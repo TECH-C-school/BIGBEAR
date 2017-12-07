@@ -48,7 +48,6 @@ namespace Assets.Scripts.Game07
                     heri.transform.SetParent(canvas.transform);
                     Timer = 0;
                 }
-                //Debug.Log(Timer);
             }
         }
         //生成間隔時間

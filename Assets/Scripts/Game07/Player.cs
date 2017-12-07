@@ -32,17 +32,15 @@ namespace Assets.Scripts.Game07
             X_P_Pos = mousePos.x;
             mousePos.x = Mathf.Clamp(X_P_Pos, Min_X_P_Pos, Max_Y_P_Pos);
             transform.position = Vector2.MoveTowards(transform.position, mousePos, p_speed * 100 * Time.deltaTime);
-            float anim_switch_num = transform.position.x > mousePos.x ? transform.position.x - mousePos.x : mousePos.x - transform.position.x;
-            anim.SetBool(AnimMoveHash, anim_switch_num > 0);
+            float anim_switch_num = Mathf.Abs(transform.position.x - mousePos.x);
+            anim.SetBool(AnimMoveHash, anim_switch_num > 0 || mousePos != (Vector2)transform.position);
             anim.SetBool("HitDown", false);
         }
 
-        /// <summary>
-        ///  佐野先輩 このバグ自分修正します。
-        /// </summary>
-        private void OnCollisionEnter2D(Collision2D collision)
+
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.name == "Bullet")
+            if(collision.gameObject.name == "Bullet")
             {
                 anim.SetBool("HitDown", true);
             }
