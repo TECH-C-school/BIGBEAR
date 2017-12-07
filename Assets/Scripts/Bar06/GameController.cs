@@ -6,67 +6,43 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
 
-        public enum Mark
-        {
-            Spade,
-            Heart,
-            Diamonds,
-            Club,
-        }
 
-        public enum Number
-        {
-            Ace,
-            two,
-            three,
-            four,
-            five,
-            six,
-            seven,
-            eight,
-            nine,
-            ten,
-            eleven,
-            twelve,
-            thirteen,
-        }
-
-        /// <summary>
-        /// プレイヤーとディーラーにカードを2枚づつ生成
-        /// </summary>
         private void MakeCard()
         {
+            int count = 0;
             int[] randomNumbers = MakeRandomNumbers();
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
-            
+            var Prefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
+            var cardsObject = GameObject.Find("Card");
+
             for (var i = 0; i < 2; i++)
             {
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.position = new Vector3(i * 1.27f - 2.54f, 0);
-     
+                var cardObject = Instantiate(Prefab, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector2(i * 0f - 1f,0);
+                cardObject.transform.parent = cardObject.transform;
 
+                
             }
         }
         private int[] MakeRandomNumbers()
         {
-            int[] numbers = new int[52];
+            int[] num = new int[52];
             for (var i = 0; i < 52; i++)
             {
-                numbers[i] = i + 1;
+                num[i] = i + 1;
             }
+
             var counter = 0;
             while (counter < 52)
             {
-                var index = Random.Range(counter, numbers.Length);
-                var tmp = numbers[counter];
-                numbers[counter] = numbers[index];
-                numbers[index] = tmp;
+                var index = Random.Range(counter, num.Length);
+                var tmp = num[counter];
+                num[counter] = num[index];
+                num[index] = tmp;
 
                 counter++;
             }
-            return numbers;
+            return num;
         }
-
 
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
