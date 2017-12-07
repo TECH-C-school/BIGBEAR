@@ -14,7 +14,7 @@ namespace Assets.Scripts.Bar04
     {
         /// <summary>
         /// 展開時の画像
-        /// </summary>pr
+        /// </summary>
         /// 
         [SerializeField] private Sprite expandedImage;
         /// <summary>
@@ -139,7 +139,7 @@ namespace Assets.Scripts.Bar04
             {
                 return;
             }
-            this.IsExpanded = false;
+            this.isExpanded = false;
 
             for (int i = this.children.Count - 1; i >= 0; i--)
             {
@@ -149,7 +149,7 @@ namespace Assets.Scripts.Bar04
                     child.GetComponent<RectTransform>()
                     .DOLocalMoveY(0, 0.2f)
                     .SetEase(Ease.OutCirc)
-                    .onComplete(() =>
+                    .OnComplete(() =>
                     {
                         child.SetActive(false);
                     })
@@ -182,8 +182,33 @@ namespace Assets.Scripts.Bar04
             //先に設定されたものを全面にしたいので逆から作っていく
             for (int i = this.settings.Length-1;i >= 0; i--)
             {
+                var setting = this.settings[1];
+                var gameObject = new GameObject("Child Button");
+                //サイズ
+                var rectTransform = gameObject.AddComponent<RectTransform>();
+                rectTransform.position = this.rectTransform.position;
+                rectTransform.sizeDelta = new Vector2(
+                    this.rectTransform.rect.width * setting.Scale,
+                    this.rectTransform.rect.height * setting.Scale
+                    );
 
+                //画像
+                var image = gameObject.AddComponent<Image>();
+                image.sprite = setting.Image;
+                image.color = new Color(1, 1, 1, 0);
+
+                //タップイベント
+                var button = gameObject.AddComponent<Button>();
+                button.onClick.AddListener(delegate
+                {
+                    OnTapChild(setting);
+                });
+
+                gameObject.transform.SetParent(this.gameObject.transform);
+                gameObject.SetActive(false);
+                this.children.Add(gameObject);
             }
+            this.children.Reverse();
         }
         
         /// <summary>
@@ -192,7 +217,11 @@ namespace Assets.Scripts.Bar04
 
         private void ClearAll()
         {
-
+            foreach(var gameObject in this.children)
+            {
+                Destroy(gameObject);
+            }
+            this.children.Clear();
         }
 
         /// <summary>
@@ -202,7 +231,11 @@ namespace Assets.Scripts.Bar04
 
         private void OnTapChild(Setting setting)
         {
-
+            if (setting.OnTap != null)
+            {
+                setting.OnTap.Invoke();
+            }
+            Collapse();
         }
 
     }
