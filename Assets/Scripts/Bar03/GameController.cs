@@ -46,7 +46,11 @@ namespace Assets.Scripts.Bar03 {
         "Images/Bar/Cards/s12","Images/Bar/Cards/s13"} ;
         void Start()
         {
-            cardset();
+            int[] values = MakeRandomNumbers();
+            for (int i = 0; i < 104; i++)
+            {
+                Debug.Log(values[i]);
+            }
             MakeBackCards();
             BackGroundMake();
         }
@@ -54,10 +58,14 @@ namespace Assets.Scripts.Bar03 {
         {
             SceneManager.LoadScene("Result");
         }
+
+        //裏面のカードをセットする関数
         private void MakeBackCards()
         {
             int count = 0;
-            int[] randomNumbers = MakeRandomNumbers();
+            
+            string[] cardMarkNumber = new string[52];
+            cardSetMN(cardMarkNumber);
 
             Transform parentObject = GameObject.Find("Cards").transform;
             GameObject cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar03/Back");
@@ -77,11 +85,14 @@ namespace Assets.Scripts.Bar03 {
                         -y * 0.31f + 3.66f,
                         -y * 0.1f);
                     cardObject.transform.parent = parentObject;
+
                     count++;
                 }
             }
         }
-        private void cardset()
+
+        //randomにカードを配列にいれる関数
+        private void cardSetMN(string[] values)
         {
             int[] card = new int[52];
 
@@ -100,6 +111,7 @@ namespace Assets.Scripts.Bar03 {
 
                 int ransu = Random.Range(1,52);
 
+
                 int kari = card[i];
 
                 card[i] = card[ransu];
@@ -110,18 +122,27 @@ namespace Assets.Scripts.Bar03 {
 
             int kazu = 0;
             
-            string[] mark = new string[] { "H", "D", "S", "C" };
+            string[] mark = new string[] { "h", "d", "s", "c" };
 
             for (int i = 0; i < card.Length; i++)
 
             {
         
                 kazu = card[i] % 13 + 1;
-                
-                Debug.Log(mark[card[i] / 13] + kazu);
 
+                if (kazu < 10)
+                {
+                    values[i] += mark[card[i] / 13] + "0" + kazu.ToString();
+                }
+                else
+                {
+                    values[i] += mark[card[i] / 13] + kazu.ToString();
+                }
             }
+
         }
+
+        //背景を作る関数
         private void BackGroundMake()
         {
             Transform parentObject1 = GameObject.Find("UpCardFlame").transform;

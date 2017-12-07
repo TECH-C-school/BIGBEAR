@@ -35,7 +35,7 @@ public class Cards : MonoBehaviour
 
         if (faceUp)
         {
-            cardSprite = Resources.Load<Sprite>(_string);
+            cardSprite = Resources.Load<Sprite>("images/Bar/Cards/" + _string);
         }
         else
         {
