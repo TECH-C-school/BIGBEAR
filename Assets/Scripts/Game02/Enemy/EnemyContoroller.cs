@@ -14,6 +14,9 @@ namespace Assets.Scripts.Game02 {
 //			{}
 //		};
 
+		void Start() {
+			EnemyGeneratePosSet ();
+		}
 
 		void EnemyGeneratePosSet() {
 			var enemy = enemys.FirstOrDefault(e => e.gameObject.activeSelf == false);
