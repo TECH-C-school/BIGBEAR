@@ -37,7 +37,7 @@ namespace Assets.Scripts.Game02 {
 			scopeRenderer.enabled = true;
 			_scope.gameObject.transform.position= screenPos;
 			#if UNITY_EDITOR
-			if(Input.GetKey("space")){
+			if(Input.GetKeyDown("space")){
 				_scope.Snipe();
 			}
 			#endif
