@@ -20,6 +20,7 @@ namespace Assets.Scripts.Game05 {
 		private bool isSkipped = false;
 		private float startPos = 0;
 		private float endPos = 0;
+
 		// Use this for initialization
 		void Start () {
 			rigidbody2d = GetComponent<Rigidbody2D> ();
@@ -35,27 +36,21 @@ namespace Assets.Scripts.Game05 {
 		*/
 		void OnCollisionEnter2D(Collision2D other) {
 			if (other.gameObject.name == "Pile") {
-				//startPos = GetComponent<Rigidbody2D> ().velocity.x;
 				startPos = transform.localPosition.x;
-				Debug.Log ("kita");
 			}
 		}
 
 		void OnCollisionExit2D(Collision2D other) {
 			if (other.gameObject.name == "Pile") {
-				//endPos = GetComponent<Rigidbody2D> ().velocity.x;
-				//isSkipped = true;
-				StartCoroutine (GetFlying ());
-				//gameController.AddScore (Mathf.Abs (endPos - startPos));
-				//gameObject.SetActive (false);
+				GetFlying ();
 			}
 		}
 
-		IEnumerator GetFlying() {
-			yield return new WaitForSecondsRealtime (3);
+		void GetFlying() {
 			endPos = transform.localPosition.x;
 			gameController.AddScore (Mathf.Abs (endPos - startPos), tType.ToString());
 			gameObject.SetActive (false);
+
 		}
 	}
 }

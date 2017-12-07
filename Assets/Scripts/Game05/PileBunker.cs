@@ -7,14 +7,20 @@ using UniRx.Triggers;
 
 namespace Assets.Scripts.Game05 {
     public class PileBunker : MonoBehaviour {
+		private PlayerController pc;
         // Use this for initialization
         void Start() {
+			pc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<PlayerController> ();
         }
 
         // Update is called once per frame
         void Update() {
         }
 
-        
+		void OnCollisionEnter2D(Collision2D other) {
+			if (other.gameObject.name == "Tower" || other.gameObject.name == "LastTower") {
+				pc.isContact = true;
+			}
+		}
     }
 }
