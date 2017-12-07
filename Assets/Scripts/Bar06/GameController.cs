@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
 
-
+        //カードを生成する
         private void MakeCard()
         {
             int count = 0;
@@ -43,6 +43,8 @@ namespace Assets.Scripts.Bar06 {
             }
             return num;
         }
+
+        //カードを配る
 
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
