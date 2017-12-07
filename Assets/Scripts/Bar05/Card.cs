@@ -8,6 +8,8 @@ namespace Assets.Scripts.Bar05
     {
         public int number;
 
+        public string cardStrPath;
+
         public GameObject selectCard;
 
         public enum Suit
