@@ -24,7 +24,6 @@ public class Playershoot : MonoBehaviour {
         _Interval += Time.deltaTime;
 
 
-
         if (Input.GetMouseButton(0)) {
 
             if(_Interval > _IntervalMax) {
@@ -33,5 +32,7 @@ public class Playershoot : MonoBehaviour {
             }
             
         }
+
+        
 	}
 }

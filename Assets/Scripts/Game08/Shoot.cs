@@ -17,6 +17,10 @@ public class Shoot : MonoBehaviour {
         if (transform.position.y > 6) {
             Destroy(gameObject);
         }
+    }
 
+    void OnTriggerEnter2D(Collider2D coll) {
+        Destroy(coll.gameObject);
+        Destroy(gameObject);
     }
 }
