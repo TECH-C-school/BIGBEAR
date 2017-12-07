@@ -30,15 +30,35 @@ namespace Assets.Scripts.Bar06 {
             Card card2_2 = new Card();
 
             //ランダムでカードを決める
-            int number = Random.Range(1, 14);
-            int markValue = Random.Range(0, 4);
-            Mark mark = (Mark)markValue;
-            string str = mark.ToString();
+            var counter = 0;
+            while (counter <= 3)
+            {
+                int number = Random.Range(1, 14);
+                int markValue = Random.Range(0, 4);
+                Mark mark = (Mark)markValue;
+                string str = mark.ToString();
+                Debug.Log(str + number);
+                counter++;
+            }
 
-            Debug.Log(str + number);
+            //カードを表示させる
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            for (int i = 0; i <= 1; i++)
+            {
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(0 - i, -2.5f, 0);
+            }
+            
+        }
 
+        public void AddCard()
+        {
+            Debug.Log("AddCard");
+        }
 
-
+        public void Battle()
+        {
+            Debug.Log("Battle");
         }
 
         public void TransitionToResult() {
