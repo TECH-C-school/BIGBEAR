@@ -12,7 +12,8 @@ namespace Assets.Scripts.Game02
 {
     public class PlayerControll : MonoBehaviour
     {
-
+        [SerializeField]
+        Animator bearAnim;
         [SerializeField]
         ObservableEventTrigger m_trigger;
         [SerializeField]
@@ -23,8 +24,6 @@ namespace Assets.Scripts.Game02
         LayerMask m_enemyLayer;
         [SerializeField]
         Button m_shotButton;
-
-
 
         // Use this for initialization
         void Start()
@@ -97,6 +96,8 @@ namespace Assets.Scripts.Game02
             {
                 Debug.Log("miss");
             }
+
+            bearAnim.SetTrigger("BoltAction");
         }
 
 
