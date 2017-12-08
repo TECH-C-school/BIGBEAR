@@ -9,7 +9,7 @@ namespace Assets.Scripts.Game07
         [SerializeField,Header("力の角度")]
         private float Force_Angle = 0;
         [SerializeField, Header("力の大きさ")]
-        private float Force_Power = 10;
+        private float Force_Power = -10;
         [SerializeField, Header("力の加減")]
         private float Force_Variation = 0;
 
@@ -25,10 +25,14 @@ namespace Assets.Scripts.Game07
 
         void Update()
         {
-            DOTween.To(() => areaEffector2D.forceMagnitude,
-                Force_Power => areaEffector2D.forceMagnitude = Force_Power,
+            //タイマーが動いたら風の力を変化
+            if (TimeCount.isCount)
+            {
+                DOTween.To(() => areaEffector2D.forceMagnitude,
+                Force_Power => areaEffector2D.forceMagnitude = Mathf.Repeat(Force_Power, 10) * Time.deltaTime,
                 -10,
                 3f);
+            }
         }
     }
 
