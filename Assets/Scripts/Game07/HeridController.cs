@@ -4,6 +4,7 @@ namespace Assets.Scripts.Game07
 {
     public class HeridController : MonoBehaviour
     {
+        //シングルトン化
         public static HeridController instance;
 
         [SerializeField, Header("2種類のヘリコプター")]
@@ -13,6 +14,9 @@ namespace Assets.Scripts.Game07
         private float Timer = 0;
         //生成時間間隔
         private float create_Time = 3;
+        //荷物作成間隔
+        [SerializeField, Header("荷物作成間隔"), Range(1,3)]
+        private float Obj_Create_Speed = 2;
         Canvas canvas;
         [SerializeField,Header("生成場所")]
         Transform AttachPoint;
@@ -45,6 +49,7 @@ namespace Assets.Scripts.Game07
                 {
                     GameObject heri = Instantiate(HeridS[random_Herid], AttachPoint.position, HeridS[random_Herid].transform.rotation);
                     heri.name = HeridS[random_Herid].name;
+                    heri.GetComponent<Herid>().m_Count_Speed = Obj_Create_Speed / (int)GameController.instance.m_gameLevel;
                     heri.transform.SetParent(canvas.transform);
                     Timer = 0;
                 }

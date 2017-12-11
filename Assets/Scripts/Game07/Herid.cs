@@ -11,7 +11,8 @@ namespace Assets.Scripts.Game07
         Vector2 move;
         [SerializeField, Header("荷物か爆弾")]
         private GameObject Prefab;
-        public static float m_Count_Speed = 5;
+        [HideInInspector]
+        public float m_Count_Speed = 5;
         private Vector3 attachPoint;
         //キャンパス情報
         private Canvas canvas;
@@ -36,7 +37,7 @@ namespace Assets.Scripts.Game07
         {
             while (true)
             {
-                yield return new WaitForSeconds(m_Count_Speed);//この下の処理が()内の数値によって動く
+                yield return new WaitForSeconds(Random.Range(m_Count_Speed / 2, m_Count_Speed));//この下の処理が()内の数値によって動く
                 GameObject _catchObj = Instantiate(Prefab, attachPoint, Quaternion.identity);
                 _catchObj.name = Prefab.name;
                 _catchObj.transform.SetParent(canvas.transform);

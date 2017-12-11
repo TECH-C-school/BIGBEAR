@@ -10,15 +10,12 @@ namespace Assets.Scripts.Game07
         Text TimeText;
         [SerializeField, Header("タイマーのスピード")]
         private float TimerSpeed = 1;
-        [Header("制限時間")]
-        public static float times = 10;//これが制限時間
         [SerializeField,Header("白のマスク画像")]
         GameObject BackImage;
         [SerializeField,Header("結果発表テキスト")]
         GameObject BackText;
         [SerializeField,Header("スコアの数(本当は星)")]
         GameObject[] Items;
-        public static bool isCount = false;
 
         private void Awake()
         {
@@ -42,21 +39,25 @@ namespace Assets.Scripts.Game07
                 BackImage.SetActive(false);
             }
 
-            if (isCount)
+            if (TimeController.instance.isCount)
             {
-                times -= TimerSpeed * Time.deltaTime;
+                TimeController.instance.times -= TimerSpeed * Time.deltaTime;
 
-                TimeText.text = ((int)times).ToString();
+                TimeText.text = ((int)TimeController.instance.times).ToString();
 
-                if (times <= 0)
+                if (TimeController.instance.times <= 0)
                 {
-                    times = 0;
+                    TimeController.instance.times = 0;
                     GameController.instance.PauseButton.SetActive(false);
                     BackImage.SetActive(true);//BackImageの表示
                     BackText.SetActive(true);
                     BackText.GetComponent<Text>().text = "Score" + ((int)GameController.instance.m_score).ToString();
-                    // 永田がここの部分書きました。採用するかあとで決めてください 
-                    // なんで永田先輩に書かしてるんだ　コラ 取りあえずはここは後で修正。
+
+                    //ここに難易度ごとにスコアの得点でランクを決める
+                    //例えば　Easyの時は10点から20点の間ならnum = 1だけど、Hardの時はnum = 2になるみたいな感じ
+                    //計算式は　ゲームの難易度(もちろん数字)×10点　みたいな感じで
+                    //佐野先輩　やってみてください
+
                     int num = 0;
                     if (GameController.instance.m_score >= 0 && GameController.instance.m_score <= 10)//0以上で10以下の時
                         num = 1;

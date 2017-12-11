@@ -25,8 +25,8 @@ namespace Assets.Scripts.Game07
 
         void Update()
         {
-            //タイマーが動いたら風の力を変化
-            if (TimeCount.isCount)
+            //タイマーが動いたら風の力を変化 ハードの時だけ
+            if (TimeController.instance.isCount /*&& GameController.instance.m_gameLevel == GameController.GameLevel.Hard*/)
             {
                 DOTween.To(() => areaEffector2D.forceMagnitude,
                 Force_Power => areaEffector2D.forceMagnitude = Mathf.Repeat(Force_Power, 10) * Time.deltaTime,

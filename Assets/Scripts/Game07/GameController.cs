@@ -11,9 +11,9 @@ namespace Assets.Scripts.Game07
         [HideInInspector]
         public GameState m_gameState = GameState.Ready;
         //ゲーム難易度
-        public enum m_GameLevel { Easy, Normal, Hard }
+        public enum GameLevel { Easy = 1, Normal = 2, Hard = 3 }
         [HideInInspector]
-        public m_GameLevel m_gameLevel;
+        public GameLevel m_gameLevel = GameLevel.Easy;
         //スコア関係
         const int plus_score = 1;
         const int minus_score = 10;
@@ -50,17 +50,13 @@ namespace Assets.Scripts.Game07
             //ゲームの初期化
             Player.isMove = false;
             HeridController.instance.IsTimeStart = false;
-            TimeCount.isCount = false;
+            TimeController.instance.isCount = false;
             PauseButton.SetActive(false);
             RetryButton.SetActive(false);
             ContinueButton.SetActive(false);
             m_score = 0;
         }
-
-        void Start()
-        {
-            
-        }
+        
         /// <summary>
         /// スコア用関数
         /// </summary>
@@ -83,6 +79,11 @@ namespace Assets.Scripts.Game07
             HardButton.SetActive(true);
         }
 
+        public void SetLevel(int level)
+        {
+            m_gameLevel = (GameLevel)level;
+        }
+
         public void Ready(int level)
         {
             //ゲームスタート処理
@@ -90,8 +91,8 @@ namespace Assets.Scripts.Game07
             m_gameState = GameState.Play;
             Player.isMove = true;
             HeridController.instance.IsTimeStart = true;
-            TimeCount.times *= level;
-            TimeCount.isCount = true;
+            TimeController.instance.times *= level;
+            TimeController.instance.isCount = true;
             //UI非表示処理
             EasyButton.SetActive(false);
             NormalButton.SetActive(false);

@@ -38,7 +38,6 @@ namespace Assets.Scripts.Game07
             if (anim.GetBool(HitDown)) { anim.SetBool(HitDown, false); }
         }
 
-
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if(collision.gameObject.name == "Bullet")
