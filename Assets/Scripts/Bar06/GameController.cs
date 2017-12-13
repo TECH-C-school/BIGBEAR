@@ -7,22 +7,23 @@ namespace Assets.Scripts.Bar06
 {
     public class GameController : MonoBehaviour
     {
-
+        void Start()
+        {
+            MakeCard();
+        } 
         //カードを生成する
         private void MakeCard()
         {
-            int count = 0;
-            int[] randomNumbers = MakeRandomNumbers();
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
-            var cardsObject = GameObject.Find("Cards");
+          
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");;
 
             for (var i = 0; i < 2; i++)
             {
                 for (var j = 0; j < 2; j++)
                 {
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                    cardObject.transform.position = new Vector2(i * 1.27f - 3.87f, j * 1.27f - 2.54f);
-                    cardObject.transform.parent = cardsObject.transform;
+                    cardObject.transform.position = new Vector2(i * -0.6f - 0f, j * 0f - 0f);
+                    cardObject.transform.parent = transform;
 
                 }
             }
@@ -45,6 +46,27 @@ namespace Assets.Scripts.Bar06
             }
             return numbers;
         }
+        public void ClickCardplusButton()
+        {
+
+        }
+        public void ClickBattleButton()
+        {
+
+        }
+        public void ClickSalenderButton()
+        {
+
+        }
+        public void ClickBetmainusButton()
+        {
+
+        }
+        public void ClickBetplusButton()
+        {
+
+        }
+
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
