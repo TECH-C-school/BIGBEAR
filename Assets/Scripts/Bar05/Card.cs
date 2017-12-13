@@ -31,6 +31,24 @@ namespace Assets.Scripts.Bar05
             
             selectCard.transform.position = gameObject.transform.position;
             selectCard.SetActive(false);
+
+            string cardSuit = cardStrPath.Substring(0,1);
+            number = int.Parse(cardStrPath.Substring(1, 2));
+            switch (cardSuit)
+            {
+                case "s":
+                    suit = Suit.Spade;
+                    break;
+                case "h":
+                    suit = Suit.Heart;
+                    break;
+                case "c":
+                    suit = Suit.Club;
+                    break;
+                case "d":
+                    suit = Suit.Diamond;
+                    break;
+            }
         }
 
         // Update is called once per frame

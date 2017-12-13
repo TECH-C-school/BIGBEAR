@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,6 @@ namespace Assets.Scripts.Bar05
 {
     public class Phase : MonoBehaviour
     {
-
         public GameObject card;
         public GameObject selectCard;
 
@@ -62,8 +61,6 @@ namespace Assets.Scripts.Bar05
             mountList = MakeRandomNumbers();
             Sprite cardSprite = null;
 
-
-
             for (int i = 0; i < 9; i++)
             {
                 {
@@ -102,26 +99,31 @@ namespace Assets.Scripts.Bar05
                             cardObject.name = "Board 1";
                             cardObject.transform.position = new Vector3(-2.7f, 0, -0.01f);
                             boardList.Add(cardObject);
+                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
                         case 5:
                             cardObject.name = "Board 2";
                             cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
                             boardList.Add(cardObject);
+                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
                         case 6:
                             cardObject.name = "Board 3";
                             cardObject.transform.position = new Vector3(0f, 0, -0.01f);
                             boardList.Add(cardObject);
+                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
                         case 7:
                             cardObject.name = "Board 4";
                             cardObject.transform.position = new Vector3(1.35f, 0, -0.01f);
                             boardList.Add(cardObject);
+                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
                         case 8:
                             cardObject.name = "Board 5";
                             cardObject.transform.position = new Vector3(2.7f, 0, -0.01f);
                             boardList.Add(cardObject);
+                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
                     }
                 }
@@ -134,17 +136,7 @@ namespace Assets.Scripts.Bar05
                 spriteRenderer.sprite = cardSprite;
             }
 
-            mountList.RemoveRange(0, 2);
-
-            //敵のハンド
-            for (int i = 0; i < 2; i++)
-            {
-                //var spriteRenderer = enemyHand[i].GetComponent<SpriteRenderer>();
-                //cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardStr[mountList[i]]);
-                //spriteRenderer.sprite = cardSprite;
-            }
-
-            mountList.RemoveRange(0, 2);
+            mountList.RemoveRange(0, 9);
         }
 
         /// <summary>
