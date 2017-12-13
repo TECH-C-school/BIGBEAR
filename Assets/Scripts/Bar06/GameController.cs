@@ -5,8 +5,15 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
-        public void TransitionToResult() {
+
+
+
+
+
+
+    public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
+
     }
 }
