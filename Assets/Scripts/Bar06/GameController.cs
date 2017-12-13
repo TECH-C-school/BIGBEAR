@@ -8,46 +8,42 @@ namespace Assets.Scripts.Bar06
     public class GameController : MonoBehaviour
     {
 
-        public enum Suits
-        {
-            CLUB, DIAMOND, HEART, SPADE, 
-        }
-        public enum Cards
-        {
-            one = 1, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen,
-        } 
         //カードを生成する
         private void MakeCard()
         {
             int count = 0;
             int[] randomNumbers = MakeRandomNumbers();
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06");
-            var cardsObject = GameObject.Find("Card");
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
+            var cardsObject = GameObject.Find("Cards");
 
             for (var i = 0; i < 2; i++)
             {
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.position = new Vector3(i * 0f - 1f,0);
-                cardObject.transform.parent = cardObject.transform;
+                for (var j = 0; j < 2; j++)
+                {
+                    var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                    cardObject.transform.position = new Vector2(i * 1.27f - 3.87f, j * 1.27f - 2.54f);
+                    cardObject.transform.parent = cardsObject.transform;
+
+                }
             }
         }
         private int[] MakeRandomNumbers()
         {
-            int[] num = new int[51];
+            int[] numbers = new int[51];
             for (var i = 0; i < 51; i++)
             {
-                num[i] = i + 1;
+                numbers[i] = i + 1;
             }
             var counter = 0;
             while (counter < 52)
             {
-                var index = Random.Range(counter, num.Length);
-                var tmp = num[counter];
-                num[counter] = num[index];
-                num[index] = tmp;
+                var index = Random.Range(counter, numbers.Length);
+                var tmp = numbers[counter];
+                numbers[counter] = numbers[index];
+                numbers[index] = tmp;
                 counter++;
             }
-            return num;
+            return numbers;
         }
         public void TransitionToResult()
         {
