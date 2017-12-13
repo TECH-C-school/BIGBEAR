@@ -9,13 +9,6 @@ public class Cards : MonoBehaviour
     void Start() { }
     
 }
-    public enum mark
-    {
-        S = 0,
-        C = 1,
-        H = 2,
-        D = 3
-    }
-
+   
 
     

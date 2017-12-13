@@ -17,25 +17,28 @@ namespace Assets.Scripts.Bar06 {
         private void MakeCards()
         {
             int count = 0;
-            int[] randomNumbers = MakeRandomNumbers();
 
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/PlayerCardbk");
-            var cardObject = GameObject.Find("Cards");
+            var cardsObject = GameObject.Find("PlayerCardbk");
 
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < 2; j++)
                 {
-                    var cardsObject = Instantiate(cardObject, transform.position, Quaternion.identity);
+                    var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                     cardObject.transform.position = new Vector3(
-                        i * 2f - 0.9f,
-                        j * 5f - 0.9f,
-                        1);
+                        i * 2f,
+                        j * 5f,
+                        0);
+
+                    cardObject.transform.parent = cardsObject.transform;
+
                     var card = cardObject.GetComponent<Cards>();
                     count++;
                 }
             }
         }
+
 
 
 
