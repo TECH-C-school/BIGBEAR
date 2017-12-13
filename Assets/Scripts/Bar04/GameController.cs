@@ -16,7 +16,12 @@ namespace Assets.Scripts.Bar0404
         public int[] shuffulCards;
         public List<GameObject> Card;
         int nextCard = 0;
-        int[] m_HandNumber = new int[5];
+
+        //手札関係の変数
+        int[] m_HundNumber = new int[5];
+        public GameObject PokerHund;
+
+
 
         public void TransitionToResult(){
             SceneManager.LoadScene("Result");
@@ -71,9 +76,9 @@ namespace Assets.Scripts.Bar0404
                     cardsprict.TurnCardFlont();
                     nextCard++;
                     cardsprict.CardSelect();
-                    CardSort();
                 }
             }
+            CardSort();
         }
 
         //最初のカードを配る        
@@ -95,23 +100,23 @@ namespace Assets.Scripts.Bar0404
             for (int i = 0; i < Card.Count; i++){
                 var cardsprict = Card[i].GetComponent<Card>();
                 int xyz = cardsprict.Number;
-                m_HandNumber[i] = cardsprict.CardNumber[xyz];
+                m_HundNumber[i] = cardsprict.CardNumber[xyz];
             }
             //カードをソート
-            for (int i = 0; i < m_HandNumber.Length; i++){
-                int min = m_HandNumber[i];
+            for (int i = 0; i < m_HundNumber.Length; i++){
+                int min = m_HundNumber[i];
                 int minnum = i;
-                for (int j = i; j < m_HandNumber.Length; j++){
-                    if (min > m_HandNumber[j]) {
-                        min = m_HandNumber[j];
+                for (int j = i; j < m_HundNumber.Length; j++){
+                    if (min > m_HundNumber[j]) {
+                        min = m_HundNumber[j];
                         minnum = j;
                     }
 
 
                 }
-                int value = m_HandNumber[i];
-                m_HandNumber[i] = min;
-                m_HandNumber[minnum] = value;
+                int value = m_HundNumber[i];
+                m_HundNumber[i] = min;
+                m_HundNumber[minnum] = value;
                 var cardsprict = Card[i].GetComponent<Card>();
                 var cardsprict2 = Card[minnum].GetComponent<Card>();
                 value = cardsprict.Number;
@@ -124,7 +129,8 @@ namespace Assets.Scripts.Bar0404
                 var cardsprict = Card[i].GetComponent<Card>();
                 cardsprict.TurnCardFlont();
             }
-
+            var Pokersprict = PokerHund.GetComponent<PokerHand>();
+            Pokersprict.Hund = m_HundNumber;
         }
 
 
