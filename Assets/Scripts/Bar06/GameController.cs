@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
 
@@ -13,6 +14,10 @@ namespace Assets.Scripts.Bar06 {
         private int tmai = 0;
         public int tgou = 0;
         public int syotop = 0;
+        public int Amine = 0;
+        public int Atmine = 0;
+
+
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
@@ -23,10 +28,15 @@ namespace Assets.Scripts.Bar06 {
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(1.35f, -1.8f, 0);
-            
-            makecard();
+
+            var cardPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
+            var cardObjec2t = Instantiate(cardPrefab2, transform.position, Quaternion.identity);
+            cardObjec2t.transform.position = new Vector3(1.35f, 1.02f, 0);
+
             makecard();
             tmakecard(1);
+            texttoku();
+            makecard();
             tmakecard(0);
 
         }
@@ -53,7 +63,7 @@ namespace Assets.Scripts.Bar06 {
         public void OnClick()
         {
             makecard();
-            if (tgou < 17) { tmakecard(0); }
+            
         }
         private void makecard()
         {
@@ -78,11 +88,11 @@ namespace Assets.Scripts.Bar06 {
             card.mark = mark2;
             card.Mark();
 
-            gou += num2;
+            if (num2 ==1) { gou += 11;Amine += 1; }else if (num2 < 10) { gou += num2; }else { gou += 10; }
+            if (gou > 21&&Amine!=0) { gou -= 10;Amine -= 1; }
             zmai++;
             mai++;
-
-
+            textoku();
 
         }
         private void tmakecard(int n)
@@ -108,16 +118,22 @@ namespace Assets.Scripts.Bar06 {
             card.mark = mark2;
             card.Mark();
             if (n == 0) { card.nMark(); }
-            tgou += num2;
+            if (num2 == 1) { tgou += 11; Atmine += 1; } else if (num2 < 10) { tgou += num2; } else { tgou += 10; }
+            if (tgou > 21 && Atmine != 0) { tgou -= 10; Atmine -= 1; }
             tmai++;
             mai++;
+            textoku();
 
-
-
+            
         }
 
         public void clClick()
         {
+            while (tgou < 17) {
+                tmakecard(0);
+                
+            }
+
             var cardsObject = GameObject.Find("Cards2").transform;
             foreach (Transform cardObject in cardsObject)
             {
@@ -126,21 +142,59 @@ namespace Assets.Scripts.Bar06 {
             Debug.Log(tmai);
             int maimai = tmai;
             int maimaimai = mai;
-            mai = 1;
+            mai = syotop+1;
             tmai = 0;
+            tgou = 0;
             for (int i = 0; i < maimai; i++)
             {
                 tmakecard(1);
                 mai += 1;
             }
             mai = maimaimai;
+            texttoku();
 
+            
 
         }
 
 
+        private void textoku (){
+            text.textupt(gou);
+        }
+        private void texttoku()
+        {
+            textt.textupt(tgou);
+        }
 
 
+        public void saiClick()
+        {
+
+            var cardsObject = GameObject.Find("Cards2").transform;
+            foreach (Transform cardObject in cardsObject)
+            {
+                Destroy(cardObject.gameObject);
+            }
+            cardsObject = GameObject.Find("Cards").transform;
+            foreach (Transform cardObject in cardsObject)
+            {
+                Destroy(cardObject.gameObject);
+            }
+            gou = 0;
+            tgou = 0;
+            zmai = 0;
+            tmai = 0;
+            syotop = mai+1;
+
+            makecard();
+            tmakecard(1);
+            texttoku();
+            makecard();
+            tmakecard(0);
+
+            Debug.Log("a");
+
+        }
 
     }
 }
