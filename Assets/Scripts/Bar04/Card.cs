@@ -10,12 +10,12 @@ namespace Assets.Scripts.Bar04_06
     {
 
         // Use this for initialization
-        private int _number;
+        private int _ary2;
 
         public int Number
         {
-            get { return _number; }
-            set { _number = value; }
+            get { return _ary2; }
+            set { _ary2 = value; }
         }
 
 
@@ -35,28 +35,24 @@ namespace Assets.Scripts.Bar04_06
         }
         private void TurnCard(bool faceUp)
         {
-            Sprite cardSprite = null;
-            Sprite numberSprite = null;
+           
             if (faceUp)
             {
-                cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/      ");
-                numberSprite = Resources.Load<Sprite>("Images/" + _number);
+                Sprite cardSprite = null;
+                Sprite numberSprite = null;
+                cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/"+ _ary2);
             }
-            else
-            {
-                cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/      ");
-            }
+            
 
-
-           /* 
+            /*
                     var spriteRenderer = transform.GetComponent<SpriteRenderer>();
                     spriteRenderer.sprite = cardSprite;
 
                     var numberObject = transform.Find("Number");
                     var numberSpriteRenderer = numberObject.GetComponent<SpriteRenderer>();
                     numberSpriteRenderer.sprite = numberSprite;
-         */           
-
+                    
+    */
         }
     }
 

@@ -26,10 +26,25 @@ namespace Assets.Scripts.Bar04_06
         }
 
 
+
         /// <summary>
-        /// シャッフルされたカードを上から配っていく
+        /// カードのシャッフル
         /// </summary>
-        private void MakeCard()
+        //Numberの作成
+        public void number() {
+            int[] number = new int[51];
+            for (int i = 0;i < number.Length; i++)
+            {
+                number[i] = i;
+            }
+            //シャッフルす
+            int[] ary2 = number.OrderBy(i => Guid.NewGuid()).ToArray();
+        }
+        /// <summary>
+        /// カードを配置する
+        /// </summary>
+
+        public void MakeCard()
         {
             int count = 0;
             int[] randomNumbers = MakeRandomNumbers();
@@ -38,7 +53,6 @@ namespace Assets.Scripts.Bar04_06
 
             for (var i = 0; i < 5; i++)
             {
-               
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                     cardObject.transform.position = new Vector3(
                         i * 1.27f - 3.87f,
@@ -47,30 +61,25 @@ namespace Assets.Scripts.Bar04_06
 
                     var card = cardObject.GetComponent<Card>();
                     card.Number = randomNumbers[count];
-                    card.ChangingCards();
+                    card.ChangedCards();
                     count++;
             }
         }
+        private int[] MakeRandomNumbers() {
 
-        public int[] MakeRandomNumbers()
-        {
-            int[] numbers = new int[52];
-
-            for (int i = 0; i < 52; i++)
+            int[] number = new int[51];
+            for (int i = 0; i < number.Length; i++)
             {
-                numbers[i] += i;
+                number[i] = i;
             }
-
-
-            int[] Numbers = numbers.OrderBy(i => Guid.NewGuid()).ToArray();
+            //シャッフルす
+            int[] ary2 = number.OrderBy(i => Guid.NewGuid()).ToArray();
+            return ary2;
         }
-
 
         /// <summary>
         /// クリックしたカードをHoldし、クリックされていないカードを捨て場に送る
         /// </summary>
-
-
 
         /// <summary>
         /// 捨て場に送った枚数分手札に加える
