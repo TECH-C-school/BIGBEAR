@@ -29,6 +29,8 @@ namespace Assets.Scripts.Bar02 {
         private SpriteRenderer click1;
         private SpriteRenderer click2;
 
+        private string[] cardNum = new string[53];
+        
         private void Update()
         {
             checkCard();
@@ -44,7 +46,7 @@ namespace Assets.Scripts.Bar02 {
 
             int countNumber = 6;
             int countCardNum = 52;
-            string[] cardNum = MakeRandCard();
+            cardNum = MakeRandCard();
             SpriteRenderer sr = cardPrefab.GetComponent<SpriteRenderer>();
 
             
@@ -79,14 +81,13 @@ namespace Assets.Scripts.Bar02 {
                 cardPlaceObject.transform.position = new Vector2(4.5f,2.0f);
                 
             }
-
         }
         
         
         /// <summary>
         /// ランダムなカード配置
         /// </summary>
-        private string[] MakeRandCard()
+        public string[] MakeRandCard()
         {
             //52枚のカード配列 0番は空欄
             string[] toranpu = new string[53];
@@ -148,57 +149,101 @@ namespace Assets.Scripts.Bar02 {
             }
 
             Debug.Log(maxCard.sprite);
-            
-            //表か裏か判断
+
+            //表か裏かcardflameか判断
             if (maxCard.sprite.ToString().Substring(0, 4) == "back")
             {
-                //maxCardとは別に考える(maxCardの座標が変わるだけなので、もう一度山札押しても行動起きない)
-                var placeCard = maxCard;
+                //山場の1番下のオブジェクト取得(クリックしていけばどんどん積みあがるようにする)
+                //1番上のを取ると次のがレイヤーから下に行くため
+                SpriteRenderer placeCard = hitObjects[0].GetComponent<SpriteRenderer>();
+                for (int i = 1; i < hitObjects.Length; i++)
+                {
+                    var card = hitObjects[i].GetComponent<SpriteRenderer>();
+                    
+                    //1番下のオブジェクト取得(oederInLayerの数値が一番大きいものを取得)
+                    if (placeCard.sortingOrder > card.sortingOrder) placeCard = card;
+                }
                 //ピラミッドの裏返しをクリックしたらreturn
                 Vector2 placeCardPosition = placeCard.transform.position;
                 if (placeCardPosition != new Vector2(4.5f, 2.0f)) return;
 
+
                 //山札のカードをとった場合、裏返して移動
-                string[] cardNum = MakeRandCard();
-                placeCard.transform.position = new Vector2(3.0f, 2.0f);
                 placeCard.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[placeCard.sortingOrder]);
+                placeCard.transform.position = new Vector2(3.0f, 2.0f);
+
+
             }
             else
             {
                 //spriteのカード番号の数字取得 クリック回数取得
                 int maxCardNum = int.Parse(maxCard.sprite.ToString().Substring(1, 2));
 
+                //1回目のクリック
                 if(_countClick == countClick.Noi)
                 {
+                    //クリックしたobject収納
                     click1 = maxCard;
                     sumNum[0] = maxCardNum;
                     Debug.Log(sumNum[0]);
                     _countClick = countClick.No1;
+
+                    //13をクリックしたらその場で消去、クリック回数初期化
                     if (sumNum[0] == 13)
                     {
                         Destroy(click1.gameObject);
                         _countClick = countClick.Noi;
                     }
                 }
+                //2回目のクリック
                 else if (_countClick == countClick.No1)
                 {
+                    //クリックしたobject収納
                     click2 = maxCard;
                     sumNum[1] = maxCardNum;
                     Debug.Log(sumNum[1]);
                     _countClick = countClick.No2;
                 }
 
+                //2このobjectを選択したかどうか判断
                 Debug.Log(_countClick);
                 if (_countClick != countClick.No2) return;
 
+                //カード番号の足し算
                 int sum = sumNum[0] + sumNum[1];
                 Debug.Log(sum);
+
+                //関数sumが13だったらobject消去
+                if (sum == 13)
+                {
+                    Destroy(click1.gameObject);
+                    Destroy(click2.gameObject);
+                }
+
+                
+
+                //すべて終了 初期化
                 _countClick = countClick.Noi;
             }
 
             
 
         }
-                
+
+        /// <summary>
+        /// ボタン処理
+        /// </summary>
+        public void clickReturnbutton()
+        {
+            Vector2 returnPlace = new Vector2(3.0f, 2.0f);
+            Collider2D[] place = Physics2D.OverlapPointAll(returnPlace);
+            for (int i = 0; i < place.Length; i++)
+            {
+                SpriteRenderer plaCard = place[i].GetComponent<SpriteRenderer>();
+                plaCard.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+                plaCard.transform.position = new Vector2(4.5f, 2.0f);
+            }
+        }
+           
     }
 }
