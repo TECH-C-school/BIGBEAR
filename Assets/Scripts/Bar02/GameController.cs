@@ -16,6 +16,7 @@ namespace Assets.Scripts.Bar02
         }
 
         public int choice = 0;
+        public int[] cardnum = new int[52];
         void Start()
         {
             MakeCards();
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Bar02
         }
         void Update()
         {
-            ClickCard(); 
+            ClickCard();
         }
         public class cardy
         {
@@ -84,15 +85,16 @@ namespace Assets.Scripts.Bar02
                 var numberObject = markObject.transform.GetChild(trump[k].num).gameObject;
                 GameObject cardObject = Instantiate(numberObject, transform.position, Quaternion.identity);
                 cardObject.transform.parent = fieldcard.transform;
+                cardnum[k] = trump[k].num;
             }
             counter = 1;
             for (int x = 0; x < 7; x++)
             {
                 for (int y = 0; y < counter; y++)
-                {
+                {                    
                     var numpos = fieldcard.transform.GetChild(choice).gameObject;
                     GameObject cardpos = Instantiate(numpos, transform.position, Quaternion.identity);
-
+                    
                     cardpos.transform.position = new Vector3(
                     -0.64f * x + 1.32f * y,
                     2.90f - 0.80f * x,
@@ -119,7 +121,6 @@ namespace Assets.Scripts.Bar02
 
         public void ClickCard()
         {
-            var discount = 7;
 
             //マウスクリックの判定
             if (!Input.GetMouseButtonDown(0)) return; //左クリックされていなければreturn
@@ -137,11 +138,14 @@ namespace Assets.Scripts.Bar02
             var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
             if (!hitObject) return;
 
-            if (hitObject.collider.gameObject.GetComponent<Renderer>().sortingOrder != discount) return;
-
+            //クリックされたカードスクリプトを取得
+            var cardTrans = hitObject.collider.gameObject.GetComponent<>();
+            
             //クリックされた位置にflameを装着
             var Flame = GameObject.Find("cardflame");
-            Flame.transform.position = tapPoint;
+            Flame.transform.position = hitObject.transform.position;
+
+
 
 
         }
