@@ -7,6 +7,10 @@ namespace Assets.Scripts.Bar07
 {
     public class CardController : MonoBehaviour
     {
+        //カードに付けてクリックで反転
+
+
+
         //初期設定で裏
         private bool cardstate = false;
 
@@ -20,6 +24,7 @@ namespace Assets.Scripts.Bar07
         }
 
         //カードステートが偽で表に変える
+        //要追加:カードのナンバーをランダムで取得して表示する処理
         public void cardaction()
         {
             SpriteRenderer cardRenderer = transform.GetComponent<SpriteRenderer>();

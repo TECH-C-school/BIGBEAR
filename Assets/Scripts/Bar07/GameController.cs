@@ -5,42 +5,76 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar07 {
     public class GameController : MonoBehaviour {
-        public GameObject bgset;
+
+        //フィールド
+        private GameObject bgset;
         private GameObject Card;
-/*
-        public Sprite f_flame;
-        public Sprite betflame;
-        public Sprite coinflame;
-        public Sprite cardflame;
-        public Sprite history;
-        public Sprite numberflame;
-        public Sprite text_draw;
-        public Sprite text_player;
-        public Sprite text_dealer;
-        public Sprite b_r;
-        public Sprite b_s2;
-        public Sprite coin2;
-        public Sprite f_word2;
-        public Sprite f_word4;
-        public Sprite bakarawin;
-        public Sprite bakaralose;
-        public Sprite b_menu;
-        */
+        private GameObject Cardflame;
+        private GameObject CardflameSub;
+        private GameObject faze;
+        private GameObject Buttons;
+        private GameObject Timer;
+
+        public bool timerflag = false;
+        private float timers = 0;
+        private int timeri = 0;
+
+        TimerController TC;
+
 
         private void Start()
         {
+            GameObject canvas = GameObject.Find("Canvas");
+
             //スタートの時点で定位置に設置する
-            GameObject backgroundset = Instantiate(bgset, transform.position = new Vector3(0, 0, 0), Quaternion.identity);
+            //スプライトの生成
+
+            bgset = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/bg"), transform.position = new Vector3(0, 0, 1), Quaternion.identity);
+            //Card = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Card"), transform.position = new Vector3(0, 0, -1), Quaternion.identity);
+            Cardflame = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/main_caldflame"), transform.position = new Vector3(0, 0, 0), Quaternion.identity);
+            CardflameSub = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/draw_cardflame"), transform.position = new Vector3(0, 0, 0), Quaternion.identity);
+            faze = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/faze"), transform.position = new Vector3(0, 0, 0), Quaternion.identity);
+            Timer=Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Timer"), transform.position = new Vector3(0, 0, 0), Quaternion.identity);
 
 
-            Card = Resources.Load<GameObject>("Resources/Prefabs/Bar07/Card");
-            Debug.Log(Card);
-            GameObject damy = Instantiate(Card, transform.position = new Vector3(0, 0, 0), Quaternion.identity);
+            //uguiの生成
+
+            Buttons = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Buttons"), transform.position = new Vector3(0, 0, 0), Quaternion.identity);
+            Buttons.transform.SetParent(canvas.transform,false);
+
+            TC = GameObject.Find("Timer(Clone)").GetComponent<TimerController>();
+
+            timers = 20;
+            timerflag = true;
+
 
         }
         private void Update()
         {
-            
+            if (timerflag == true) {
+
+                timers -= Time.deltaTime;
+
+
+                if(timeri != (int)timers)
+                {
+                    //ここでタイマースクリプトに数値を渡し、画像を変更させる
+                    TC.TimerSprite((int)timers);
+
+                }
+
+                timeri = (int)timers;
+
+                if (timers < 0)
+                {
+                    //20秒経過でタイマーは止まる
+                    TC.TimerSprite(-1);
+                    timerflag = false;
+                    timers = 20;
+                    timeri = 0;
+                }
+
+            }
         }
 
 
