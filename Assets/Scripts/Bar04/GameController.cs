@@ -3,59 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Bar04 {
+namespace Assets.Scripts.Bar04
+{
     public class GameController : MonoBehaviour
     {
 
-        private void MakeCards()
+
+
+        //プレイヤーカードの作成
+        private void PlayerMakeCards()
         {
-
-            int count = 0;
-
+            //Resources.Load<GameObject>でPrefabsのBar04のCardPlayerの画像情報を読み込んでいる
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/CardPlayer");
+
             var cardsObject = GameObject.Find("Player");
 
-            for(int i = 0; i < 1; i++)
+            //for (関数の名前 = 関数ごとの要素; 関数の名前 < 要素の数; 関数の名前+(++or--))
+            for (int i = 0; i < 5; i++)
             {
-                for (int j = 0; j < 1; j++)
-                {
 
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                //new Vector3(横軸の幅 - 横軸,縦軸,奥行き)となっている
+                cardObject.transform.position = new Vector3(i * 2.6f - 6.2f,-1f, 0);
 
-                    var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.parent = cardObject.transform;
 
-                    cardObject.transform.position = new Vector3(i * 1.5f - 3f,j * 1f - 2.5f, 0);
-
-                    cardObject.transform.parent = cardsObject.transform;
-
-                    var card = cardObject.GetComponent<Cards>();
-
-                    count++;
-
-                }
+                var card = cardObject.GetComponent<Card>();
 
             }
 
         }
 
-         private void Start()
-         {
-             Cards card = new Cards(1,Cards.PalayingCards.s);
+        //エネミーカードの作成
+        private void EnemyMakeCards()
+        {
 
-            MakeCards();
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/CardEnemy");
+            var cardsObject = GameObject.Find("Enemy");
 
-             /*Debug.Log("カード生成");
-             Debug.Log(card.Number);
-             Debug.Log(card.CardType);*/
+            for (int j = 0; j < 5; j++)
+            {
 
-         }
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+
+                cardObject.transform.position = new Vector3(j * 1.7f - 2.2f, 3.1f, 0);
+
+                cardObject.transform.parent = cardObject.transform;
+
+                var cards = cardObject.GetComponent<Card>();
+
+            }
+
+        }
+
+        private void Start()
+        {
+            Card card = new Card(1, Card.PalayingCards.s);
+
+            PlayerMakeCards();
+            EnemyMakeCards();
+
+            /*Debug.Log("カード生成");
+            Debug.Log(card.Number);
+            Debug.Log(card.CardType);*/
+
+        }
 
 
         //SceneManeger.LoadScene()でシーンを読み込む
-         public void TransitionToResult() {
-             SceneManager.LoadScene("Result");
+        public void TransitionToResult()
+        {
+            SceneManager.LoadScene("Result");
 
-            
-         }
-       }
 
+        }
     }
+}

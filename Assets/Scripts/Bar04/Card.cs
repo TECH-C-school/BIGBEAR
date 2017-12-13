@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cards : MonoBehaviour
+public class Card : MonoBehaviour
 {
     //列挙型...トランプの種類
     public enum PalayingCards {
@@ -17,17 +17,11 @@ public class Cards : MonoBehaviour
     public PalayingCards CardType;
     //トランプの数
     public int Number;
-    //トランプの裏面を入れる箱
-    public Sprite Back;
-    //トランプの表面を入れる箱
-    public Sprite Front;
 
     //Sprite [] image = Resources.LoadAll<Sprite> ();で指定したフォルダから画像をまとめて読み込む
     private Sprite[] image = Resources.LoadAll<Sprite>("Images/Bar/Cards/");
 
-
-
-    public Cards(int number,PalayingCards s)
+    public Card(int number,PalayingCards s)
    {
     Number = number;
     CardType = s;
