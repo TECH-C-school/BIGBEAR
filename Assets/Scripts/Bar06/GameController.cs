@@ -5,20 +5,39 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
-        private int count = 1;
+        private int count = 2;
         public void Start()
         {
-            var card = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var cardObject = Instantiate(card, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(-1.5f,-1,0);
+            //自分の初期カード
+            Sprite cardSprite = null;
+            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/c01");
+            var Mycard1 = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var MycardObject1 = Instantiate(Mycard1, transform.position, Quaternion.identity);
+            MycardObject1.transform.position = new Vector3(-1.5f,-1,0);
+            var spriteRenderer = MycardObject1.transform.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = cardSprite;
 
+
+            Sprite cardSprite2 = null;
+            cardSprite2 = Resources.Load<Sprite>("Images/Bar/Cards/c02");
+            var Mycard2 = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var MycardObject2 = Instantiate(Mycard2, transform.position, Quaternion.identity);
+            MycardObject2.transform.position = new Vector3(0, -1, 0);
+            var spriteRenderer2 = MycardObject2.transform.GetComponent<SpriteRenderer>();
+            spriteRenderer2.sprite = cardSprite2;
+            //相手の初期カード
+            var Dcard1 = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var DcardObject1 = Instantiate(Dcard1, transform.position, Quaternion.identity);
+            DcardObject1.transform.position = new Vector3(-1.5f, 2, 0);
+            var Dcard2 = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var DcardObject2 = Instantiate(Dcard2, transform.position, Quaternion.identity);
+            DcardObject2.transform.position = new Vector3(0, 2, 0);
         }
         public void AddBottunClick()
         {
-            
-            var card = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var cardObject = Instantiate(card, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(-1.5f+1.5f*count, -1, 0);
+            var Addcard = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var AddcardObject = Instantiate(Addcard, transform.position, Quaternion.identity);
+            AddcardObject.transform.position = new Vector3(-1.5f+1.5f*count, -1, 0);
             count++;
         }
 
