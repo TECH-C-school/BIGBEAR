@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
 
     private LayerMask mask;
-
+    private int alpha;
     // Use this for initialization
 
 
@@ -18,15 +20,31 @@ public class Card : MonoBehaviour
     }
 
 
-    //void OnMouseDown()
-    //{
+    //Alpha = 透明度 
+    void OnMouseDown()
+    {
+        //alphaが0の場合、カードのalpha値は0になる。
+        if (alpha==0)
+        {
+            var image = gameObject.GetComponent<SpriteRenderer>();
+            image.color = new Color(255, 255, 255, alpha);
+        
+            //alpha値を1にする。
+            alpha = 1;
+        
+            //alphaが1の場合、カードのalpha値は1になる。
+        } else if (alpha == 1) {
 
+            var image = gameObject.GetComponent<SpriteRenderer>();
+            image.color = new Color(255, 255, 255, alpha);
+           
+            //alpha値を0にする。
+            alpha = 0;
 
-    //    Debug.Log("hogehoge");
+        }
 
-    //}
-
-    //void ray()
+    }
+    //void Ray()
     //{
     //    var Sel = gameObject.transform.FindChild("SelCard").gameObject;
     //    // Rayの作成
@@ -37,16 +55,20 @@ public class Card : MonoBehaviour
     //    RaycastHit hit;
 
     //    // Rayが衝突したかどうか
-    //    if (Physics.Raycast(ray,out hit, 10.0f, mask))
+        
+    //    if (Physics.Raycast(ray, out hit, 10.0f, mask))
     //    {
-    //        var gae = hit.collider.GetComponentInChildren<GameObject>();
-    //        gae.
 
+    //        var hitCard = hit.collider.GetComponentInChildren<GameObject>();
+    //        hitCard.SetActive(true);
+    //    }else if (Physics.Raycast(ray, out hit, 10.0f, mask))
+    //    {
+
+    //        var hitCard = hit.collider.GetComponentInChildren<GameObject>();
+    //        hitCard.SetActive(false);
     //    }
-    //    //clickされた奴の子を非表示にする作業中。
-
-    //}
-
+    //    //出来なかったから諦め！
+        
 
 
 
@@ -54,39 +76,40 @@ public class Card : MonoBehaviour
 
 
 
-    /*
-        //スマホのタッチ判定
-        //スマホ向け そのオブジェクトがタッチされていたらtrue（マルチタップ対応）
-        bool OneTouchDown()
-        {
-            // タッチされているとき
-            if (0 < Input.touchCount)
+
+        /*
+            //スマホのタッチ判定
+            //スマホ向け そのオブジェクトがタッチされていたらtrue（マルチタップ対応）
+            bool OneTouchDown()
             {
-                // タッチされている指の数だけ処理
-                for (int i = 0; i < Input.touchCount; i++)
+                // タッチされているとき
+                if (0 < Input.touchCount)
                 {
-                    // タッチ情報をコピー
-                    Touch t = Input.GetTouch(i);
-                    // タッチしたときかどうか
-                    if (t.phase == TouchPhase.Began)
+                    // タッチされている指の数だけ処理
+                    for (int i = 0; i < Input.touchCount; i++)
                     {
-                        //タッチした位置からRayを飛ばす
-                        Ray ray = Camera.main.ScreenPointToRay(t.position);
-                        RaycastHit hit = new RaycastHit();
-                        if (Physics.Raycast(ray, out hit))
+                        // タッチ情報をコピー
+                        Touch t = Input.GetTouch(i);
+                        // タッチしたときかどうか
+                        if (t.phase == TouchPhase.Began)
                         {
-                            //Rayを飛ばしてあたったオブジェクトが自分自身だったら
-                            if (hit.collider.gameObject == cardPrefab)
+                            //タッチした位置からRayを飛ばす
+                            Ray ray = Camera.main.ScreenPointToRay(t.position);
+                            RaycastHit hit = new RaycastHit();
+                            if (Physics.Raycast(ray, out hit))
                             {
-                                return true;
+                                //Rayを飛ばしてあたったオブジェクトが自分自身だったら
+                                if (hit.collider.gameObject == cardPrefab)
+                                {
+                                    return true;
+                                }
                             }
                         }
                     }
                 }
+                return false;//タッチされてなかったらfalse
             }
-            return false;//タッチされてなかったらfalse
-        }
-        */
+            */
 
 
 
@@ -96,5 +119,5 @@ public class Card : MonoBehaviour
 
 
 
-}
+    }
 
