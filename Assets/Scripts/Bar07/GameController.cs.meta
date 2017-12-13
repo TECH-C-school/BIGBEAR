@@ -1,10 +1,28 @@
 fileFormatVersion: 2
 guid: c7480a1089e549d4c89ca39a755c1159
-timeCreated: 1508240894
+timeCreated: 1511157209
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - bg: {fileID: 21300000, guid: 135848139639a6c4da5a0ebd9159fd04, type: 3}
+  - f_flame: {fileID: 21300000, guid: ff5ac7fe4f572694fb89ea4fc199f051, type: 3}
+  - betflame: {fileID: 21300000, guid: 7cdff0dd8f10b2745aee79c7845c0d29, type: 3}
+  - coinflame: {fileID: 21300000, guid: 6f6e0977280252d4780b6355fc7cf453, type: 3}
+  - cardflame: {fileID: 21300000, guid: cf440ecd9150e7b4e9c4fe964183821a, type: 3}
+  - history: {fileID: 21300000, guid: 12ff96a2278b2254d83b25e6f1acdff1, type: 3}
+  - numberflame: {fileID: 21300000, guid: 573a467150c28d9488b15827ba9ce204, type: 3}
+  - text_draw: {fileID: 21300000, guid: a1a30e23330b97e47b48207ffd754ac4, type: 3}
+  - text_player: {fileID: 21300000, guid: 7aa6b7bad4b8f474cb1feab5ba318773, type: 3}
+  - text_dealer: {fileID: 21300000, guid: 639c4385a8ada5f46903baf560e80e96, type: 3}
+  - b_r: {fileID: 21300000, guid: 69f61fa42024f79428c7cba587f989d1, type: 3}
+  - b_s2: {fileID: 21300000, guid: 66cbd252ee2c0d447ba4df0986b55e2c, type: 3}
+  - coin2: {fileID: 21300000, guid: ce065994aace18e4fbb433b0d705ab04, type: 3}
+  - f_word2: {fileID: 21300000, guid: c14ad2d44f4864c4dadfd19af01976b5, type: 3}
+  - f_word4: {fileID: 21300000, guid: 77c3ee41f0da6db4fba2d4cd895ce3d8, type: 3}
+  - bakarawin: {fileID: 21300000, guid: ed834c68375e5744cad502958ba1bc6f, type: 3}
+  - bakaralose: {fileID: 21300000, guid: 23bfc774e90f30f49b58f30c820e834d, type: 3}
+  - b_menu: {fileID: 21300000, guid: 007c33e7d6ae7dc49bc263f9846e7048, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
