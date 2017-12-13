@@ -12,23 +12,26 @@ public class Cards : MonoBehaviour
         get { return _number; }
         set { _number = value; }
     }
+
+
     public string String
     {
         get { return _string; }
         set { _string = value; }
     }
 
-    //publicはGameControllerから呼び出せる
+    //ターンカードのfaceUpをtrueにする関数(表)
     public void TurnCardFaceUp()
     {
         TurnCard(true);
     }
 
+    //ターンカードのfaceUpをtrueにする関数(表)
     public void TurnCardFaceDown()
     {
         TurnCard(false);
     }
-    //privateは呼び出せない
+    //カードをターンする関数（private）
     private void TurnCard(bool faceUp)
     {
         Sprite cardSprite = null;
@@ -43,5 +46,6 @@ public class Cards : MonoBehaviour
         }
         var spriteRenderer = transform.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = cardSprite;
-        }
+        
+    }
 }

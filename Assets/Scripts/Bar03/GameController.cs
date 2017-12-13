@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar03 {
     public class GameController : MonoBehaviour
     {
-        
-        private string[] cardMark = new string[104] 
+        private string _nextCardString = "c01";
+        /*private string[] cardMark = new string[104] 
         {"Images/Bar/Cards/c01","Images/Bar/Cards/c02","Images/Bar/Cards/c03",
         "Images/Bar/Cards/c04","Images/Bar/Cards/c05","Images/Bar/Cards/c06",
         "Images/Bar/Cards/c07","Images/Bar/Cards/c08","Images/Bar/Cards/c09",
@@ -43,17 +43,18 @@ namespace Assets.Scripts.Bar03 {
         "Images/Bar/Cards/s03","Images/Bar/Cards/s04","Images/Bar/Cards/s05",
         "Images/Bar/Cards/s06","Images/Bar/Cards/s07","Images/Bar/Cards/s08",
         "Images/Bar/Cards/s09","Images/Bar/Cards/s10","Images/Bar/Cards/s11",
-        "Images/Bar/Cards/s12","Images/Bar/Cards/s13"} ;
+        "Images/Bar/Cards/s12","Images/Bar/Cards/s13"} ;*/
         void Start()
         {
-            int[] values = MakeRandomNumbers();
-            for (int i = 0; i < 104; i++)
-            {
-                Debug.Log(values[i]);
-            }
             MakeBackCards();
             BackGroundMake();
+            ClickCard();
         }
+        void Update()
+        {
+            ClickCard();
+        }
+        //多分リザルト
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
@@ -63,9 +64,9 @@ namespace Assets.Scripts.Bar03 {
         private void MakeBackCards()
         {
             int count = 0;
-            
             string[] cardMarkNumber = new string[52];
             cardSetMN(cardMarkNumber);
+            int[] mergedArray = cardMarkNumber.Concat(cardMarkNumber).ToArray();
 
             Transform parentObject = GameObject.Find("Cards").transform;
             GameObject cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar03/Back");
@@ -77,22 +78,40 @@ namespace Assets.Scripts.Bar03 {
                     n = 5;
                 }
                 
-                for (int y = 0; y < n; y++)
+                for (int y = 0; y < n + 1; y++)
                 {
-                    var cardObject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
-                    cardObject.transform.position = new Vector3(
-                        x * 1.76f - 7.97f,
-                        -y * 0.31f + 3.66f,
-                        -y * 0.1f);
-                    cardObject.transform.parent = parentObject;
-
-                    count++;
+                    if (y < n)
+                    {
+                        var cardObject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
+                        cardObject.transform.position = new Vector3(
+                            x * 1.76f - 7.97f,
+                            -y * 0.31f + 3.66f,
+                            -y * 0.1f);
+                        cardObject.transform.parent = parentObject;
+                        Cards cardSet = cardObject.GetComponent<Cards>();
+                        cardSet.String = cardMarkNumber[count];
+                        cardSet.TurnCardFaceDown();
+                        count++;
+                    }
+                    else
+                    {
+                        var cardObject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
+                        cardObject.transform.position = new Vector3(
+                            x * 1.76f - 7.97f,
+                            -y * 0.31f + 3.66f,
+                            -y * 0.1f);
+                        cardObject.transform.parent = parentObject;
+                        Cards cardSet = cardObject.GetComponent<Cards>();
+                        cardSet.String = cardMarkNumber[count];
+                        cardSet.TurnCardFaceUp();
+                        count++;
+                    }
                 }
             }
         }
 
         //randomにカードを配列にいれる関数
-        private void cardSetMN(string[] values)
+        private string[] cardSetMN(string[] values)
         {
             int[] card = new int[52];
 
@@ -139,6 +158,8 @@ namespace Assets.Scripts.Bar03 {
                     values[i] += mark[card[i] / 13] + kazu.ToString();
                 }
             }
+            return values;
+            
 
         }
 
@@ -167,6 +188,7 @@ namespace Assets.Scripts.Bar03 {
                 }
             }
         }
+        //ランダムな数字の配列を作る関数
         private int[] MakeRandomNumbers()
         {
             int[] values = new int[104];
@@ -187,6 +209,35 @@ namespace Assets.Scripts.Bar03 {
             
             return values;
         }
+        private void ClickCard()
+        {
+            //マウスクリックの判定
+            if (!Input.GetMouseButtonDown(0)) return;
+
+            //クリックされた位置を取得
+            var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            //Collider2D上クリックの判定
+            if (!Physics2D.OverlapPoint(tapPoint)) return;
+
+            //クリックされた位置のオブジェクトを取得
+            var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
+            if (!hitObject) return;
+
+            //クリックされたカードスクリプトを取得
+            var card = hitObject.collider.gameObject.GetComponent<Cards>();
+            Debug.Log("hit object is" + card.String);
+
+            //次にクリックされるカードが判明
+            //if (_nextCardString != card.String) return;
+
+            //カードを反転する
+            card.TurnCardFaceUp();
+            
+
+
+        }
+
     }
-        
+
 }
