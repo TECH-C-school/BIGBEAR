@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
-
+        private int counter = 1;
 
         public enum Mark
         {
@@ -43,19 +43,29 @@ namespace Assets.Scripts.Bar06 {
 
             //カードを表示させる
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
+
             for (int i = 0; i <= 1; i++)
             {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(0 - i, -2.5f, 0);
             }
-            
+
+            for (int i = 0; i <= 1; i++)
+            {
+                var cardObject2 = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject2.transform.position = new Vector3(0 - i, 2.5f, 0);
+            }
+
         }
 
         public void AddCard()
         {
-            Debug.Log("AddCard");
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var addCardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            addCardObject.transform.position = new Vector3(counter, -2.5f, 0);
+            counter++;
         }
-
+        
         public void Battle()
         {
             Debug.Log("Battle");
