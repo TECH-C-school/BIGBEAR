@@ -15,20 +15,14 @@ public class Cards : MonoBehaviour
         c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13
 
     }
+    GameObject[] FloorCardHolder = new GameObject[28];
+    GameObject[] DeckcardHolder = new GameObject[24];
 
     void Start()
     {
         MakeCardFlame();
         MakeStartCard();
     }
-
-
-    void Update()
-    {
-
-    }
-
-
     /// <summary>
     /// カード置き場の生成
     /// </summary>
@@ -76,9 +70,9 @@ public class Cards : MonoBehaviour
         }
     }
     /// <summary>
-    /// カードの生成
+    /// 場にカードの生成
     /// </summary>
-    void MakeStartCard()
+    public void MakeStartCard()
     {
         //カード置き場にbackカードの生成
         var LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/back");
@@ -90,7 +84,6 @@ public class Cards : MonoBehaviour
         var MakeCard = Instantiate(LoadCard, transform.position, Quaternion.identity);
         MakeCard.transform.position = new Vector3(-4.5f, 1.97f, -1);
         MakeCard.transform.parent = CheckCard.transform;
-
         //場にカードをランダムに生成
         for (int i = 0; i < 7; i++)
         {
@@ -98,24 +91,32 @@ public class Cards : MonoBehaviour
             {
                 //ランダムな数字と同じ列挙型の中にある値を呼び出す
                 var Number = (Card)random[count];
+                if(i == j)
+                {
+                    LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/" + Number);
+                    FloorCardHolder[count] = LoadCard;
+                    Debug.Log(FloorCardHolder[count]);
+                    MakeCard = Instantiate(LoadCard, transform.position, Quaternion.identity);
 
+                    MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.15f * j, 0 - 1 * j);
+                    MakeCard.transform.parent = CheckCard.transform;
+                    count++;
+                    break;
+                }
                 LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/" + Number);
+                FloorCardHolder[count] = LoadCard;
+                LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/back");
                 MakeCard = Instantiate(LoadCard, transform.position, Quaternion.identity);
 
-                MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.1f * j, 0 - 0.1f * j);
+                MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.15f * j, 0 - 1 * j);
                 MakeCard.transform.parent = CheckCard.transform;
-
+                Debug.Log(FloorCardHolder[count]);
                 count++;
-
-                if (i == j)
-                    break;
             }
-
         }
-        //カード置き場にカードを生成
+        /*
         for (int x = 0; x < 24; x++)
         {
-            var Number = (Card)random[count];
             LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/" + Number);
             MakeCard = Instantiate(LoadCard, transform.position, Quaternion.identity);
 
@@ -123,6 +124,7 @@ public class Cards : MonoBehaviour
             MakeCard.transform.parent = CheckCard.transform;
             count++;
         }
+        */
     }
     /// <summary>
     /// ランダムな数字を生成
