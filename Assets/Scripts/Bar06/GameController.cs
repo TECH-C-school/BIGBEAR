@@ -15,20 +15,21 @@ namespace Assets.Scripts.Bar06
         private void MakeCard()
         {
           
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");;
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
+;
 
             for (var i = 0; i < 2; i++)
             {
                 for (var j = 0; j < 2; j++)
                 {
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                    cardObject.transform.position = new Vector2(i * -0.6f - 0f, j * 0f - 0f);
+                    cardObject.transform.position = new Vector2(i - 0.5f, j * 2.25f - 1.1f);
                     cardObject.transform.parent = transform;
 
                 }
             }
         }
-        private int[] MakeRandomNumbers()
+       /* private int[] MakeRandomNumbers()
         {
             int[] numbers = new int[51];
             for (var i = 0; i < 51; i++)
@@ -45,7 +46,7 @@ namespace Assets.Scripts.Bar06
                 counter++;
             }
             return numbers;
-        }
+        }*/
         public void ClickCardplusButton()
         {
 
