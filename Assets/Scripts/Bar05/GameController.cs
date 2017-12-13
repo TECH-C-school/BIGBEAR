@@ -4,15 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 次回作業 --> 役判定の作成(続き)
+ * 次回作業 --> Phaseの作成
  */
 
 /*
- * 今回作業 --> Player1CardListのカード一覧をわかりやすく把握出来るようにする
- *              Player1CardList内のカードのマーク内訳を取り出す関数作成
- *              ついでに相手の方も実装しといた
- *              役判定の作成(フラッシュ)
- *              NumberManager(それぞれの数字の枚数を表示する)の作成
+ * 今回作業 --> 役判定の作成(残り全て)
+ *              表示/非表示の切り替え方法を変更
  */
 
 namespace Assets.Scripts.Bar05 {
@@ -334,17 +331,17 @@ namespace Assets.Scripts.Bar05 {
 
         //役判定するゾ～
 
-        /* 役一覧(handLevel)
-         * ハイカード(0)
-         * ワンペア(1)
-         * ツーペア(2)
-         * スリーカード(3)
-         * ストレート(4)
-         * フラッシュ(5)
-         * フルハウス(6)
-         * フォーカード(7)
-         * ストレートフラッシュ(8)
-         * ロイヤルストレートフラッシュ(9)
+        /* 役一覧(handLevel)                   実装状況(0:未実装 1:実装)
+         * ハイカード(0)                       1
+         * ワンペア(1)                         1
+         * ツーペア(2)                         1
+         * スリーカード(3)                     1
+         * ストレート(4)                       1
+         * フラッシュ(5)                       1
+         * フルハウス(6)                       1
+         * フォーカード(7)                     1
+         * ストレートフラッシュ(8)             1
+         * ロイヤルストレートフラッシュ(9)     1
          */
 
         //変数置き場
@@ -369,28 +366,147 @@ namespace Assets.Scripts.Bar05 {
             }
             Debug.Log(db);
 
+            //ストレートフラッシュ以上の判定用フラグ(のつもり)
+            int SFFlag = 0;
+            bool RSFFlag = true;
+            //マークを見る
             //それぞれのマークの枚数が5枚以上ならフラッシュ(5)
             int x = 0;
             while (x < Marks.Length)
             {
-                if(Marks[x] >= 5)
+                if (Marks[x] >= 5)
                 {
                     PlayerHandLevel = 5;
                     Debug.Log("フラッシュ");
+                    SFFlag = SFFlag + 1;
                     break;
                 }
                 x++;
             }
-            //その後はストレートフラッシュ以上を軽く見るだけ
-            if(PlayerHandLevel == 5)
+            //数字を見る
+            //ストレートの判定
+            x = 0;
+            int Straight = 0;
+            while (x < NumberManager.Length)
             {
-                //処理
+                if(NumberManager[x] >= 1)
+                {
+                    Straight = Straight + 1;
+                }
+                else
+                {
+                    Straight = 0;
+                }
+                if(Straight == 5)
+                {
+                    if(PlayerHandLevel < 4)
+                    {
+                        PlayerHandLevel = 4;
+                    }
+                    Debug.Log("ストレート");
+                    SFFlag = SFFlag + 1;
+                    break;
+                }
+                x++;
             }
-            
+            //特殊ストレート判定
+            if(NumberManager[0] >= 1)
+            {
+                x = 0;
+                while(x < 4)
+                {
+                    int Place = 9 + x;
+                    if(NumberManager[Place] == 0)
+                    {
+                        RSFFlag = false;
+                        break;
+                    }
+                    x++;
+                }
+            }
+            //(ロイヤル)ストレートフラッシュの判定
+            if (SFFlag == 2)
+            {
+                if(RSFFlag)
+                {
+                    PlayerHandLevel = 9;
+                    Debug.Log("ロイヤルストレートフラッシュ");
+                }
+                else
+                {
+                    PlayerHandLevel = 8;
+                    Debug.Log("ストレートフラッシュ");
+                }
+            }
+            //ペア・スリーカード・フォーカードが何個あるか数える
+            int PHand2 = 0;
+            int PHand3 = 0;
+            x = 0;
+            while(x < NumberManager.Length)
+            {
+                //フラッシュ以上が確定している場合、それ以上の役はないのでBreak
+                if(x == 0 & PlayerHandLevel != 0)
+                {
+                    break;
+                }
+                //フォーカードを検出したらそれ以上の役はないのでBreak
+                if(NumberManager[x] == 4)
+                {
+                    PlayerHandLevel = 7;
+                    Debug.Log("フォーカード");
+                    break;
+                }
+                //スリーカードを検出
+                //スリーカードが2組ある場合、フルハウスになる
+                if(NumberManager[x] == 3)
+                {
+                    PHand3 = PHand3 + 1;
+                }
+                //ペアを見る
+                else if(NumberManager[x] == 2)
+                {
+                    PHand2 = PHand2 + 1;
+                }
+                x++;
+            }
+            //その他役判定
+            if(PlayerHandLevel == 0)
+            {
+                //フルハウス
+                if(PHand3 == 2)
+                {
+                    PlayerHandLevel = 6;
+                    Debug.Log("フルハウス");
+                }
+                else if(PHand3 == 1 & PHand2 >= 1)
+                {
+                    PlayerHandLevel = 6;
+                    Debug.Log("フルハウス");
+                }
+                else if(PHand3 == 1)
+                {
+                    PlayerHandLevel = 3;
+                    Debug.Log("スリーカード");
+                }
+                else if(PHand2 == 2)
+                {
+                    PlayerHandLevel = 2;
+                    Debug.Log("ツーペア");
+                }
+                else if(PHand2 == 1)
+                {
+                    PlayerHandLevel = 1;
+                    Debug.Log("ワンペア");
+                }
+                else
+                {
+                    Debug.Log("ノーペア");
+                }
+            }
+            //デバッグ用
+            Debug.Log("ペア" + PHand2 + ":スリーカード" + PHand3 + ":HandLevel" + PlayerHandLevel);
         }
-
-
-
+        
         //役の判定ここまで
 
         //ゲーム進行ここから
@@ -403,7 +519,10 @@ namespace Assets.Scripts.Bar05 {
             FinalBet,
             Result,
         }
+        private GamePhase _Phase = 0;
         
+
+
         //ゲーム進行ここまで
 
         public void TransitionToResult() {
@@ -411,51 +530,3 @@ namespace Assets.Scripts.Bar05 {
         }
     }
 }
-
-/*
- * 判定アルゴリズム雑記(のはずだった)
- * 
- * ルールはご存知の通り手札+場札の7枚の内最適な5枚の役で勝負する
- * ではどうやってその役を見分けるか
- * 
- * 役一覧(昇順)
- * ハイカード(ノーペア)
- * ワンペア
- * ツーペア
- * スリーカード
- * ストレート
- * フラッシュ
- * フルハウス
- * フォーカード
- * ストレートフラッシュ
- * ロイヤルストレートフラッシュ
- * 
- * 同じ数字が揃わない役はハイカード・ストレート・フラッシュ、ストレートフラッシュ、ロイヤルストレートフラッシュ
- * 裏を返せば他の役は同じ数字が揃うので、最初はペアの有無を見て判定を進める
- * 
- * ペアある組
- * ワンペア
- * ツーペア
- * スリーカード
- * フルハウス
- * フォーカード
- * 
- * まずはフォーカードの判定 (Y = フォーカード)
- * 次にスリーカードがあるかを判定し、ある場合更にペアが無いかを探す(Y = フルハウス;N =スリーカード)
- * スリーカードが無かった場合、最初のペア以外にペアがあるかを探す(Y = ツーペア;N =ワンペア)
- * 
- * ペアない組
- * ハイカード
- * ストレート
- * フラッシュ
- * ストレートフラッシュ
- * ロイヤルストレートフラッシュ
- * 
- * ペアがあった場合でも判定は通す
- * まずはロイヤルストレートフラッシュのみあるか判定(Y = ロイヤルストレートフラッシュ)
- * 次にフラッシュの判定
- * あったらそれがストレートがどうかを判定(Y = ストレートフラッシュ;N = フラッシュ)
- * もう一回ストレートの判定(Y = ストレート; N = ハイカード)
- * 両方無かったらハイカード確定
- * 多分な
- */

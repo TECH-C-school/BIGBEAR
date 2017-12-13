@@ -97,7 +97,23 @@ public class Card : MonoBehaviour {
         */
     }
 
-    //カードを表示するよ
+    //カードを表示したりしなかったりする
+    public void StackView(bool CardActive)
+    {
+        Vector3 pos = transform.position;
+        if (CardActive)
+        {
+            pos.z = 0;
+            transform.position = pos;
+        }
+        else
+        {
+            pos.z = 1;
+            transform.position = pos;
+        }
+    }
+
+    //カードを出す
     public void CardMake()
     {
         Sprite cardSprite = null;
@@ -113,8 +129,10 @@ public class Card : MonoBehaviour {
         var spriteRenderer = transform.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = cardSprite;
 
-        //場札を非表示にしておく
-        //**/if(_parent.name == "CardStacks"){StackView(false);}
+        if(_parent.name == "CardStacks")
+        {
+            StackView(false);
+        }
 
         //ここからデバッグ用
         string cardDebug = cardtype();
@@ -138,19 +156,6 @@ public class Card : MonoBehaviour {
         else
         {
             Debug.Log("エラー");
-        }
-    }
-
-    //場札のカードを表示したりしなかったりする
-    public void StackView(bool CardActive)
-    {
-        if(CardActive)
-        {
-            gameObject.SetActive(true);
-        }
-        else
-        {
-            gameObject.SetActive(false);
         }
     }
 
