@@ -24,6 +24,7 @@ namespace Assets.Scripts.Bar01
         private int column;
         private bool select = false;
         private bool front = false;
+        [SerializeField]
         private bool outCard = false;
         [SerializeField]
         private CardTypes cardType;

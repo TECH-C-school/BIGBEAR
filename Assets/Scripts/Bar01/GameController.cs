@@ -236,16 +236,18 @@ namespace Assets.Scripts.Bar01 {
             Collider2D hit = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             if (!hit) { return; }
             if(hit.name != "Deck(Clone)") { return; }
-            for(int i = 0; i < 3; i++)
+            if (dackOut.Count != 0)
             {
-                if (dackOut.Count != 0)
+                Card[] cards = dackOut.ToArray();
+                Debug.Log(cards[0].CardNumber + "" + cards[0].CardType);
+
+                for (int t = cards.Length - 1; t >= 0; t--)
                 {
-                    Debug.Log(dackOut.Count);
-                    Debug.Log(dackOut.Peek().CardNumber + "" + dackOut.Peek().CardType);
-                    GameObject desCard = dackOut.Pop().gameObject;
-                    dackArray.Enqueue(desCard.GetComponent<Card>());
-                    Destroy(desCard);
+                    cards[t].transform.position = dackCards[0].transform.position + new Vector3(0,0,t);
                 }
+                Debug.Log(dackOut.Count);
+                Debug.Log(dackOut.Peek().CardNumber + "" + dackOut.Peek().CardType);
+                //Destroy(desCard);
             }
             for(int i = 0; i < 3; i++)
             {
@@ -297,11 +299,11 @@ namespace Assets.Scripts.Bar01 {
                 Card hitCard = hit.GetComponent<Card>();
                 Debug.Log("hit Card is" + hitCard.CardType + "," + hitCard.CardNumber);
                 Vector3 setPosition = ChackCard(hitCard);
-                selectCard.transform.position = setPosition;
                 if (setPosition != card.From)
                 {
-                    selectCard.transform.parent = hit.transform;
                     card.From = setPosition;
+                    selectCard.transform.position = card.From;
+                    selectCard.transform.parent = hit.transform;
                     if (hitCard.OutCard)
                     {
                         CardsMove(selectCards, outArray[(int)hitCard.CardType]);
@@ -321,14 +323,20 @@ namespace Assets.Scripts.Bar01 {
                 {
                     if (selectCards[0].OutCard)
                     {
+                        card.From = setPosition;
+                        selectCard.transform.position = card.From;
                         CardsMove(selectCards, outArray[(int)selectCards[0].CardType]);
                     }
                     else if (selectCards[0].dack)
                     {
+                        card.From = setPosition;
+                        selectCard.transform.position = card.From;
                         selectCard.transform.position = selectCards[0].From;
                     }
                     else
                     {
+                        card.From = setPosition;
+                        selectCard.transform.position = card.From;
                         CardsMove(selectCards, stageArray[selectCards[0].Column]);
                     }
                     
@@ -371,10 +379,10 @@ namespace Assets.Scripts.Bar01 {
                     {
                         card.OutCard = false;
                     }
-                    selectCard.transform.position = firstPositions[i].transform.position;
+
                     selectCards[selectCards.Length -1].Column = i;
-                    selectCards[selectCards.Length - 1].From = firstPositions[i].transform.position + new Vector3(0, 0, -1);
-                    selectCards[selectCards.Length - 1].gameObject.transform.position += new Vector3(0, 0, -1);
+                    selectCards[selectCards.Length - 1].From = firstPositions[i].transform.position;
+                    selectCards[selectCards.Length - 1].gameObject.transform.position = selectCards[selectCards.Length - 1].From;
                     for (int t = 0; t < selectCards.Length -1 ; t++)
                     {
                         selectCards[t].Column = i;
@@ -408,7 +416,8 @@ namespace Assets.Scripts.Bar01 {
                         outArray1[boxIndex]++;
                         CardsMove(selectCards, outArray[boxIndex]);
                         selectCards[0].OutCard = true;
-                        selectCards[0].transform.position = outStagePositon[boxIndex];
+                        selectCards[0].transform.position = outStagePositon[boxIndex] + new Vector3(0,0,-1);
+                        selectCards[0].transform.parent = hit.transform;
                         selectCards[0].From = outStagePositon[boxIndex];
                     }
                     else if (selectCards[0].OutCard)
@@ -646,7 +655,6 @@ namespace Assets.Scripts.Bar01 {
             }
             if (stageArray[selectCards[0].Column].Count != 0)
             {
-                Debug.Log(stageArray[selectCards[0].Column].Peek().CardType + " :" + stageArray[selectCards[0].Column].Peek().CardNumber);
                 stageArray[selectCards[0].Column].Peek().TurnCard(true);
             }
             Debug.Log("To card box last card is" + toCardBox.Peek().CardType + ":" + toCardBox.Peek().CardNumber);
