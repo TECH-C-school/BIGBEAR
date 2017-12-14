@@ -23,21 +23,16 @@ namespace Assets.Scripts.Bar0404 {
         }
 
         public void PokerCheck() {
-            for (int i = 0; i < m_Hund.Length; i++) {
-                Debug.Log(m_Hund[i]);
-            }
 
-            Onepare(m_Hund);
-
-            switch (m_Poker) {
-                case 1:
-                    Debug.Log("ワンペア");
-                    break;
+            if (TwoPare(m_Hund) == 2) {
+                Debug.Log("ツーペア");
+            }else if(Onepare(m_Hund) == 1) {
+                Debug.Log("ワンペア");
             }
 
         }
 
-        void Onepare(int[] xyz) {
+        int Onepare(int[] xyz) {
             for (int i = 0; i < xyz.Length; i++){
                 for (int j = i+ 1 ; j < xyz.Length; j++){
                     if (xyz[i] == xyz[j]) {
@@ -45,6 +40,27 @@ namespace Assets.Scripts.Bar0404 {
                     }
                 }
             }
+            return m_Poker;
+        }
+
+        int TwoPare(int[] xyz) {
+            for (int i = 0; i < xyz.Length; i++){
+                for (int j = i+ 1 ; j < xyz.Length; j++){
+                    if (xyz[i] == xyz[j]) {
+                        for (int k = j+1 ; k < xyz.Length; k++)
+                        {
+                            for (int l = k + 1; l < xyz.Length; l++)
+                            {
+                                if (xyz[k] == xyz[l])
+                                {
+                                    m_Poker = 2;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return m_Poker;
         }
 
     }
