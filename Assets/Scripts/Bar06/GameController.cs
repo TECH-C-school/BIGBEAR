@@ -5,13 +5,19 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
+
         private int count = 1;
+        private int playercount = 0;
+        private int enemycount = 0;
+
+
+
         public enum Mark
         {
-            Clover,
-            Diamond,
-            Heart,
-            Spade,
+            c,
+            d,
+            h,
+            s,
         }
 
         public struct Cards
@@ -28,38 +34,60 @@ namespace Assets.Scripts.Bar06 {
             Cards card2_1 = new Cards();
             Cards card2_2 = new Cards();
 
-            var counter = 0;
-            while (counter <= 3)
-            {
-                int number = Random.Range(1, 14);
-                int markV = Random.Range(0, 4);
-                Mark mark = (Mark)markV;
-                string str = mark.ToString();
-                Debug.Log(str + number);
-                counter++;
-            }
-            //自分??
+            card1_1.number = Random.Range(01, 14);
+            card1_1.mark = (Mark)Random.Range(0, 3);
+
+            card1_2.number = Random.Range(01, 14);
+            card1_2.mark = (Mark)Random.Range(0, 3);
+
+            card2_1.number = Random.Range(01, 14);
+            card2_1.mark = (Mark)Random.Range(0, 3);
+
+            card2_2.number = Random.Range(01, 14);
+            card2_2.mark = (Mark)Random.Range(0, 3);
+
+            int playercount = card1_1.number + card1_2.number;
+
+            int value = card1_1.number;
+            value.ToString().PadLeft(2, '0');
+
+
+
+            // var cardPrefab = Resources.Load<GameObject>().
+
+            Debug.Log(card1_1.mark.ToString() + card1_1.number);
+            Debug.Log(card1_2.mark.ToString() + card1_2.number);
+            Debug.Log(playercount);
+
+            Debug.Log(card2_1.mark.ToString() + card2_1.number);
+            Debug.Log(card2_2.mark.ToString() + card2_2.number);
+            Debug.Log(enemycount);
+
+            //自分
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
             for (int y = 0; y <= 1; y++)
             {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(0 - y, 1.5f, 0);
             }
-            //相手??
+            //相手///
             for (int y = 0; y <= 1; y++)
             {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(0 - y, -1.5f, 0);
             }
-
         }
 
         public void Addcard()
         {
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(count, -1.5f, 0);
-            count++;
+            if (playercount <= 21)
+            {
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.localScale = new Vector3(0.174f, 0.174f, 0.174f);
+
+                count++;
+            }
         }
         public void TransitionToResult()
         {
