@@ -3,102 +3,125 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class start : MonoBehaviour {
+public class start : MonoBehaviour
+{
 
-    List<string> Row = new List<string>();
-    List<string> Row2 = new List<string>();
-    List<string> Row3 = new List<string>();
-    List<string> Row4 = new List<string>();
-    List<string> Row5 = new List<string>();
-    List<string> Row6 = new List<string>();
-    List<string> Row7 = new List<string>();
-    List<string> Row8 = new List<string>();
-    List<string> Row9 = new List<string>();
-    List<string> Row10 = new List<string>();
-    List<string> Beck = new List<string>();
+    List<Cards> Row = new List<Cards>();
+    List<Cards> Row2 = new List<Cards>();
+    List<Cards> Row3 = new List<Cards>();
+    List<Cards> Row4 = new List<Cards>();
+    List<Cards> Row5 = new List<Cards>();
+    List<Cards> Row6 = new List<Cards>();
+    List<Cards> Row7 = new List<Cards>();
+    List<Cards> Row8 = new List<Cards>();
+    List<Cards> Row9 = new List<Cards>();
+    List<Cards> Row10 = new List<Cards>();
+    List<Cards> Beck = new List<Cards>();
 
-    struct Cards
+    public enum Mark { Heart, Spade, Dia, Clover };
+
+    public struct Cards
     {
         public int Number;
-        public string Mark;
+        public Mark mark;
         public bool Decision;
     }
 
+    public string GetCards(int Number, Mark mark)
+    {
+        string fileName = "";
 
-    // Use this for initialization
-    void Start() {
-        string[] numbers = MakeRandomNumbers();
-        MakeRow(numbers);
+        switch (mark)
+        {
+            case Mark.Clover:
+                fileName += "c";
+                break;
+        }
+
+        if (Number < 10)
+        {
+            String.Format("{0:00}", Number);
+            fileName += Number;
+        }
+        else
+        {
+            fileName += Number;
+        }
+        
+        return fileName;
+    }
+}
+
+
+// Use this for initialization
+void Start()
+    {
+        Cards[] Deck = new Cards[104];
+        var DeckCounter = 0;
+
+        for (var j = 0; j < 2; j++)
+        {
+            for (var i = 0; i < 13; i++)
+            {
+                Cards student = new Cards();
+                student.Number = i;
+                student.mark = Mark.Clover;
+                student.Decision = true;
+
+                Deck[DeckCounter] = student;
+                DeckCounter++;
+            }
+
+            for (var i = 0; i < 13; i++)
+            {
+                Cards student = new Cards();
+                student.Number = i;
+                student.mark = Mark.Dia;
+                student.Decision = true;
+
+                Deck[DeckCounter] = student;
+                DeckCounter++;
+            }
+
+            for (var i = 0; i < 13; i++)
+            {
+                Cards student = new Cards();
+                student.Number = i;
+                student.mark = Mark.Heart;
+                student.Decision = true;
+
+                Deck[DeckCounter] = student;
+                DeckCounter++;
+            }
+
+            for (var i = 0; i < 13; i++)
+            {
+                Cards student = new Cards();
+                student.Number = i;
+                student.mark = Mark.Spade;
+                student.Decision = true;
+
+                Deck[DeckCounter] = student;
+                DeckCounter++;
+            }
+        }
+
+        for (var i = 0; i < Deck.Length; i++)
+        {
+            int rnd = UnityEngine.Random.Range(i, Deck.Length);
+            var temp = Deck[i];
+            Deck[i] = Deck[rnd];
+            Deck[rnd] = temp;
+        }
+
+        MakeRow(Deck);
         MakeCards();
-
-        for(var i = 0; i < 13; i++)
-        {
-            Cards student = new Cards();
-            student.Number = i;
-            student.Mark = "c";
-            student.Decision = true;
-        }
-
-        for (var i = 0; i < 13; i++)
-        {
-            Cards student = new Cards();
-            student.Number = i;
-            student.Mark = "d";
-            student.Decision = true;
-        }
-
-        for (var i = 0; i < 13; i++)
-        {
-            Cards student = new Cards();
-            student.Number = i;
-            student.Mark = "h";
-            student.Decision = true;
-        }
-
-        for (var i = 0; i < 13; i++)
-        {
-            Cards student = new Cards();
-            student.Number = i;
-            student.Mark = "s";
-            student.Decision = true;
-        }
-
-        for (var i = 0; i < 13; i++)
-        {
-            Cards student = new Cards();
-            student.Number = i;
-            student.Mark = "c";
-            student.Decision = true;
-        }
-
-        for (var i = 0; i < 13; i++)
-        {
-            Cards student = new Cards();
-            student.Number = i;
-            student.Mark = "d";
-            student.Decision = true;
-        }
-
-        for (var i = 0; i < 13; i++)
-        {
-            Cards student = new Cards();
-            student.Number = i;
-            student.Mark = "h";
-            student.Decision = true;
-        }
-
-        for (var i = 0; i < 13; i++)
-        {
-            Cards student = new Cards();
-            student.Number = i;
-            student.Mark = "s";
-            student.Decision = true;
-        }
 
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
     }
 
@@ -107,11 +130,11 @@ public class start : MonoBehaviour {
     /// </summary>
     private void MakeCards()
     {
-        
+
         /// <summary>
         /// 上のカード生成(54枚)
         /// </summary>
- 
+
         for (int i = 0; i < 6; i++)
         {
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Card");
@@ -204,97 +227,76 @@ public class start : MonoBehaviour {
     }
 
 
-    /// <summary>
-    /// カードをランダムにする。
-    /// </summary>
-    private string[] MakeRandomNumbers()
-    {
-        string[] numbers = {"c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "c11", "c12", "c13",
-                            "d01", "d02", "d03", "d04", "d05", "d06", "d07", "d08", "d09", "d10", "d11", "d12", "d13",
-                            "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13",
-                            "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13",
-                            "c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "c11", "c12", "c13",
-                            "d01", "d02", "d03", "d04", "d05", "d06", "d07", "d08", "d09", "d10", "d11", "d12", "d13",
-                            "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13",
-                            "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13" };
-        System.Random random = new System.Random();
-        for (var i = 0; i < numbers.Length; i++)
-        {
-            int rnd = UnityEngine.Random.Range(i, numbers.Length);
-            var temp = numbers[i];
-            numbers[i] = numbers[rnd];
-            numbers[rnd] = temp;        
-        }
-        return numbers;
 
-    }
-    private void MakeRow(string[] numbers)
+
+    private void MakeRow(Cards[] Deck)
     {
 
-        for(int i = 0; i < 6; i++)
+
+        for (int i = 0; i < 6; i++)
         {
-            Row.Add(numbers[i]);
+            Row.Add(Deck[i]);
         }
 
 
         for (int i = 0; i < 6; i++)
         {
-            Row2.Add(numbers[6 + i]);
+            Row2.Add(Deck[6 + i]);
         }
 
 
         for (int i = 0; i < 6; i++)
         {
-            Row3.Add(numbers[12 + i]);
+            Row3.Add(Deck[12 + i]);
         }
 
 
         for (int i = 0; i < 6; i++)
         {
-            Row4.Add(numbers[18 + i]);
+            Row4.Add(Deck[18 + i]);
         }
 
 
         for (int i = 0; i < 5; i++)
         {
-            Row5.Add(numbers[24 + i]);
+            Row5.Add(Deck[24 + i]);
         }
 
 
         for (int i = 0; i < 5; i++)
         {
-            Row6.Add(numbers[29 + i]);
+            Row6.Add(Deck[29 + i]);
         }
 
 
         for (int i = 0; i < 5; i++)
         {
-            Row7.Add(numbers[34 + i]);
+            Row7.Add(Deck[34 + i]);
         }
 
 
         for (int i = 0; i < 5; i++)
         {
-            Row8.Add(numbers[39 + i]);
+            Row8.Add(Deck[39 + i]);
         }
 
 
 
         for (int i = 0; i < 5; i++)
         {
-            Row9.Add(numbers[44 + i]);
+            Row9.Add(Deck[44 + i]);
         }
 
 
         for (int i = 0; i < 5; i++)
         {
-            Row10.Add(numbers[49 + i]);
+            Row10.Add(Deck[49 + i]);
         }
 
 
         for (int i = 0; i < 50; i++)
         {
-            Beck.Add(numbers[54 + i]);
+            Beck.Add(Deck[54 + i]);
         }
     }
 }
