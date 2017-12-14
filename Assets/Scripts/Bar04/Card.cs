@@ -4,71 +4,111 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 
-public class Card : MonoBehaviour
+namespace Assets.Scripts.Bar04
 {
 
-    private LayerMask mask;
-    private int alpha;
-    // Use this for initialization
-
-
-
-    // Update is called once per frame
-    void Update()
+    public class Card : MonoBehaviour
     {
 
-    }
+        private LayerMask mask;
+        private int alpha;
+        // Use this for initialization
 
 
-    //Alpha = 透明度 
-    void OnMouseDown()
-    {
-        //alphaが0の場合、カードのalpha値は0になる。
-        if (alpha==0)
+
+        // Update is called once per frame
+        void Update()
         {
-            var image = gameObject.GetComponent<SpriteRenderer>();
-            image.color = new Color(255, 255, 255, alpha);
-        
-            //alpha値を1にする。
-            alpha = 1;
-        
-            //alphaが1の場合、カードのalpha値は1になる。
-        } else if (alpha == 1) {
-
-            var image = gameObject.GetComponent<SpriteRenderer>();
-            image.color = new Color(255, 255, 255, alpha);
-           
-            //alpha値を0にする。
-            alpha = 0;
 
         }
 
-    }
-    //void Ray()
-    //{
-    //    var Sel = gameObject.transform.FindChild("SelCard").gameObject;
-    //    // Rayの作成
-    //    Ray ray = new Ray(transform.position, transform.forward);
-    //    Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-    //    // Rayが衝突したコライダーの情報を得る
-    //    RaycastHit hit;
+        //Alpha = 透明度 
+        void OnMouseDown()
+        {
+            var image = gameObject.GetComponent<SpriteRenderer>();
 
-    //    // Rayが衝突したかどうか
-        
-    //    if (Physics.Raycast(ray, out hit, 10.0f, mask))
-    //    {
+            //alphaが0の場合、カードのalpha値は0になる。
+            if (alpha == 0)
+            {
+                //alpha値を1にする。
+                alpha = 1;
 
-    //        var hitCard = hit.collider.GetComponentInChildren<GameObject>();
-    //        hitCard.SetActive(true);
-    //    }else if (Physics.Raycast(ray, out hit, 10.0f, mask))
-    //    {
+                image.color = new Color(255, 255, 255, alpha);
 
-    //        var hitCard = hit.collider.GetComponentInChildren<GameObject>();
-    //        hitCard.SetActive(false);
-    //    }
-    //    //出来なかったから諦め！
-        
+                //alphaが1の場合、カードのalpha値は1になる。
+            }
+            else if (alpha == 1)
+            {
+                //alpha値を0にする。
+                alpha = 0;
+                
+                image.color = new Color(255, 255, 255, alpha);
+
+            }
+
+        }
+
+        //作成したデッキの上からカードを5枚出す
+
+      
+
+        //ランダムに出した5つの数値を、カードの画像に当てはめる
+       
+        public enum Suit
+        {
+            Spade,
+            Heart,
+            Club,
+            Dia
+        }
+
+        public Suit suit;
+
+        void Start()
+        {
+
+        }
+
+
+        //spade(0~12)
+        //heart(13~25)
+        //club(26~38)
+        //Dia(39~51)
+
+
+
+
+
+
+
+        /*
+        void Ray()
+        {
+            var Sel = gameObject.transform.FindChild("SelCard").gameObject;
+            // Rayの作成
+            Ray ray = new Ray(transform.position, transform.forward);
+            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            // Rayが衝突したコライダーの情報を得る
+            RaycastHit hit;
+
+            // Rayが衝突したかどうか
+
+            if (Physics.Raycast(ray, out hit, 10.0f, mask))
+            {
+
+                var hitCard = hit.collider.GetComponentInChildren<GameObject>();
+                hitCard.SetActive(true);
+            }
+            else if (Physics.Raycast(ray, out hit, 10.0f, mask))
+            {
+
+                var hitCard = hit.collider.GetComponentInChildren<GameObject>();
+                hitCard.SetActive(false);
+            }
+            //出来なかったから諦め！
+            */
 
 
 
@@ -121,3 +161,4 @@ public class Card : MonoBehaviour
 
     }
 
+}

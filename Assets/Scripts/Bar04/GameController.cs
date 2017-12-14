@@ -13,39 +13,58 @@ namespace Assets.Scripts.Bar04 {
             SceneManager.LoadScene("Result");
         }
 
-
+        public Deck deck;
 
 
       [SerializeField]
       private GameObject cardPrefab;
       [SerializeField]
       private GameObject cardSelect;
+      
 
 
 
 
         void Start()
-{
-    MakeCards();
+        {
+            deck = gameObject.GetComponent<Deck>();
+            MakeCards();
+        }
 
-}
+
 //カード複製 or 配置
 private void MakeCards()
 {
     //カードを５枚複製する
     for (int i = 0; i < 5; i++)
     {
+                //デッキの上から5枚取り出す
+                while (deck.MakeCards().Count < 41)
+                {
+
+                }
+
+
         //カードを並べる
         var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-        cardObject.transform.position = new Vector2(
-                i * 1.8f - 3.84f, 0);
+        cardObject.transform.position = new Vector2(i * 1.8f - 3.84f, 0);
 
-        //カード生成
+        //手札を反転する
+        //カードを切り替える方法を決める
+        //SpriteRenderer
+
+
+        //Selcard(選択したときに光る)生成
         GameObject SelCard = Instantiate(cardSelect);
-        SelCard.SetActive(false);
+                
+                //配置時のSelcardの透明度の設定
+                var image = SelCard.GetComponent<SpriteRenderer>();
+                image.color = new Color(255, 255, 255, 0);
 
         //親子付け
         SelCard.transform.parent = cardObject.transform;
+
+        
 
 
         //黄色い枠の位置の設定　　　　カードの位置　+　z軸を-1する。
@@ -55,6 +74,7 @@ private void MakeCards()
 
          }
       }
+
 
 
   }

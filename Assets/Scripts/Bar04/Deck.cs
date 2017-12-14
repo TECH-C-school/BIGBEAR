@@ -8,7 +8,7 @@ namespace Assets.Scripts.Bar04
 
     public class Deck : MonoBehaviour {
 　　　　//デッキ作成
-        public static Queue<int> MakeCards()
+        public Queue<int> MakeCards()
         {
             //52枚のカードをランダムに生成
 
@@ -25,10 +25,17 @@ namespace Assets.Scripts.Bar04
                     var tmp = cards[counter];
                     cards[counter] = cards[index];
                     cards[index] = tmp;
-                Debug.Log(cards[counter]);
 
                     counter++;
                 }
+
+
+
+           //数値に名前を付ける
+
+
+
+
 
            //ランダム作成したものを順番に入れる
             Queue<int> decks = new Queue<int>() { };
@@ -37,9 +44,6 @@ namespace Assets.Scripts.Bar04
                 decks.Enqueue(cards[i]);
             }
 
-            //
-            //ランダムに出した5つの数値を、カードの画像に当てはめる
-            //例 ）0＝スペードの1
             return decks;
         }
 
