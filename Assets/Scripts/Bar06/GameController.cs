@@ -16,7 +16,9 @@ namespace Assets.Scripts.Bar06 {
         public int syotop = 0;
         public int Amine = 0;
         public int Atmine = 0;
-
+        private int[] tekki = new int[20];
+        private int tekkicon = 0;
+        private int tekkifl = 0;
 
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
@@ -38,6 +40,8 @@ namespace Assets.Scripts.Bar06 {
             texttoku();
             makecard();
             tmakecard(0);
+
+
 
         }
 
@@ -94,6 +98,8 @@ namespace Assets.Scripts.Bar06 {
             mai++;
             textoku();
 
+            if (gou > 21) { lose.winhyou(); bt1.OnClick(); }
+
         }
         private void tmakecard(int n)
         {
@@ -102,6 +108,12 @@ namespace Assets.Scripts.Bar06 {
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-0.3f * tmai, 1.8f, -1 * tmai);
             cardObject.transform.parent = cardsObject.transform;
+
+            if (tekkifl == 0)
+            {
+                tekki[tekkicon] = mai;
+                tekkicon++;
+            }
 
             int mark;
             if (num[mai] % 13 == 0) { mark = (num[mai] / 13); } else { mark = (num[mai] / 13) + 1; }
@@ -118,6 +130,7 @@ namespace Assets.Scripts.Bar06 {
             card.mark = mark2;
             card.Mark();
             if (n == 0) { card.nMark(); }
+            
             if (num2 == 1) { tgou += 11; Atmine += 1; } else if (num2 < 10) { tgou += num2; } else { tgou += 10; }
             if (tgou > 21 && Atmine != 0) { tgou -= 10; Atmine -= 1; }
             tmai++;
@@ -133,27 +146,35 @@ namespace Assets.Scripts.Bar06 {
                 tmakecard(0);
                 
             }
-
+            Debug.Log(tgou);
             var cardsObject = GameObject.Find("Cards2").transform;
+
             foreach (Transform cardObject in cardsObject)
             {
                 Destroy(cardObject.gameObject);
             }
-            Debug.Log(tmai);
+
             int maimai = tmai;
             int maimaimai = mai;
             mai = syotop+1;
             tmai = 0;
             tgou = 0;
-            for (int i = 0; i < maimai; i++)
+            tekkifl = 1;
+            for (int i = 0; tekki[i]!=0; i++)
             {
+                mai = tekki[i];
                 tmakecard(1);
-                mai += 1;
             }
+            tekkifl = 0;
             mai = maimaimai;
             texttoku();
+            if (tgou < 22) {
+                if (gou==tgou) { draw.winhyou(); } else if (gou > tgou) { win.winhyou(); } else { lose.winhyou(); }
+            }else { win.winhyou(); }
 
-            
+
+
+
 
         }
 
@@ -184,16 +205,26 @@ namespace Assets.Scripts.Bar06 {
             tgou = 0;
             zmai = 0;
             tmai = 0;
-            syotop = mai+1;
+            tekkicon = 0;
+            Amine = 0;
+            Atmine = 0;
+            mai = 0;
+            syotop = 0;
+            MakeRandomNumbers();
+
+            for (int i = 0; i < tekki.Length; i++)
+            {
+                tekki[i] = 0;
+            }
 
             makecard();
             tmakecard(1);
             texttoku();
             makecard();
             tmakecard(0);
-
-            Debug.Log("a");
-
+            win.winhihyou();
+            lose.winhihyou();
+            draw.winhihyou();
         }
 
     }
