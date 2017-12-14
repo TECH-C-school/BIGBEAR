@@ -24,7 +24,9 @@ namespace Assets.Scripts.Bar0404 {
 
         public void PokerCheck() {
 
-            if (TwoPare(m_Hund) == 2) {
+            if (ThreeCard(m_Hund) == 3) {
+                Debug.Log("スリーカード");
+            }else if (TwoPare(m_Hund) == 2) {
                 Debug.Log("ツーペア");
             }else if(Onepare(m_Hund) == 1) {
                 Debug.Log("ワンペア");
@@ -57,6 +59,23 @@ namespace Assets.Scripts.Bar0404 {
                                 }
                             }
                         }
+                    }
+                }
+            }
+            return m_Poker;
+        }
+
+        int ThreeCard(int[] xyz){
+            for (int i = 0; i < xyz.Length; i++){
+                for (int j = i+ 1 ; j < xyz.Length; j++){
+                    if (xyz[i] == xyz[j]) {
+                        for (int k = j + 1; k < xyz.Length; k++)
+                            {
+                            if (xyz[i] == xyz[k])
+                            {
+                                m_Poker = 3;
+                            }
+                }
                     }
                 }
             }
