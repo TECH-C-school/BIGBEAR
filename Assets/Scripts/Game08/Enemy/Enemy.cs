@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
-    public GameObject _Pl;
+    //public GameObject _Pl;
+    public GameObject _obj;
+    public GameObject _muzzle;
+
 
 
     // Use this for initialization
