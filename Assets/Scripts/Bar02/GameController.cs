@@ -27,6 +27,7 @@ namespace Assets.Scripts.Bar02 {
             for (int i = 0; i < 52; i++)
             {
                 cards[i] = i + 1;
+
             }
 
             var counter = 0;
@@ -48,7 +49,6 @@ namespace Assets.Scripts.Bar02 {
                 trump[i].number = (cards[i] - 1) % 13 + 1;
                 trump[i].mark = (Mark)((cards[i] - 1) / 13);
             }
-
 
 
             //21枚のカードを表示する
@@ -93,8 +93,25 @@ namespace Assets.Scripts.Bar02 {
 
         }
 
+
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
+
+
         }
+
+        //最下段以外選択できないようにする
+         void OnClick() {
+     if (Cursor.lockState == CursorLockMode.Locked) {
+         return;  //lockStateがLockedだったら以後の処理をしない
+     }
+            //以下、クリックされた時の処理
+
+        }
+        /*//jokerの処理
+        private void jokers_Click(object senter,EventArgs e)
+        {
+            listBoX1.
+        }*/
     }
 }
