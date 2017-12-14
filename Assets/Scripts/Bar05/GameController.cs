@@ -4,12 +4,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 次回作業 --> Phaseの作成
+ * 今回作業 --> クリックでPhase切り替えを実装
+ *              Phaseの切り替えで場札を表示
+ *              初期化実装
  */
 
 /*
- * 今回作業 --> 役判定の作成(残り全て)
- *              表示/非表示の切り替え方法を変更
+ * 次回作業 --> ストレートフラッシュとロイヤルストレートフラッシュの判定がおかしいので修正をすること
+ *              PhaseViewの修正(Prefabにしなきゃいけない?)
+ */
+
+/*
+ * 今後実装 -->
  */
 
 namespace Assets.Scripts.Bar05 {
@@ -17,16 +23,16 @@ namespace Assets.Scripts.Bar05 {
 
         private void Start()
         {
-            MakeCards();
-            MakeLists();
-            CHL();
+            InitGame();
+            Debug.Log(_Phase);
         }
 
         private void Update()
         {
             if(Input.GetMouseButtonDown(0))
             {
-                Debug.Log("mouseLeftKeyDown");
+                Debug.Log("<color=red>--------------------</color>");
+                PhaseChange();
             }
         }
 
@@ -38,7 +44,7 @@ namespace Assets.Scripts.Bar05 {
         /// forのiはプレイヤー人数によって変更(i = プレイヤー人数 + 1)
         /// いつか変数で管理したい
         /// </summary>
-        public void MakeCards()
+        private void MakeCards()
         {
             //みやすいよね？ね？
             Debug.Log("--------------------");
@@ -188,6 +194,35 @@ namespace Assets.Scripts.Bar05 {
             return decks;
         }
 
+        //初期化する時にカードを削除する
+        private void RemoveCards()
+        {
+            var ParentObject = GameObject.Find("Player1_Cards");
+            for (int i = 0; i < 3; i++)
+            {
+                switch(i)
+                {
+                    case 0:
+                        ParentObject = GameObject.Find("Player1_Cards");
+                        Debug.Log(ParentObject.transform.childCount);
+                        break;
+                    case 1:
+                        ParentObject = GameObject.Find("Player2_Cards");
+                        break;
+                    case 2:
+                        ParentObject = GameObject.Find("CardStacks");
+                        break;
+                    default:
+                        Debug.Log("迷子");
+                        break;
+                }
+                foreach (Transform cardobject in ParentObject.transform)
+                {
+                    Destroy(cardobject.gameObject);
+                }
+            }
+        }
+
         //カード周りここまで
 
         //役の判定ここから
@@ -195,7 +230,7 @@ namespace Assets.Scripts.Bar05 {
         //関数群ここから
 
         //リストを作る関数群
-        public void MakeLists()
+        private void MakeLists()
         {
             Debug.Log("<color=blue>自分と場札のカード内訳</color>");
             CardLists(Player1Cards, Player1CardList, Player1Marks);
@@ -205,15 +240,14 @@ namespace Assets.Scripts.Bar05 {
             Debug.Log("--------------------");
         }
 
-        //役の判定関数群
-        public void CHL()
+        //役を判定する関数群
+        private void CheckhandLevels()
         {
             CheckHandLevel(Player1HandLevel, Player1CardList, Player1NumberManager, Player1Marks);
             Debug.Log("--------------------");
             CheckHandLevel(Player2HandLevel, Player2CardList, Player2NumberManager, Player2Marks);
             Debug.Log("--------------------");
-        }
-
+        } 
 
         //関数群ここまで
 
@@ -331,7 +365,7 @@ namespace Assets.Scripts.Bar05 {
 
         //役判定するゾ～
 
-        /* 役一覧(handLevel)                   実装状況(0:未実装 1:実装)
+        /* 役一覧(handLevel)                   実装状況(0:未実装 1:実装 2:おかしい)
          * ハイカード(0)                       1
          * ワンペア(1)                         1
          * ツーペア(2)                         1
@@ -340,8 +374,8 @@ namespace Assets.Scripts.Bar05 {
          * フラッシュ(5)                       1
          * フルハウス(6)                       1
          * フォーカード(7)                     1
-         * ストレートフラッシュ(8)             1
-         * ロイヤルストレートフラッシュ(9)     1
+         * ストレートフラッシュ(8)             2
+         * ロイヤルストレートフラッシュ(9)     2
          */
 
         //変数置き場
@@ -511,6 +545,15 @@ namespace Assets.Scripts.Bar05 {
 
         //ゲーム進行ここから
 
+        //初期化処理
+        private void InitGame()
+        {
+            RemoveCards();
+            MakeCards();
+            MakeLists();
+            CheckhandLevels();
+        }
+
         private enum GamePhase
         {
             FirstBet = 0,
@@ -518,10 +561,106 @@ namespace Assets.Scripts.Bar05 {
             ThirdBet,
             FinalBet,
             Result,
+            Continue,
+            Return,
         }
-        private GamePhase _Phase = 0;
         
+        private GamePhase _Phase = 0;
 
+        //Phaseを進める/戻す
+        private void PhaseChange()
+        {
+            _Phase++;
+            //Phaseを0に戻して初期化をする
+            //PhaseはFirstPhase
+            if(_Phase == GamePhase.Return)
+            {
+                _Phase = 0;
+                InitGame();
+                PhaseView(1);
+            }
+            if(_Phase == GamePhase.SecondBet)
+            {
+                TurnStackCard(1);
+                PhaseView(2);
+            }
+            if (_Phase == GamePhase.ThirdBet)
+            {
+                TurnStackCard(2);
+                PhaseView(3);
+            }
+            if (_Phase == GamePhase.FinalBet)
+            {
+                TurnStackCard(3);
+                PhaseView(4);
+            }
+            if (_Phase == GamePhase.Result)
+            {
+                PhaseView(5);
+            }
+            //続けるかを聞く(間を入れているだけ)
+            if (_Phase == GamePhase.Continue)
+            {
+                RemoveCards();
+            }
+            Debug.Log(_Phase);
+        }
+
+        //Phase画像の表示
+        public void PhaseView(int PhaseNum)
+        {
+            var PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word5");
+            switch (PhaseNum)
+            {
+                case 1:
+                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word5");
+                    break;
+                case 2:
+                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word6");
+                    break;
+                case 3:
+                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word7");
+                    break;
+                case 4:
+                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word8");
+                    break;
+                case 5:
+                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word9");
+                    break;
+                default:
+                    Debug.Log("ExPhase");
+                    break;
+            }
+            var PhaseObject = Instantiate(PhaseImage, transform.position, Quaternion.identity);
+            PhaseObject.transform.position = new Vector3(-1, -1, 0);
+        }
+
+        //場札をめくる
+        public void TurnStackCard(int PhaseNum)
+        {
+            //var Stack = GameObject.Find("CardStacks");
+            if(PhaseNum == 1)
+            {
+                for(int i = 1; i < 4; i++)
+                {
+                    var cardObject = GameObject.Find("StackCard" + i + "");
+                    var card = cardObject.GetComponent<Card>();
+                    card.StackView(true);
+                }
+            }
+            if(PhaseNum == 2)
+            {
+                var cardObject = GameObject.Find("StackCard4");
+                var card = cardObject.GetComponent<Card>();
+                card.StackView(true);
+            }
+            if (PhaseNum == 3)
+            {
+                var cardObject = GameObject.Find("StackCard5");
+                var card = cardObject.GetComponent<Card>();
+                card.StackView(true);
+            }
+        }
 
         //ゲーム進行ここまで
 
