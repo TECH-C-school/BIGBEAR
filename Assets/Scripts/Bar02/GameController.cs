@@ -84,8 +84,8 @@ namespace Assets.Scripts.Bar02
                 GameObject markObject = GameObject.Find("Mark").transform.Find(trump[k].mark).gameObject;
                 var numberObject = markObject.transform.GetChild(trump[k].num).gameObject;
                 GameObject cardObject = Instantiate(numberObject, transform.position, Quaternion.identity);
-                cardObject.transform.parent = fieldcard.transform;
-                cardnum[k] = trump[k].num;
+                //cardObject.transform.parent = fieldcard.transform;
+                //cardnum[k] = trump[k].num;
             }
             counter = 1;
             for (int x = 0; x < 7; x++)
@@ -139,7 +139,7 @@ namespace Assets.Scripts.Bar02
             if (!hitObject) return;
 
             //クリックされたカードスクリプトを取得
-            var cardTrans = hitObject.collider.gameObject.GetComponent<>();
+            //var cardTrans = hitObject.collider.gameObject.GetComponent<>();
             
             //クリックされた位置にflameを装着
             var Flame = GameObject.Find("cardflame");

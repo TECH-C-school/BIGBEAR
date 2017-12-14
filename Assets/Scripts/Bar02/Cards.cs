@@ -18,7 +18,7 @@ namespace Assets.Scripts.Bar02
         }
         public void ClickEvent()
         {
-            var card = cardObject.GetComponent<Card>();
+            //var card = cardObject.GetComponent<Card>();
         }
     }
 }
