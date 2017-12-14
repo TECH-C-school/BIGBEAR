@@ -166,6 +166,9 @@ namespace Assets.Scripts.Bar05
         /// プレイヤーと敵の手札を生成
         /// </summary>
         
+        void NumberTemp()
+        {
+        }
 
         void TurnCard()
         {
