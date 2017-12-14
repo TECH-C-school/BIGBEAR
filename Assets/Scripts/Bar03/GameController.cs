@@ -7,6 +7,7 @@ namespace Assets.Scripts.Bar03 {
     public class GameController : MonoBehaviour
     {
         private string _nextCardString = "c01";
+         
         /*private string[] cardMark = new string[104] 
         {"Images/Bar/Cards/c01","Images/Bar/Cards/c02","Images/Bar/Cards/c03",
         "Images/Bar/Cards/c04","Images/Bar/Cards/c05","Images/Bar/Cards/c06",
@@ -48,8 +49,8 @@ namespace Assets.Scripts.Bar03 {
         {
             MakeBackCards();
             BackGroundMake();
-            ClickCard();
-        }
+            ClickCard();   
+        }  
         void Update()
         {
             ClickCard();
@@ -64,11 +65,11 @@ namespace Assets.Scripts.Bar03 {
         private void MakeBackCards()
         {
             int count = 0;
-            string[] cardMarkNumber = new string[52];
-            cardSetMN(cardMarkNumber);
-            int[] mergedArray = cardMarkNumber.Concat(cardMarkNumber).ToArray();
+            string[] cardMarkNumber = new string[104];
+            cardMarkNumber = AryRamdomTwo(cardSetMN(cardMarkNumber));
 
             Transform parentObject = GameObject.Find("Cards").transform;
+            Transform deckCard = GameObject.Find("Deck").transform;
             GameObject cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar03/Back");
             for (int x = 0; x < 10; x++)
             {
@@ -104,9 +105,20 @@ namespace Assets.Scripts.Bar03 {
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
                         cardSet.TurnCardFaceUp();
+                        Debug.Log(cardMarkNumber[count]);
                         count++;
                     }
                 }
+            }
+            while (count < 104)
+            {
+                var cardObject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(-7.97f, -2.9f, 0);
+                cardObject.transform.parent = deckCard;
+                Cards cardSet = cardObject.GetComponent<Cards>();
+                cardSet.String = cardMarkNumber[count];
+                cardSet.TurnCardFaceDown();
+                count++;
             }
         }
 
@@ -114,41 +126,23 @@ namespace Assets.Scripts.Bar03 {
         private string[] cardSetMN(string[] values)
         {
             int[] card = new int[52];
-
             for (int i = 0; i < card.Length; i++)
             {
-
                 card[i] = i;
-
             }
-
             Random random = new Random();
-
             for (int i = 0; i < card.Length; i++)
-
             {
-
                 int ransu = Random.Range(1,52);
-
-
                 int kari = card[i];
-
                 card[i] = card[ransu];
-
                 card[ransu] = kari;
-
             }
-
             int kazu = 0;
-            
             string[] mark = new string[] { "h", "d", "s", "c" };
-
             for (int i = 0; i < card.Length; i++)
-
             {
-        
                 kazu = card[i] % 13 + 1;
-
                 if (kazu < 10)
                 {
                     values[i] += mark[card[i] / 13] + "0" + kazu.ToString();
@@ -159,9 +153,7 @@ namespace Assets.Scripts.Bar03 {
                 }
             }
             return values;
-            
-
-        }
+            }
 
         //背景を作る関数
         private void BackGroundMake()
@@ -209,6 +201,36 @@ namespace Assets.Scripts.Bar03 {
             
             return values;
         }
+        //配列を二つ作ってランダムに入れ替える関数
+        private string[] AryRamdomTwo(string[] values)
+        {
+            string[] ary = new string[104];
+            for(int i = 0; i < 104; i++)
+            {
+                
+                if (i < 52)
+                {
+                    ary[i] = values[i];
+                }
+                else
+                {
+                    ary[i] = values[i-52];
+                }
+                
+            }
+            var counter = 0;
+            while (counter < 104)
+            {
+                var index = Random.Range(counter, values.Length);
+                var tmp = ary[counter];
+                ary[counter] = ary[index];
+                ary[index] = tmp;
+
+                counter++;
+            }
+            return ary;
+
+        }
         private void ClickCard()
         {
             //マウスクリックの判定
@@ -226,7 +248,7 @@ namespace Assets.Scripts.Bar03 {
 
             //クリックされたカードスクリプトを取得
             var card = hitObject.collider.gameObject.GetComponent<Cards>();
-            Debug.Log("hit object is" + card.String);
+            //Debug.Log("hit object is" + card.String);
 
             //次にクリックされるカードが判明
             //if (_nextCardString != card.String) return;
@@ -234,8 +256,10 @@ namespace Assets.Scripts.Bar03 {
             //カードを反転する
             card.TurnCardFaceUp();
             
-
-
+        }
+        public void ButtonPush()
+        {
+            Debug.Log("ButtonPush");
         }
 
     }
