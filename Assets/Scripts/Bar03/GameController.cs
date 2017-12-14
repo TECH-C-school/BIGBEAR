@@ -22,19 +22,19 @@ namespace Assets.Scripts.Bar03
         //enumクラスの用意と宣言
         public enum CardNumber
         {
-            S1 =1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13,
-            C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13,
-            D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13,
-            H1, H2, H3, H4, H5, H6, H7, H8, H9, H10, H11, H12, H13,
+            c01 = 1, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13,
+            d01, d02, d03, d04, d05, d06, d07, d08, d09, d10, d11, d12, d13,
+            h01, h02, h03, h04, h05, h06, h07, h08, h09, h10, h11, h12, h13,
+            s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13,
         }
-        public CardNumber  cardNumber;
+
+
 
         // カードの生成
         public void MakeBackCards()
         {
             int count = 0;
             int[] randomCards = MakeRandomCardNumbers();
-            int[] cardNumber = MakeRandomCardNumbers();
 
             Transform CardObject = GameObject.Find("Cards").transform;
             var CardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Cards");
@@ -61,14 +61,20 @@ namespace Assets.Scripts.Bar03
                             -b * -0.25f + 2.35f,
                             0);
                         cardObject.transform.parent = CardObjectf;
+                        /*
+                        var card = cardObject.GetComponent<Cards>();
+                        card.String = randomCards[count];
+                        card.TurnCardFaceDown();
+                        count++;
+                        */
                     }
 
                 }
             }
 
-            for(var c = 0; c < 6; c++)
+            for (var c = 0; c < 6; c++)
             {
-                for(var d = 0; d < 5; d++)
+                for (var d = 0; d < 5; d++)
                 {
                     if (d > 0)
                     {
