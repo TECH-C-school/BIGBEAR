@@ -35,8 +35,6 @@ public class GameControll : MonoBehaviour {
         if (Player_Card.Count < 5)
         {
             DrowBool = true;
-            // GameObjectとしてPrefabからInstantiateして
-            // 交換動作の時、 押すとフラグが切り替わる     詳しくはノート書いてある
         }
         else{
             DrowBool = false;
@@ -103,7 +101,11 @@ public class GameControll : MonoBehaviour {
         };
     }
     
+    public void CardChangeButton()
+    {
 
+    }
+    
 
     IEnumerator Drow()
     {
