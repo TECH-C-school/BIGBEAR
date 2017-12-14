@@ -11,6 +11,13 @@ namespace Assets.Scripts.Bar02 {
         private void Start()
         {
             CardSet();
+            _cardPos[0] = new Vector2(0, 0);
+        }
+        
+        private void Update()
+        {
+            turnCard();
+            checkCard();
         }
 
         //数値計算用int[]
@@ -19,7 +26,7 @@ namespace Assets.Scripts.Bar02 {
         //クリック回数取得用enum
         private enum countClick
         {
-            Noi=0,
+            Noi = 0,
             No1,
             No2
         }
@@ -29,12 +36,11 @@ namespace Assets.Scripts.Bar02 {
         private SpriteRenderer click1;
         private SpriteRenderer click2;
 
+        //トランプの配置格納
         private string[] cardNum = new string[53];
-        
-        private void Update()
-        {
-            checkCard();
-        }
+
+        //消去したobjectのposition格納
+        private Vector2[] _cardPos = new Vector2[21];
 
         /// <summary>
         /// カードを表示
@@ -56,7 +62,7 @@ namespace Assets.Scripts.Bar02 {
             {
                 for (int j = 1; j <= countNumber; j++)
                 {
-                    Sprite card = Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[countCardNum]);
+                    Sprite card = Resources.Load<Sprite>("Images/Bar/Cards/back");
                     sr.sprite = card;
                     sr.sortingOrder = countCardNum;
                     countCardNum--;
@@ -64,7 +70,6 @@ namespace Assets.Scripts.Bar02 {
                     cardObject.transform.position = new Vector2(
                         j - (countNumber * 0.5f) - 0.5f ,
                         i * 0.5f - 1f);
-
                     
                 }
                 countNumber--;
@@ -79,7 +84,6 @@ namespace Assets.Scripts.Bar02 {
                 countCardNum--;
                 var cardPlaceObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardPlaceObject.transform.position = new Vector2(4.5f,2.0f);
-                
             }
         }
         
@@ -118,9 +122,8 @@ namespace Assets.Scripts.Bar02 {
             
             return toranpu;
         }
-
-
         
+
 
         /// <summary>
         /// クリック判定
@@ -132,7 +135,6 @@ namespace Assets.Scripts.Bar02 {
 
             //クリック場所取得
             Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Debug.Log(tapPoint);
 
             //重なり合うオブジェクト取得
             Collider2D[] hitObjects = Physics2D.OverlapPointAll(tapPoint);
@@ -147,14 +149,13 @@ namespace Assets.Scripts.Bar02 {
                 //1番手前のオブジェクト取得(oederInLayerの数値が一番大きいものを取得)
                 if (maxCard.sortingOrder < card.sortingOrder) maxCard = card;
             }
-
-            Debug.Log(maxCard.sprite);
+            
 
             //表か裏かcardflameか判断
             if (maxCard.sprite.ToString().Substring(0, 4) == "back")
             {
                 //山場の1番下のオブジェクト取得(クリックしていけばどんどん積みあがるようにする)
-                //1番上のを取ると次のがレイヤーから下に行くため
+                //1番上のを取ると次のがレイヤーのせいで下に行くため
                 SpriteRenderer placeCard = hitObjects[0].GetComponent<SpriteRenderer>();
                 for (int i = 1; i < hitObjects.Length; i++)
                 {
@@ -185,12 +186,12 @@ namespace Assets.Scripts.Bar02 {
                     //クリックしたobject収納
                     click1 = maxCard;
                     sumNum[0] = maxCardNum;
-                    Debug.Log(sumNum[0]);
                     _countClick = countClick.No1;
 
                     //13をクリックしたらその場で消去、クリック回数初期化
                     if (sumNum[0] == 13)
                     {
+                        _cardPos[_cardPos.Length - 1] = click1.transform.position;
                         Destroy(click1.gameObject);
                         _countClick = countClick.Noi;
                     }
@@ -201,33 +202,30 @@ namespace Assets.Scripts.Bar02 {
                     //クリックしたobject収納
                     click2 = maxCard;
                     sumNum[1] = maxCardNum;
-                    Debug.Log(sumNum[1]);
                     _countClick = countClick.No2;
                 }
 
                 //2このobjectを選択したかどうか判断
-                Debug.Log(_countClick);
                 if (_countClick != countClick.No2) return;
 
                 //カード番号の足し算
                 int sum = sumNum[0] + sumNum[1];
-                Debug.Log(sum);
 
                 //関数sumが13だったらobject消去
                 if (sum == 13)
                 {
+                    _cardPos[_cardPos.Length - 1] = click1.transform.position;
+                    _cardPos[_cardPos.Length - 1] = click2.transform.position;
                     Destroy(click1.gameObject);
                     Destroy(click2.gameObject);
                 }
 
-                
+
 
                 //すべて終了 初期化
                 _countClick = countClick.Noi;
             }
-
             
-
         }
 
         /// <summary>
@@ -244,6 +242,76 @@ namespace Assets.Scripts.Bar02 {
                 plaCard.transform.position = new Vector2(4.5f, 2.0f);
             }
         }
-           
+
+
+        /// <summary>
+        /// ピラミッドカードの自動めくり
+        /// </summary>
+        public void turnCard()
+        {
+            int countParagraph = 6;
+            for(int i = 1; i <= 6; i++)
+            {
+                for(int j = 1; j <= countParagraph; j++)
+                {
+                    Vector2 checkPosition = new Vector2(j - (countParagraph * 0.5f) - 0.5f, i * 0.5f - 1f);
+                    
+                    //checkPositionのところにあるobject取得
+                    Collider2D[] checkCard = Physics2D.OverlapPointAll(checkPosition);
+
+                    //positionがcheckPositionと一致するobject取得
+                    SpriteRenderer standardCard = null;
+                    for (int k = 0; k < checkCard.Length; k++)
+                    {
+                        var card = checkCard[k].GetComponent<SpriteRenderer>();
+                        Vector2 cardPosition = card.transform.position;
+                        if(cardPosition == checkPosition)
+                        {
+                            standardCard = card;
+                        }
+                    }
+
+                    if (!standardCard) continue;
+                    
+                    //standardCardが裏か表か取得
+                    if (standardCard.sprite.ToString().Substring(0, 4) == "back")
+                    {
+                        //i-1段のjとj-1にobjectがあるか判断
+                        Vector2 checkUnderPos = new Vector2(checkPosition.x - 0.5f, checkPosition.y - 0.5f);
+
+                        //positionがcheckUnderPosと一致するobject取得
+                        SpriteRenderer UnderCard1 = null;
+                        SpriteRenderer UnderCard2 = null;
+                        for (int h = 0; h <= 1; h++)
+                        {
+                            Collider2D[] checkUnderCard = Physics2D.OverlapPointAll(checkUnderPos);
+                            for (int k = 0; k < checkUnderCard.Length; k++)
+                            {
+                                var card = checkUnderCard[k].GetComponent<SpriteRenderer>();
+                                Vector2 cardPosition = card.transform.position;
+                                if (cardPosition == checkUnderPos)
+                                {
+                                    if(h==0) UnderCard1 = card;
+                                    if(h==1) UnderCard2 = card;
+                                }
+                            }
+                            checkUnderPos = new Vector2(checkPosition.x + 0.5f, checkPosition.y - 0.5f);
+                        }
+
+                        
+
+                        //どちらもない場合にのみ処理が続く
+                        if(!UnderCard1 && !UnderCard2)
+                        {
+                            //表にする
+                            standardCard.sprite= Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[standardCard.sortingOrder]);
+                        }
+                    }
+                    
+                }
+                
+                countParagraph--;
+            }
+        }   
     }
 }
