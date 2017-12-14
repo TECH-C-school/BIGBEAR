@@ -60,7 +60,7 @@ namespace Assets.Scripts.Game05 {
 				.Select(_ => 1).Scan((count, add) => count + add)
 				.Where(tap => tap % 3 == 0)
 				.Do(_ => StartCoroutine(PileShoot()));
-			var taps = Observable.Merge(barTap, pTap, pendulumTap).Subscribe();
+			var taps = Observable.Merge (barTap, pTap, pendulumTap).Subscribe ().AddTo (this.gameObject);
 		}
 		
 		// Update is called once per frame
