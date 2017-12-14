@@ -3,46 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Bar06 {
+namespace Assets.Scripts.Bar06
+{
 
 
-    public class Cards : MonoBehaviour
+    public class GameController : MonoBehaviour
     {
 
-        // Use this for initialization
-        void Start() {
-
-        }
-
-        private void MakeCards()
+        public void PlayerMakeCards()
         {
-            int count = 0;
-
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/PlayerCardbk");
-            var cardsObject = GameObject.Find("PlayerCardbk");
+            var cardsObject = GameObject.Find("PlayerCard");
 
             for (int i = 0; i < 2; i++)
             {
-                for (int j = 0; j < 2; j++)
-                {
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                     cardObject.transform.position = new Vector3(
-                        i * 2f,
-                        j * 5f,
+                        i * -2f,
+                        -0.8f,
                         0);
 
-                    cardObject.transform.parent = cardsObject.transform;
+                    cardObject.transform.parent = cardObject.transform;
 
                     var card = cardObject.GetComponent<Cards>();
-                    count++;
-                }
             }
         }
+        /*public void NPCMakeCards()
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/NPCardbk");
+            var cardsObject = GameObject.Find("NPCCardbk");
 
+            for (int j = 0; j < 2; j++)
+            {
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(
+                    j * 2f,
+                    3f,
+                    0);
 
+                cardObject.transform.parent = cardObject.transform;
 
+                var card = cardObject.GetComponent<Cards>();
 
+            }
+        }*/
 
+        struct trump
+        {
+            public string mark;
+            public int Number;
+        }
 
         private int[] MakeRandomNumbers()
         {
@@ -62,22 +72,20 @@ namespace Assets.Scripts.Bar06 {
 
 
                 counter++;
+                Debug.Log(counter);
             }
             return numbers;
         }
-    }
-    public enum mark
-    {
-        S = 0,
-        C = 1,
-        H = 2,
-        D = 3
-    }
 
+        private void Start()
+        {
+            PlayerMakeCards();
+            MakeRandomNumbers();
+            //NPCMakeCards();
+        }
 
-
-    public class GameController : MonoBehaviour {
-        public void TransitionToResult() {
+        public void TransitionToResult()
+        {
             SceneManager.LoadScene("Result");
         }
     }
