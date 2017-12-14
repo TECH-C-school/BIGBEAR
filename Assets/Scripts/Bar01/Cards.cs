@@ -15,32 +15,27 @@ public class Cards : MonoBehaviour
         c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13
 
     }
-    GameObject[] FloorCardHolder = new GameObject[28];
-    GameObject[] DeckcardHolder = new GameObject[24];
+    GameObject[] FloorCardHolder = new GameObject[28];//場に置かれるカード
+    GameObject[] DeckcardHolder = new GameObject[24];//山札に置かれるカード
 
     void Start()
     {
         MakeCardFlame();
+        SetRandomCard();
         MakeStartCard();
     }
+
     /// <summary>
     /// カード置き場の生成
     /// </summary>
     void MakeCardFlame()
     {
         int count = 0;
+        var Cardsmake = Resources.Load<GameObject>("Prefabs/Bar01/cardflame");//カード置き場の枠のprefabを参照
 
-        var Cardsmake = Resources.Load<GameObject>("Prefabs/Bar01/cardflame");
-        var Marksmake_C = Resources.Load<GameObject>("Prefabs/Bar01/cardflame_c");
-        var Marksmake_D = Resources.Load<GameObject>("Prefabs/Bar01/cardflame_d");
-        var Marksmake_S = Resources.Load<GameObject>("Prefabs/Bar01/cardflame_s");
-        var Marksmake_H = Resources.Load<GameObject>("Prefabs/Bar01/cardflame_h");
+        GameObject MarksMake = Resources.Load<GameObject>("Prefabs/Bar01/cardflame_c");//マークのprefabを参照
 
-        var MarkPosition_C = Instantiate(Marksmake_C, transform.position, Quaternion.identity);
-        var MarkPosition_D = Instantiate(Marksmake_D, transform.position, Quaternion.identity);
-        var MarkPosition_S = Instantiate(Marksmake_S, transform.position, Quaternion.identity);
-        var MarkPosition_H = Instantiate(Marksmake_H, transform.position, Quaternion.identity);
-
+        var MarkPosition = Instantiate(MarksMake,transform.position,Quaternion.identity);
         for (int i = 0; i < 5; i++)
         {
             var CardsObjectPosition = Instantiate(Cardsmake, transform.position, Quaternion.identity);
@@ -51,81 +46,105 @@ public class Cards : MonoBehaviour
                     break;
                 case 1:
                     CardsObjectPosition.transform.position = new Vector3(0, 1.97f, 0);
-                    MarkPosition_D.transform.position = CardsObjectPosition.transform.position;
+                    MarkPosition = Instantiate(MarksMake, transform.position, Quaternion.identity);
+                    MarkPosition.transform.position = CardsObjectPosition.transform.position;
                     break;
                 case 2:
                     CardsObjectPosition.transform.position = new Vector3(1.5f, 1.97f, 0);
-                    MarkPosition_C.transform.position = CardsObjectPosition.transform.position;
+                    MarksMake = Resources.Load<GameObject>("Prefabs/Bar01/cardflame_d");
+                    MarkPosition = Instantiate(MarksMake, transform.position, Quaternion.identity);
+                    MarkPosition.transform.position = CardsObjectPosition.transform.position;
                     break;
                 case 3:
                     CardsObjectPosition.transform.position = new Vector3(3, 1.97f, 0);
-                    MarkPosition_H.transform.position = CardsObjectPosition.transform.position;
+                    MarksMake = Resources.Load<GameObject>("Prefabs/Bar01/cardflame_s");
+                    MarkPosition = Instantiate(MarksMake, transform.position, Quaternion.identity);
+                    MarkPosition.transform.position = CardsObjectPosition.transform.position;
                     break;
                 case 4:
                     CardsObjectPosition.transform.position = new Vector3(4.5f, 1.97f, 0);
-                    MarkPosition_S.transform.position = CardsObjectPosition.transform.position;
+                    MarksMake = Resources.Load<GameObject>("Prefabs/Bar01/cardflame_h");
+                    MarkPosition = Instantiate(MarksMake, transform.position, Quaternion.identity);
+                    MarkPosition.transform.position = CardsObjectPosition.transform.position;
                     break;
             }
             count += 1;
         }
     }
+
+    /// <summary>
+    /// 52枚のカードの情報を取得
+    /// </summary>
+    private void SetRandomCard()
+    {
+        var CheckCard = GameObject.Find("FloorCards");
+        var DeckCheckCard = GameObject.Find("DeckCards");
+        int count = 0;
+        int deckcount = 0;
+        int[] random = MakeRandomNumber();
+        GameObject LoadCard = null;
+        
+        //カードをランダムに場と山札に置くfor文
+        for (int i = 0; i <52; i++)
+        {
+            var Number = (Card)random[count];
+            //countが28から山札に置くif文
+            if (27 < count)
+            {
+                LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/" + Number);
+                DeckcardHolder[deckcount] = LoadCard;
+                //Debug.Log(DeckcardHolder[deckcount]);
+                deckcount++;
+            }
+            //countが27までの場に置かれるカードのif文
+            if (count < 28)
+            {
+                LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/" + Number);
+                FloorCardHolder[count] = LoadCard;
+                //Debug.Log(FloorCardHolder[count]);
+            }
+            count++;
+        }
+    }
+
     /// <summary>
     /// 場にカードの生成
     /// </summary>
     public void MakeStartCard()
     {
         //カード置き場にbackカードの生成
-        var LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/back");
-        var CheckCard = GameObject.Find("Cards");
-
-        int count = 0;
-        int[] random = MakeRandomNumber();
-
-        var MakeCard = Instantiate(LoadCard, transform.position, Quaternion.identity);
+        var LoadBackCard = Resources.Load<GameObject>("Prefabs/Bar01/back");
+        var BackCheckCard = GameObject.Find("BackCards");
+        var FloorCheckCard = GameObject.Find("FloorCards");
+        var MakeCard = Instantiate(LoadBackCard, transform.position, Quaternion.identity);
         MakeCard.transform.position = new Vector3(-4.5f, 1.97f, -1);
-        MakeCard.transform.parent = CheckCard.transform;
-        //場にカードをランダムに生成
+        MakeCard.transform.parent = BackCheckCard.transform;
+
+        //表のカードを生成する
+        int count = 0;
+        //場にカードを生成
         for (int i = 0; i < 7; i++)
         {
             for (int j = 0; j < 7; j++)
             {
-                //ランダムな数字と同じ列挙型の中にある値を呼び出す
-                var Number = (Card)random[count];
-                if(i == j)
+                //場のカードの列の先頭に表のカードを表示する
+               if (i == j)
                 {
-                    LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/" + Number);
-                    FloorCardHolder[count] = LoadCard;
-                    Debug.Log(FloorCardHolder[count]);
-                    MakeCard = Instantiate(LoadCard, transform.position, Quaternion.identity);
-
+                    MakeCard = Instantiate(FloorCardHolder[count], transform.position, Quaternion.identity);
                     MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.15f * j, 0 - 1 * j);
-                    MakeCard.transform.parent = CheckCard.transform;
+                    MakeCard.transform.parent = FloorCheckCard.transform;
                     count++;
                     break;
                 }
-                LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/" + Number);
-                FloorCardHolder[count] = LoadCard;
-                LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/back");
-                MakeCard = Instantiate(LoadCard, transform.position, Quaternion.identity);
-
+               //先頭以外のカードは裏向きに表示する
+                MakeCard = Instantiate(LoadBackCard, transform.position, Quaternion.identity);
                 MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.15f * j, 0 - 1 * j);
-                MakeCard.transform.parent = CheckCard.transform;
-                Debug.Log(FloorCardHolder[count]);
-                count++;
+                MakeCard.transform.parent = BackCheckCard.transform;
+
             }
         }
-        /*
-        for (int x = 0; x < 24; x++)
-        {
-            LoadCard = Resources.Load<GameObject>("Prefabs/Bar01/" + Number);
-            MakeCard = Instantiate(LoadCard, transform.position, Quaternion.identity);
-
-            MakeCard.transform.position = new Vector3(-4.5f, 1.97f, -1);
-            MakeCard.transform.parent = CheckCard.transform;
-            count++;
-        }
-        */
     }
+
     /// <summary>
     /// ランダムな数字を生成
     /// </summary>
