@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
-        private int counter = 1;
+        private int positioncounter = 1;
+        private int playercounter = 0;
+        private int enemycounter = 0;
 
         public enum Mark
         {
@@ -30,15 +32,23 @@ namespace Assets.Scripts.Bar06 {
             Card card2_2 = new Card();
 
             //ランダムでカードを決める
-            var counter = 0;
-            while (counter <= 3)
+            card1_1.number = Random.Range(1, 14);
+            card1_1.mark = (Mark)Random.Range(0, 3);
+            card1_2.number = Random.Range(1, 14);
+            card1_2.mark = (Mark)Random.Range(0, 3);
+            card2_1.number = Random.Range(1, 14);
+            card2_1.mark = (Mark)Random.Range(0, 3);
+            card2_2.number = Random.Range(1, 14);
+            card2_2.mark = (Mark)Random.Range(0, 3);
+
+
+            playercounter = card1_1.number + card1_2.number;
+            enemycounter = card2_1.number + card2_2.number;
+
+            while (enemycounter <= 18)
             {
-                int number = Random.Range(1, 14);
-                int markValue = Random.Range(0, 4);
-                Mark mark = (Mark)markValue;
-                string str = mark.ToString();
-                Debug.Log(str + number);
-                counter++;
+                var enemyCard = Random.Range(1, 14);
+                enemycounter = enemycounter + enemyCard;
             }
 
             //カードを表示させる
@@ -60,15 +70,24 @@ namespace Assets.Scripts.Bar06 {
 
         public void AddCard()
         {
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var addCardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            addCardObject.transform.position = new Vector3(counter, -2.5f, 0);
-            counter++;
+            if(playercounter <= 21)
+            {
+                var test = 1;
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/c0" + test);
+                var addCardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                addCardObject.transform.position = new Vector3(positioncounter, -2.5f, 0);
+                addCardObject.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
+                positioncounter++;
+                var playerCard = Random.Range(1, 14);
+                playercounter = playercounter + playerCard;
+                Debug.Log(playercounter);
+            }
+            
         }
         
         public void Battle()
         {
-            Debug.Log("Battle");
+            Debug.Log(enemycounter);
         }
 
         public void TransitionToResult() {
