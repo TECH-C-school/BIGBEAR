@@ -36,32 +36,40 @@ public class start : MonoBehaviour
             case Mark.Clover:
                 fileName += "c";
                 break;
+            case Mark.Dia:
+                fileName += "d";
+                break;
+            case Mark.Spade:
+                fileName += "s";
+                break;
+            case Mark.Heart:
+                fileName += "h";
+                break;
         }
 
         if (Number < 10)
         {
-            String.Format("{0:00}", Number);
-            fileName += Number;
+            fileName += "0" + Number;
         }
         else
         {
             fileName += Number;
         }
-        
+
         return fileName;
     }
-}
 
 
-// Use this for initialization
-void Start()
+
+    // Use this for initialization
+    void Start()
     {
         Cards[] Deck = new Cards[104];
         var DeckCounter = 0;
 
         for (var j = 0; j < 2; j++)
         {
-            for (var i = 0; i < 13; i++)
+            for (var i = 1; i <= 13; i++)
             {
                 Cards student = new Cards();
                 student.Number = i;
@@ -70,9 +78,10 @@ void Start()
 
                 Deck[DeckCounter] = student;
                 DeckCounter++;
+
             }
 
-            for (var i = 0; i < 13; i++)
+            for (var i = 1; i <= 13; i++)
             {
                 Cards student = new Cards();
                 student.Number = i;
@@ -83,7 +92,7 @@ void Start()
                 DeckCounter++;
             }
 
-            for (var i = 0; i < 13; i++)
+            for (var i = 1; i <= 13; i++)
             {
                 Cards student = new Cards();
                 student.Number = i;
@@ -94,7 +103,7 @@ void Start()
                 DeckCounter++;
             }
 
-            for (var i = 0; i < 13; i++)
+            for (var i = 1; i <= 13; i++)
             {
                 Cards student = new Cards();
                 student.Number = i;
@@ -105,6 +114,7 @@ void Start()
                 DeckCounter++;
             }
         }
+        
 
         for (var i = 0; i < Deck.Length; i++)
         {
@@ -116,13 +126,12 @@ void Start()
 
         MakeRow(Deck);
         MakeCards();
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        ClickCard();
     }
 
     /// <summary>
@@ -141,7 +150,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-7.85f, i * 0.31f - -2.05f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row[i]);
+            if(i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row[i].Number, Row[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+
         }
         for (int i = 0; i < 6; i++)
         {
@@ -149,7 +164,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-6.11f, i * 0.31f - -2.05f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row2[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row2[i].Number, Row2[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+
         }
         for (int i = 0; i < 6; i++)
         {
@@ -157,7 +178,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-4.37f, i * 0.31f - -2.05f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row3[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row3[i].Number, Row3[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+
         }
         for (int i = 0; i < 6; i++)
         {
@@ -165,7 +192,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-2.633f, i * 0.31f - -2.05f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row4[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row4[i].Number, Row4[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+
         }
         for (int i = 0; i < 5; i++)
         {
@@ -173,7 +206,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-0.87f, i * 0.31f - -2.362f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row5[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row5[i].Number, Row5[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+
         }
         for (int i = 0; i < 5; i++)
         {
@@ -181,7 +220,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(0.87f, i * 0.31f - -2.362f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row6[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row6[i].Number, Row6[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+
         }
         for (int i = 0; i < 5; i++)
         {
@@ -189,7 +234,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(2.62f, i * 0.31f - -2.362f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row7[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row7[i].Number, Row7[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+            
         }
         for (int i = 0; i < 5; i++)
         {
@@ -197,7 +248,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(4.37f, i * 0.31f - -2.362f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row8[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row8[i].Number, Row8[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+            
         }
         for (int i = 0; i < 5; i++)
         {
@@ -205,7 +262,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(6.11f, i * 0.31f - -2.362f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row9[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row9[i].Number, Row9[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+            
         }
         for (int i = 0; i < 5; i++)
         {
@@ -213,7 +276,13 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(7.85f, i * 0.31f - -2.362f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Row10[i]);
+            if (i == 0)
+            {
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row10[i].Number, Row10[i].mark));
+            }else{
+                renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+            
         }
         for (int i = 0; i < 50; i++)
         {
@@ -221,7 +290,7 @@ void Start()
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-7.85f, 0 - 2.85f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Beck[i]);
+            renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
         }
 
     }
@@ -298,5 +367,32 @@ void Start()
         {
             Beck.Add(Deck[54 + i]);
         }
+    }
+    private void ClickCard()
+    {
+        //マウスクリックの判定
+        if (Input.GetMouseButtonDown(0)) return;
+
+        //クリックされた位置を取得
+        var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        //Collider2D上クリックの判定
+        if (!Physics2D.OverlapPoint(tapPoint)) return;
+
+    }
+
+    void OnMouseDown()
+    {
+        // マウスカーソルは、スクリーン座標なので、
+        // 対象のオブジェクトもスクリーン座標に変換してから計算する。
+
+        // このオブジェクトの位置(transform.position)をスクリーン座標に変換。
+        var screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+        // ワールド座標上の、マウスカーソルと、対象の位置の差分。
+        var offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+
+        Vector3 currentScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + offset;
+        transform.position = currentPosition;
     }
 }
