@@ -6,22 +6,22 @@ namespace Assets.Scripts.Game02 {
 	public class EnemyBase : MonoBehaviour {
 		protected int _column = 0;
 		protected int _row = 0;
-		protected Vector3 _genPos;
 
 		private Transform _parentTransform {
 			get{ return this.gameObject.transform.parent;}
 		}
 
-		protected virtual void Init() {
-			Debug.Log ("Parent!!");
-		}
-
-		protected virtual void Generate() {
-			this.gameObject.transform.position = _genPos;
+		public void Generate(Vector3 genPos) {
+			this.gameObject.transform.position = genPos;
 			this.gameObject.SetActive (true);
+			Init ();
 		}
 
-		protected virtual void Eliminate() {
+		protected virtual void Init() {
+			Debug.Log ("Parent"); 
+		}
+
+		protected void Eliminate() {
 			this.gameObject.SetActive (false);
 			this.gameObject.transform.position = _parentTransform.position;
 		}

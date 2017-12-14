@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game02 {
 	public class EnemyContoroller : MonoBehaviour {
+		[SerializeField]
 		List<EnemyBase> enemys = new List<EnemyBase> ();
 
 //		List<float> buildingColumns = new List<float> ();
@@ -22,6 +23,7 @@ namespace Assets.Scripts.Game02 {
 			var enemy = enemys.FirstOrDefault(e => e.gameObject.activeSelf == false);
 			if (enemy == null)
 				return;
+			enemy.Generate (Vector3.one);
 		}
 	}
 }
