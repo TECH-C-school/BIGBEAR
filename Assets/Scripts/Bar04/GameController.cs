@@ -53,16 +53,25 @@ namespace Assets.Scripts.Bar04_06
 
             for (var i = 0; i < 5; i++)
             {
-                    var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                    cardObject.transform.position = new Vector3(
-                        i * 1.27f - 3.87f,
-                        0);
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(
+                        0, 0);
+                if (cardObject(0, 0))
+                {
+                    for (int j = 1; i < 3; j++)
+                    {
+                        cardObject.transform.position = new Vector3(
+                                j * 2, 0);
+                        cardObject.transform.position = new Vector3(
+                                j * -2, 0);
+                    }
                     cardObject.transform.parent = cardsObject.transform;
 
                     var card = cardObject.GetComponent<Card>();
-                    card.Number = randomNumbers[count];
+                    card.Number = number[count];
                     card.ChangedCards();
                     count++;
+                }
             }
         }
         private int[] MakeRandomNumbers() {
@@ -73,8 +82,8 @@ namespace Assets.Scripts.Bar04_06
                 number[i] = i;
             }
             //シャッフルす
-            int[] ary2 = number.OrderBy(i => Guid.NewGuid()).ToArray();
-            return ary2;
+            number = number.OrderBy(i => Guid.NewGuid()).ToArray();
+            return number;
         }
 
         /// <summary>
