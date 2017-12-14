@@ -50,8 +50,9 @@ namespace Assets.Scripts.Game07
             //ゲームの初期化
             Player.isMove = false;
             HeridController.instance.IsTimeStart = false;
-            TimeController.instance.isCount = false;
+            //TimeController.instance.isCount = false;
             PauseButton.SetActive(false);
+            m_gameLevel = GameLevel.Easy;
             RetryButton.SetActive(false);
             ContinueButton.SetActive(false);
             m_score = 0;

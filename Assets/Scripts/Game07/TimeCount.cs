@@ -24,6 +24,7 @@ namespace Assets.Scripts.Game07
 
         void Start()
         {
+            
             TimeText = GetComponent<Text>();
             TimeText.text = "0";
             //BackImage.SetActive(true);
@@ -57,13 +58,15 @@ namespace Assets.Scripts.Game07
                     //例えば　Easyの時は10点から20点の間ならnum = 1だけど、Hardの時はnum = 2になるみたいな感じ
                     //計算式は　ゲームの難易度(もちろん数字)×10点　みたいな感じで
                     //佐野先輩　やってみてください
+                    //Debug.Log((int)GameController.instance.m_gameLevel);
 
                     int num = 0;
-                    if (GameController.instance.m_score >= 0 && GameController.instance.m_score <= 10)//0以上で10以下の時
+                    int level = (int)GameController.instance.m_gameLevel;
+                    if (GameController.instance.m_score >= 0 * level && GameController.instance.m_score <= 10 * level)//0以上で10以下の時
                         num = 1;
-                    else if (GameController.instance.m_score >= 11 && GameController.instance.m_score <= 20)//11以上で20以下の時
+                    else if (GameController.instance.m_score >= 11 * level && GameController.instance.m_score <= 20 * level)//11以上で20以下の時
                         num = 2;
-                    else if (GameController.instance.m_score >= 21 && GameController.instance.m_score <= 30)//21以上で30以下の時
+                    else if (GameController.instance.m_score >= 21 * level && GameController.instance.m_score <= 30 * level)//21以上で30以下の時
                         num = 3;
                     for(int i = 0; i < num; i++) // numの数だけRizarutImageを表示する
                         Items[i].SetActive(true);
