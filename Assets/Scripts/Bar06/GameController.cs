@@ -12,6 +12,12 @@ namespace Assets.Scripts.Bar06
             MakeCard();
 
         }
+        private void Update()
+        {
+
+        }
+
+
         /// <summary>
         /// カードを生成する
         /// </summary>
@@ -28,21 +34,16 @@ namespace Assets.Scripts.Bar06
                 }
             }
         }
+
         /// <summary>
         /// クリックしたときカードを追加する
         /// </summary>
-        private void Update()
-        {
-
-        }
         public void ClickCardplusButton()
         {
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/c01");
-            for (var x = 0; x < 1; x++) {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector2(0f,0f);
                 cardObject.transform.parent = transform;
-            }
         }
         /// <summary>
         /// クリックしたとき相手とのカードの大きさを比べる
