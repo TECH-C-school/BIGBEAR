@@ -17,14 +17,35 @@ namespace Assets.Scripts.Bar04
         /// </summary>
         [SerializeField]
         private float FadeIn, FadeOut;
+        [SerializeField]
+        RectTransform RectStartButton;
+               
+
+
         /// <summary>
         /// 
         /// </summary>
-        private void Start()
+        public void Start()
         {
+            new StartBTN().MakeStartButton();
+
+        }
+        /// <summary>
+        /// startButton押された時の作動(DG有)
+        /// </summary>S
+        ///
+        /*
+        internal void StartBTN()
+        {
+          /*  RectStartButton.DOMoveY
+                (
+
+                );
             CreateCards();
 
         }
+        */
+
 
         /// <summary>
         /// カードの生成
@@ -51,7 +72,7 @@ namespace Assets.Scripts.Bar04
             }
         }
         /// <summary>
-        /// DOTweenFade
+        /// DOTweenFade(未完)
         /// </summary>
         internal void DOTweenFade()
         {

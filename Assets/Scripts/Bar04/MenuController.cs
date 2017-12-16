@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using DG.Tweening;
 using System;
+using UnityEngine.AI;
 //https://anz-note.tumblr.com/post/145208947906/unity%E3%82%BF%E3%83%83%E3%83%97%E3%81%99%E3%82%8B%E3%81%A8%E5%AD%90%E3%83%9C%E3%82%BF%E3%83%B3%E3%82%92%E5%B1%95%E9%96%8B%E3%81%97%E3%81%A6%E8%A1%A8%E7%A4%BA%E3%81%99%E3%82%8B%E3%82%84%E3%83%BC%E3%81%A4
 namespace Assets.Scripts.Bar04
 {
