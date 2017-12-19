@@ -4,18 +4,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> クリックでPhase切り替えを実装
- *              Phaseの切り替えで場札を表示
- *              初期化実装
+ * 今回作業 --> 
  */
 
 /*
- * 次回作業 --> ストレートフラッシュとロイヤルストレートフラッシュの判定がおかしいので修正をすること
- *              PhaseViewの修正(Prefabにしなきゃいけない?)
+ * 次回作業 --> 
  */
 
 /*
- * 今後実装 -->
+ * 今後実装 -->ストレートフラッシュとロイヤルストレートフラッシュの判定の修正
+ *             同役の時の処理
+ *             PhaseViewの修正(Prefabにしなきゃいけない?)
+ *             チップを掛ける
  */
 
 namespace Assets.Scripts.Bar05 {
@@ -577,26 +577,26 @@ namespace Assets.Scripts.Bar05 {
             {
                 _Phase = 0;
                 InitGame();
-                PhaseView(1);
+                //PhaseView(1);
             }
             if(_Phase == GamePhase.SecondBet)
             {
                 TurnStackCard(1);
-                PhaseView(2);
+                //PhaseView(2);
             }
             if (_Phase == GamePhase.ThirdBet)
             {
                 TurnStackCard(2);
-                PhaseView(3);
+                //PhaseView(3);
             }
             if (_Phase == GamePhase.FinalBet)
             {
                 TurnStackCard(3);
-                PhaseView(4);
+                //PhaseView(4);
             }
             if (_Phase == GamePhase.Result)
             {
-                PhaseView(5);
+                //PhaseView(5);
             }
             //続けるかを聞く(間を入れているだけ)
             if (_Phase == GamePhase.Continue)
@@ -606,6 +606,7 @@ namespace Assets.Scripts.Bar05 {
             Debug.Log(_Phase);
         }
 
+        /*
         //Phase画像の表示
         public void PhaseView(int PhaseNum)
         {
@@ -634,6 +635,8 @@ namespace Assets.Scripts.Bar05 {
             var PhaseObject = Instantiate(PhaseImage, transform.position, Quaternion.identity);
             PhaseObject.transform.position = new Vector3(-1, -1, 0);
         }
+
+        */
 
         //場札をめくる
         public void TurnStackCard(int PhaseNum)
