@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: d113dc94bd36ec348a41dd14027f7c33
 timeCreated: 1512550787
+=======
+guid: f5a57ce09bed6b641aae63506c5e5045
+timeCreated: 1512609546
+>>>>>>> Bar06_04
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2

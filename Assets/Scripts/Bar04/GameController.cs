@@ -9,9 +9,16 @@ namespace Assets.Scripts.Bar04 {
         public GameObject Startbutton;
        
         public void TransitionToResult() {
+<<<<<<< HEAD
 
 
   
+=======
+            {
+ 
+}
+
+>>>>>>> Bar06_04
             SceneManager.LoadScene("Result");
         }
 
