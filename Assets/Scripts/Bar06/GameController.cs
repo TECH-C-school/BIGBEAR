@@ -29,11 +29,11 @@ namespace Assets.Scripts.Bar06 {
             
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(1.35f, -1.8f, 0);
+            cardObject.transform.position = new Vector3(1.35f, -3.5f, 0);
 
             var cardPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
             var cardObjec2t = Instantiate(cardPrefab2, transform.position, Quaternion.identity);
-            cardObjec2t.transform.position = new Vector3(1.35f, 1.02f, 0);
+            cardObjec2t.transform.position = new Vector3(1.35f, 1.22f, 0);
 
             makecard();
             tmakecard(1);
@@ -74,7 +74,7 @@ namespace Assets.Scripts.Bar06 {
             var cardsObject = GameObject.Find("Cards");
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(-0.3f*zmai, -1, -1*zmai);
+            cardObject.transform.position = new Vector3(-0.4f*zmai, -2.7f, -1*zmai);
             cardObject.transform.parent = cardsObject.transform;
 
             int mark;
@@ -98,7 +98,7 @@ namespace Assets.Scripts.Bar06 {
             mai++;
             textoku();
 
-            if (gou > 21) { lose.winhyou(); bt1.OnClick(); }
+            if (gou > 21) { lose.winhyou(); bt1.OnClick();syouritu.syouri(0); }
 
         }
         private void tmakecard(int n)
@@ -106,7 +106,7 @@ namespace Assets.Scripts.Bar06 {
             var cardsObject = GameObject.Find("Cards2");
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/back");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(-0.3f * tmai, 1.8f, -1 * tmai);
+            cardObject.transform.position = new Vector3(-0.4f * tmai, 2f, -1 * tmai);
             cardObject.transform.parent = cardsObject.transform;
 
             if (tekkifl == 0)
@@ -140,11 +140,14 @@ namespace Assets.Scripts.Bar06 {
             
         }
 
+        
+
         public void clClick()
         {
             while (tgou < 17) {
-                tmakecard(0);
                 
+           timei = 0; tmakecard(0);
+            
             }
             Debug.Log(tgou);
             var cardsObject = GameObject.Find("Cards2").transform;
@@ -169,8 +172,13 @@ namespace Assets.Scripts.Bar06 {
             mai = maimaimai;
             texttoku();
             if (tgou < 22) {
-                if (gou==tgou) { draw.winhyou(); } else if (gou > tgou) { win.winhyou(); } else { lose.winhyou(); }
-            }else { win.winhyou(); }
+                if (gou==tgou) { draw.winhyou();
+                } else if (gou > tgou) {
+                    win.winhyou(); syouritu.syouri(1);
+                } else {
+                    lose.winhyou(); syouritu.syouri(0);
+                }
+            }else { win.winhyou(); syouritu.syouri(1); }
 
 
 
@@ -201,6 +209,7 @@ namespace Assets.Scripts.Bar06 {
             {
                 Destroy(cardObject.gameObject);
             }
+            rireki.rirekii(gou);
             gou = 0;
             tgou = 0;
             zmai = 0;
