@@ -24,7 +24,9 @@ namespace Assets.Scripts.Bar0404 {
 
         public void PokerCheck() {
 
-            if (ThreeCard(m_Hund) == 3) {
+            if (FullHouse(m_Hund) == 6) {
+                Debug.Log("フルハウス");
+            }else if (ThreeCard(m_Hund) == 3) {
                 Debug.Log("スリーカード");
             }else if (TwoPare(m_Hund) == 2) {
                 Debug.Log("ツーペア");
@@ -81,6 +83,14 @@ namespace Assets.Scripts.Bar0404 {
             }
             return m_Poker;
         }
+
+        int FullHouse(int[] xyz) {
+
+            return 0;
+           
+        }
+
+
 
     }
 

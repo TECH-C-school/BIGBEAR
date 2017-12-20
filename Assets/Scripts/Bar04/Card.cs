@@ -31,6 +31,13 @@ namespace Assets.Scripts.Bar0404
             0
         };
 
+        char[] m_CardsMark = {
+           'c','c','c','c','c','c','c','c','c','c','c','c','c',
+           'h','h','h','h','h','h','h','h','h','h','h','h','h',
+           'd','d','d','d','d','d','d','d','d','d','d','d','d',
+           's','s','s','s','s','s','s','s','s','s','s','s','s',
+        };
+
         int m_Number;
 
         public int Number{
