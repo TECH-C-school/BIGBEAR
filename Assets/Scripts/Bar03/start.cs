@@ -114,7 +114,7 @@ public class start : MonoBehaviour
                 DeckCounter++;
             }
         }
-        
+
 
         for (var i = 0; i < Deck.Length; i++)
         {
@@ -132,6 +132,7 @@ public class start : MonoBehaviour
     void Update()
     {
         ClickCard();
+        DragCard();
     }
 
     /// <summary>
@@ -150,10 +151,12 @@ public class start : MonoBehaviour
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(-7.85f, i * 0.31f - -2.05f, 0);
             var renderer = cardObject.GetComponent<SpriteRenderer>();
-            if(i == 0)
+            if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row[i].Number, Row[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
 
@@ -167,7 +170,9 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row2[i].Number, Row2[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
 
@@ -181,7 +186,9 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row3[i].Number, Row3[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
 
@@ -195,7 +202,9 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row4[i].Number, Row4[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
 
@@ -209,7 +218,9 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row5[i].Number, Row5[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
 
@@ -223,7 +234,9 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row6[i].Number, Row6[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
 
@@ -237,10 +250,12 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row7[i].Number, Row7[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
-            
+
         }
         for (int i = 0; i < 5; i++)
         {
@@ -251,10 +266,12 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row8[i].Number, Row8[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
-            
+
         }
         for (int i = 0; i < 5; i++)
         {
@@ -265,10 +282,12 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row9[i].Number, Row9[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
-            
+
         }
         for (int i = 0; i < 5; i++)
         {
@@ -279,10 +298,12 @@ public class start : MonoBehaviour
             if (i == 0)
             {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row10[i].Number, Row10[i].mark));
-            }else{
+            }
+            else
+            {
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
-            
+
         }
         for (int i = 0; i < 50; i++)
         {
@@ -381,18 +402,22 @@ public class start : MonoBehaviour
 
     }
 
-    void OnMouseDown()
+    private void DragCard()
     {
-        // マウスカーソルは、スクリーン座標なので、
-        // 対象のオブジェクトもスクリーン座標に変換してから計算する。
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 objectPointInScreen
+               = Camera.main.WorldToScreenPoint(this.transform.position);
 
-        // このオブジェクトの位置(transform.position)をスクリーン座標に変換。
-        var screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-        // ワールド座標上の、マウスカーソルと、対象の位置の差分。
-        var offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+            Vector3 mousePointInScreen
+               = new Vector3(Input.mousePosition.x,
+                              Input.mousePosition.y,
+                              objectPointInScreen.z);
 
-        Vector3 currentScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + offset;
-        transform.position = currentPosition;
+            Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
+            mousePointInWorld.z = this.transform.position.z;
+            this.transform.position = mousePointInWorld;
+        }
     }
+
 }
