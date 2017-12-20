@@ -73,8 +73,8 @@ namespace Assets.Scripts.Bar04_06
                     count++;
                 }
             }
-        }
-        private int[] MakeRandomNumbers() {
+        }*/
+        private void MakeRandomNumbers() {
 
             int[] number = new int[51];
             for (int i = 0; i < number.Length; i++)
@@ -82,10 +82,34 @@ namespace Assets.Scripts.Bar04_06
                 number[i] = i;
             }
             //シャッフルする
-            number = number.OrderBy(i => Guid.NewGuid()).ToArray();
-            return number;
+            System.Random rng = new System.Random();
+            int n = number.Length;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                int tmp = number[k];
+                number[k] = number[n];
+                number[n] = tmp;
+            }
         }
-        */
+/// <summary>
+/// カードの配置
+/// </summary>
+            private void Makecards()
+                {
+               var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/prefabs/Cards");
+               var cardsObject = GameObject.Find("Cards");
+               for (var i = 0; i < 5; i++)
+               {
+
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(
+                0, 0, 0);
+
+                cardObject.transform.parent = cardsObject.transform;
+            }
+        }
         /// <summary>
         /// クリックしたカードをHoldし、クリックされていないカードを捨て場に送る
         /// </summary>
@@ -99,6 +123,7 @@ namespace Assets.Scripts.Bar04_06
         /// <summary>
         /// 所持しているカードの役を判別する
         /// </summary>
+        /// 
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
