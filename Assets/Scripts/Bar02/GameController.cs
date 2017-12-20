@@ -11,13 +11,13 @@ namespace Assets.Scripts.Bar02 {
         private void Start()
         {
             CardSet();
-            _cardPos[0] = new Vector2(0, 0);
         }
         
         private void Update()
         {
             turnCard();
             checkCard();
+            addFlame();
         }
 
         //数値計算用int[]
@@ -39,8 +39,7 @@ namespace Assets.Scripts.Bar02 {
         //トランプの配置格納
         private string[] cardNum = new string[53];
 
-        //消去したobjectのposition格納
-        private Vector2[] _cardPos = new Vector2[21];
+        
 
         /// <summary>
         /// カードを表示
@@ -91,7 +90,7 @@ namespace Assets.Scripts.Bar02 {
         /// <summary>
         /// ランダムなカード配置
         /// </summary>
-        public string[] MakeRandCard()
+        private string[] MakeRandCard()
         {
             //52枚のカード配列 0番は空欄
             string[] toranpu = new string[53];
@@ -175,6 +174,12 @@ namespace Assets.Scripts.Bar02 {
 
 
             }
+            else if (maxCard.sprite.ToString().Substring(0, 9) == "cardflame")
+            {
+                //cardflame(山札の枠)をクリックした場合、山札を戻す
+                //最後まで山札めくらないと発動せず
+                ReturnPlaceCard();
+            }
             else
             {
                 //spriteのカード番号の数字取得 クリック回数取得
@@ -191,7 +196,6 @@ namespace Assets.Scripts.Bar02 {
                     //13をクリックしたらその場で消去、クリック回数初期化
                     if (sumNum[0] == 13)
                     {
-                        _cardPos[_cardPos.Length - 1] = click1.transform.position;
                         Destroy(click1.gameObject);
                         _countClick = countClick.Noi;
                     }
@@ -214,8 +218,6 @@ namespace Assets.Scripts.Bar02 {
                 //関数sumが13だったらobject消去
                 if (sum == 13)
                 {
-                    _cardPos[_cardPos.Length - 1] = click1.transform.position;
-                    _cardPos[_cardPos.Length - 1] = click2.transform.position;
                     Destroy(click1.gameObject);
                     Destroy(click2.gameObject);
                 }
@@ -229,12 +231,14 @@ namespace Assets.Scripts.Bar02 {
         }
 
         /// <summary>
-        /// ボタン処理
+        /// 山札をもとに戻す
         /// </summary>
-        public void clickReturnbutton()
+        private void ReturnPlaceCard()
         {
+            //場所returnPlaceにあるobject取得
             Vector2 returnPlace = new Vector2(3.0f, 2.0f);
             Collider2D[] place = Physics2D.OverlapPointAll(returnPlace);
+            //全部裏返して山札へ
             for (int i = 0; i < place.Length; i++)
             {
                 SpriteRenderer plaCard = place[i].GetComponent<SpriteRenderer>();
@@ -247,7 +251,7 @@ namespace Assets.Scripts.Bar02 {
         /// <summary>
         /// ピラミッドカードの自動めくり
         /// </summary>
-        public void turnCard()
+        private void turnCard()
         {
             int countParagraph = 6;
             for(int i = 1; i <= 6; i++)
@@ -271,6 +275,7 @@ namespace Assets.Scripts.Bar02 {
                         }
                     }
 
+                    //なかったら次のobjectへ
                     if (!standardCard) continue;
                     
                     //standardCardが裏か表か取得
@@ -312,6 +317,54 @@ namespace Assets.Scripts.Bar02 {
                 
                 countParagraph--;
             }
-        }   
+        }
+
+        /// <summary>
+        /// 山札の枠生成(山札のカードが無くなった場合)
+        /// </summary>
+        private void addFlame()
+        {
+            //場所取得
+            Vector2 placePos = new Vector2(4.5f, 2.0f);
+            Collider2D[] placeSheets = Physics2D.OverlapPointAll(placePos);
+            if (placeSheets.Length == 0)
+            {
+                //何もなかったらflame表示
+                var flamePrefab = Resources.Load<GameObject>("Prefabs/Bar02/cardflame");
+                var flameObject = Instantiate(flamePrefab, transform.position, Quaternion.identity);
+                flameObject.transform.position = new Vector2(4.5f, 2.0f);
+            }
+            else if (placeSheets.Length == 1 && placeSheets[0].GetComponent<SpriteRenderer>().sprite.ToString().Substring(0,9) ==  "cardflame")
+            {
+                //placePocにcardflameのみ描画されている場合、return
+                return;
+            }
+            else
+            {
+                //カードがあったらflame消去
+                //placeSheetsの中からframe探す
+                SpriteRenderer deletePrefab = null;
+                for(int i = 0; i < placeSheets.Length; i++)
+                {
+                    SpriteRenderer PrefabSprite = placeSheets[i].GetComponent<SpriteRenderer>();
+                    string prefabName = PrefabSprite.sprite.ToString().Substring(0, 9);
+                    if (prefabName == "cardflame")
+                    {
+                        deletePrefab = PrefabSprite;
+                    }
+                }
+
+                if (!deletePrefab) return;
+
+                //flame消去
+                Destroy(deletePrefab.gameObject);
+            }
+        }
+        
+        
+        public void onClickResetButton()
+        {
+
+        }
     }
 }
