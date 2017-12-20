@@ -6,20 +6,23 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
-        
-        enum Trunp
-        {
 
+        
+        public void ClickChangeButton()
+        {
+            
+            Debug.Log("ChangeButtonClick");
         }
         public void ClickFightButton()
         {
             
+
             var cardsObject = GameObject.Find("Cards");
             foreach (Transform cardObject in cardsObject.transform)
             {
                 Destroy(cardObject.gameObject);
             }
-            Debug.Log("Button Click");
+            Debug.Log("FightButtonClick");
             //Listに0～51までの数値を追加する
             List<int> List = new List<int>();
             for (int i = 0; i < 52; i++)
@@ -38,12 +41,12 @@ namespace Assets.Scripts.Bar04 {
                 List[n] = tmp;
             }
             //山札の上から5枚を配る
-            for (var j = 0;j < 5; j++)
+            for (var j = 0; j < 5; j++)
             {
                 var counter = LoadCard(List[j], j);
                 Debug.Log(counter);
             }
-            
+            gameObject.SetActive(false);
 
         }
         void Start()
@@ -57,12 +60,10 @@ namespace Assets.Scripts.Bar04 {
                 cardObbject.transform.position = new Vector2(i * 2.5f - 5, 0.5f);
                 cardObbject.transform.parent = Card.transform;
             }
-            
         }
-        
         void Update()
         {
-            Click();
+            //Click();
             
         }
         public int LoadCard(int x,int y)
@@ -540,15 +541,25 @@ namespace Assets.Scripts.Bar04 {
             
             return i;
         }
-        private void Click()
+        /*private void Click()
         {
+            
+            var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
             GameObject obj = getClickObject();
             if(obj != null)
             {
-
+                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    //クリックされた位置を取得
+                    var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    tapPoint = Input.mousePosition;
+                    Vector2 tmp = getObjectPosition();
+                    cardFlame.transform.position = tmp;
+                }
             }
 
-        }
+        }*/
         /// <summary>
         /// 山札を作成する(ジョーカー抜き)
         /// </summary>
@@ -595,7 +606,33 @@ namespace Assets.Scripts.Bar04 {
             }
             return result;
         }
+        private Vector2 getObjectPosition()
+        {
+            Vector2 result = new Vector2();
+            //左クリックされた場所のオブジェクトの座標を取得
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Collider2D collition2d = Physics2D.OverlapPoint(tapPoint);
+                if (collition2d)
+                {
+                    result = GameObject.Find("RandomCards/").transform.position;
+                }
+            }
+            return result;
+        }
+        public void serectButton()
+        {
+            //カードを選択する
+            var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
+            var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
+            cardFlame.transform.position = new Vector2(5, 0.5f);
+        }
+        public void disSerectButton()
+        {
+            //カードの選択を解除する
 
+        }
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
