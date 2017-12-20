@@ -57,7 +57,27 @@ namespace Assets.Scripts.Bar04
 
         }
 
+        //ランダムな整数の生成
+        private int[] MakeRandomNumbers()
+        {
+            int[] numbers = new int[52];
 
+            for (int i = 0; i < numbers.Length; i++)  //配列の初期化
+            {
+                numbers[i] = i + 1;
+            }
+            var counter = 0;
+            while (counter < 52)
+            {
+                var index = Random.Range(counter, numbers.Length);
+                var tmp = numbers[counter];
+                numbers[counter] = numbers[index];
+                numbers[index] = tmp;
+
+                counter++;
+            }
+            return numbers;
+        }
 
         private void Start()
         {
@@ -65,9 +85,10 @@ namespace Assets.Scripts.Bar04
 
             PlayerMakeCards();
             EnemyMakeCards();
-            /*Debug.Log("カード生成");
-            Debug.Log(card.Number);
-            Debug.Log(card.CardType);*/
+            
+            //Debug.Log("カード生成");
+            //Debug.Log(card.Number);
+            //Debug.Log(card.CardType);
         }
 
 
