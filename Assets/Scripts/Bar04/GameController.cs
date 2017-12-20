@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Bar04
 {
     public class GameController : MonoBehaviour
     {
 
-
+        
 
         //プレイヤーカードの作成
         private void PlayerMakeCards()
@@ -56,17 +57,17 @@ namespace Assets.Scripts.Bar04
 
         }
 
+
+
         private void Start()
         {
-            Card card = new Card(1, Card.PalayingCards.s);
+           // Card card = new Card(1, Card.PalayingCards.s);
 
             PlayerMakeCards();
             EnemyMakeCards();
-
             /*Debug.Log("カード生成");
             Debug.Log(card.Number);
             Debug.Log(card.CardType);*/
-
         }
 
 
@@ -74,8 +75,6 @@ namespace Assets.Scripts.Bar04
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
-
-
         }
     }
 }
