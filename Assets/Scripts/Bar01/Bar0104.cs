@@ -12,7 +12,8 @@ public class Bar0104 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-	}
+	}    
+
     private void ClickCard()
     {
         //マウスクリックの判定
