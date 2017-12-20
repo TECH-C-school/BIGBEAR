@@ -20,7 +20,6 @@ namespace Assets.Scripts.Bar02
         void Start()
         {
             MakeCards();
-            SettingCards();
         }
         void Update()
         {
@@ -51,72 +50,69 @@ namespace Assets.Scripts.Bar02
                 trump[i + 26].num = i;
                 trump[i + 39].num = i;
             }
-            int[] values = new int[52];
-
-
-            var counter = 0;
-            //マークと数字をバラバラに
-            while (counter < 52)
-            {
-                int index = UnityEngine.Random.Range(counter, values.Length);
-                var tmp = trump[counter].mark;
-                trump[counter].mark = trump[index].mark;
-                trump[index].mark = tmp;
-
-                counter++;
-            }
-            counter = 0;
-            while (counter < 52)
-            {
-                int index = UnityEngine.Random.Range(counter, values.Length);
-                var tmp = trump[counter].num;
-                trump[counter].num = trump[index].num;
-                trump[index].num = tmp;
-
-                counter++;
-            }
-
-            var fieldcard = GameObject.Find("FieldCards");
-            var twenycard = GameObject.Find("TwentyCards");
+            GameObject[] array = new GameObject[52];
 
             for (int k = 0; k < 52; k++)
             {
                 GameObject markObject = GameObject.Find("Mark").transform.Find(trump[k].mark).gameObject;
-                var numberObject = markObject.transform.GetChild(trump[k].num).gameObject;
-                GameObject cardObject = Instantiate(numberObject, transform.position, Quaternion.identity);
-                cardObject.transform.parent = fieldcard.transform;
-                //cardnum[k] = trump[k].num;
+                array[k] = markObject.transform.GetChild(trump[k].num).gameObject;
+
             }
+            var counter = 0;
+            while (counter < 52)
+            {
+                int index = UnityEngine.Random.Range(counter, 52);
+                GameObject tmp = array[counter];
+                array[counter] = array[index];
+                array[index] = tmp;
+
+                //Debug.Log(array[counter]);
+
+                counter++;
+            }
+
+            GameObject[] FieldCard = new GameObject[28];
+            GameObject[] RemainCard = new GameObject[24];
+
+            var fieldcard = GameObject.Find("FieldCards");
+            var remaincard = GameObject.Find("RemainCards");
+
+            counter = 0;
+            while (counter < 28)
+            {
+                FieldCard[counter] = array[counter];
+                //Debug.Log(FieldCard[counter]);
+                counter++;
+            }
+            int renum = 0;
+            while (renum < 24)
+            {
+                RemainCard[renum] = array[counter];
+                GameObject renumpos = Instantiate(RemainCard[renum], transform.position, Quaternion.identity);
+                renumpos.transform.parent = remaincard.transform;
+                //Debug.Log(RemainCard[renum]);
+                counter++; renum++;
+            }
+
+
             counter = 1;
             for (int x = 0; x < 7; x++)
             {
                 for (int y = 0; y < counter; y++)
-                {                    
-                    var numpos = fieldcard.transform.GetChild(choice).gameObject;
-                    GameObject cardpos = Instantiate(numpos, transform.position, Quaternion.identity);
-                    
+                {
+                    GameObject cardpos = Instantiate(FieldCard[choice], transform.position, Quaternion.identity);
+
                     cardpos.transform.position = new Vector3(
-                    -0.64f * x + 1.32f * y,
-                    2.90f - 0.80f * x,
+                    -0.87f * x + 1.665f * y,
+                    3.50f - 0.92f * x,
                     0);
 
                     cardpos.GetComponent<Renderer>().sortingOrder = counter;
-                    cardpos.transform.parent = twenycard.transform;
+                    cardpos.transform.parent = fieldcard.transform;
                     choice++;
                 }
                 counter++;
             }
-        }
-
-        public void SettingCards()
-        {
-            GameObject backCard = GameObject.Find("Back");
-
-            backCard.transform.position = new Vector3(
-            6.0f,
-            3.9f,
-            0);
-
         }
 
         public void ClickCard()
@@ -138,15 +134,9 @@ namespace Assets.Scripts.Bar02
             var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
             if (!hitObject) return;
 
-            //クリックされたカードスクリプトを取得
-            //var cardTrans = hitObject.collider.gameObject.GetComponent<>();
-            
             //クリックされた位置にflameを装着
             var Flame = GameObject.Find("cardflame");
             Flame.transform.position = hitObject.transform.position;
-
-
-
 
         }
         /* public void TransitionToResult()
