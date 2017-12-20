@@ -8,10 +8,10 @@ namespace Assets.Scripts.Bar04
 
     public class Deck : MonoBehaviour {
 　　　　//デッキ作成
-        public Queue<int> MakeCards()
+        public static Queue<int> MakeCards()
         {
+            
             //52枚のカードをランダムに生成
-
             int[] cards = new int[51];
             for (var i = 0; i < 51; i++)
             {
@@ -49,17 +49,17 @@ namespace Assets.Scripts.Bar04
 
          
     
-    // Use this for initialization
-        void Start() {
-            MakeCards();
-        }
+    //// Use this for initialization
+    //    void Start() {
+    //        MakeCards();
+    //    }
 
-        // Update is called once per frame
-        void Update() {
+    //    // Update is called once per frame
+    //    void Update() {
 
             
 
-        }
+    //    }
     }
 
 }
