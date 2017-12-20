@@ -13,6 +13,7 @@ namespace Assets.Scripts.Bar04 {
         }
         public void ClickFightButton()
         {
+            
             var cardsObject = GameObject.Find("Cards");
             foreach (Transform cardObject in cardsObject.transform)
             {
