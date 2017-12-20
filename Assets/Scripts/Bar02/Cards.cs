@@ -6,7 +6,7 @@ namespace Assets.Scripts.Bar02
 {
     public class Cards : MonoBehaviour
     {
-        public void SettingCards()
+       /* public void SettingCards()
         {
             GameObject backCard = GameObject.Find("Back");
 
@@ -15,7 +15,7 @@ namespace Assets.Scripts.Bar02
             3.9f,
             0);
 
-        }
+        }*/
         public void ClickEvent()
         {
             //var card = cardObject.GetComponent<Card>();

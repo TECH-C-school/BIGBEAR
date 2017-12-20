@@ -84,7 +84,7 @@ namespace Assets.Scripts.Bar02
                 GameObject markObject = GameObject.Find("Mark").transform.Find(trump[k].mark).gameObject;
                 var numberObject = markObject.transform.GetChild(trump[k].num).gameObject;
                 GameObject cardObject = Instantiate(numberObject, transform.position, Quaternion.identity);
-                //cardObject.transform.parent = fieldcard.transform;
+                cardObject.transform.parent = fieldcard.transform;
                 //cardnum[k] = trump[k].num;
             }
             counter = 1;
