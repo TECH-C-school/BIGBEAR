@@ -8,6 +8,11 @@ namespace Assets.Scripts.Bar03
     public class GameController : MonoBehaviour
     {
         public GameObject Cards;
+        int[] m_Cards;
+
+        int NextCard = 0;
+
+
         // Use this for initialization
         void Start()
         {
@@ -34,10 +39,12 @@ namespace Assets.Scripts.Bar03
         public void MakeBackCards()
         {
             int count = 0;
-            int[] randomCards = MakeRandomCardNumbers();
+            m_Cards = MakeRandomCardNumbers();
 
             Transform CardObject = GameObject.Find("Cards").transform;
             var CardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Cards");
+            Transform DeckObject = GameObject.Find("Deck").transform;
+            var DeckPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Cards");
             Transform CardObjectf = GameObject.Find("FrontCards").transform;
             var CardPrefabf = Resources.Load<GameObject>("Prefabs/Bar03/FrontCard");
             for (int a = 0; a < 4; a++)
@@ -61,12 +68,6 @@ namespace Assets.Scripts.Bar03
                             -b * -0.25f + 2.35f,
                             0);
                         cardObject.transform.parent = CardObjectf;
-                        /*
-                        var card = cardObject.GetComponent<Cards>();
-                        card.String = randomCards[count];
-                        card.TurnCardFaceDown();
-                        count++;
-                        */
                     }
 
                 }
@@ -98,23 +99,32 @@ namespace Assets.Scripts.Bar03
                     }
                 }
             }
+            int x;
+            for(var f = NextCard;f < m_Cards.Length; f++)
+            {
+                m_Cards(f);
+            }
+            
         }
 
-        private int[] MakeRandomCardNumbers()
+        
+
+        //山札を作る際のカウント
+        public  int[] MakeRandomCardNumbers()
         {
-            int[] values = new int[54];
-            for (int a = 0; a < 54; a++)
+            int[] values = new int[104];
+            for (int a = 0; a < values.Length; a++)
             {
                 values[a] = a + 1;
             }
 
             var counter = 0;
-            while (counter < 54)
+            while (counter < values.Length)
             {
                 var index = UnityEngine.Random.Range(counter, values.Length);
-                var tmp = values[counter];
+                var cum = values[counter];
                 values[counter] = values[index];
-                values[index] = tmp;
+                values[index] = cum;
 
                 counter++;
             }
