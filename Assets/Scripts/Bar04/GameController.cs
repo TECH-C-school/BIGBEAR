@@ -59,5 +59,23 @@ namespace Assets.Scripts.Bar04 {
             }
             return numbers;
         }
+        //手役
+        public enum PokerHand
+        {
+            RoyalStraightFlush,
+            StraightFlush,
+            FourOfAKind,
+            FullHouse,
+            Flush,
+            Straight,
+            ThreeOfAkind,
+            TwoPair,
+            onepair,
+            Nopair,
+        }
+       /* public　PokerHand Judge(List<int> cards)
+        {
+            if (cards.Count() < 2) return PokerHand.Nopair;
+        }*/
     }
 }
