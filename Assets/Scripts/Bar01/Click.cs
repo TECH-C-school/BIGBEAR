@@ -18,30 +18,35 @@ public class Click : MonoBehaviour {
 
     private void ClickCard()
     {
-        float Range = 100;
+        float Range = 100f;
 
         var MousePosition = Input.mousePosition;
-        MousePosition.z = -15;
 
         if (!Input.GetMouseButtonDown(0)) return;
 
         var TapPoint = Camera.main.ScreenToWorldPoint(MousePosition);
         Debug.Log(gameObject.name);
-        gameObject.transform.position = TapPoint;
+
+        RaycastHit hit = new RaycastHit();
         /*
-        RaycastHit Hit = new RaycastHit();
-        Debug.Log(Hit);
-        Debug.Log(Hit.collider);
-        Hit.collider.gameObject.transform.position = TapPoint;
-        
-        var Hitcard = Physics2D.Raycast(TapPoint, -Vector2.up);
-        if (!Hitcard) return;
+                if (Physics.Raycast(TapPoint, out hit, Range))
+                {
 
-        
+                }
 
-        
-        var CardName = Hitcard.collider.gameObject.GetComponent<Cards>();
-        Debug.Log("hit card is" + Cards.Number);
-        */
+                RaycastHit Hit = new RaycastHit();
+                Debug.Log(Hit);
+                Debug.Log(Hit.collider);
+                Hit.collider.gameObject.transform.position = TapPoint;
+
+                var Hitcard = Physics2D.Raycast(TapPoint, -Vector2.up);
+                if (!Hitcard) return;
+
+
+
+
+                var CardName = Hitcard.collider.gameObject.GetComponent<Cards>();
+                Debug.Log("hit card is" + Cards.Number);
+                */
     }
 }
