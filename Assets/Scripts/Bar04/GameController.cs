@@ -44,7 +44,7 @@ namespace Assets.Scripts.Bar04_06
         /// カードを配置する
         /// </summary>
 
-        public void MakeCard()
+        /*public void MakeCard()
         {
             int count = 0;
             int[] randomNumbers = MakeRandomNumbers();
@@ -81,11 +81,11 @@ namespace Assets.Scripts.Bar04_06
             {
                 number[i] = i;
             }
-            //シャッフルす
+            //シャッフルする
             number = number.OrderBy(i => Guid.NewGuid()).ToArray();
             return number;
         }
-
+        */
         /// <summary>
         /// クリックしたカードをHoldし、クリックされていないカードを捨て場に送る
         /// </summary>
