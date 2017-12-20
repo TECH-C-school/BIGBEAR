@@ -28,7 +28,6 @@ namespace Assets.Scripts.Bar04
         public void Start()
         {
             new StartBTN().MakeStartButton();
-            CreateCards();//発表用に書き換え
 
         }
         /// <summary>
