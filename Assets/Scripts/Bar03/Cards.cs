@@ -7,13 +7,12 @@ public class Cards : MonoBehaviour
 
     private int _number;
     private string _string;
-    public int Number
+
+    public int Deck
     {
         get { return _number; }
         set { _number = value; }
     }
-
-
     public string String
     {
         get { return _string; }

@@ -7,49 +7,14 @@ namespace Assets.Scripts.Bar03 {
     public class GameController : MonoBehaviour
     {
         private string _nextCardString = "c01";
-         
-        /*private string[] cardMark = new string[104] 
-        {"Images/Bar/Cards/c01","Images/Bar/Cards/c02","Images/Bar/Cards/c03",
-        "Images/Bar/Cards/c04","Images/Bar/Cards/c05","Images/Bar/Cards/c06",
-        "Images/Bar/Cards/c07","Images/Bar/Cards/c08","Images/Bar/Cards/c09",
-        "Images/Bar/Cards/c10","Images/Bar/Cards/c11","Images/Bar/Cards/c12",
-        "Images/Bar/Cards/c13","Images/Bar/Cards/c01","Images/Bar/Cards/c02",
-        "Images/Bar/Cards/c03","Images/Bar/Cards/c04","Images/Bar/Cards/c05",
-        "Images/Bar/Cards/c06","Images/Bar/Cards/c07","Images/Bar/Cards/c08",
-        "Images/Bar/Cards/c09","Images/Bar/Cards/c10","Images/Bar/Cards/c11",
-        "Images/Bar/Cards/c12","Images/Bar/Cards/c13",
-        "Images/Bar/Cards/d01","Images/Bar/Cards/d02","Images/Bar/Cards/d03",
-        "Images/Bar/Cards/d04","Images/Bar/Cards/d05","Images/Bar/Cards/d06",
-        "Images/Bar/Cards/d07","Images/Bar/Cards/d08","Images/Bar/Cards/d09",
-        "Images/Bar/Cards/d10","Images/Bar/Cards/d11","Images/Bar/Cards/d12",
-        "Images/Bar/Cards/d13","Images/Bar/Cards/d01","Images/Bar/Cards/d02",
-        "Images/Bar/Cards/d03","Images/Bar/Cards/d04","Images/Bar/Cards/d05",
-        "Images/Bar/Cards/d06","Images/Bar/Cards/d07","Images/Bar/Cards/d08",
-        "Images/Bar/Cards/d09","Images/Bar/Cards/d10","Images/Bar/Cards/d11",
-        "Images/Bar/Cards/d12","Images/Bar/Cards/d13",                  
-        "Images/Bar/Cards/h01","Images/Bar/Cards/h02","Images/Bar/Cards/h03",
-        "Images/Bar/Cards/h04","Images/Bar/Cards/h05","Images/Bar/Cards/h06",
-        "Images/Bar/Cards/h07","Images/Bar/Cards/h08","Images/Bar/Cards/h09",
-        "Images/Bar/Cards/h10","Images/Bar/Cards/h11","Images/Bar/Cards/h12",
-        "Images/Bar/Cards/h13","Images/Bar/Cards/h01","Images/Bar/Cards/h02",
-        "Images/Bar/Cards/h03","Images/Bar/Cards/h04","Images/Bar/Cards/h05",
-        "Images/Bar/Cards/h06","Images/Bar/Cards/h07","Images/Bar/Cards/h08",
-        "Images/Bar/Cards/h09","Images/Bar/Cards/h10","Images/Bar/Cards/h11",
-        "Images/Bar/Cards/h12","Images/Bar/Cards/h13",
-        "Images/Bar/Cards/s01","Images/Bar/Cards/s02","Images/Bar/Cards/s03",
-        "Images/Bar/Cards/s04","Images/Bar/Cards/s05","Images/Bar/Cards/s06",
-        "Images/Bar/Cards/s07","Images/Bar/Cards/s08","Images/Bar/Cards/s09",
-        "Images/Bar/Cards/s10","Images/Bar/Cards/s11","Images/Bar/Cards/s12",
-        "Images/Bar/Cards/s13","Images/Bar/Cards/s01","Images/Bar/Cards/s02",
-        "Images/Bar/Cards/s03","Images/Bar/Cards/s04","Images/Bar/Cards/s05",
-        "Images/Bar/Cards/s06","Images/Bar/Cards/s07","Images/Bar/Cards/s08",
-        "Images/Bar/Cards/s09","Images/Bar/Cards/s10","Images/Bar/Cards/s11",
-        "Images/Bar/Cards/s12","Images/Bar/Cards/s13"} ;*/
+        private int _nextCardNumber = 1;
+        private int _select = 0;
+
         void Start()
         {
             MakeBackCards();
             BackGroundMake();
-            ClickCard();   
+            DeckCardCheck();
         }  
         void Update()
         {
@@ -60,7 +25,9 @@ namespace Assets.Scripts.Bar03 {
         {
             SceneManager.LoadScene("Result");
         }
-
+        /// <summary>
+        /// カードをセットする関数
+        /// </summary>
         //裏面のカードをセットする関数
         private void MakeBackCards()
         {
@@ -88,9 +55,10 @@ namespace Assets.Scripts.Bar03 {
                             x * 1.76f - 7.97f,
                             -y * 0.31f + 3.66f,
                             -y * 0.1f);
-                        cardObject.transform.parent = parentObject;
+                        cardObject.transform.parent = GameObject.Find("Cards" + x.ToString()).transform;
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
+                        cardSet.Deck = x;
                         cardSet.TurnCardFaceDown();
                         count++;
                     }
@@ -101,9 +69,10 @@ namespace Assets.Scripts.Bar03 {
                             x * 1.76f - 7.97f,
                             -y * 0.31f + 3.66f,
                             -y * 0.1f);
-                        cardObject.transform.parent = parentObject;
+                        cardObject.transform.parent = GameObject.Find("Cards" + x.ToString()).transform;
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
+                        cardSet.Deck = x;
                         cardSet.TurnCardFaceUp();
                         Debug.Log(cardMarkNumber[count]);
                         count++;
@@ -121,7 +90,6 @@ namespace Assets.Scripts.Bar03 {
                 count++;
             }
         }
-
         //randomにカードを配列にいれる関数
         private string[] cardSetMN(string[] values)
         {
@@ -154,7 +122,9 @@ namespace Assets.Scripts.Bar03 {
             }
             return values;
             }
-
+        /// <summary>
+        /// 背景を作る関数
+        /// </summary>
         //背景を作る関数
         private void BackGroundMake()
         {
@@ -231,11 +201,15 @@ namespace Assets.Scripts.Bar03 {
             return ary;
 
         }
+        /// <summary>
+        /// クリックしたときカードを判定する関数
+        /// </summary>
+        //マウスでクリックしたときにカードを判定する関数
         private void ClickCard()
         {
-            //マウスクリックの判定
+            //マウスクリックの判定 GetMouse--Down
             if (!Input.GetMouseButtonDown(0)) return;
-
+            
             //クリックされた位置を取得
             var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -248,20 +222,41 @@ namespace Assets.Scripts.Bar03 {
 
             //クリックされたカードスクリプトを取得
             var card = hitObject.collider.gameObject.GetComponent<Cards>();
+
+            Debug.Log(card);
+
+            //if (Resources.Load<GameObject>("Prefabs/Bar03/Back") == card) ;
+            //クリックされたカードを数字にする
+            int numValue = 0;
+            bool parsed = System.Int32.TryParse(card.String.Substring(1,2), out numValue);
+            
+            
+
+            if (_nextCardNumber == numValue) Debug.Log("OK");
+
+            _nextCardNumber = numValue + 1;
+            Debug.Log("次は" + _nextCardNumber + "のカードを押してください");
+
+            Debug.Log("これはデッキ" + card.Deck + "のカードです");
             //Debug.Log("hit object is" + card.String);
 
             //次にクリックされるカードが判明
             //if (_nextCardString != card.String) return;
-
-            //カードを反転する
-            card.TurnCardFaceUp();
-            
         }
         public void ButtonPush()
         {
             Debug.Log("ButtonPush");
         }
+        public void DeckCardCheck()
+        {
+            for(int x = 0;x < 10; x++)
+            {
+                var deckCheck = GameObject.Find("Cards"+x).transform;
+                Debug.Log(deckCheck);
+            }
 
+
+        }
     }
 
 }
