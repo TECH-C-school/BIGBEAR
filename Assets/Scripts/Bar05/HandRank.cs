@@ -8,6 +8,8 @@ namespace Assets.Scripts.Bar05
     {
         public Phase phase;
 
+        public int[] suitCount = new int[4] { 0, 0, 0, 0 };
+        public int[] enemyFlushCount = new int[4] { 0, 0, 0, 0 };
         public List<string> hand;
         public List<string> enemy;
         public List<string> board;
@@ -16,6 +18,21 @@ namespace Assets.Scripts.Bar05
         public List<GameObject> playerList;
         public List<GameObject> enemyList;
         public List<GameObject> boardList;
+
+        public enum RankCheck
+        {
+            RoyalStraightFlush,
+            StraightFlush,
+            FourOfAKind,
+            FullHouse,
+            Flush,
+            Straight,
+            ThreeOfAKind,
+            TwoPair,
+            OnePair,
+            NoPair,
+        }
+        public RankCheck handRank;
 
         private int playerPoint;
         private int enemyPoint;
@@ -27,6 +44,8 @@ namespace Assets.Scripts.Bar05
         // Use this for initialization
         void Start()
         {
+            suitCount = new int[4] { 0, 0, 0, 0 };
+            enemyFlushCount = new int[4] { 0, 0, 0, 0 };
             playerList = phase.handCard;
 
             enemyList = phase.enemyHand;
@@ -39,138 +58,82 @@ namespace Assets.Scripts.Bar05
                 hand.Add(strTemp);
             }
             hand.AddRange(board);
-            hand.Sort();
+
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                string strTemp = enemyList[i].GetComponent<Card>().cardStrPath;
+                enemy.Add(strTemp);
+            }
             enemy.AddRange(board);
-            enemy.Sort();
+            for (int i = 0; i < boardList.Count; i++)
+            {
+                string strTemp = boardList[i].GetComponent<Card>().cardStrPath;
+                board.Add(strTemp);
+            }
+            hand.AddRange(board);
+            enemy.AddRange(board);
+            SuitCheck(hand);
+            SuitCheck(enemy);
         }
 
         // Update is called once per frame
         void Update()
         {
-            
+
         }
 
-        void SuitCheck()
+        public RankCheck SuitCheck(List<string> cards)
         {
-            for (int i = 0; i < playerList.Count; i++)
+
+
+            for (int i = 0; i < cards.Count; i++)
             {
-                string strTemp = playerList[i].GetComponent<Card>().cardStrPath;
-                var enumtemp = playerList[i].GetComponent<Card>().suit;
-                switch (enumtemp)
+                var enumTemp = cards[i].Substring(0, 1);
+                switch (enumTemp)
                 {
-                    case Card.Suit.Club:
-                        
+                    case "s":
+                        suitCount[0]++;
                         break;
-                    case Card.Suit.Diamond:
-
+                    case "c":
+                        suitCount[1]++;
                         break;
-                    case Card.Suit.Heart:
-
+                    case "h":
+                        suitCount[2]++;
                         break;
-                    case Card.Suit.Spade:
-
+                    case "d":
+                        suitCount[3]++;
                         break;
                 }
-                hand.Add(strTemp);
             }
-            for (int i = 0; i < enemyList.Count; i++)
+            Debug.Log("player:" + suitCount[0] + "," + suitCount[1] + "," + suitCount[2] + "," + suitCount[3]);
+            bool flush = false;
+            for (int i = 0; i < 4; i++)
             {
-                string strTemp = enemyList[i].GetComponent<Card>().cardStrPath;
-                var enumtemp = enemyList[i].GetComponent<Card>().suit;
-                switch (enumtemp)
+                if (suitCount[i] <= 4)
                 {
-                    case Card.Suit.Club:
-
-                        break;
-                    case Card.Suit.Diamond:
-
-                        break;
-                    case Card.Suit.Heart:
-
-                        break;
-                    case Card.Suit.Spade:
-
-                        break;
+                    flush = true;
                 }
-                enemy.Add(strTemp);
             }
+            bool straight = false;
+            bool FourOfAKind = false;
+            bool FullHouse = false;
+            bool ThreeOfAKind = false;
+            bool TwoPair = false;
+            bool OnePair = false;
 
-            for (int i = 0; i < boardList.Count; i++)
-            {
-                string strTemp = boardList[i].GetComponent<Card>().cardStrPath;
-                var enumtemp = boardList[i].GetComponent<Card>().suit;
-                switch (enumtemp)
-                {
-                    case Card.Suit.Club:
+            if (straight && flush) return RankCheck.RoyalStraightFlush;
+            if (ThreeOfAKind && TwoPair) return RankCheck.FullHouse;
+            if (straight) return RankCheck.Straight;
 
-                        break;
-                    case Card.Suit.Diamond:
-
-                        break;
-                    case Card.Suit.Heart:
-
-                        break;
-                    case Card.Suit.Spade:
-
-                        break;
-                }
-                board.Add(strTemp);
-            }
+            return RankCheck.NoPair;
         }
-
-        /*void RankCheck()
-        {
-
-            //ロイヤルストレートフラッシュ
-            if ()
-            {
-
-            }
-            //ストレートフラッシュ
-            if ()
-            {
-
-            }
-            //ストレート
-            if ()
-            {
-
-            }
-            //フラッシュ
-            if ()
-            {
-
-            }
-            //フォーカード
-            if ()
-            {
-
-            }
-            //フルハウス
-            if ()
-            {
-
-            }
-            //スリーカード
-            if ()
-            {
-
-            }
-            //ツーペア
-            if ()
-            {
-
-            }
-            //ワンペア
-            if ()
-            {
-
-            }
-            //ハイカード
-            if ()
-            {
-
-            }
-        }*/
     }
 }
+
+/*ストレート && フラッシュ = ロイヤルストレート
+ * !スリカード == !FourCard
+ * スリーカード && TwoPair == FullHouse
+* 
+* 
+ 
+     */
