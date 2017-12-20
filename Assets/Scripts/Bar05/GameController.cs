@@ -4,18 +4,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> 
+ * 今回作業 --> マークの初期化がされてなかったので修正
+ *              お手軽Phase移動
+ *              Phase/Debug.Log簡略化
  */
 
 /*
- * 次回作業 --> 
+ * 次回作業 --> ストレートフラッシュ/ロイヤルストレートフラッシュの判定修正
+ *              以下慣性で
  */
 
 /*
- * 今後実装 -->ストレートフラッシュとロイヤルストレートフラッシュの判定の修正
- *             同役の時の処理
- *             PhaseViewの修正(Prefabにしなきゃいけない?)
- *             チップを掛ける
+ * 今後実装 --> ストレートフラッシュとロイヤルストレートフラッシュの判定の修正
+ *              同役の時の処理
+ *              PhaseViewの修正(Prefabにしなきゃいけない?)
+ *              チップを掛ける
+ *              レイアウト等
  */
 
 namespace Assets.Scripts.Bar05 {
@@ -24,14 +28,14 @@ namespace Assets.Scripts.Bar05 {
         private void Start()
         {
             InitGame();
-            Debug.Log(_Phase);
+            //Debug.Log(_Phase);
         }
 
         private void Update()
         {
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown("z") || Input.GetKeyDown("x") || Input.GetKeyDown("c") || Input.GetKeyDown("v") || Input.GetKeyDown("space"))
             {
-                Debug.Log("<color=red>--------------------</color>");
+                //Debug.Log("<color=red>--------------------</color>");
                 PhaseChange();
             }
         }
@@ -46,6 +50,9 @@ namespace Assets.Scripts.Bar05 {
         /// </summary>
         private void MakeCards()
         {
+            //MakeCards内のDebug.LogをOFFにしています
+            Debug.logger.logEnabled = false;
+
             //みやすいよね？ね？
             Debug.Log("--------------------");
             //山札を作る
@@ -171,6 +178,7 @@ namespace Assets.Scripts.Bar05 {
                     Debug.Log("--------------------");
                 }
             }
+            Debug.logger.logEnabled = true;
         }
         
         // カードをシャッフルする
@@ -204,7 +212,7 @@ namespace Assets.Scripts.Bar05 {
                 {
                     case 0:
                         ParentObject = GameObject.Find("Player1_Cards");
-                        Debug.Log(ParentObject.transform.childCount);
+                        //Debug.Log(ParentObject.transform.childCount);
                         break;
                     case 1:
                         ParentObject = GameObject.Find("Player2_Cards");
@@ -232,12 +240,12 @@ namespace Assets.Scripts.Bar05 {
         //リストを作る関数群
         private void MakeLists()
         {
-            Debug.Log("<color=blue>自分と場札のカード内訳</color>");
+            //Debug.Log("<color=blue>自分と場札のカード内訳</color>");
             CardLists(Player1Cards, Player1CardList, Player1Marks);
-            Debug.Log("--------------------");
-            Debug.Log("<color=red>相手と場札のカード内訳</color>");
+            //Debug.Log("--------------------");
+            //Debug.Log("<color=red>相手と場札のカード内訳</color>");
             CardLists(Player2Cards, Player2CardList, Player2Marks);
-            Debug.Log("--------------------");
+            //Debug.Log("--------------------");
         }
 
         //役を判定する関数群
@@ -271,12 +279,12 @@ namespace Assets.Scripts.Bar05 {
 
         //プレイヤーの役を作るための準備
 
-        //変数置き場
+        //変数置き場/初期化処理
         int[] Player1CardList = new int[7];
         int[] Player2CardList = new int[7];
         int[] Player1Marks = new int[4];
         int[] Player2Marks = new int[4];
-
+     
         //役の候補になるカードのリスト
         private void CardLists(int[]Player, int[] List, int[] MList)
         {
@@ -353,12 +361,15 @@ namespace Assets.Scripts.Bar05 {
             Debug.Log(db);
 
             string db2 = "";
+            int db3 = 0;
             for (int i = 0; i < MList.Length; i++)
             {
                 db2 = db2 + MList[i] + ":";
+                db3 = db3 + MList[i];
             }
             Debug.Log(db2);
-            Debug.Log("クローバー:ダイヤ:ハート:スペード");
+            //Debug.Log("クローバー:ダイヤ:ハート:スペード");
+            //Debug.Log("マーク合計:" + db3);
 
             // */
         }
@@ -379,13 +390,19 @@ namespace Assets.Scripts.Bar05 {
          */
 
         //変数置き場
+
         int Player1HandLevel = 0;
         int Player2HandLevel = 0;
+        //int DebugHandLevel = 0;
         int[] Player1NumberManager = new int[13];
         int[] Player2NumberManager = new int[13];
-
+        //int[] DebugNumberManager = new int[13];
+        
         public void CheckHandLevel(int PlayerHandLevel, int[]CardList, int[]NumberManager, int[]Marks)
         {
+            PlayerHandLevel = 0;
+            NumberManager = new int[13];
+
             //CardListを1～13の配列に入れてわかりやすくする
             for (int i = 0; i < CardList.Length; i++)
             {
@@ -443,10 +460,11 @@ namespace Assets.Scripts.Bar05 {
                 }
                 x++;
             }
-            //特殊ストレート判定
-            if(NumberManager[0] >= 1)
+            //特殊ストレート判定 ロイヤルストレートフラッシュ用
+            if(NumberManager[0] >= 1 & PlayerHandLevel == 5)
             {
                 x = 0;
+                int RSFcount = 1;
                 while(x < 4)
                 {
                     int Place = 9 + x;
@@ -456,21 +474,27 @@ namespace Assets.Scripts.Bar05 {
                         break;
                     }
                     x++;
+                    RSFcount++;
                 }
-            }
-            //(ロイヤル)ストレートフラッシュの判定
-            if (SFFlag == 2)
-            {
                 if(RSFFlag)
                 {
-                    PlayerHandLevel = 9;
-                    Debug.Log("ロイヤルストレートフラッシュ");
+                    Debug.Log("<color=red>特殊ストレート!!</color>");
                 }
                 else
                 {
-                    PlayerHandLevel = 8;
-                    Debug.Log("ストレートフラッシュ");
+                    Debug.Log("<color=red>特殊ストレート失敗</color>");
+                    Debug.Log(RSFcount);
                 }
+            }
+            //ストレートフラッシュの判定
+            if (SFFlag == 2)
+            {
+                //処理
+            }
+            //ロイヤルストレートフラッシュの判定
+            if(RSFFlag & PlayerHandLevel == 5)
+            {
+                //処理
             }
             //ペア・スリーカード・フォーカードが何個あるか数える
             int PHand2 = 0;
@@ -522,7 +546,7 @@ namespace Assets.Scripts.Bar05 {
                     PlayerHandLevel = 3;
                     Debug.Log("スリーカード");
                 }
-                else if(PHand2 == 2)
+                else if(PHand2 >= 2)
                 {
                     PlayerHandLevel = 2;
                     Debug.Log("ツーペア");
@@ -548,6 +572,8 @@ namespace Assets.Scripts.Bar05 {
         //初期化処理
         private void InitGame()
         {
+            Player1Marks = new int[4];
+            Player2Marks = new int[4];
             RemoveCards();
             MakeCards();
             MakeLists();
@@ -583,16 +609,19 @@ namespace Assets.Scripts.Bar05 {
             {
                 TurnStackCard(1);
                 //PhaseView(2);
+                _Phase++;
             }
             if (_Phase == GamePhase.ThirdBet)
             {
                 TurnStackCard(2);
                 //PhaseView(3);
+                _Phase++;
             }
             if (_Phase == GamePhase.FinalBet)
             {
                 TurnStackCard(3);
                 //PhaseView(4);
+                _Phase++;
             }
             if (_Phase == GamePhase.Result)
             {
@@ -603,7 +632,7 @@ namespace Assets.Scripts.Bar05 {
             {
                 RemoveCards();
             }
-            Debug.Log(_Phase);
+            //Debug.Log(_Phase);
         }
 
         /*
