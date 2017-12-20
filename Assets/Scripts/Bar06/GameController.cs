@@ -8,7 +8,12 @@ namespace Assets.Scripts.Bar06 {
         private int positioncounter = 1;
         private int playercounter = 0;
         private int enemycounter = 0;
+        private int DeckCounter = 0;
+        private int[] numbers = new int[52];
+        private string[] mark = new string[52];
+        private int i, j;
 
+        /*
         public enum Mark
         {
             Clover,
@@ -16,15 +21,48 @@ namespace Assets.Scripts.Bar06 {
             Heart,
             Diamond
         }
+        
 
+        
         public struct Card
         {
             public int number;
             public Mark mark;
         }
+        */
+
+        public void RandomNum()
+        {
+            for(i = 0, j = 0; i < 52; i++)
+            {
+                if(i < 13)
+                {
+                    mark[i] = "s";
+                }else if(i < 26)
+                {
+                    mark[i] = "h";
+                }else if(i < 39)
+                {
+                    mark[i] = "c";
+                }else
+                {
+                    mark[i] = "d";
+                }
+
+                if(j + 1 >= 14)
+                {
+                    j = 0;
+                }
+                numbers[i] = j + 1;
+               
+            }
+            
+        }
+        
 
         public void Start()
         {
+            /*
             //カードを2, 2枚表示する
             Card card1_1 = new Card();
             Card card1_2 = new Card();
@@ -44,6 +82,7 @@ namespace Assets.Scripts.Bar06 {
 
             playercounter = card1_1.number + card1_2.number;
             enemycounter = card2_1.number + card2_2.number;
+            */
 
             while (enemycounter <= 18)
             {
@@ -51,20 +90,12 @@ namespace Assets.Scripts.Bar06 {
                 enemycounter = enemycounter + enemyCard;
             }
 
-            //カードを表示させる
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            //カードの表示
+            RandomNum();
 
-            for (int i = 0; i <= 1; i++)
-            {
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.position = new Vector3(0 - i, -2.5f, 0);
-            }
 
-            for (int i = 0; i <= 1; i++)
-            {
-                var cardObject2 = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject2.transform.position = new Vector3(0 - i, 2.5f, 0);
-            }
+
+
 
         }
 
