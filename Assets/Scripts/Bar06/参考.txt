@@ -1,0 +1,223 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Card : MonoBehaviour {
+
+    private int _number;
+
+    public int Number
+    {
+        get { return _number; }
+        set { _number = value; }
+    }
+
+    public void TurnCardFaceUp() {
+        TurnCard(true);
+    }
+
+    public void TurnCardFaceDown() {
+        TurnCard(false);
+    }
+
+    private void TurnCard(bool faceUp) {
+        Sprite cardSprite = null;
+        Sprite numberSprite = null;
+
+        if (faceUp){
+            cardSprite = Resources.Load<Sprite>("Images/card_frontside");
+            numberSprite = Resources.Load<Sprite>("Images/" + _number);
+        }else{
+            cardSprite = Resources.Load<Sprite>("Images/card_backside");
+        }
+
+        var spriteRenderer = transform.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = cardSprite;
+
+        var numberObject = transform.Find("Number");
+        var numberspriteRenderer = numberObject.GetComponent<SpriteRenderer>();
+        numberspriteRenderer.sprite = numberSprite;
+    }
+
+}
+
+
+///////////////
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GameController : MonoBehaviour {
+    private const string KeyFastestPlayTime = "FastestPlayTime";
+    private enum GameState
+    {
+        Prepare = 1,
+        Start,
+        Finish
+    }
+
+    float min = 0;
+    private int _nextCardNumber = 1;
+    private float _playTime = 0;
+    private float _fastestPlayTime = 0;
+    private GameState _gameState = GameState.Prepare;
+
+	void Start () {
+        _fastestPlayTime = PlayerPrefs.GetFloat(KeyFastestPlayTime, 5999.999f);
+        InitGame();
+        
+    }
+	
+	void Update () {
+        if (_gameState == GameState.Start)
+        {
+           _playTime += Time.deltaTime;
+           UpdatePlayTime();
+           ClickCard();
+        }
+    }
+
+    /// <summary>
+    /// カードを生成する
+    /// </summary>
+    private void MakeCards()
+    {
+        int count = 0;
+        int[] randomNumbers = MakeRandomNumbers();
+        var cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
+        var cardsObject = GameObject.Find("Cards");
+
+        for (var i = 0; i < 5; i++)
+        {
+            for (var j = 0; j < 5; j++)
+            {
+                
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(
+                    i * 1.27f - 3.84f,
+                    j * 1.27f - 2.54f,
+                    0);
+                cardObject.transform.parent = cardsObject.transform;
+
+               var card = cardObject.GetComponent<Card>();
+                card.Number = randomNumbers[count];
+                count++;
+                card.TurnCardFaceDown();
+            }
+        }
+
+    }
+
+    private int[] MakeRandomNumbers()
+    {
+        int[] numbers = new int[25];
+        int value,j,k;
+        System.Random r = new System.Random();
+
+        for(int i = 0; i < numbers.Length; i++)
+        {
+            numbers[i] = i + 1;
+        }
+        for (int i = 0; i < 25; i++)
+        {
+            j = r.Next(25);
+            k = r.Next(25);
+            value = numbers[j];
+            numbers[j] = numbers[k];
+            numbers[k] = value;
+        }
+
+        return numbers;
+    }
+
+    public　void ClickStartButton()
+    {
+        var cardsObject = GameObject.Find("Cards").transform;
+        foreach (Transform cardObject in cardsObject)
+        {
+            var card = cardObject.GetComponent<Card>();
+            card.TurnCardFaceUp();
+        }
+
+        _gameState = GameState.Start;
+    }
+
+    public void ClickResetButton()
+    {
+        InitGame();
+    }
+
+    private void ClickCard()
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (!Physics2D.OverlapPoint(tapPoint)) return;
+
+        var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
+        if (!hitObject) return;
+
+        var card = hitObject.collider.gameObject.GetComponent<Card>();
+        Debug.Log("hit object is " + card.Number);
+
+        if (_nextCardNumber != card.Number) return;
+
+        card.TurnCardFaceDown();
+        _nextCardNumber++;
+
+        if (_nextCardNumber <= 25) return;
+
+        _gameState = GameState.Finish;
+
+        if (_fastestPlayTime <= _playTime) return;
+
+        _fastestPlayTime = _playTime;
+        UpdateFastestPlayTime();
+        PlayerPrefs.SetFloat(KeyFastestPlayTime, _fastestPlayTime);
+    }
+
+    private void UpdatePlayTime()
+    {
+        var timeLabel = GameObject.Find("Canvas/Panel/PlayTimeLabel").transform;
+        if(_playTime > 60)
+        {
+            min++;
+            _playTime = _playTime - 60;
+        }
+        timeLabel.GetComponent<Text>().text = ((int)min).ToString() + ":" + _playTime.ToString("F3").PadLeft(6, '0');
+        
+    }
+
+    private void UpdateFastestPlayTime()
+    {
+        var timeLabel = GameObject.Find("Canvas/Panel/FastestPlayTimeLabel").transform;
+        timeLabel.GetComponent<Text>().text = _fastestPlayTime.ToString();
+
+    }
+
+    private void InitGame()
+    {
+        _playTime = 0;
+        _gameState = GameState.Prepare;
+        _nextCardNumber = 1;
+        min = 0;
+
+        RemoveCards();
+        MakeCards();
+        UpdatePlayTime();
+    }
+
+    private void RemoveCards()
+    {
+        var cardsObject = GameObject.Find("Cards").transform;
+        foreach (Transform cardObject in cardsObject)
+        {
+            Destroy(cardObject.gameObject);
+        }
+    }
+
+    
+
+}
