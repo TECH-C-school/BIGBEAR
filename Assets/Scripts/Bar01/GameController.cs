@@ -207,6 +207,12 @@ namespace Assets.Scripts.Bar01 {
             //カードが場のカードだった場合
             if (card.dack)
             {
+                if(dackOut.Peek() != card)
+                {
+                    Debug.Log("先頭のカードではありません");
+                    selectCards = new Card[1] { null};
+                    return;
+                }
                 selectCardList.Add(card);
                 selectCards = selectCardList.ToArray();
                 card.CardSelect();
@@ -236,17 +242,34 @@ namespace Assets.Scripts.Bar01 {
             Collider2D hit = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             if (!hit) { return; }
             if(hit.name != "Deck(Clone)") { return; }
+            if(dackArray.Count == 0)
+            {
+                Debug.Log("デッキアウトの枚数:" + dackOut.Count);
+                Card[] destroyCards = dackOut.ToArray();
+                for(int i = dackOut.Count - 1; i >= 0; i--)
+                {
+
+                    Card card = destroyCards[i];
+                    Destroy(card.gameObject);
+                    dackArray.Enqueue(card);
+                }
+                dackOut.Clear();
+                Debug.Log("デッキの枚数:" + dackArray.Count);
+                hit.transform.Find("back").GetComponent<SpriteRenderer>().enabled = true;
+                return;
+            }
             if (dackOut.Count != 0)
             {
                 Card[] cards = dackOut.ToArray();
-                Debug.Log(cards[0].CardNumber + "" + cards[0].CardType);
+                //Debug.Log(cards[0].CardNumber + "" + cards[0].CardType);
 
                 for (int t = cards.Length - 1; t >= 0; t--)
                 {
+                    Debug.Log(cards[t].CardType + ":" + cards[t].CardNumber);
                     cards[t].transform.position = dackCards[0].transform.position + new Vector3(0,0,t);
                 }
-                Debug.Log(dackOut.Count);
-                Debug.Log(dackOut.Peek().CardNumber + "" + dackOut.Peek().CardType);
+                //Debug.Log(dackOut.Count);
+                //Debug.Log(dackOut.Peek().CardNumber + "" + dackOut.Peek().CardType);
                 //Destroy(desCard);
             }
             for(int i = 0; i < 3; i++)
@@ -263,6 +286,14 @@ namespace Assets.Scripts.Bar01 {
                 card.GetComponent<Card>().TurnCard(true);
                 dackOut.Push(card.GetComponent<Card>());
             }
+            if (dackArray.Count == 0)
+            {
+                hit.transform.Find("back").GetComponent<SpriteRenderer>().enabled = false;
+            }
+            else
+            {
+                hit.transform.Find("back").GetComponent<SpriteRenderer>().enabled = true;
+            }
         }
 
         /// <summary>
@@ -272,6 +303,7 @@ namespace Assets.Scripts.Bar01 {
         {
             //選択したトランプをチェック
             if (!selectCard) { return; }
+            if(selectCards[0] == null) { return; }
             //マウスを離したとき
             if (!Input.GetMouseButtonUp(0)) { return; }
             Card card = selectCard.GetComponent<Card>();
