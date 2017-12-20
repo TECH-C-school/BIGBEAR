@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
 
-        private int count = 1;
+       /* private int count = 1;
         private int playercount = 0;
         private int enemycount = 0;
 
@@ -24,10 +24,43 @@ namespace Assets.Scripts.Bar06 {
         {
             public int number;
             public Mark mark;
+        }*/
+
+        public void deck()
+        {
+            int[] deck = new int[52];
+            for(int i = 0; i < deck.Length; i++)
+            {
+                deck[i] = i;
+            }
+            System.Random rng = new System.Random();
+            for(int i = 0; i < deck.Length; i++)
+            {
+                int ransu = rng.Next(deck.Length);
+                int kari = deck[i];
+                deck[i] = deck[ransu];
+                deck[ransu] = kari;
+            }
+            int kazu = 0;
+            string number = "";
+            string[] mark = new string[] { "c", "d", "h", "s" };
+            for (int i = 0; i < deck.Length; i++)
+            {
+                if (deck[i] >= 51)
+                {
+                    number = "";
+                }
+                else
+                {
+                    kazu = deck[i] % 13 + 1;
+                    string.Format("{0:D2}", kazu);
+                    number = kazu.ToString();
+                }
+            }
         }
 
         //カード生成
-        public void Start()
+       /* public void Start()
         {
             Cards card1_1 = new Cards();
             Cards card1_2 = new Cards();
@@ -76,18 +109,18 @@ namespace Assets.Scripts.Bar06 {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(0 - y, -1.5f, 0);
             }
-        }
+        }*/
 
         public void Addcard()
         {
-            if (playercount <= 21)
+           /* if (playercount <= 21)
             {
                 var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.localScale = new Vector3(0.174f, 0.174f, 0.174f);
+                cardObject.transform.localScale = new Vector3(0.1f, 0.1f, 0);
 
                 count++;
-            }
+            }*/
         }
         public void TransitionToResult()
         {
