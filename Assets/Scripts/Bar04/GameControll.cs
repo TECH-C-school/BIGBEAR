@@ -103,7 +103,7 @@ public class GameControll : MonoBehaviour {
     
     public void CardChangeButton()
     {
-
+        Player_Card.Clear();
     }
     
 
