@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 using System.Linq;
 using UniRx.Triggers;
 using UniRx;
@@ -12,8 +13,18 @@ namespace Assets.Scripts.Game02
 {
     public class PlayerControll : MonoBehaviour
     {
+
+        enum PlayerState
+        {
+            Idle,
+            Reload,
+            Shot
+        }
+
+        PlayerState m_playerState = PlayerState.Idle;
+
         [SerializeField]
-        Animator bearAnim;
+        Animator m_bearAnim;
         [SerializeField]
         ObservableEventTrigger m_trigger;
         [SerializeField]
@@ -63,9 +74,10 @@ namespace Assets.Scripts.Game02
                      float x = Mathf.Sin(Time.time) /10 + (Mathf.Sin(Time.time) * Mathf.Sin(Time.time) / 10 * 2);
                      float y = Mathf.Cos(Time.time) /10 + (Mathf.Cos(Time.time) * Mathf.Cos(Time.time) / 10 * 2);
 
-                     m_swayObject.transform.position = new Vector3(x, y, 10);        
-
+                     m_swayObject.transform.position = new Vector3(x, y, 10);
                      m_scope.transform.localPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x , (Input.mousePosition.y + (m_scope.sprite.rect.height/ 3f)), 10));
+
+                     if (m_playerState != PlayerState.Idle) return;
 
                      if (Input.GetKeyDown(KeyCode.Space))
                      {
@@ -78,7 +90,7 @@ namespace Assets.Scripts.Game02
             m_trigger.OnMouseUpAsObservable()
                 .Subscribe(pointerEventData =>
                 {
-                    m_scope.gameObject.SetActive(false);
+                    //m_scope.gameObject.SetActive(false);
                     m_shotButton.interactable = false;
 
                 }).AddTo(this);
@@ -97,7 +109,19 @@ namespace Assets.Scripts.Game02
                 Debug.Log("miss");
             }
 
-            bearAnim.SetTrigger("ShotAction");
+            m_playerState = PlayerState.Shot;
+
+            //スコープを上に動かす？親オブジェクトを動かす？
+            Camera.main.DOShakePosition(0.3f, 0.7f, 40);
+            m_scope.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 0), 0.3f, 2, 1);
+            
+            Observable.Timer(TimeSpan.FromSeconds(1.2f)).Subscribe(_ =>
+            {
+                m_playerState = PlayerState.Idle;
+
+            }).AddTo(this);
+
+            m_bearAnim.SetTrigger("ShotAction");
         }
 
 
