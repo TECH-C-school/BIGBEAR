@@ -24,30 +24,34 @@ namespace Assets.Scripts.Bar0404 {
 
         public void PokerCheck() {
 
-            if (FullHouse(m_Hund) == 6) {
+            if (FullHouse(m_Hund)) {
                 Debug.Log("フルハウス");
-            }else if (ThreeCard(m_Hund) == 3) {
+            }else if (Straight(m_Hund)) {
+                Debug.Log("ストレート");
+            } else if (ThreeCard(m_Hund)) {
                 Debug.Log("スリーカード");
-            }else if (TwoPare(m_Hund) == 2) {
+            }else if (TwoPare(m_Hund)) {
                 Debug.Log("ツーペア");
-            }else if(Onepare(m_Hund) == 1) {
+            }else if(Onepare(m_Hund)) {
                 Debug.Log("ワンペア");
             }
 
         }
 
-        int Onepare(int[] xyz) {
+        bool Onepare(int[] xyz) {
+            bool Answer = false;
             for (int i = 0; i < xyz.Length; i++){
                 for (int j = i+ 1 ; j < xyz.Length; j++){
                     if (xyz[i] == xyz[j]) {
-                        m_Poker = 1;
+                        Answer = true;
                     }
                 }
             }
-            return m_Poker;
+            return Answer;
         }
 
-        int TwoPare(int[] xyz) {
+        bool TwoPare(int[] xyz) {
+            bool Answer = false;
             for (int i = 0; i < xyz.Length; i++){
                 for (int j = i+ 1 ; j < xyz.Length; j++){
                     if (xyz[i] == xyz[j]) {
@@ -57,17 +61,18 @@ namespace Assets.Scripts.Bar0404 {
                             {
                                 if (xyz[k] == xyz[l])
                                 {
-                                    m_Poker = 2;
+                                    Answer =true;
                                 }
                             }
                         }
                     }
                 }
             }
-            return m_Poker;
+            return Answer;
         }
 
-        int ThreeCard(int[] xyz){
+        bool ThreeCard(int[] xyz){
+            bool Answer = false;
             for (int i = 0; i < xyz.Length; i++){
                 for (int j = i+ 1 ; j < xyz.Length; j++){
                     if (xyz[i] == xyz[j]) {
@@ -75,18 +80,30 @@ namespace Assets.Scripts.Bar0404 {
                             {
                             if (xyz[i] == xyz[k])
                             {
-                                m_Poker = 3;
+                                Answer = true;
                             }
                 }
                     }
                 }
             }
-            return m_Poker;
+            return Answer;
         }
 
-        int FullHouse(int[] xyz) {
+        bool Straight(int[] xyz) {
+            bool Answer = false;
+            for (int i = 0; i < xyz.Length; i++) {
+                if (i == xyz.Length-1) { Answer = true; }
+                else if (xyz[i + 1] != xyz[i]+1) { break; }
+                
+            }
+            return Answer;
+        }
 
-            return 0;
+        bool FullHouse(int[] xyz) {
+            bool Answer = false;
+
+
+            return Answer;
            
         }
 
