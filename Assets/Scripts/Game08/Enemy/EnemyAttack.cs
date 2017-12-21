@@ -12,8 +12,15 @@ public class EnemyAttack : MonoBehaviour {
 	
 	void Update () {
 
+
+
+
+
+
+        /*
         if(transform.position.y > 0) {
             Destroy(gameObject);
         }
+        */
 	}
 }

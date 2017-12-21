@@ -6,6 +6,7 @@ public class Playershoot : MonoBehaviour {
 
     public GameObject _playertama;
     public GameObject _muzzle;
+    public GameObject _D;
 
     float _Interval = 0;
     public float _IntervalMax = 0;
@@ -32,7 +33,6 @@ public class Playershoot : MonoBehaviour {
             }
             
         }
-
-        
-	}
+        _D.transform.parent = null; // 親と子の切り離し
+    }
 }
