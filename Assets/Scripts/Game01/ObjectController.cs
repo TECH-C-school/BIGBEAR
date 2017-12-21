@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ObjectController : MonoBehaviour
 {
@@ -101,6 +102,8 @@ public class ObjectController : MonoBehaviour
                 enemy1_stand.gameObject.SetActive(false);
                 player1_lost.gameObject.SetActive(true);
                 enemy1_win.gameObject.SetActive(true);
+
+                StartCoroutine(Result());
             }
             if(maingame.battleDraw == 10)
             {
@@ -110,5 +113,11 @@ public class ObjectController : MonoBehaviour
                 enemy1_draw.gameObject.SetActive(true);
             }
         }
+    }
+
+    IEnumerator Result()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Result");
     }
 }
