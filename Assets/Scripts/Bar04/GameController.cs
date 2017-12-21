@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar04_06
 {
-    public class GameController : MonoBehaviour {
+    public class GameController : MonoBehaviour
+    {
 
         public enum suit
         {
@@ -31,50 +32,55 @@ namespace Assets.Scripts.Bar04_06
         /// カードのシャッフル
         /// </summary>
         //Numberの作成
-        public void number() {
-            int[] number = new int[51];
-            for (int i = 0;i < number.Length; i++)
-            {
-                number[i] = i;
-            }
-            //シャッフルす
-            int[] ary2 = number.OrderBy(i => Guid.NewGuid()).ToArray();
-        }
+        /*   public void number() {
+               int[] number = new int[51];
+               for (int i = 0;i < number.Length; i++)
+               {
+                   number[i] = i;
+               }
+               //シャッフルす
+               int[] ary2 = number.OrderBy(i => Guid.NewGuid()).ToArray();
+           }
+           /// <summary>
+           /// カードを配置する
+           /// </summary>
+
+          public void MakeCard()
+           {
+               int count = 0;
+               int[] randomNumbers = MakeRandomNumbers();
+               var cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
+               var cardsObject = GameObject.Find("Cards");
+
+               for (var i = 0; i < 5; i++)
+               {
+                   var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                   cardObject.transform.position = new Vector3(
+                           0, 0);
+                   if (cardObject(0, 0))
+                   {
+                       for (int j = 1; i < 3; j++)
+                       {
+                           cardObject.transform.position = new Vector3(
+                                   j * 2, 0);
+                           cardObject.transform.position = new Vector3(
+                                   j * -2, 0);
+                       }
+                       cardObject.transform.parent = cardsObject.transform;
+
+                       var card = cardObject.GetComponent<Card>();
+                       card.Number = number[count];
+                       card.ChangedCards();
+                       count++;
+                   }
+               }
+           }*/
         /// <summary>
-        /// カードを配置する
+        /// 山札の作成
         /// </summary>
 
-        /*public void MakeCard()
+        public void MakeRandomNumbers()
         {
-            int count = 0;
-            int[] randomNumbers = MakeRandomNumbers();
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
-            var cardsObject = GameObject.Find("Cards");
-
-            for (var i = 0; i < 5; i++)
-            {
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.position = new Vector3(
-                        0, 0);
-                if (cardObject(0, 0))
-                {
-                    for (int j = 1; i < 3; j++)
-                    {
-                        cardObject.transform.position = new Vector3(
-                                j * 2, 0);
-                        cardObject.transform.position = new Vector3(
-                                j * -2, 0);
-                    }
-                    cardObject.transform.parent = cardsObject.transform;
-
-                    var card = cardObject.GetComponent<Card>();
-                    card.Number = number[count];
-                    card.ChangedCards();
-                    count++;
-                }
-            }
-        }*/
-        private void MakeRandomNumbers() {
 
             int[] number = new int[51];
             for (int i = 0; i < number.Length; i++)
@@ -91,24 +97,32 @@ namespace Assets.Scripts.Bar04_06
                 int tmp = number[k];
                 number[k] = number[n];
                 number[n] = tmp;
-            }
-        }
-/// <summary>
-/// カードの配置
-/// </summary>
-            private void Makecards()
-                {
-               var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/prefabs/Cards");
-               var cardsObject = GameObject.Find("Cards");
-               for (var i = 0; i < 5; i++)
-               {
 
+             }
+        }
+        /// <summary>
+        /// カードの配置
+        /// </summary>
+        
+        public void MakeBackCards()
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/Prefabs/Back");
+            var cardsObject = GameObject.Find("Cards");
+
+            int j = -4;
+            for (int i = 0; i < 5; i++)
+            {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(
-                0, 0, 0);
-
+                j, 0, 0);
                 cardObject.transform.parent = cardsObject.transform;
+                j = j + 2;
             }
+
+        }
+        private void Start()
+        {
+            MakeBackCards();
         }
         /// <summary>
         /// クリックしたカードをHoldし、クリックされていないカードを捨て場に送る
@@ -124,7 +138,8 @@ namespace Assets.Scripts.Bar04_06
         /// 所持しているカードの役を判別する
         /// </summary>
         /// 
-        public void TransitionToResult() {
+        public void TransitionToResult()
+        {
             SceneManager.LoadScene("Result");
         }
     }
