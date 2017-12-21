@@ -28,6 +28,8 @@ using UnityEngine;
 
     int n_Number;
 
+
+
     //n_Numberをpublic変数として取得
     public int Number
     {
@@ -52,7 +54,7 @@ using UnityEngine;
         {           
             //CardsCollar[n_Number]+ CardsNumber[n_Number]
             Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Cards[n_Number]);
-           
+            Debug.Log(Cards[n_Number]);
         }
         else
         {

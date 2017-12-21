@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class Bar0104 : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
+    int n_NextCard = 0;
+    // Use this for initialization
+    void Start () {}
 	// Update is called once per frame
-	void Update () {
-		
-	}    
+	void Update () {}
+
+    private int[] MakeRandomNunbers()
+    {
+        int[] values = new int[52];
+        for(int i = 0; i < 52; i++){
+            values[i] = i;
+        }
+        var counter = 0;
+        while (counter < 52)
+        {
+            var index = Random.Range(counter, values.Length);
+            var tmp = values[counter];
+            values[counter] = values[index];
+            values[index] = tmp;
+            counter++;
+        }
+        return values;
+    }
 
     private void ClickCard()
     {
