@@ -18,15 +18,27 @@ namespace Assets.Scripts.Bar06
 
         private void MakeDeck()
         {
-            int a = 0;
-            string[] mark = new string[] {"Spade", "Heart", "Clover","Dia" };
-            for (int i = 0; i < 51; i++)
+            int[] cards = new int[52];
+            for (int i = 0; i < cards.Length; i++)
             {
-                a = i % 13 + 1;
+                cards[i] = i + 1;
+            }
 
-                Debug.Log(mark[i / 13] + a);
+
+            System.Random rng = new System.Random();
+            int n = cards.Length;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                int tmp = cards[k];
+                cards[k] = cards[n];
+                cards[n] = tmp;
+
+                Debug.Log(cards[n]);
             }
         }
+            
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
