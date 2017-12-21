@@ -5,122 +5,83 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
-
-       /* private int count = 1;
+        private int PC = 1;
         private int playercount = 0;
         private int enemycount = 0;
+        private int DeckCount = 0;
+        private int[] numbers = new int[52];
+        private string[] mark = new string[52];
+        private int i, j, k, value;
+        private string val;
 
-
-
-        public enum Mark
+        public void Start()
         {
-            c,
-            d,
-            h,
-            s,
-        }
-
-        public struct Cards
-        {
-            public int number;
-            public Mark mark;
-        }*/
-
-        public void deck()
-        {
-            int[] deck = new int[52];
-            for(int i = 0; i < deck.Length; i++)
+            System.Random random = new System.Random();
+            for (i = 0,j = 0; i < 52; i++, j++)
             {
-                deck[i] = i;
-            }
-            System.Random rng = new System.Random();
-            for(int i = 0; i < deck.Length; i++)
-            {
-                int ransu = rng.Next(deck.Length);
-                int kari = deck[i];
-                deck[i] = deck[ransu];
-                deck[ransu] = kari;
-            }
-            int kazu = 0;
-            string number = "";
-            string[] mark = new string[] { "c", "d", "h", "s" };
-            for (int i = 0; i < deck.Length; i++)
-            {
-                if (deck[i] >= 51)
+                if (i < 13)
                 {
-                    number = "";
-                }
-                else
+                    mark[i] = "c";
+                }else if (i < 26)
                 {
-                    kazu = deck[i] % 13 + 1;
-                    string.Format("{0:D2}", kazu);
-                    number = kazu.ToString();
+                    mark[i] = "d";
+                }else if (i < 39)
+                {
+                    mark[i] = "h";
+                }else
+                {
+                    mark[i] = "s";
                 }
+
+                if (j + 1 >= 14)
+                {
+                    j = 0;
+                }
+                numbers[i] = j + 1;
             }
+            for(i = 0; i < 52; i++)
+            {
+                j = random.Next(52);
+                k = random.Next(52);
+                value = numbers[j];
+                numbers[j] = numbers[k];
+                numbers[k] = value;
+                val = mark[k];
+                mark[j] = mark[k];
+                mark[k] = val;
+            }
+            //player
+            for(i = 0; i < 2; i++)
+            {
+                var playerCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCount] + numbers[DeckCount]);
+                var playerCard = Instantiate(playerCardPrefab, transform.position, Quaternion.identity);
+                playerCard.transform.position = new Vector2(0 - i, -1.5f);
+                playerCard.transform.localScale = new Vector2(0.17f, 0.17f);
+                DeckCount++;
+            }
+            //enemy
+            var enemyCardPrefab_1 = Resources.Load<GameObject>("Prefabs/Bar06/");
         }
-
-        //カード生成
-       /* public void Start()
-        {
-            Cards card1_1 = new Cards();
-            Cards card1_2 = new Cards();
-            Cards card2_1 = new Cards();
-            Cards card2_2 = new Cards();
-
-            card1_1.number = Random.Range(01, 14);
-            card1_1.mark = (Mark)Random.Range(0, 3);
-
-            card1_2.number = Random.Range(01, 14);
-            card1_2.mark = (Mark)Random.Range(0, 3);
-
-            card2_1.number = Random.Range(01, 14);
-            card2_1.mark = (Mark)Random.Range(0, 3);
-
-            card2_2.number = Random.Range(01, 14);
-            card2_2.mark = (Mark)Random.Range(0, 3);
-
-            int playercount = card1_1.number + card1_2.number;
-
-            int value = card1_1.number;
-            value.ToString().PadLeft(2, '0');
-
-
-
-            // var cardPrefab = Resources.Load<GameObject>().
-
-            Debug.Log(card1_1.mark.ToString() + card1_1.number);
-            Debug.Log(card1_2.mark.ToString() + card1_2.number);
-            Debug.Log(playercount);
-
-            Debug.Log(card2_1.mark.ToString() + card2_1.number);
-            Debug.Log(card2_2.mark.ToString() + card2_2.number);
-            Debug.Log(enemycount);
-
-            //自分
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            for (int y = 0; y <= 1; y++)
-            {
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.position = new Vector3(0 - y, 1.5f, 0);
-            }
-            //相手///
-            for (int y = 0; y <= 1; y++)
-            {
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.position = new Vector3(0 - y, -1.5f, 0);
-            }
-        }*/
 
         public void Addcard()
         {
-           /* if (playercount <= 21)
+           if (playercount <= 21)
             {
-                var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.localScale = new Vector3(0.1f, 0.1f, 0);
+                var test = 1;
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/c0"+test);
+                var AddcardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                AddcardObject.transform.position = new Vector2(PC, -2.5f);
+                AddcardObject.transform.localScale = new Vector2(0.17f, 0.17f);
+                PC++;
+                var playerCard = Random.Range(1, 14);
+                playercount = playercount + playerCard;
+                Debug.Log(playercount);
+            }
+        }
 
-                count++;
-            }*/
+        public void Battle()
+        {
+            Debug.Log(enemycount);
         }
         public void TransitionToResult()
         {
