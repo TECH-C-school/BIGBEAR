@@ -117,7 +117,6 @@ namespace Assets.Scripts.Bar02
 
         public void ClickCard()
         {
-
             //マウスクリックの判定
             if (!Input.GetMouseButtonDown(0)) return; //左クリックされていなければreturn
 
@@ -134,10 +133,18 @@ namespace Assets.Scripts.Bar02
             var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
             if (!hitObject) return;
 
+            var colidercard = hitObject.collider.GetComponent<BoxCollider2D>();
+            OnTriggerStay2D(colidercard);
+            if (!colidercard) return;
+
             //クリックされた位置にflameを装着
             var Flame = GameObject.Find("cardflame");
             Flame.transform.position = hitObject.transform.position;
-
+            
+        }
+        public void OnTriggerStay2D(Collider2D collision)
+        {
+            collision.GetComponent<BoxCollider2D>().enabled = false;
         }
         /* public void TransitionToResult()
          {
