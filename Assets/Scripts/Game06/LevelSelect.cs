@@ -5,25 +5,35 @@ using UnityEngine;
 namespace Assets.Scripts.Game06{
 	public class LevelSelect : MonoBehaviour {
 
-		[HideInInspector]
-		public bool isEasy,isNormal,isHard = false;
+        public GameController _gameCtl;
+        public GameObject cutinTexs;
 
-		//----------------------
-		// どれかの難易度が選択されたらそれに応じたフラグを立てる
-		public void TapEasy()
+		//------------------------------------------------------------
+		// どれかの難易度が選択されたらそれに応じて難易度を設定する
+		public void TapAmateur()
 		{
-			isEasy = true;
+            _gameCtl.Difficulty = GameController.DIFFICULTY.AMATEUR;
+            gameObject.SetActive (false);
+            _gameCtl.GameStates = GameController.GAMESTATES.CUTIN;
+            cutinTexs.SetActive(true);
 		}
 
-		public void TapNormal()
+		public void TapProfessional()
 		{
-			isNormal = true;
-		}
+            _gameCtl.Difficulty = GameController.DIFFICULTY.PROFESSIONAL;
+            gameObject.SetActive(false);
+            _gameCtl.GameStates = GameController.GAMESTATES.CUTIN;
+            cutinTexs.SetActive(true);
+        }
 
-		public void TapHard()
+		public void TapLegend()
 		{
-			isHard = true;
-		}
-		//----------------------
+            _gameCtl.Difficulty = GameController.DIFFICULTY.LEGEND;
+            gameObject.SetActive(false);
+            _gameCtl.GameStates = GameController.GAMESTATES.CUTIN;
+            cutinTexs.SetActive(true);
+        }
+		//------------------------------------------------------------
+
 	}
 }

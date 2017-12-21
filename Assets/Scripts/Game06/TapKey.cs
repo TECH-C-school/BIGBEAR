@@ -148,7 +148,9 @@ namespace Assets.Scripts.Game06{
 			yield return new WaitForSeconds (2);
 			_gameCtl.resultText.text = "GAME OVER";
 			_gameCtl.resultText.enabled = true;
-		}
+            // リザルトに行けるようにする
+            _gameCtl.isResult = true;
+        }
 
 		IEnumerator NextLottery()
 		{

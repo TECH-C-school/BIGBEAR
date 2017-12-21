@@ -60,7 +60,8 @@ namespace Assets.Scripts.Game06 {
 
 		public enum GAMESTATES
 		{
-			CUTIN = 0,
+            SELECTDIFFICULTY = 0,
+			CUTIN,
 			COUNTDOWN,
 			DISPPASS,
 			RELEASING,
@@ -69,8 +70,10 @@ namespace Assets.Scripts.Game06 {
 
 		public GAMESTATES GameStates;
 
-		[SerializeField]
+		[HideInInspector]
 		public bool lotteryOnce = true;
+        [HideInInspector]
+        public bool isResult = false;
 
 		void Start()
 		{
@@ -89,7 +92,15 @@ namespace Assets.Scripts.Game06 {
 			if (restCount == 0) 
 			{
 				resultText.enabled = true;
+                // リザルトに行けるようにする
+                isResult = true;
 			}
+
+            if(isResult && Input.GetMouseButtonDown(0))
+            {
+                TransitionToResult();
+            }
+
 		}
 
 		// 解除パスの抽選(難易度によって回数変動)
