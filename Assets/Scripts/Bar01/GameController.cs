@@ -1,14 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar01 {
     public class GameController : MonoBehaviour {
 
-        private const float screenWidth = 1136;
-        private const float screenHight = 640;
+        private const float ScreenWidth = 1136;
+        private const float ScreenHight = 640;
 
         private GameObject deck;
         private GameObject flame;
@@ -40,10 +39,16 @@ namespace Assets.Scripts.Bar01 {
             //初期化
             Initialization();
             //カード生成
-            CreateCard(startPosition,endPosition,6,0.08f);
+            //CreateCard(startPosition,endPosition,6,0.08f);
+            
 
         }
 
+        private void Start()
+        {
+            //カード生成（Normal)
+            CreateCardNoaml(startPosition, endPosition, 6, 0.08f);
+        }
         private void Update()
         {
             ClickChackDeck();
@@ -100,14 +105,118 @@ namespace Assets.Scripts.Bar01 {
             }
         }
 
+        private void CreateCardNoaml(Vector3 startPoint, Vector3 endPoint, int sprit, float interval)
+        {
+            //カードのオブジェクトデータ
+            cardObject = Resources.Load<GameObject>("Prefabs/Bar01/Card");
+
+            //場のトランプとトランプの間隔
+            float setPostion = (endPosition.x - startPoint.x) / sprit;
+            float setPostionX = startPosition.x;
+            float setPostionY = startPosition.y;
+
+            //ファーストポジションの設定
+            for(int i = 0; i < 7; i++)
+            {
+                firstPositions[i] = new GameObject("firstColumn" + i);
+                firstPositions[i].AddComponent<BoxCollider2D>();
+                firstPositions[i].GetComponent<BoxCollider2D>().size = cardObject.GetComponent<BoxCollider2D>().size;
+                firstPositions[i].GetComponent<BoxCollider2D>().isTrigger = true;
+                firstPositions[i].transform.position = new Vector3(setPostionX, startPosition.y, 1);
+                firstPositions[i].transform.localScale = cardObject.transform.localScale;
+                stageArray[i] = new Stack<Card>();
+            }
+
+            //トランプを順番にすべて生成
+            Card[] allCard = NomalMakeCard();
+
+            //一度すべてを外のデータに入れる
+            int count = 0;
+            for(int i = 0; i < 4; i++)
+            {
+                
+                for(int t = 0; t < 13; t++)
+                {
+                    outArray[i].Push(allCard[count]);
+                    count += 1;
+                }
+            }
+            //外からデータを抜き取りランダムにステージまたはデッキに入れる（デッキ数24、ステージ1,2,3,4,5,6,7の7列)
+            for (int i = 0; i < 13; i++)
+            {
+                for(int t = 0; t < 4; t++)
+                {
+                    Card dataCard = outArray[t].Pop();
+                    int random = Random.Range(0, 2);
+                    if (random == 0 && dackOut.Count == 24)
+                    {
+                        random = 1;
+                    }
+                    if(random == 0)
+                    {
+                        //デッキ
+                        dataCard.dack = true;
+                        dackOut.Push(dataCard);
+                    }
+                    else
+                    {
+                        //ステージ
+                        //ステージの列を決めて入れる
+                        int stage = ChackMakeStage();
+                        int i2 = stageArray[stage].Count;
+                        GameObject createObject = Instantiate(cardObject, new Vector3(setPostionX + setPostion * stage, setPostionY - interval * i2, -i2), Quaternion.identity);
+                        Card card = createObject.GetComponent<Card>();
+                        card.SetCard(dataCard);
+                        if(i2 == stage)
+                        {
+                            card.TurnCard(true);
+                        }
+                        else
+                        {
+                            card.TurnCard(false);
+                        }
+                        card.From = createObject.transform.position;
+                        card.Column = stage;
+                        stageArray[stage].Push(card);
+
+                    }
+                }
+            }
+            for(int i = 0; i < 24; i++)
+            {
+                dackArray.Enqueue(dackOut.Pop());
+            }
+        }
+
+        private int ChackMakeStage()
+        {
+            for(int t = 0; t < 7; t++)
+            {
+                int random = Random.Range(0, 7);
+                if (random + 1 > stageArray[random].Count)
+                {
+                    return random;
+                }
+            }
+            Debug.Log("回数制限");
+            for (int i = 0; i < 7; i++)
+            {
+                if (stageArray[i].Count != i + 1)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
         /// <summary>
         /// カードを生成します。
         /// </summary>
         private void CreateCard(Vector3 startPoint, Vector3 endPoint, int sprit, float interval)
         {
-            //トランプのすべて
+            //トランプをランダムにすべて生成
             Card[] allCard = RandomNumber();
-            //トランプのカードオブジェクト
+            //トランプカードオブジェクト
             cardObject = Resources.Load<GameObject>("Prefabs/Bar01/Card");
             //場のトランプとトランプの間隔
             float setPostion = (endPosition.x - startPoint.x) /sprit;
@@ -152,6 +261,21 @@ namespace Assets.Scripts.Bar01 {
             }
         }
 
+
+        private Card[] NomalMakeCard()
+        {
+            Card[] numbers = new Card[52];
+            int counter = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                for (int c = 0; c < 13; c++)
+                {
+                    numbers[counter] = new Card((Card.CardTypes)i, c + 1);
+                    counter++;
+                }
+            }
+            return numbers;
+        }
 
         /// <summary>
         /// トランプの種類をシャッフルします。
