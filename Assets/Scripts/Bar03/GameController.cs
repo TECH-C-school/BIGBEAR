@@ -8,13 +8,16 @@ namespace Assets.Scripts.Bar03 {
     {
         private string _nextCardString = "c01";
         private int _nextCardNumber = 1;
-        private int _select = 0;
+        private Vector3  thisHit;
+
+        private Cards TappedCard　= null;
+
 
         void Start()
         {
-            MakeBackCards();
+            //MakeBackCards();
+            CardsSet();
             BackGroundMake();
-            DeckCardCheck();
         }  
         void Update()
         {
@@ -90,7 +93,65 @@ namespace Assets.Scripts.Bar03 {
                 count++;
             }
         }
-        //randomにカードを配列にいれる関数
+        private void CardsSet()
+        {
+            int count = 0;
+            string[] cardMarkNumber = new string[104];
+            cardMarkNumber = AryRamdomTwo(cardSetMN(cardMarkNumber));
+
+            Transform parentObject = GameObject.Find("Cards").transform;
+            Transform deckCard = GameObject.Find("Deck").transform;
+            GameObject cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar03/Back");
+            Vector3 cardTransform = GameObject.Find("Deck").transform.position;
+            for (int x = 0; x < 10; x++)
+            {
+                int n = 4;
+                if (x < 4)
+                {
+                    n = 5;
+                }
+
+                for (int y = 0; y < n + 1; y++)
+                {
+                    if (y < n)
+                    {
+                        var cardObject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
+                        cardTransform = GameObject.Find("Cards" + x).transform.position;
+                        cardObject.transform.position = new Vector3(cardTransform.x, cardTransform.y - y * 0.31f, cardTransform.z - y * 0.1f);
+                        cardObject.transform.parent = GameObject.Find("Cards" + x.ToString()).transform;
+                        Cards cardSet = cardObject.GetComponent<Cards>();
+                        cardSet.String = cardMarkNumber[count];
+                        cardSet.Deck = x;
+                        cardSet.TurnCardFaceDown();
+                        count++;
+                    }
+                    else
+                    {
+                        var cardObject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
+                        cardTransform = GameObject.Find("Cards" + x).transform.position;
+                        cardObject.transform.position = new Vector3(cardTransform.x, cardTransform.y - y * 0.31f, cardTransform.z - y * 0.1f);
+                        cardObject.transform.parent = GameObject.Find("Cards" + x.ToString()).transform;
+                        Cards cardSet = cardObject.GetComponent<Cards>();
+                        cardSet.String = cardMarkNumber[count];
+                        cardSet.Deck = x;
+                        cardSet.TurnCardFaceUp();
+                        Debug.Log(cardMarkNumber[count]);
+                        count++;
+                    }
+                }
+            }
+            while (count < 104)
+            {
+                var cardObject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(-7.97f, -2.9f, 0);
+                cardObject.transform.parent = deckCard;
+                Cards cardSet = cardObject.GetComponent<Cards>();
+                cardSet.String = cardMarkNumber[count];
+                cardSet.TurnCardFaceDown();
+                count++;
+            }
+        }
+        //randomにカードを配列にいれる関数(1デッキ)
         private string[] cardSetMN(string[] values)
         {
             int[] card = new int[52];
@@ -98,7 +159,6 @@ namespace Assets.Scripts.Bar03 {
             {
                 card[i] = i;
             }
-            Random random = new Random();
             for (int i = 0; i < card.Length; i++)
             {
                 int ransu = Random.Range(1,52);
@@ -150,7 +210,7 @@ namespace Assets.Scripts.Bar03 {
                 }
             }
         }
-        //ランダムな数字の配列を作る関数
+        //ランダムな数字の配列を作る関数(シャッフル)
         private int[] MakeRandomNumbers()
         {
             int[] values = new int[104];
@@ -209,7 +269,7 @@ namespace Assets.Scripts.Bar03 {
         {
             //マウスクリックの判定 GetMouse--Down
             if (!Input.GetMouseButtonDown(0)) return;
-            
+
             //クリックされた位置を取得
             var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -217,31 +277,53 @@ namespace Assets.Scripts.Bar03 {
             if (!Physics2D.OverlapPoint(tapPoint)) return;
 
             //クリックされた位置のオブジェクトを取得
-            var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
+            var hitObject = Physics2D.Raycast(tapPoint, -Vector3.up);
             if (!hitObject) return;
 
             //クリックされたカードスクリプトを取得
             var card = hitObject.collider.gameObject.GetComponent<Cards>();
 
-            Debug.Log(card);
-
-            //if (Resources.Load<GameObject>("Prefabs/Bar03/Back") == card) ;
+            
+            //クリックされたカードの位置を取得
+            Vector3 hitTransform = hitObject.transform.position;
+            
             //クリックされたカードを数字にする
             int numValue = 0;
-            bool parsed = System.Int32.TryParse(card.String.Substring(1,2), out numValue);
-            
-            
 
-            if (_nextCardNumber == numValue) Debug.Log("OK");
+            //カードから数字のみをとりだす
+            bool parsed = System.Int32.TryParse(card.String.Substring(1, 2), out numValue);
 
-            _nextCardNumber = numValue + 1;
-            Debug.Log("次は" + _nextCardNumber + "のカードを押してください");
+            //前回クリックカード+1と今回クリックしたカードが同じ
+            if (_nextCardNumber == numValue) {
+                Debug.Log("OK");
+                TappedCard.transform.position = new Vector3(hitTransform.x,hitTransform.y - 0.31f, hitTransform.z - 0.1f);
+                var cardchange = Physics2D.Raycast(tapPoint, -Vector3.up);
+                TappedCard.Deck = card.Deck;
+                
+            }
 
-            Debug.Log("これはデッキ" + card.Deck + "のカードです");
-            //Debug.Log("hit object is" + card.String);
 
-            //次にクリックされるカードが判明
-            //if (_nextCardString != card.String) return;
+
+            //次のカードを判明させる。13だったら変えない
+            if (numValue != 13) {
+                _nextCardNumber = numValue + 1;
+                Debug.Log("次は" + _nextCardNumber + "のカードを押してください");
+            }
+            else
+            {
+                _nextCardNumber = numValue;
+                Debug.Log("次のカードはないです");
+            }
+            //前回のカードを覚えさせる
+            if (TappedCard == null)
+            {
+                TappedCard = card;
+            }
+            else
+            {
+                TappedCard = null;
+            }
+
         }
         public void ButtonPush()
         {
@@ -252,7 +334,7 @@ namespace Assets.Scripts.Bar03 {
             for(int x = 0;x < 10; x++)
             {
                 var deckCheck = GameObject.Find("Cards"+x).transform;
-                Debug.Log(deckCheck);
+                
             }
 
 

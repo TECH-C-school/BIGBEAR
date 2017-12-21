@@ -47,4 +47,8 @@ public class Cards : MonoBehaviour
         spriteRenderer.sprite = cardSprite;
         
     }
+    public void cardSelect()
+    {
+        GameObject cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar03/Select");
+    }
 }
