@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class GameSurrender : MonoBehaviour {
 
+    public Sprite coverScripts = null;
+
     public void Surrender()
     {
         var coverPrefab = Resources.Load<GameObject>("Prefabs/Bar06/cover");
         var coverObject = Instantiate(coverPrefab, transform.position, Quaternion.identity);
         Vector3 move = transform.localPosition;
-        Sprite coverScripts = Resources.Load<Sprite>("Images/Bar/resultbg");
+        coverScripts = Resources.Load<Sprite>("Images/Bar/resultbg");
         coverObject.transform.position = new Vector3(0, 0, 0);
     }
 }

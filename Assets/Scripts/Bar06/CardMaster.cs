@@ -32,12 +32,16 @@ public class CardMaster : MonoBehaviour
     void Start()
     {
         Invoke("MakeCard", 0.5f);
+        Invoke("Count",0.5f);
+        Invoke("Num", 1);
     }
-
     public Card[] setCard = new Card[11];
     public Card[] setCard2 = new Card[6];
     public MarkOut[] Markout = new MarkOut[16];
-
+    public int[] countcard = new int[11];
+    public int[] dealercountcard = new int [6];
+    public int puls = 0;
+    public int Ace = 0;
     public void MakeCard()
     {
         for (int i = 0; i < 15; i++)
@@ -177,13 +181,13 @@ public class CardMaster : MonoBehaviour
         }
 
         Sprite cdScripts = null;
-
+        
         for (int i = 0; i < 2; i++)
         {
-            //カードの生成
+            //プレイヤーカードの生成
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(i * -0.6f, -2.8f, 0);
+            cardObject.transform.position = new Vector3(i * -0.6f - 0.4f, -2.8f, 0);
             cardObject.transform.localScale = new Vector3(0.3f, 0.3f, 1);
 
             SpriteRenderer CdRenderer = cardObject.GetComponent<SpriteRenderer>();
@@ -195,21 +199,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c01");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 1;
+                        }
+                        else
+                        {
+                            countcard[i] = 1;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d01");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 1;
+                        }
+                        else
+                        {
+                            countcard[i] = 1;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h01");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 1;
+                        }
+                        else
+                        {
+                            countcard[i] = 1;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s01");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 1;
+                        }
+                        else
+                        {
+                            countcard[i] = 1;
+                        }
                     }
                     break;
 
@@ -218,21 +254,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c02");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 2;
+                        }
+                        else
+                        {
+                            countcard[i] = 2;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d02");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 2;
+                        }
+                        else
+                        {
+                            countcard[i] = 2;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h02");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 2;
+                        }
+                        else
+                        {
+                            countcard[i] = 2;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s02");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 2;
+                        }
+                        else
+                        {
+                            countcard[i] = 2;
+                        }
                     }
                     break;
 
@@ -241,22 +309,54 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c03");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 3;
+                        }
+                        else
+                        {
+                            countcard[i] = 3;
+                        }
 
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d03");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 3;
+                        }
+                        else
+                        {
+                            countcard[i] = 3;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h03");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 3;
+                        }
+                        else
+                        {
+                            countcard[i] = 3;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s03");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[i] = 3;
+                        }
+                        else
+                        {
+                            countcard[i] = 3;
+                        }
                     }
                     break;
 
@@ -265,24 +365,56 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c04");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 4;
+                        }
+                        else
+                        {
+                            countcard[1] = 4;
+                        }
 
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d04");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 4;
+                        }
+                        else
+                        {
+                            countcard[1] = 4;
+                        }
 
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h04");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 4;
+                        }
+                        else
+                        {
+                            countcard[1] = 4;
+                        }
 
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s04");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 4;
+                        }
+                        else
+                        {
+                            countcard[1] = 4;
+                        }
                     }
                     break;
 
@@ -291,21 +423,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c05");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 5;
+                        }
+                        else
+                        {
+                            countcard[1] = 5;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d05");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 5;
+                        }
+                        else
+                        {
+                            countcard[1] = 5;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h05");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 5;
+                        }
+                        else
+                        {
+                            countcard[1] = 5;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s05");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 5;
+                        }
+                        else
+                        {
+                            countcard[1] = 5;
+                        }
                     }
                     break;
 
@@ -314,21 +478,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c06");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 6;
+                        }
+                        else
+                        {
+                            countcard[1] = 6;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d06");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 6;
+                        }
+                        else
+                        {
+                            countcard[1] = 6;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h06");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 6;
+                        }
+                        else
+                        {
+                            countcard[1] = 6;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s06");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 6;
+                        }
+                        else
+                        {
+                            countcard[1] = 6;
+                        }
                     }
                     break;
 
@@ -337,21 +533,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c07");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 7;
+                        }
+                        else
+                        {
+                            countcard[1] = 7;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d07");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 7;
+                        }
+                        else
+                        {
+                            countcard[1] = 7;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h07");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 7;
+                        }
+                        else
+                        {
+                            countcard[1] = 7;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s07");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 7;
+                        }
+                        else
+                        {
+                            countcard[1] = 7;
+                        }
                     }
                     break;
 
@@ -360,21 +588,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c08");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 8;
+                        }
+                        else
+                        {
+                            countcard[1] = 8;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d08");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 8;
+                        }
+                        else
+                        {
+                            countcard[1] = 8;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h08");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 8;
+                        }
+                        else
+                        {
+                            countcard[1] = 8;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s08");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 8;
+                        }
+                        else
+                        {
+                            countcard[1] = 8;
+                        }
                     }
                     break;
 
@@ -383,21 +643,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c09");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 9;
+                        }
+                        else
+                        {
+                            countcard[1] = 9;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d09");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 9;
+                        }
+                        else
+                        {
+                            countcard[1] = 9;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h09");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 9;
+                        }
+                        else
+                        {
+                            countcard[1] = 9;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s09");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 9;
+                        }
+                        else
+                        {
+                            countcard[1] = 9;
+                        }
                     }
                     break;
 
@@ -406,21 +698,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c10");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 10;
+                        }
+                        else
+                        {
+                            countcard[1] = 10;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d10");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 10;
+                        }
+                        else
+                        {
+                            countcard[1] = 10;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h10");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 10;
+                        }
+                        else
+                        {
+                            countcard[1] = 10;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s10");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 10;
+                        }
+                        else
+                        {
+                            countcard[1] = 10;
+                        }
                     }
                     break;
 
@@ -429,21 +753,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c11");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 11;
+                        }
+                        else
+                        {
+                            countcard[1] = 11;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d11");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 11;
+                        }
+                        else
+                        {
+                            countcard[1] = 11;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h11");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 11;
+                        }
+                        else
+                        {
+                            countcard[1] = 11;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s11");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 11;
+                        }
+                        else
+                        {
+                            countcard[1] = 11;
+                        }
                     }
                     break;
 
@@ -452,21 +808,53 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c12");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 12;
+                        }
+                        else
+                        {
+                            countcard[1] = 12;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d12");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 12;
+                        }
+                        else
+                        {
+                            countcard[1] = 12;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h12");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 12;
+                        }
+                        else
+                        {
+                            countcard[1] = 12;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s12");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 12;
+                        }
+                        else
+                        {
+                            countcard[1] = 12;
+                        }
                     }
                     break;
 
@@ -475,32 +863,71 @@ public class CardMaster : MonoBehaviour
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c13");
                         CdRenderer.sprite = cdScripts;
+                        if (i == 0)
+                        {
+                            countcard[0] = 13;
+                        }
+                        else
+                        {
+                            countcard[1] = 13;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d13");
                         CdRenderer.sprite = cdScripts;
+                        if(i == 0)
+                        {
+                            countcard[0] = 13;
+                        }
+                        else
+                        {
+                            countcard[1] = 13;
+                        }
                     }
                     else if (setCard[i].mark == Mark.Heart)
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h13");
                         CdRenderer.sprite = cdScripts;
+                        if(i == 0)
+                        {
+                            countcard[0] = 13;
+                        }
+                        else
+                        {
+                            countcard[1] = 13;
+                        }
                     }
                     else
                     {
                         cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s13");
                         CdRenderer.sprite = cdScripts;
+                        if(i == 0)
+                        {
+                            countcard[0] = 13;
+                        }
+                        else
+                        {
+                            countcard[1] = 13;
+                        }
                     }
                     break;
             }
 
+            //ディーラーカードの生成
             var dealercardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
             var dealercardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            dealercardObject.transform.position = new Vector3(i * -0.6f, 3, 0);
+            dealercardObject.transform.position = new Vector3(i * -0.6f - 0.4f, 3, 0);
             dealercardObject.transform.localScale = new Vector3(0.3f, 0.3f, 1);
 
             SpriteRenderer dealerCdRenderer = dealercardObject.GetComponent<SpriteRenderer>();
             if (i == 0)
+            {
+                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/back");
+                dealerCdRenderer.sprite = cdScripts;
+                
+            }
+            else if (i == 1)
             {
                 switch (setCard2[i].number)
                 {
@@ -808,14 +1235,10 @@ public class CardMaster : MonoBehaviour
                         break;
                 }
             }
-            else if (i == 1)
-            {
-                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/back");
-                dealerCdRenderer.sprite = cdScripts;
-            }
         }
     }
     public int count = 5;
+    public int I = 1;
     public void hitCard()
     {
         if (j <= 11)
@@ -912,7 +1335,7 @@ public class CardMaster : MonoBehaviour
             }
             else if (count == 7)
             {
-                while (Markout[j - 6].number == setNum && Markout[j - 5].mark == setMark && check == 0)
+                while (Markout[j - 6].number == setNum && Markout[j - 6].mark == setMark && check == 0)
                 {
                     setMark = UnityEngine.Random.Range(0, 4);
                     setNum = UnityEngine.Random.Range(1, 14);
@@ -928,7 +1351,7 @@ public class CardMaster : MonoBehaviour
                                     {
                                         if (Markout[5].number == setNum && Markout[5].mark != setMark)
                                         {
-                                            if (Markout[5].number == setNum && Markout[5].mark != setMark)
+                                            if (Markout[6].number == setNum && Markout[6].mark != setMark)
                                             {
                                                 break;
                                             }
@@ -964,6 +1387,210 @@ public class CardMaster : MonoBehaviour
                     }
                 }
             }
+            else if (count == 8)
+            {
+                while (Markout[j - 7].number == setNum && Markout[j - 7].mark == setMark && check == 0)
+                {
+                    setMark = UnityEngine.Random.Range(0, 4);
+                    setNum = UnityEngine.Random.Range(1, 14);
+                    if (Markout[0].number == setNum && Markout[0].mark != setMark)
+                    {
+                        if (Markout[1].number == setNum && Markout[1].mark != setMark)
+                        {
+                            if (Markout[2].number == setNum && Markout[2].mark != setMark)
+                            {
+                                if (Markout[3].number == setNum && Markout[3].mark != setMark)
+                                {
+                                    if (Markout[4].number == setNum && Markout[4].mark != setMark)
+                                    {
+                                        if (Markout[5].number == setNum && Markout[5].mark != setMark)
+                                        {
+                                            if (Markout[6].number == setNum && Markout[6].mark != setMark)
+                                            {
+                                                if (Markout[7].number == setNum && Markout[7].mark != setMark)
+                                                {
+                                                    break;
+                                                }
+                                            }
+                                            else if (Markout[7].mark == 4 && Markout[7].number == 0)
+                                            {
+                                                break;
+                                            }
+                                        }
+                                        else if (Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else if (Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0)
+                                    {
+                                        break;
+                                    }
+                                }
+                                else if (Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0)
+                                {
+                                    break;
+                                }
+                            }
+                            else if (Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0)
+                            {
+                                break;
+                            }
+                        }
+                        else if (Markout[2].mark == 4 && Markout[2].number == 0 && Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0)
+                        {
+                            break;
+                        }
+                    }
+                    else if (Markout[1].mark == 4 && Markout[1].number == 0 && Markout[2].mark == 4 && Markout[2].number == 0 && Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+            else if (count == 9)
+            {
+                while (Markout[j - 8].number == setNum && Markout[j - 8].mark == setMark && check == 0)
+                {
+                    setMark = UnityEngine.Random.Range(0, 4);
+                    setNum = UnityEngine.Random.Range(1, 14);
+                    if (Markout[0].number == setNum && Markout[0].mark != setMark)
+                    {
+                        if (Markout[1].number == setNum && Markout[1].mark != setMark)
+                        {
+                            if (Markout[2].number == setNum && Markout[2].mark != setMark)
+                            {
+                                if (Markout[3].number == setNum && Markout[3].mark != setMark)
+                                {
+                                    if (Markout[4].number == setNum && Markout[4].mark != setMark)
+                                    {
+                                        if (Markout[5].number == setNum && Markout[5].mark != setMark)
+                                        {
+                                            if (Markout[6].number == setNum && Markout[6].mark != setMark)
+                                            {
+                                                if (Markout[7].number == setNum && Markout[7].mark != setMark)
+                                                {
+                                                    if (Markout[8].number == setNum && Markout[8].mark != setMark)
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+                                                else if (Markout[8].mark == 4 && Markout[8].number == 0)
+                                                {
+                                                    break;
+                                                }
+                                            }
+                                            else if (Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0)
+                                            {
+                                                break;
+                                            }
+                                        }
+                                        else if (Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else if (Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0)
+                                    {
+                                        break;
+                                    }
+                                }
+                                else if (Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0)
+                                {
+                                    break;
+                                }
+                            }
+                            else if (Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0)
+                            {
+                                break;
+                            }
+                        }
+                        else if (Markout[2].mark == 4 && Markout[2].number == 0 && Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0)
+                        {
+                            break;
+                        }
+                    }
+                    else if (Markout[1].mark == 4 && Markout[1].number == 0 && Markout[2].mark == 4 && Markout[2].number == 0 && Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0)
+                    {
+                        break;
+                    }
+                }
+            }
+            else if (count == 10)
+            {
+                while (Markout[j - 8].number == setNum && Markout[j - 8].mark == setMark && check == 0)
+                {
+                    setMark = UnityEngine.Random.Range(0, 4);
+                    setNum = UnityEngine.Random.Range(1, 14);
+                    if (Markout[0].number == setNum && Markout[0].mark != setMark)
+                    {
+                        if (Markout[1].number == setNum && Markout[1].mark != setMark)
+                        {
+                            if (Markout[2].number == setNum && Markout[2].mark != setMark)
+                            {
+                                if (Markout[3].number == setNum && Markout[3].mark != setMark)
+                                {
+                                    if (Markout[4].number == setNum && Markout[4].mark != setMark)
+                                    {
+                                        if (Markout[5].number == setNum && Markout[5].mark != setMark)
+                                        {
+                                            if (Markout[6].number == setNum && Markout[6].mark != setMark)
+                                            {
+                                                if (Markout[7].number == setNum && Markout[7].mark != setMark)
+                                                {
+                                                    if (Markout[8].number == setNum && Markout[8].mark != setMark)
+                                                    {
+                                                        if (Markout[9].number == setNum && Markout[9].mark != setMark)
+                                                        {
+                                                            break;
+                                                        }
+                                                    }
+                                                    else if (Markout[9].mark == 4 && Markout[9].number == 0)
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+                                                else if (Markout[8].mark == 4 && Markout[8].number == 0 && Markout[9].mark == 4 && Markout[9].number == 0)
+                                                {
+                                                    break;
+                                                }
+                                            }
+                                            else if (Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0 && Markout[9].mark == 4 && Markout[9].number == 0)
+                                            {
+                                                break;
+                                            }
+                                        }
+                                        else if (Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0 && Markout[9].mark == 4 && Markout[9].number == 0)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else if (Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0 && Markout[9].mark == 4 && Markout[9].number == 0)
+                                    {
+                                        break;
+                                    }
+                                }
+                                else if (Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0 && Markout[9].mark == 4 && Markout[9].number == 0)
+                                {
+                                    break;
+                                }
+                            }
+                            else if (Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0 && Markout[9].mark == 4 && Markout[9].number == 0)
+                            {
+                                break;
+                            }
+                        }
+                        else if (Markout[2].mark == 4 && Markout[2].number == 0 && Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0 && Markout[9].mark == 4 && Markout[9].number == 0)
+                        {
+                            break;
+                        }
+                    }
+                    else if (Markout[1].mark == 4 && Markout[1].number == 0 && Markout[2].mark == 4 && Markout[2].number == 0 && Markout[3].mark == 4 && Markout[3].number == 0 && Markout[4].mark == 4 && Markout[4].number == 0 && Markout[5].mark == 4 && Markout[5].number == 0 && Markout[6].mark == 4 && Markout[6].number == 0 && Markout[7].mark == 4 && Markout[7].number == 0 && Markout[8].mark == 4 && Markout[8].number == 0)
+                    {
+                        break;
+                    }
+                }
+            }
 
 
 
@@ -984,7 +1611,7 @@ public class CardMaster : MonoBehaviour
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
             //var cardsObject = GameObject.Find("cards");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3((count - 4) * 0.6f, -2.8f, 0);
+            cardObject.transform.position = new Vector3((count - 4) * 0.6f - 0.4f, -2.8f, 0);
             cardObject.transform.localScale = new Vector3(0.3f, 0.3f, 1);
 
             SpriteRenderer CdRenderer = cardObject.GetComponent<SpriteRenderer>();
@@ -1293,6 +1920,149 @@ public class CardMaster : MonoBehaviour
             }
 
             count++;
+            puls = 0;
+            I++;
+        }
+    }
+    public void vs()
+    {
+
+    }
+    public void Count()
+    {
+        var countPrefab = Resources.Load<GameObject>("Prefabs/Bar06/Count");
+        var countObject = Instantiate(countPrefab, transform.position, Quaternion.identity);
+        countObject.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+        countObject.transform.localScale = new Vector3(1.5f, 1.5f, 1);
+
+        var dealercountPrefab = Resources.Load<GameObject>("Prefabs/Bar06/Count");
+        var dealercountObject = Instantiate(countPrefab, transform.position, Quaternion.identity);
+        dealercountObject.transform.position = new Vector3(1.9f * 0.6f -0.4f, 1.8f, 0);
+        dealercountObject.transform.localScale = new Vector3(1.5f, 1.5f, 1);
+    }
+    public void Num()
+    {
+        Sprite numScripts = null;
+
+        for (int i = 0; i <= I; i++)
+        {
+            puls += countcard[I];
+        }
+        for (int j = 0; j < 2; j++)
+        {
+            var numPrefab = Resources.Load<GameObject>("Prefabs/Bar06/num");
+            var numObject = Instantiate(numPrefab, transform.position, Quaternion.identity);
+            numObject.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+            numObject.transform.localScale = new Vector3(1, 1, 1);
+            SpriteRenderer NumRenderer = numObject.GetComponent<SpriteRenderer>();
+            switch (puls)
+            {
+                case 2:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
+                    NumRenderer.sprite = numScripts;
+                    break;
+
+                case 3:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 4:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_4");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 5:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_5");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 6:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_6");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 7:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_7");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 8:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_8");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 9:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_9");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 10:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                    NumRenderer.sprite = numScripts;
+                    var numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                    var numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+                    numObject2.transform.localScale = new Vector3(1, 1, 1);
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_0");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 11:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                    NumRenderer.sprite = numScripts;
+                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+                    numObject2.transform.localScale = new Vector3(1, 1, 1);
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 12:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                    NumRenderer.sprite = numScripts;
+                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+                    numObject2.transform.localScale = new Vector3(1, 1, 1);
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 13:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                    NumRenderer.sprite = numScripts;
+                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+                    numObject2.transform.localScale = new Vector3(1, 1, 1);
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 14:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                    NumRenderer.sprite = numScripts;
+                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+                    numObject2.transform.localScale = new Vector3(1, 1, 1);
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_4");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 15:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                    NumRenderer.sprite = numScripts;
+                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+                    numObject2.transform.localScale = new Vector3(1, 1, 1);
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_5");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                case 16:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                    NumRenderer.sprite = numScripts;
+                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
+                    numObject2.transform.localScale = new Vector3(1, 1, 1);
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_6");
+                    NumRenderer.sprite = numScripts;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
