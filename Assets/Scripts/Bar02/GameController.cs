@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Bar02 {
+namespace Assets.Scripts.Bar02
+{
 
     public enum Mark
     {
@@ -19,9 +20,11 @@ namespace Assets.Scripts.Bar02 {
         public Mark mark;
     }
 
-    public class GameController : MonoBehaviour {
+    public class GameController : MonoBehaviour
+    {
         public void Start()
         {
+
             int[] cards = new int[52];
             //21枚のカードを用意する
             for (int i = 0; i < 52; i++)
@@ -44,7 +47,7 @@ namespace Assets.Scripts.Bar02 {
             Card[] trump = new Card[21];
             for (int i = 0; i < 21; i++)
             {
-               
+
                 //19
                 trump[i].number = (cards[i] - 1) % 13 + 1;
                 trump[i].mark = (Mark)((cards[i] - 1) / 13);
@@ -58,7 +61,7 @@ namespace Assets.Scripts.Bar02 {
             {
                 var fileName = "";
 
-                switch(trump[counterForTrump].mark)
+                switch (trump[counterForTrump].mark)
                 {
                     case Mark.Spade:
                         fileName += "s";
@@ -77,7 +80,8 @@ namespace Assets.Scripts.Bar02 {
                 if (trump[counterForTrump].number < 10)
                 {
                     fileName += "0" + trump[counterForTrump].number;
-                } else
+                }
+                else
                 {
                     fileName += trump[counterForTrump].number;
                 }
@@ -89,29 +93,75 @@ namespace Assets.Scripts.Bar02 {
 
                 counterForTrump++;
             }
-            
-
         }
 
 
-        public void TransitionToResult() {
+
+        public void TransitionToResult()
+        {
             SceneManager.LoadScene("Result");
 
 
-        }
 
-        //最下段以外選択できないようにする
-         void OnClick() {
-     if (Cursor.lockState == CursorLockMode.Locked) {
-         return;  //lockStateがLockedだったら以後の処理をしない
-     }
-            //以下、クリックされた時の処理
 
         }
-        /*//jokerの処理
-        private void jokers_Click(object senter,EventArgs e)
+        //山札の処理
+        public void Yamahuda()
         {
-            listBoX1.
-        }*/
+
+            int[] cards = new int[53];
+            //31枚のカードを用意する
+            for (int i = 22; i < 53; i++)
+            {
+                cards[i] = i + 1;
+
+            }
+
+            var counter = 22;
+            while (counter < 52)
+            {
+                var index = Random.Range(counter, cards.Length);
+                var tmp = cards[counter];
+                cards[counter] = cards[index];
+                cards[index] = tmp;
+
+                counter++;
+            }
+
+            Card[] trump = new Card[53];
+            for (int i = 22; i < 53; i++)
+            {
+
+                //19
+                trump[i].number = (cards[i] - 1) % 13 + 1;
+                trump[i].mark = (Mark)((cards[i] - 1) / 13);
+            }
+/*
+            for (int i = 0; i < 2; i++)
+            {
+                var Cards = Resources.Load<GameObject>("Cards");
+                var cardObject = Instantiate(Cards, transform.position, Quaternion.identity);
+                cardObject.transform.parent = GameObject.Find("Cards").transform;
+                cardObject.transform.position = new Vector3(i * 1.27f - 3.84f,0);
+            }
+*/
+
+
+
+            /* //最下段以外選択できないようにする
+              void OnClick() {
+          if (Cursor.lockState == CursorLockMode.Locked) {
+              return;  //lockStateがLockedだったら以後の処理をしない
+          }
+                 //以下、クリックされた時の処理
+
+             }
+             //jokerの処理
+             private void jokers_Click(object senter,EventArgs e)
+             {
+                 listBoX1.
+             }*/
+        }
+        
     }
 }
