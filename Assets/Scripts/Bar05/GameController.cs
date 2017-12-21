@@ -4,18 +4,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> マークの初期化がされてなかったので修正
- *              お手軽Phase移動
- *              Phase/Debug.Log簡略化
+ * 今回作業 --> フラッシュ/ストレート時のDebug.Logにマーク/先頭の数字を追加
+ *              イカサマ出来るようにした
+ *              ストレートフラッシュ仮実装
+ *              ロイヤルストレートフラッシュとストレートフラッシュ用にリストを作る関数を作成
  */
 
 /*
- * 次回作業 --> ストレートフラッシュ/ロイヤルストレートフラッシュの判定修正
+ * 次回作業 --> ロイヤルストレートフラッシュの判定修正
  *              以下慣性で
  */
 
 /*
- * 今後実装 --> ストレートフラッシュとロイヤルストレートフラッシュの判定の修正
+ * 今後実装 --> ロイヤルストレートフラッシュの判定の修正
  *              同役の時の処理
  *              PhaseViewの修正(Prefabにしなきゃいけない?)
  *              チップを掛ける
@@ -104,7 +105,7 @@ namespace Assets.Scripts.Bar05 {
                         cardList_p1[x - 1] = cardNum;
                     }
                     //役を判定する関数にカードリストを渡す
-                    PlayerCards(Player1Cards, cardList_p1);
+                    //PlayerCards(Player1Cards, cardList_p1);
 
                     //デバッグ
                     //毎回アルファベッド+数字に戻したほうがわかりやすいかね
@@ -140,7 +141,7 @@ namespace Assets.Scripts.Bar05 {
                         string cardNum = cardNumber.ToString();
                         cardList_P2[x - 1] = cardNum;
                     }
-                    PlayerCards(Player2Cards, cardList_P2);
+                    //PlayerCards(Player2Cards, cardList_P2);
 
                     Debug.Log("<color=red>相手のカード生成完了</color>");
                     Debug.Log("--------------------");
@@ -172,7 +173,7 @@ namespace Assets.Scripts.Bar05 {
                         string cardNum = cardNumber.ToString();
                         cardList_St[x - 1] = cardNum;
                     }
-                    PlayerCards(StackCards, cardList_St);
+                    //PlayerCards(StackCards, cardList_St);
 
                     Debug.Log("<color=yellow>場札のカード生成完了</color>");
                     Debug.Log("--------------------");
@@ -240,6 +241,8 @@ namespace Assets.Scripts.Bar05 {
         //リストを作る関数群
         private void MakeLists()
         {
+            //イカサマ
+            IKASAMA();
             //Debug.Log("<color=blue>自分と場札のカード内訳</color>");
             CardLists(Player1Cards, Player1CardList, Player1Marks);
             //Debug.Log("--------------------");
@@ -285,15 +288,25 @@ namespace Assets.Scripts.Bar05 {
         int[] Player1Marks = new int[4];
         int[] Player2Marks = new int[4];
      
+        //イカサマをしよう
+        private void IKASAMA()
+        {
+            Player1Cards = new int[] { 1, 40 };
+            Player2Cards = new int[] { 43, 9 };
+            StackCards = new int[] { 3, 4, 5, 6, 7 };
+        }
+
         //役の候補になるカードのリスト
         private void CardLists(int[]Player, int[] List, int[] MList)
         {
-            for(int i = 0; i < List.Length; i++)
+            for (int i = 0; i < List.Length; i++)
             {
+                //プレイヤーの手札
                 if(i < Player.Length)
                 {
                     List[i] = Player[i];
                 }
+                //場札
                 else
                 {
                     List[i] = StackCards[i - 2];
@@ -358,7 +371,7 @@ namespace Assets.Scripts.Bar05 {
                         break;
                 }
             }
-            Debug.Log(db);
+            //Debug.Log(db);
 
             string db2 = "";
             int db3 = 0;
@@ -367,12 +380,86 @@ namespace Assets.Scripts.Bar05 {
                 db2 = db2 + MList[i] + ":";
                 db3 = db3 + MList[i];
             }
-            Debug.Log(db2);
+            //Debug.Log(db2);
             //Debug.Log("クローバー:ダイヤ:ハート:スペード");
             //Debug.Log("マーク合計:" + db3);
 
             // */
         }
+
+        //ロイヤルストレートフラッシュとストレートフラッシュ用にリストを作る関数
+        //処理軽減のために判定をする時のみ実行
+        int tmp = 0;
+        int[] IList = new int[7];
+        int Seets = 0;
+        int[] IListNumManager = new int[13];
+
+        private bool RSForSFDecision(int MarkNum, int[] PlayerCards)
+        {
+            bool RSForSFFlag = false;
+            tmp = 0;
+            IList = new int[7];
+            Seets = 0;
+            IListNumManager = new int[13];
+            for (int i = 0; i < 7; i++)
+            {
+                //プレイヤーの手札
+                if (i < PlayerCards.Length)
+                {
+                    tmp = PlayerCards[i] + 1;
+                    //Debug.Log(tmp);
+                }
+                //場札
+                else
+                {
+                    tmp = StackCards[i - 2] + 1;
+                }
+                if(tmp > MarkNum * 13 & tmp <= (MarkNum + 1) * 13)
+                {
+                    IList[Seets] = tmp - MarkNum * 13;
+                    //Debug.Log(IList[Seets]);
+                    Seets++;
+                }
+            }
+            for (int x = 0; x < IList.Length; x++)
+            {
+                if (IList[x] != 0)
+                {
+                    IListNumManager[IList[x] - 1] = IListNumManager[IList[x] - 1] + 1;
+                }
+            }
+            //ここからデバッグ用
+            /*/
+            string db = "";
+            for (int x = 0; x < IListNumManager.Length; x++)
+            {
+                db = db + IListNumManager[x] + ":";
+            }
+            Debug.Log(db);
+            //デバッグ用ここまで
+            //*/
+            int a = 0;
+            int Straight = 0;
+            while (a < IListNumManager.Length)
+            {
+                if (IListNumManager[a] >= 1)
+                {
+                    Straight = Straight + 1;
+                }
+                else
+                {
+                    Straight = 0;
+                }
+                if (Straight == 5)
+                {
+                    RSForSFFlag = true;
+                    break;
+                }
+                a++;
+            }
+            return RSForSFFlag;
+        }
+
 
         //役判定するゾ～
 
@@ -385,8 +472,8 @@ namespace Assets.Scripts.Bar05 {
          * フラッシュ(5)                       1
          * フルハウス(6)                       1
          * フォーカード(7)                     1
-         * ストレートフラッシュ(8)             2
-         * ロイヤルストレートフラッシュ(9)     2
+         * ストレートフラッシュ(8)             1
+         * ロイヤルストレートフラッシュ(9)     0
          */
 
         //変数置き場
@@ -397,6 +484,7 @@ namespace Assets.Scripts.Bar05 {
         int[] Player1NumberManager = new int[13];
         int[] Player2NumberManager = new int[13];
         //int[] DebugNumberManager = new int[13];
+        int Playercount = 0;
         
         public void CheckHandLevel(int PlayerHandLevel, int[]CardList, int[]NumberManager, int[]Marks)
         {
@@ -415,11 +503,13 @@ namespace Assets.Scripts.Bar05 {
             {
                 db = db + NumberManager[i] + ":";
             }
-            Debug.Log(db);
+            //Debug.Log(db);
 
             //ストレートフラッシュ以上の判定用フラグ(のつもり)
             int SFFlag = 0;
             bool RSFFlag = true;
+            int MarkNum = 0;
+            string Markstr = "";
             //マークを見る
             //それぞれのマークの枚数が5枚以上ならフラッシュ(5)
             int x = 0;
@@ -427,8 +517,25 @@ namespace Assets.Scripts.Bar05 {
             {
                 if (Marks[x] >= 5)
                 {
+                    //Debug.Logでマークを出す
+                    MarkNum = x;
+                    switch(MarkNum)
+                    {
+                        case 0:
+                            Markstr = "クローバー";
+                            break;
+                        case 1:
+                            Markstr = "ダイヤ";
+                            break;
+                        case 2:
+                            Markstr = "ハート";
+                            break;
+                        case 3:
+                            Markstr = "スペード";
+                            break;
+                    }
                     PlayerHandLevel = 5;
-                    Debug.Log("フラッシュ");
+                    Debug.Log("フラッシュ:<color=red>" + Markstr + "</color>");
                     SFFlag = SFFlag + 1;
                     break;
                 }
@@ -438,6 +545,7 @@ namespace Assets.Scripts.Bar05 {
             //ストレートの判定
             x = 0;
             int Straight = 0;
+            int StrNum = 0;
             while (x < NumberManager.Length)
             {
                 if(NumberManager[x] >= 1)
@@ -454,14 +562,15 @@ namespace Assets.Scripts.Bar05 {
                     {
                         PlayerHandLevel = 4;
                     }
-                    Debug.Log("ストレート");
+                    StrNum = x - 3;
+                    Debug.Log("ストレート:<color=red>" + StrNum + "</color>");
                     SFFlag = SFFlag + 1;
                     break;
                 }
                 x++;
             }
             //特殊ストレート判定 ロイヤルストレートフラッシュ用
-            if(NumberManager[0] >= 1 & PlayerHandLevel == 5)
+            if(NumberManager[0] >= 1)
             {
                 x = 0;
                 int RSFcount = 1;
@@ -478,18 +587,33 @@ namespace Assets.Scripts.Bar05 {
                 }
                 if(RSFFlag)
                 {
-                    Debug.Log("<color=red>特殊ストレート!!</color>");
+                    PlayerHandLevel = 5;
+                    Debug.Log("特殊ストレート!!:<color=red>A</color>");
                 }
                 else
                 {
-                    Debug.Log("<color=red>特殊ストレート失敗</color>");
-                    Debug.Log(RSFcount);
+                    Debug.Log("<color=red>" + RSFcount + "</color>");
                 }
             }
             //ストレートフラッシュの判定
             if (SFFlag == 2)
             {
-                //処理
+                if(Playercount == 0)
+                {
+                    if(RSForSFDecision(MarkNum, Player1Cards))
+                    {
+                        PlayerHandLevel = 8;
+                        Debug.Log("ストレートフラッシュ:<color=red>" + StrNum + "</color>");
+                    }
+                }
+                else if(Playercount == 1)
+                {
+                    if(RSForSFDecision(MarkNum, Player2Cards))
+                    {
+                        PlayerHandLevel = 8;
+                        Debug.Log("ストレートフラッシュ:<color=red>" + StrNum + "</color>");
+                    }
+                }
             }
             //ロイヤルストレートフラッシュの判定
             if(RSFFlag & PlayerHandLevel == 5)
@@ -536,31 +660,37 @@ namespace Assets.Scripts.Bar05 {
                     PlayerHandLevel = 6;
                     Debug.Log("フルハウス");
                 }
+                //これもフルハウス
                 else if(PHand3 == 1 & PHand2 >= 1)
                 {
                     PlayerHandLevel = 6;
                     Debug.Log("フルハウス");
                 }
+                //スリーカード
                 else if(PHand3 == 1)
                 {
                     PlayerHandLevel = 3;
                     Debug.Log("スリーカード");
                 }
+                //ツーペア
                 else if(PHand2 >= 2)
                 {
                     PlayerHandLevel = 2;
                     Debug.Log("ツーペア");
                 }
+                //ワンペア
                 else if(PHand2 == 1)
                 {
                     PlayerHandLevel = 1;
                     Debug.Log("ワンペア");
                 }
+                //ノーペア
                 else
                 {
                     Debug.Log("ノーペア");
                 }
             }
+            Playercount++;
             //デバッグ用
             Debug.Log("ペア" + PHand2 + ":スリーカード" + PHand3 + ":HandLevel" + PlayerHandLevel);
         }
@@ -572,6 +702,8 @@ namespace Assets.Scripts.Bar05 {
         //初期化処理
         private void InitGame()
         {
+            //マークを数える配列の初期化をここでしてる
+            Playercount = 0;
             Player1Marks = new int[4];
             Player2Marks = new int[4];
             RemoveCards();
