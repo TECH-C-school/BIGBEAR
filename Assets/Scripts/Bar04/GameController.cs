@@ -7,16 +7,33 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
 
-        public int count = 0;
+        public int count1 = 0;
+        public int count2 = 0;
+        public int count3 = 0;
+        public int count4 = 0;
+        public int count5 = 0;
+        void Start()
+        {
+            var Card = GameObject.Find("Cards");
+            var cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar04/card");
+            for (var i = 0; i < 5; i++)
+            {
+                var cardObbject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
+                cardObbject.transform.position = new Vector2(i * 2.5f - 5, 0.5f);
+                cardObbject.transform.parent = Card.transform;
+            }
+        }
+        void Update()
+        {
+            //Click();
+        }
         public void ClickChangeButton()
         {
-            
             Debug.Log("ChangeButtonClick");
+            ChangeCard();
         }
         public void ClickFightButton()
         {
-            
-
             var cardsObject = GameObject.Find("Cards");
             foreach (Transform cardObject in cardsObject.transform)
             {
@@ -48,26 +65,136 @@ namespace Assets.Scripts.Bar04 {
                 Debug.Log(counter);
             }
             gameObject.SetActive(false);
-
-        }
-        void Start()
-        {
-            var Card = GameObject.Find("Cards");
-            var cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar04/card");
-            for (var i = 0; i < 5; i++)
-            {
-                var cardObbject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
-                cardObbject.transform.position = new Vector2(i * 2.5f - 5, 0.5f);
-                cardObbject.transform.parent = Card.transform;
-            }
-       
-        }
-        void Update()
-        {
-            //Click();
             
         }
-        public int LoadCard(int x,int y)
+        
+        public void ChangeCard()
+        {
+
+        }
+
+        private void Click()
+        {
+            
+            var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
+            GameObject obj = getClickObject();
+            if(obj != null)
+            {
+                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    //クリックされた位置を取得
+                    var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    tapPoint = Input.mousePosition;
+                    Vector2 tmp = getObjectPosition();
+                    cardFlame.transform.position = tmp;
+                }
+            }
+
+        }
+        /// <summary>
+        /// 山札を作成する(ジョーカー抜き)
+        /// </summary>
+        public void MakeDeck()
+        {
+            //Listに0～51までの数値を追加する
+            List<int> List = new List<int>();
+            for (int i = 0; i < 52; i++)
+            {
+                List.Add(i);
+                Debug.Log(List[i]);
+            }
+            //Fisher-Yatesアルゴリズムでシャッフルする
+            System.Random rng = new System.Random();
+            int n = 52;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                int tmp = List[k];
+                List[k] = List[n];
+                List[n] = tmp;
+                Debug.Log(List[n]);
+            }
+        }
+        
+        /// <summary>
+        /// 左クリックされたオブジェクトを取得する関数
+        /// </summary>
+        /// <returns></returns>
+        private GameObject getClickObject()
+        {
+            GameObject result = null;
+            //左クリックされた場所のオブジェクトを取得
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector2 tapPoint = Camera.main. ScreenToWorldPoint(Input.mousePosition);
+                Collider2D collition2d = Physics2D.OverlapPoint(tapPoint);
+                if (collition2d)
+                {
+                    result = collition2d.transform.gameObject;
+                }
+            }
+            return result;
+        }
+        
+        private Vector2 getObjectPosition()
+        {
+            Vector2 tmp = new Vector2();
+            //左クリックされた場所のオブジェクトの座標を取得
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Collider2D collition2d = Physics2D.OverlapPoint(tapPoint);
+                if (collition2d)
+                {
+                    tmp = GameObject.Find("c01").transform.position;
+                }
+            }
+            return tmp;
+        }
+        
+        public int Counter(int x, int y)
+        {
+            if (x == 0)
+            {
+                //カードを選択する
+                var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
+                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
+                cardFlame.name = "cardSerect" + y;
+                cardFlame.transform.position = new Vector3(y * 2.5f - 5, 0.5f, -1);
+                x = 1;
+            }
+            else
+            {
+                //カードの選択を解除する
+                var cardFlame = GameObject.Find("cardSerect" + y);
+                Destroy(cardFlame);
+                x = 0;
+            }
+            return x;
+        }
+        public void SerectButton1()
+        {
+            count1 = Counter(count1, 0);
+        }
+        public void SerectButton2()
+        {
+            count2 = Counter(count2, 1);
+        }
+        public void SerectButton3()
+        {
+            count3 = Counter(count3, 2);
+        }
+        public void SerectButton4()
+        {
+            count4 = Counter(count4, 3);
+        }
+        public void SerectButton5()
+        {
+            count5 = Counter(count5, 4);
+        }
+        public int LoadCard(int x, int y)
         {
             var RandomCrads = GameObject.Find("RandomCrads");
             var i = 0;
@@ -539,115 +666,9 @@ namespace Assets.Scripts.Bar04 {
                 cardObject.transform.parent = RandomCrads.transform;
                 i = 52;
             }
-            
+
             return i;
         }
-        /*private void Click()
-        {
-            
-            var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
-            GameObject obj = getClickObject();
-            if(obj != null)
-            {
-                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
-                if (Input.GetMouseButtonDown(0))
-                {
-                    //クリックされた位置を取得
-                    var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    tapPoint = Input.mousePosition;
-                    Vector2 tmp = getObjectPosition();
-                    cardFlame.transform.position = tmp;
-                }
-            }
-
-        }*/
-        /// <summary>
-        /// 山札を作成する(ジョーカー抜き)
-        /// </summary>
-        public void MakeDeck()
-        {
-            //Listに0～51までの数値を追加する
-            List<int> List = new List<int>();
-            for (int i = 0; i < 52; i++)
-            {
-                List.Add(i);
-                Debug.Log(List[i]);
-            }
-            //Fisher-Yatesアルゴリズムでシャッフルする
-            System.Random rng = new System.Random();
-            int n = 52;
-            while (n > 1)
-            {
-                n--;
-                int k = rng.Next(n + 1);
-                int tmp = List[k];
-                List[k] = List[n];
-                List[n] = tmp;
-                Debug.Log(List[n]);
-            }
-        }
-
-
-        /// <summary>
-        /// 左クリックされたオブジェクトを取得する関数
-        /// </summary>
-        /// <returns></returns>
-        private GameObject getClickObject()
-        {
-            GameObject result = null;
-            //左クリックされた場所のオブジェクトを取得
-            if (Input.GetMouseButtonDown(0))
-            {
-                Vector2 tapPoint = Camera.main. ScreenToWorldPoint(Input.mousePosition);
-                Collider2D collition2d = Physics2D.OverlapPoint(tapPoint);
-                if (collition2d)
-                {
-                    result = collition2d.transform.gameObject;
-                }
-            }
-            return result;
-        }
-        
-        private Vector2 getObjectPosition()
-        {
-            Vector2 result = new Vector2();
-            //左クリックされた場所のオブジェクトの座標を取得
-            if (Input.GetMouseButtonDown(0))
-            {
-                Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Collider2D collition2d = Physics2D.OverlapPoint(tapPoint);
-                if (collition2d)
-                {
-                    result = GameObject.Find("RandomCards/").transform.position;
-                }
-            }
-            return result;
-        }
-        private int Counter(int x)
-        {
-            if (x == 0)
-            {
-                //カードを選択する
-                var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
-                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
-                cardFlame.transform.position = new Vector3(-5, 0.5f, -1);
-                x = 1;
-            }
-            else
-            {
-                //カードの選択を解除する
-                var cardFlame = GameObject.Find("cardSerect");
-                Destroy(cardFlame.gameObject);
-                x = 0;
-            }
-            return x;
-        }
-        public void SerectButton()
-        {
-            count = Counter(count);
-            
-        }
-        
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
