@@ -12,15 +12,12 @@ namespace Assets.Scripts.Bar04
 
         private LayerMask mask;
         private int alpha;
+        private Queue<int> hogehoge;
         // Use this for initialization
 
 
 
-        // Update is called once per frame
-        void Update()
-        {
 
-        }
 
 
         //Alpha = 透明度 
@@ -67,11 +64,14 @@ namespace Assets.Scripts.Bar04
 
         void Start()
         {
-
+            
         }
 
-
-        //spade(0~12)
+        //void Update()
+        //{
+        //    if (hogehoge < 12) ;
+        //}
+        ////spade(0~12)
         //heart(13~25)
         //club(26~38)
         //Dia(39~51)

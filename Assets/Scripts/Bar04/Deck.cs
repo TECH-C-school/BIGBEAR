@@ -47,19 +47,19 @@ namespace Assets.Scripts.Bar04
             return decks;
         }
 
-         
-    
-    //// Use this for initialization
-    //    void Start() {
-    //        MakeCards();
-    //    }
 
-    //    // Update is called once per frame
-    //    void Update() {
 
-            
+        //// Use this for initialization
+        //    void Start() {
+        //        MakeCards();
+        //    }
 
-    //    }
+        //    // Update is called once per frame
+        //    void Update() {
+
+
+
+        //    }
     }
 
 }

@@ -25,11 +25,15 @@ namespace Assets.Scripts.Bar04
         private GameObject cardSelect;
 
         private Queue<int> hogehoge;
+        private Queue<int> decks;
 
 
 
         void Start()
         {
+            //カード生成
+            MakeCards();
+            
             hogehoge = Deck.MakeCards();
             for (var i = 0; i < hogehoge.Count; i++)
             {
@@ -47,7 +51,7 @@ namespace Assets.Scripts.Bar04
                 //デッキの上から5枚取り出す
                 while (Deck.MakeCards().Count < 41)
                 {
-
+                 /*   decud*/
                 }
 
 
@@ -59,9 +63,12 @@ namespace Assets.Scripts.Bar04
                 //カードを切り替える方法を決める
                 //SpriteRenderer
 
+                GameObject SelCard = Instantiate(cardSelect);
+                SelCard.SetActive(false);
+
 
                 //Selcard(選択したときに光る)生成
-                GameObject SelCard = Instantiate(cardSelect);
+                 SelCard = Instantiate(cardSelect);
 
                 //配置時のSelcardの透明度の設定
                 var image = SelCard.GetComponent<SpriteRenderer>();
