@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Bar02 {
     public class GameController : MonoBehaviour {
@@ -18,7 +19,14 @@ namespace Assets.Scripts.Bar02 {
             turnCard();
             checkCard();
             addFlame();
+            if (deletedPyramid == 21 && clearNum==0)
+            {
+                Cleared();
+                clearNum++;
+            }
         }
+
+        public int clearNum = 0;
 
         //数値計算用int[]
         private int[] sumNum = new int[2];
@@ -39,6 +47,11 @@ namespace Assets.Scripts.Bar02 {
         //トランプの配置格納
         private string[] cardNum = new string[53];
 
+        //トランプのobject格納
+        private GameObject[] _AllObject = new GameObject[53];
+
+        //消えたピラミッドのカードの枚数取得
+        private int deletedPyramid = 0;
         
 
         /// <summary>
@@ -64,12 +77,13 @@ namespace Assets.Scripts.Bar02 {
                     Sprite card = Resources.Load<Sprite>("Images/Bar/Cards/back");
                     sr.sprite = card;
                     sr.sortingOrder = countCardNum;
-                    countCardNum--;
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                     cardObject.transform.position = new Vector2(
                         j - (countNumber * 0.5f) - 0.5f ,
                         i * 0.5f - 1f);
-                    
+                    _AllObject[countCardNum] = cardObject;
+
+                    countCardNum--;
                 }
                 countNumber--;
             }
@@ -80,9 +94,10 @@ namespace Assets.Scripts.Bar02 {
                 Sprite card = Resources.Load<Sprite>("Images/Bar/Cards/back");
                 sr.sprite = card;
                 sr.sortingOrder = countCardNum;
-                countCardNum--;
                 var cardPlaceObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardPlaceObject.transform.position = new Vector2(4.5f,2.0f);
+                _AllObject[countCardNum] = cardPlaceObject;
+                countCardNum--;
             }
         }
         
@@ -137,7 +152,11 @@ namespace Assets.Scripts.Bar02 {
 
             //重なり合うオブジェクト取得
             Collider2D[] hitObjects = Physics2D.OverlapPointAll(tapPoint);
-            if (hitObjects.Length <= 0) return;
+            if (hitObjects.Length <= 0)
+            {
+                _countClick = countClick.Noi;
+                return;
+            } 
 
             var maxCard = hitObjects[0].GetComponent<SpriteRenderer>();
 
@@ -165,20 +184,27 @@ namespace Assets.Scripts.Bar02 {
                 }
                 //ピラミッドの裏返しをクリックしたらreturn
                 Vector2 placeCardPosition = placeCard.transform.position;
-                if (placeCardPosition != new Vector2(4.5f, 2.0f)) return;
+                if (placeCardPosition != new Vector2(4.5f, 2.0f))
+                {
+                    _countClick = countClick.Noi;
+                    return;
+                }
 
 
                 //山札のカードをとった場合、裏返して移動
                 placeCard.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[placeCard.sortingOrder]);
                 placeCard.transform.position = new Vector2(3.0f, 2.0f);
-
-
+                
+                _countClick = countClick.Noi;
+                return;
+                
             }
             else if (maxCard.sprite.ToString().Substring(0, 9) == "cardflame")
             {
                 //cardflame(山札の枠)をクリックした場合、山札を戻す
                 //最後まで山札めくらないと発動せず
                 ReturnPlaceCard();
+                _countClick = countClick.Noi;
             }
             else
             {
@@ -196,6 +222,10 @@ namespace Assets.Scripts.Bar02 {
                     //13をクリックしたらその場で消去、クリック回数初期化
                     if (sumNum[0] == 13)
                     {
+                        if (click1.transform.position != new Vector3(3, 2, 0))
+                        {
+                            deletedPyramid++;
+                        }
                         Destroy(click1.gameObject);
                         _countClick = countClick.Noi;
                     }
@@ -218,6 +248,14 @@ namespace Assets.Scripts.Bar02 {
                 //関数sumが13だったらobject消去
                 if (sum == 13)
                 {
+                    if (click1.transform.position != new Vector3(3, 2, 0))
+                    {
+                        deletedPyramid++;
+                    }
+                    if (click2.transform.position != new Vector3(3, 2, 0))
+                    {
+                        deletedPyramid++;
+                    }
                     Destroy(click1.gameObject);
                     Destroy(click2.gameObject);
                 }
@@ -229,6 +267,8 @@ namespace Assets.Scripts.Bar02 {
             }
             
         }
+
+
 
         /// <summary>
         /// 山札をもとに戻す
@@ -246,6 +286,7 @@ namespace Assets.Scripts.Bar02 {
                 plaCard.transform.position = new Vector2(4.5f, 2.0f);
             }
         }
+
 
 
         /// <summary>
@@ -281,7 +322,7 @@ namespace Assets.Scripts.Bar02 {
                     //standardCardが裏か表か取得
                     if (standardCard.sprite.ToString().Substring(0, 4) == "back")
                     {
-                        //i-1段のjとj-1にobjectがあるか判断
+                        //i-1段のjにobjectがあるか判断
                         Vector2 checkUnderPos = new Vector2(checkPosition.x - 0.5f, checkPosition.y - 0.5f);
 
                         //positionがcheckUnderPosと一致するobject取得
@@ -300,6 +341,7 @@ namespace Assets.Scripts.Bar02 {
                                     if(h==1) UnderCard2 = card;
                                 }
                             }
+                            //i-1段のj-1にobjectがあるか判断
                             checkUnderPos = new Vector2(checkPosition.x + 0.5f, checkPosition.y - 0.5f);
                         }
 
@@ -318,6 +360,8 @@ namespace Assets.Scripts.Bar02 {
                 countParagraph--;
             }
         }
+
+
 
         /// <summary>
         /// 山札の枠生成(山札のカードが無くなった場合)
@@ -360,11 +404,46 @@ namespace Assets.Scripts.Bar02 {
                 Destroy(deletePrefab.gameObject);
             }
         }
-        
-        
+
+
+
+        /// <summary>
+        /// リセットボタン処理
+        /// </summary>
         public void onClickResetButton()
         {
-
+            resetCard();
+            CardSet();
+            deletedPyramid = 0;
         }
+
+
+
+        /// <summary>
+        /// リセット処理
+        /// </summary>
+        private void resetCard()
+        {
+            for (int i = 1; i < _AllObject.Length; i++)
+            {
+                if (!_AllObject[i]) continue;
+                Destroy(_AllObject[i]);
+            }
+        }
+
+
+
+        /// <summary>
+        /// クリア処理
+        /// </summary>
+        private void Cleared()
+        {
+            resetCard();
+            var winObject = Resources.Load<GameObject>("Prefabs/Bar02/win");
+            var winCard = Instantiate(winObject, transform.position, Quaternion.identity);
+            winCard.transform.position = new Vector2(0, 2);
+        }
+
+        
     }
 }
