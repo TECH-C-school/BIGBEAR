@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
 
-        
+        public int count = 0;
         public void ClickChangeButton()
         {
             
@@ -23,6 +23,7 @@ namespace Assets.Scripts.Bar04 {
                 Destroy(cardObject.gameObject);
             }
             Debug.Log("FightButtonClick");
+            
             //Listに0～51までの数値を追加する
             List<int> List = new List<int>();
             for (int i = 0; i < 52; i++)
@@ -52,7 +53,6 @@ namespace Assets.Scripts.Bar04 {
         void Start()
         {
             var Card = GameObject.Find("Cards");
-            var cards = Resources.Load<GameObject>("Images/Bar/Cards");
             var cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar04/card");
             for (var i = 0; i < 5; i++)
             {
@@ -60,6 +60,7 @@ namespace Assets.Scripts.Bar04 {
                 cardObbject.transform.position = new Vector2(i * 2.5f - 5, 0.5f);
                 cardObbject.transform.parent = Card.transform;
             }
+       
         }
         void Update()
         {
@@ -606,6 +607,7 @@ namespace Assets.Scripts.Bar04 {
             }
             return result;
         }
+        
         private Vector2 getObjectPosition()
         {
             Vector2 result = new Vector2();
@@ -621,18 +623,31 @@ namespace Assets.Scripts.Bar04 {
             }
             return result;
         }
-        public void serectButton()
+        private int Counter(int x)
         {
-            //カードを選択する
-            var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
-            var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
-            cardFlame.transform.position = new Vector2(5, 0.5f);
+            if (x == 0)
+            {
+                //カードを選択する
+                var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
+                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
+                cardFlame.transform.position = new Vector3(-5, 0.5f, -1);
+                x = 1;
+            }
+            else
+            {
+                //カードの選択を解除する
+                var cardFlame = GameObject.Find("cardSerect");
+                Destroy(cardFlame.gameObject);
+                x = 0;
+            }
+            return x;
         }
-        public void disSerectButton()
+        public void SerectButton()
         {
-            //カードの選択を解除する
-
+            count = Counter(count);
+            
         }
+        
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
