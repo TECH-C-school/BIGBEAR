@@ -97,7 +97,7 @@ namespace Assets.Scripts.Game02
                 Debug.Log("miss");
             }
 
-            bearAnim.SetTrigger("BoltAction");
+            bearAnim.SetTrigger("ShotAction");
         }
 
 
