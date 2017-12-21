@@ -89,8 +89,8 @@ namespace Assets.Scripts.Game05 {
 		}
 
 		void PowerDecision() {
-			//power = powerGauge.Slider.value;
-			power = powerGauge.Slider.maxValue;
+			power = powerGauge.Slider.value;
+			//power = powerGauge.Slider.maxValue;
 			powerGauge.gameObject.SetActive(false);
 			foreach(var obj in scopes) {
 				obj.SetActive(true);
