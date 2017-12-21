@@ -11,107 +11,116 @@ namespace Assets.Scripts.Bar06 {
         private int DeckCounter = 0;
         private int[] numbers = new int[52];
         private string[] mark = new string[52];
-        private int i, j;
+        private int i, j, k, value;
+        private string val;
 
-        /*
-        public enum Mark
+        public void MakeDeck()
         {
-            Clover,
-            Spade,
-            Heart,
-            Diamond
-        }
-        
-
-        
-        public struct Card
-        {
-            public int number;
-            public Mark mark;
-        }
-        */
-
-        public void RandomNum()
-        {
-            for(i = 0, j = 0; i < 52; i++)
+            System.Random r = new System.Random();
+            for (i = 0, j = 0; i < 52; i++, j++)
             {
-                if(i < 13)
+                if (i < 13)
                 {
                     mark[i] = "s";
-                }else if(i < 26)
+                }
+                else if (i < 26)
                 {
                     mark[i] = "h";
-                }else if(i < 39)
+                }
+                else if (i < 39)
                 {
                     mark[i] = "c";
-                }else
+                }
+                else
                 {
                     mark[i] = "d";
                 }
 
-                if(j + 1 >= 14)
+                if (j + 1 >= 14)
                 {
                     j = 0;
                 }
                 numbers[i] = j + 1;
-               
+
+            }
+            for (i = 0; i < 52; i++)
+            {
+                j = r.Next(52);
+                k = r.Next(52);
+                value = numbers[j];
+                numbers[j] = numbers[k];
+                numbers[k] = value;
+                val = mark[j];
+                mark[j] = mark[k];
+                mark[k] = val;
             }
             
         }
         
-
         public void Start()
         {
-            /*
-            //カードを2, 2枚表示する
-            Card card1_1 = new Card();
-            Card card1_2 = new Card();
-            Card card2_1 = new Card();
-            Card card2_2 = new Card();
+            //シャッフルされたデッキの用意
+            MakeDeck();
 
-            //ランダムでカードを決める
-            card1_1.number = Random.Range(1, 14);
-            card1_1.mark = (Mark)Random.Range(0, 3);
-            card1_2.number = Random.Range(1, 14);
-            card1_2.mark = (Mark)Random.Range(0, 3);
-            card2_1.number = Random.Range(1, 14);
-            card2_1.mark = (Mark)Random.Range(0, 3);
-            card2_2.number = Random.Range(1, 14);
-            card2_2.mark = (Mark)Random.Range(0, 3);
-
-
-            playercounter = card1_1.number + card1_2.number;
-            enemycounter = card2_1.number + card2_2.number;
-            */
-
-            while (enemycounter <= 18)
+            //プレイヤーの初期カードの表示           
+            for (i = 0; i < 2; i++)
             {
-                var enemyCard = Random.Range(1, 14);
-                enemycounter = enemycounter + enemyCard;
+                var playerCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
+                var playerCard = Instantiate(playerCardPrefab, transform.position, Quaternion.identity);
+                playerCard.transform.position = new Vector3(0 - i, -2.5f, 0);
+                playerCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
+                if(numbers[DeckCounter] >= 11)
+                {
+                    numbers[DeckCounter] = 10;
+                }
+                playercounter = playercounter + numbers[DeckCounter];
+                DeckCounter++;
             }
 
-            //カードの表示
-            RandomNum();
+            //ディーラーの初期カードの表示
+            var enemyCardPrefab_1 = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var enemyCardPrefab_1UP = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
+            var enemyCard_1 = Instantiate(enemyCardPrefab_1, transform.position, Quaternion.identity);
+            enemyCard_1.transform.position = new Vector3(0, 2.5f, 0);
+            enemyCard_1.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
+            if (numbers[DeckCounter] >= 11)
+            {
+                numbers[DeckCounter] = 10;
+            }
+            enemycounter = enemycounter + numbers[DeckCounter];
+            DeckCounter++;
+            
 
-
-
-
+            var enemyCardPefab_2 = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
+            var enemyCard_2 = Instantiate(enemyCardPefab_2, transform.position, Quaternion.identity);
+            enemyCard_2.transform.position = new Vector3(-1, 2.5f, 0);
+            enemyCard_2.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
+            if (numbers[DeckCounter] >= 11)
+            {
+                numbers[DeckCounter] = 10;
+            }
+            enemycounter = enemycounter + numbers[DeckCounter];
+            DeckCounter++;
 
         }
 
+        //プレイヤーのカード追加
         public void AddCard()
         {
-            if(playercounter <= 21)
+            if(playercounter < 22)
             {
-                var test = 1;
-                var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/c0" + test);
-                var addCardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                addCardObject.transform.position = new Vector3(positioncounter, -2.5f, 0);
-                addCardObject.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
+                
+                var addCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
+                var addCard = Instantiate(addCardPrefab, transform.position, Quaternion.identity);
+                addCard.transform.position = new Vector3(positioncounter, -2.5f, 0);
+                addCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
                 positioncounter++;
-                var playerCard = Random.Range(1, 14);
-                playercounter = playercounter + playerCard;
-                Debug.Log(playercounter);
+                if (numbers[DeckCounter] >= 11)
+                {
+                    numbers[DeckCounter] = 10;
+                }
+                playercounter = playercounter + numbers[DeckCounter];
+                DeckCounter++;
             }
             
         }
