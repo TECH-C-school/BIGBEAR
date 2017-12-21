@@ -7,6 +7,8 @@ namespace Assets.Scripts.Bar07
 {
     public class GameController : MonoBehaviour
     {
+        
+        public List<Sprite> cardList;
         enum card
 
         {
@@ -18,7 +20,8 @@ namespace Assets.Scripts.Bar07
         List<card> outcard = new List<card>();
         List<card> dealercard = new List<card>();
         List<card> playercard = new List<card>();
-
+        public SpriteRenderer [] backList;
+       
         void distribution()
         {
             var _card = (card)Random.Range(0, 52);
@@ -99,16 +102,33 @@ namespace Assets.Scripts.Bar07
 
             if (!natural)
             {
-                if (dealerPwer < 3)
+                if (dealerPwer ==2)
                 {
-
-
+                    dealerPwer = dealerPwer + Calculation(dealercard[2]);
+                }
+               else if (dealerPwer == 3 && Calculation(playercard[2]) ==8)
+                {
                     {
-                        dealerPwer = dealerPwer + Calculation(dealercard[2]);
-                        Debug.Log("ひく");
+                        Debug.Log("引かない");
                     }
                 }
-                else if(dealerPwer == )
+                else if(dealerPwer == 4 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 8 
+                        && Calculation(playercard[2]) == 9 && Calculation(playercard[2]) == 0 )
+                {
+                    Debug.Log("ぴかない");
+                }
+                else if(dealerPwer ==5 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 2  && Calculation(playercard[2]) == 3 
+                        && Calculation(playercard[2]) == 8 && Calculation(playercard[2]) == 9 && Calculation(playercard[2]) == 0 )
+                {
+                    Debug.Log("ぴかない");
+                }
+                else if(dealerPwer ==6 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 2 && Calculation(playercard[2]) == 3
+                        && Calculation(playercard[2]) == 4 && Calculation(playercard[2]) == 5 && Calculation(playercard[2]) == 8 
+                        && Calculation(playercard[2]) == 9)
+                {
+                    Debug.Log("ひぃかない");
+                }
+
             }
          
             Debug.Log(playerPwer);
@@ -130,6 +150,13 @@ namespace Assets.Scripts.Bar07
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
+        }
+        public void controlcard()
+        {
+            backList[0].sprite = cardList[(int)playercard[0]];
+            backList[1].sprite = cardList[(int)playercard[1]];
+            backList[2].sprite = cardList[(int)dealercard[0]];
+            backList[3].sprite = cardList[(int)dealercard[1]];
         }
     }
 }
