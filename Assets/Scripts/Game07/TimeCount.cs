@@ -54,12 +54,6 @@ namespace Assets.Scripts.Game07
                     BackText.SetActive(true);
                     BackText.GetComponent<Text>().text = "Score" + ((int)GameController.instance.m_score).ToString();
 
-                    //ここに難易度ごとにスコアの得点でランクを決める
-                    //例えば　Easyの時は10点から20点の間ならnum = 1だけど、Hardの時はnum = 2になるみたいな感じ
-                    //計算式は　ゲームの難易度(もちろん数字)×10点　みたいな感じで
-                    //佐野先輩　やってみてください
-                    //Debug.Log((int)GameController.instance.m_gameLevel);
-
                     int num = 0;
                     int level = (int)GameController.instance.m_gameLevel;
                     if (GameController.instance.m_score >= 0 * level && GameController.instance.m_score <= 10 * level)//0以上で10以下の時

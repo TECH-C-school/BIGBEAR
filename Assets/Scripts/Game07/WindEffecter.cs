@@ -17,6 +17,7 @@ namespace Assets.Scripts.Game07
         {
             //風の初期化
             areaEffector2D = GetComponent<AreaEffector2D>();
+            areaEffector2D.gameObject.SetActive(false);
             areaEffector2D.forceAngle = Force_Angle;
             areaEffector2D.forceMagnitude = Force_Power;
             areaEffector2D.forceVariation = Force_Variation;
@@ -26,13 +27,15 @@ namespace Assets.Scripts.Game07
         void Update()
         {
             //タイマーが動いたら風の力を変化 ハードの時だけ
-            if (TimeController.instance.isCount /*&& GameController.instance.m_gameLevel == GameController.GameLevel.Hard*/)
+            if (TimeController.instance.isCount && GameController.instance.m_gameLevel == GameController.GameLevel.Hard)
             {
+                areaEffector2D.gameObject.SetActive(true);
                 DOTween.To(() => areaEffector2D.forceMagnitude,
                 Force_Power => areaEffector2D.forceMagnitude = Mathf.Repeat(Force_Power, 10) * Time.deltaTime,
                 -10,
                 3f);
             }
+            
         }
     }
 

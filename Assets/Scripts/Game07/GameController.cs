@@ -36,6 +36,8 @@ namespace Assets.Scripts.Game07
         public GameObject RetryButton;
         [Header("Continueボタン")]
         public GameObject ContinueButton;
+        [Header("待機時間")]
+        public float WaitTime = 1;
 
         //シングルトン化処理
         void Awake()

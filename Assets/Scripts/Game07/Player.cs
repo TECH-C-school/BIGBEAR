@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 namespace Assets.Scripts.Game07
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour,IInitPlayerMoveInterface
     {
         //プレイヤーが動けるかどうか
         public static bool isMove = true;//CatchObjectとこのソースに使われている
@@ -23,6 +24,7 @@ namespace Assets.Scripts.Game07
 
         void Update()
         {
+            Debug.Log(isMove);
             if (isMove) { Move(); }
         }
 
@@ -43,7 +45,16 @@ namespace Assets.Scripts.Game07
             if(collision.gameObject.name == "Bullet")
             {
                 anim.SetBool(HitDown, true);
+                StartCoroutine(InitPos());
             }
+        }
+
+        public IEnumerator InitPos()
+        {
+            isMove = false;
+            yield return new WaitForSeconds(GameController.instance.WaitTime);
+            anim.SetBool(HitDown, false);
+            isMove = true;
         }
     }
 

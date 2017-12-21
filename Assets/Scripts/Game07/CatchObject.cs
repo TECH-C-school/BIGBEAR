@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game07
 {
-    public class CatchObject : MonoBehaviour
+    public class CatchObject : MonoBehaviour,IInitPlayerMoveInterface
     {
         public enum CatchObj { Obj, Bullet }
         public CatchObj catchObj;
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Game07
             //Debug.Log(Player.isMove);
             if (!Player.isMove)
             {
-                StartCoroutine("Stopber");
+                StartCoroutine(InitPos());
             }
         }
 
@@ -48,9 +48,10 @@ namespace Assets.Scripts.Game07
                 }
             }
         }
-        IEnumerator Stopber()
+
+        public IEnumerator InitPos()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(GameController.instance.WaitTime);
             Player.isMove = true;
         }
     }
