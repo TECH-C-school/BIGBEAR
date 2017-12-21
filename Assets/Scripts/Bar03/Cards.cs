@@ -24,18 +24,18 @@ public class Cards : MonoBehaviour
 
     public void TurnCardFaceDown()
     {
-        TurnCard(true);
+        TurnCard(false);
     }
 
 
     private void TurnCard(bool faceUp)
     {
         Sprite Cardsprite = null;
+        Sprite Numbersprite = null;
 
         if (faceUp)
         {
-            Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + _string);
-
+            Numbersprite = Resources.Load<Sprite>("Images/Bar/" + _number);
         }
         else
         {
@@ -43,5 +43,8 @@ public class Cards : MonoBehaviour
         }
         var spriteRederer = transform.GetComponent<SpriteRenderer>();
         spriteRederer.sprite = Cardsprite;
+        var numberObject = transform.Find("GameController");
+        var numberSpriteRenderer = numberObject.GetComponent<SpriteRenderer>();
+        numberSpriteRenderer.sprite = Numbersprite;
     }
 }

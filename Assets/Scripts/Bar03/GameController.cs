@@ -33,20 +33,20 @@ namespace Assets.Scripts.Bar03
             s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13,
         }
 
-
-
         // カードの生成
         public void MakeBackCards()
         {
             int count = 0;
             m_Cards = MakeRandomCardNumbers();
 
+            //カードオブジェクトの生成
             Transform CardObject = GameObject.Find("Cards").transform;
             var CardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Cards");
             Transform DeckObject = GameObject.Find("Deck").transform;
-            var DeckPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Cards");
             Transform CardObjectf = GameObject.Find("FrontCards").transform;
             var CardPrefabf = Resources.Load<GameObject>("Prefabs/Bar03/FrontCard");
+
+            //４×６（5枚裏面1枚表面）でカードを配置
             for (int a = 0; a < 4; a++)
             {
                 for (int b = 0; b < 6; b++)
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Bar03
 
                 }
             }
-
+            //６×５（4枚裏面1枚表面）でカードを配置
             for (var c = 0; c < 6; c++)
             {
                 for (var d = 0; d < 5; d++)
@@ -99,10 +99,17 @@ namespace Assets.Scripts.Bar03
                     }
                 }
             }
-            int x;
-            for(var f = NextCard;f < m_Cards.Length; f++)
+            
+            //残りのカードでデッキを生成
+            for(var f = NextCard;f < m_Cards.Length - 54; f++)
             {
-                m_Cards(f);
+                var cardObject3 = Instantiate(CardPrefab, transform.position,Quaternion.identity);
+                cardObject3.transform.position = new Vector3(
+                    -7.84f,
+                    -2.5f,
+                    0
+                    );
+                cardObject3.transform.parent = DeckObject;
             }
             
         }
