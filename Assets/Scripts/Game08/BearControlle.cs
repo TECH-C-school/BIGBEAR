@@ -17,11 +17,11 @@ public class BearControlle : MonoBehaviour {
     }
 
 
-    void Update () {
+    void Update () {//ショットボタンを押した時も動いてしまう。どうにかする！
        if (Input.GetButton("Fire1")) {
             vec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Debug.Log("ベアー");
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(vec.x, -3.37f), speed * Time.deltaTime);
+            Bear.transform.position = Vector2.MoveTowards(transform.position, new Vector2(vec.x, -3.37f), speed * Time.deltaTime);
         }
     }
 }
