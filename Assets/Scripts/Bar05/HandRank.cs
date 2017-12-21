@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Bar05
@@ -8,8 +9,8 @@ namespace Assets.Scripts.Bar05
     {
         public Phase phase;
 
-        public int[] suitCount = new int[4] { 0, 0, 0, 0 };
-        public int[] enemyFlushCount = new int[4] { 0, 0, 0, 0 };
+        public int[] suitCount = new int[4];
+        public int[] numberCount = new int[13];
         public List<string> hand;
         public List<string> enemy;
         public List<string> board;
@@ -44,8 +45,6 @@ namespace Assets.Scripts.Bar05
         // Use this for initialization
         void Start()
         {
-            suitCount = new int[4] { 0, 0, 0, 0 };
-            enemyFlushCount = new int[4] { 0, 0, 0, 0 };
             playerList = phase.handCard;
 
             enemyList = phase.enemyHand;
@@ -72,8 +71,16 @@ namespace Assets.Scripts.Bar05
             }
             hand.AddRange(board);
             enemy.AddRange(board);
-            SuitCheck(hand);
-            SuitCheck(enemy);
+            //SuitCheck(hand);
+            //SuitCheck(enemy);
+
+            //デバッグ用
+            List<string>debugFourList = new List<string>() { "c10","d10","s10","h10","s01","s02","s03"};
+            List<string> debugFullList = new List<string>() { "c10", "d10", "s10", "h01", "s01", "s02", "s03" };
+            List<string> debugThreeList = new List<string>() { "c10", "d10", "s10", "h04", "s01", "s02", "s03" };
+            List<string> debugTwoList = new List<string>() { "c10", "d10", "s09", "h01", "s01", "s02", "s03" };
+
+            SuitCheck(debugThreeList);
         }
 
         // Update is called once per frame
@@ -84,8 +91,43 @@ namespace Assets.Scripts.Bar05
 
         public RankCheck SuitCheck(List<string> cards)
         {
-
-
+            numberCount = new int[14];
+            int pairCount = 0;
+            for (int i = 0; i < cards.Count; i++)
+            {
+                string numberStr = cards[i].Substring(1, 2);
+                int numberTemp = int.Parse(numberStr);
+                numberCount[numberTemp]++;
+            }
+            for (int i = 1; i <= numberCount.Length - 1; i++)
+            {
+                for (int j = 1; j <= 4; j++)
+                {
+                    if (numberCount[i] >= j)
+                    {
+                        pairCount++;
+                    }
+                    if (numberCount[i] == j + 2)
+                    {
+                        pairCount++;
+                    }
+                    if (numberCount[i] == j + 3)
+                    {
+                        pairCount++;
+                    }
+                }
+            }
+            Debug.Log(pairCount);
+            switch (pairCount)
+            {
+                case 4: return RankCheck.FourOfAKind;
+                case 5: return RankCheck.FullHouse;
+                case 3: return RankCheck.ThreeOfAKind;
+                case 2: return RankCheck.TwoPair;
+                case 1: return RankCheck.OnePair;
+            }
+            //Flushの判定
+            suitCount = new int[4];
             for (int i = 0; i < cards.Count; i++)
             {
                 var enumTemp = cards[i].Substring(0, 1);
@@ -107,9 +149,10 @@ namespace Assets.Scripts.Bar05
             }
             Debug.Log("player:" + suitCount[0] + "," + suitCount[1] + "," + suitCount[2] + "," + suitCount[3]);
             bool flush = false;
-            for (int i = 0; i < 4; i++)
+            //配列の数値が5以上ならフラッシュ
+            for (int i = 0; i < suitCount.Length; i++)
             {
-                if (suitCount[i] <= 4)
+                if (suitCount[i] <= 5)
                 {
                     flush = true;
                 }
@@ -124,6 +167,7 @@ namespace Assets.Scripts.Bar05
             if (straight && flush) return RankCheck.RoyalStraightFlush;
             if (ThreeOfAKind && TwoPair) return RankCheck.FullHouse;
             if (straight) return RankCheck.Straight;
+            if (flush) return RankCheck.Flush;
 
             return RankCheck.NoPair;
         }
