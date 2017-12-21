@@ -22,42 +22,35 @@ namespace Assets.Scripts.Game05 {
 			get { return duration; }
 			set { duration = value; }
 		}
+		private float distance = 0.3f;
+		private float radius = 1.2f;
+		private Vector3 startPos;
 
-		private Transform trans;
-		private Sequence sequence;
 		void OnEnable() {
-			if(trans == null)
+			if (startPos == null)
 				return;
-			else {
-				SetAnimation();
-			}
+			transform.localPosition = startPos;
 		}
+
 		void Start () {
-			trans = GetComponent<Transform> ();
 			transform.localPosition = Vector3.zero;
+			var newPos = pState == PState.Pendulum ? new Vector3 (0, distance * radius, 0) : transform.localPosition;
+			startPos = newPos;
 			gameObject.SetActive(false);
 		}
-		void SetAnimation() {
-			sequence = DOTween.Sequence();
-			if(_pState == PState.Pendulum) {
-				transform.localPosition = Vector3.left * 2f;
-				sequence.Append(
-					trans.DOLocalMove(Vector3.right * 4, duration)
-					.SetEase(Ease.InOutCirc)
-					.SetRelative()
-				);
-				sequence.Append(
-					trans.DOLocalMove(Vector3.left * 4, duration)
-					.SetEase(Ease.InOutCirc)
-					.SetRelative()
-				);
+
+		void Update() {
+			if (pState == PState.Pendulum) {
+				PendulumMove ();
 			}
-			sequence.SetLoops(-1);
-			sequence.Play();
 		}
 
-		void OnDisable() {
-			sequence.Kill();
+		void PendulumMove() {
+			var time = Time.time;
+			var x = startPos.x + Mathf.Cos (time * duration) * radius;
+			var y = startPos.y + Mathf.Cos (time * duration * 2) * radius / 3;
+			var z = transform.localPosition.z;
+			transform.localPosition = new Vector3 (x, y, z);
 		}
 	}
 }

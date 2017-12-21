@@ -16,24 +16,16 @@ namespace Assets.Scripts.Game05 {
 		private TowerType tType;
 		private Button finishButton;
 		private GameController gameController;
-		private Rigidbody2D rigidbody2d;
 		private bool isSkipped = false;
 		private float startPos = 0;
 		private float endPos = 0;
 
 		// Use this for initialization
 		void Start () {
-			rigidbody2d = GetComponent<Rigidbody2D> ();
 			finishButton = GameObject.Find("FinishButton").GetComponent<Button>();
 			gameController = GameObject.Find("GameController").GetComponent<GameController>();
 		}
-		/*
-		void Update() {
-			if (isSkipped && rigidbody2d.IsSleeping ()) {
-				GetFlying ();
-			}
-		}
-		*/
+
 		void OnCollisionEnter2D(Collision2D other) {
 			if (other.gameObject.name == "Pile") {
 				startPos = transform.localPosition.x;
@@ -41,7 +33,9 @@ namespace Assets.Scripts.Game05 {
 		}
 
 		void OnCollisionExit2D(Collision2D other) {
-			if (other.gameObject.name == "Pile") {
+			if (!isSkipped)
+				return;
+			else if (other.gameObject.name == "Pile") {
 				GetFlying ();
 			}
 		}
@@ -50,7 +44,14 @@ namespace Assets.Scripts.Game05 {
 			endPos = transform.localPosition.x;
 			gameController.AddScore (Mathf.Abs (endPos - startPos), tType.ToString());
 			gameObject.SetActive (false);
+		}
 
+		void OnBecameVisible() {
+			isSkipped = false;
+		}
+
+		void OnBecameInvisible() {
+			isSkipped = true;
 		}
 	}
 }

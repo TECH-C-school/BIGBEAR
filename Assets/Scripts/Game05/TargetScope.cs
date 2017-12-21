@@ -24,60 +24,41 @@ namespace Assets.Scripts.Game05 {
 			get { return duration; }
 			set { duration = value; }
 		}
-
-		private Transform trans;
-		private Sequence sequence;
+		private float dir;
+		private Vector3 startPos;
+			
 		void OnEnable() {
-			if(trans == null)
+			if (startPos == null)
 				return;
-			else {
-				SetAnimation();
-			}
+			else
+				transform.localPosition = startPos;
 		}
 		void Start () {
-			trans = GetComponent<Transform>();
+			StateInit ();
 			gameObject.SetActive(false);
 		}
 
-		void SetAnimation() {
-			sequence = DOTween.Sequence();
-			switch(_scope) {
-				case Scope.Right:
-				transform.localPosition = Vector3.left * 1.5f;
-				sequence.Append(
-					trans.DOLocalMove(Vector3.right * 3, duration)
-					.SetEase(Ease.InOutCirc)
-					.SetRelative()
-				);
-				sequence.Append(
-					trans.DOLocalMove(Vector3.left * 3, duration)
-					.SetEase(Ease.InOutCirc)
-					.SetRelative()
-				);
-				break;
-				case Scope.Left:
-				transform.localPosition = Vector3.right * 1.5f;
-				sequence.Append(
-					trans.DOLocalMove(Vector3.left * 3, duration)
-					.SetEase(Ease.InOutCirc)
-					.SetRelative()
-				);
-				sequence.Append(
-					trans.DOLocalMove(Vector3.right * 3, duration)
-					.SetEase(Ease.InOutCirc)
-					.SetRelative()
-				);
-				break;
-				default:
-				break;
-			}
-			sequence.SetLoops(-1);
-			sequence.Play();
+		void Update() {
+			ScopeMove ();
 		}
 
-		void OnDisable()
-		{
-			sequence.Kill();
+		void StateInit() {
+			var newPos = transform.localPosition;
+			dir = 2.0f;
+			newPos.x = scope == Scope.Left ? -1f : 1f;
+			duration = scope == Scope.Left ? -duration : duration;
+			transform.localPosition = newPos;
+			startPos = transform.localPosition;
+		}
+
+		void ScopeMove() {
+			var time = Time.time;
+			var x = Mathf.Cos (time * duration);
+			x = scope == Scope.Left ? startPos.x + x : startPos.x - x;
+			var y = Mathf.Sin (time * duration * dir) / 3;
+			y = scope == Scope.Left ? startPos.y + y : startPos.y - y;
+			var z = transform.localPosition.z;
+			transform.localPosition = new Vector3 (x, y, z);
 		}
 	}
 }

@@ -18,6 +18,7 @@ namespace Assets.Scripts.Game05 {
 		private Button pauseButton;
 		[SerializeField]
 		private GameObject pauseBack;
+
 		private PlayerController pc;
 		[HideInInspector]
 		public bool isStart = false;
@@ -58,14 +59,16 @@ namespace Assets.Scripts.Game05 {
             var towerParent = GameObject.Find("Towers").transform;
             var top = Instantiate(towerTop, towerParent);
 			top.name = "LastTower";
+			top.GetComponent<Renderer> ().sortingOrder = num;
             var lastPos = Vector3.zero;
 			lastPos.y = POSPADDING * num;
             top.transform.localPosition = lastPos;
             for(int i = 0; i < num; i++) {
                 var tower = Instantiate(towerInstance, towerParent);
 				tower.name = "Tower";
+				tower.GetComponent<Renderer> ().sortingOrder = (num - (i + 1));
                 var newPos = Vector3.zero;
-				newPos.y = POSPADDING * num - (i + 1);
+				newPos.y = POSPADDING * (num - (i + 1));
                 tower.transform.localPosition = newPos;
             }
 			maxMoving = GameParam.Instance.maxMove * (num + 1);

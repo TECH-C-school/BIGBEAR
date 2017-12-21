@@ -17,11 +17,16 @@ namespace Assets.Scripts.Game05 {
 		private List<GameObject> pendulums = new List<GameObject>();
 		[SerializeField]
 		private float coolTime;
+		[SerializeField]
+		private float vibrateRange;
+		[SerializeField]
+		private float vibrateSpeed;
 
 		[HideInInspector]
 		public bool isContact = false;
 		private bool isTimingConf = false;
 		private Rigidbody2D pile;
+		private PileBunker pb;
 		private GameController gc;
 		private PowerGauge powerGauge;
 		public PowerGauge Gauge {
@@ -39,6 +44,9 @@ namespace Assets.Scripts.Game05 {
 			gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController> ();
 			powerGauge = GameObject.Find("Gauge").GetComponent<PowerGauge>();
 			pile = GameObject.Find("Pile").GetComponent<Rigidbody2D>();
+			pb = GameObject.Find ("Pile").GetComponent<PileBunker> ();
+			pb.vibRange = vibrateRange;
+			pb.vibSpeed = vibrateSpeed;
 			tapField = GameObject.Find ("TapField");
 			firstPos = pile.transform.position;
 			power = 0f;
@@ -60,12 +68,7 @@ namespace Assets.Scripts.Game05 {
 				.Select(_ => 1).Scan((count, add) => count + add)
 				.Where(tap => tap % 3 == 0)
 				.Do(_ => StartCoroutine(PileShoot()));
-			var taps = Observable.Merge (barTap, pTap, pendulumTap).Subscribe ().AddTo (this.gameObject);
-		}
-		
-		// Update is called once per frame
-		void Update () {
-			
+			Observable.Merge (barTap, pTap, pendulumTap).Subscribe ().AddTo (this.gameObject);
 		}
 
 		public void GenerateScopes(float duration) {
@@ -90,7 +93,7 @@ namespace Assets.Scripts.Game05 {
 
 		void PowerDecision() {
 			power = powerGauge.Slider.value;
-			//power = powerGauge.Slider.maxValue;
+			pb.IsVib = true;
 			powerGauge.gameObject.SetActive(false);
 			foreach(var obj in scopes) {
 				obj.SetActive(true);
@@ -120,11 +123,11 @@ namespace Assets.Scripts.Game05 {
 			isTimingConf = true;
 			PendulumMatch ();
 			yield return new WaitForSecondsRealtime (0.5f);
-			Debug.LogFormat ("power : {0} tMatch : {1} pMatch : {2}", power, tMatch, pMatch);
 			pile.AddForce ((Vector2.left * power * tMatch * pMatch), ForceMode2D.Impulse);
 			yield return new WaitWhile (() => isContact);
 			yield return new WaitForSecondsRealtime (coolTime);
 			pile.velocity = Vector2.zero;
+			pb.IsVib = false;
 			pile.transform.position = firstPos;
 			isTimingConf = false;
 			isContact = false;
