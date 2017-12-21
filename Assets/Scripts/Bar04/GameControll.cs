@@ -5,8 +5,17 @@ using UnityEngine;
 public class GameControll : MonoBehaviour {
 
     List<string> Card_List = new List<string>();
-    List<string> Player_Card = new List<string>();
+    List<GameObject> Player_Card = new List<GameObject>();
+    List<string> Destroy_Card = new List<string>();
+    GameObject[] Player_CardList;
 
+    bool Card1 = false;
+    bool Card2 = false;
+    bool Card3 = false;
+    bool Card4 = false;
+    bool Card5 = false;
+    List<int> CardChangePos = new List<int>();
+    
     [SerializeField][Range(1, 52)]
     public int aaa;
     int Card_pos = -20;
@@ -18,8 +27,6 @@ public class GameControll : MonoBehaviour {
     // Use this for initialization
     void Start () {
         CardInput();
-
-        
     }
     // Update is called once per frame
     void Update () {
@@ -48,7 +55,6 @@ public class GameControll : MonoBehaviour {
                 StartCoroutine("Drow");
             }
         }
-
     }
 
     public void CardDrow()                 // カードを引く関数
@@ -57,18 +63,22 @@ public class GameControll : MonoBehaviour {
         {
             int Card_No = Random.Range(0, Card_List.Count - 1);
 
-            Player_Card.Add(Card_List[Card_No]);        // 手札へ
+            Destroy_Card.Add(Card_List[Card_No]);       // 墓地へ
 
             // ここで５枚まで配る
             // Card_List から Player_Card へ移す
 
-
+            if (CardChangePos.Count >= 1) {
+                Card_pos = CardChangePos[0];
+                CardChangePos.RemoveAt(0);
+            }
             GameObject Card_type = Instantiate(Resources.Load("Prefabs/Bar04/Card/" + Card_List[Card_No], typeof(GameObject)), new Vector2(Card_pos, 0), Quaternion.identity) as GameObject;
             Card_type.name = Card_List[Card_No];                                    // 生成時に名前を変えてる
+            Player_Card.Add(Card_type);
+
             Card_pos += 10;                               // 次回生成時の座標変更
             Card_List.Remove(Card_List[Card_No]);       // デッキから削除
         }
-
     }
 
     void CardInput()
@@ -100,20 +110,65 @@ public class GameControll : MonoBehaviour {
             "H13","D13","S13","C13"
         };
     }
-    
+    #region 恥ずかしいプログラムゆえ隠す
     public void CardChangeButton()
+        // カード交換する 押したときの処理
     {
-        Player_Card.Clear();
+        if (Card5 == true)
+        {
+            Player_Card.RemoveAt(4);
+            CardChangePos.Add(20);
+        }
+        if (Card4 == true)
+        {
+            Player_Card.RemoveAt(3);
+            CardChangePos.Add(10);
+        }
+        if (Card3 == true)
+        {
+            Player_Card.RemoveAt(2);
+            CardChangePos.Add(0);
+        }
+        if (Card2 == true)
+        {
+            Player_Card.RemoveAt(1);
+            CardChangePos.Add(-10);
+        }
+        if (Card1 == true)
+        {
+            Player_Card.RemoveAt(0);
+            CardChangePos.Add(-20);
+        }
     }
-    
-
+    #region カード選択ボタン
+    public void Card1_Bool()
+    {
+        Card1 = !Card1;
+    }
+    public void Card2_Bool()
+    {
+        Card2 = !Card2;
+    }
+    public void Card3_Bool()
+    {
+        Card3 = !Card3;
+    }
+    public void Card4_Bool()
+    {
+        Card4 = !Card4;
+    }
+    public void Card5_Bool()
+    {
+        Card5 = !Card5;
+    }
+    #endregion
+    #endregion
     IEnumerator Drow()
     {
         yield return new WaitForSeconds(0.5f);
         CardDrow();
         CoroutineBool = true;
     }
-
     public void PlayerCardCheack()
     {
         Debug.Log("1:" + Player_Card[0]);
@@ -122,8 +177,8 @@ public class GameControll : MonoBehaviour {
         Debug.Log("4:" + Player_Card[3]);
         Debug.Log("5:" + Player_Card[4]);
     }
-
+    
 }
 
 
-// 次回、カード交換と選択、役の確認。
+// 次回、役の確認。
