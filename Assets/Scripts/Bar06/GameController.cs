@@ -46,7 +46,7 @@ namespace Assets.Scripts.Bar06
         /// </summary>
         private void Dealcards()
         {
-            for(int i = 0; i < 2; i++)
+            for(int i = 0; i < 4; i++)
             {
                 Debug.Log(cards[i]);
             }
