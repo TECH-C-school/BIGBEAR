@@ -52,7 +52,10 @@ namespace Assets.Scripts.Bar0404
 
         public int[] CardNumber{
             get { return m_CardsNumber; }
-            set { m_CardsNumber = value; }
+        }
+
+        public char[] CardMark {
+            get { return m_CardsMark; }
         }
 
         void Start(){

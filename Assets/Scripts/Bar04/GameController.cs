@@ -19,6 +19,7 @@ namespace Assets.Scripts.Bar0404
 
         //手札関係の変数
         int[] m_HundNumber = new int[5];
+        char[] m_HundMark = new char[5];
         public GameObject PokerHund;
 
 
@@ -79,6 +80,7 @@ namespace Assets.Scripts.Bar0404
                 }
             }
             CardSort();
+            Debug.Log(m_HundMark[0] + "" + m_HundMark[1] + m_HundMark[2] + m_HundMark[3] + m_HundMark[4]);
         }
 
         //最初のカードを配る        
@@ -100,6 +102,7 @@ namespace Assets.Scripts.Bar0404
             for (int i = 0; i < Card.Count; i++){
                 var cardsprict = Card[i].GetComponent<Card>();
                 int xyz = cardsprict.Number;
+                m_HundMark[i] = cardsprict.CardMark[xyz];
                 m_HundNumber[i] = cardsprict.CardNumber[xyz];
             }
             //カードをソート
@@ -127,10 +130,20 @@ namespace Assets.Scripts.Bar0404
             for (int i = 0; i < Card.Count; i++)
             {
                 var cardsprict = Card[i].GetComponent<Card>();
+                int xyz = cardsprict.Number;
+                m_HundMark[i] = cardsprict.CardMark[xyz];
+            }
+
+            for (int i = 0; i < Card.Count; i++)
+            {
+                var cardsprict = Card[i].GetComponent<Card>();
                 cardsprict.TurnCardFlont();
             }
             var Pokersprict = PokerHund.GetComponent<PokerHand>();
             Pokersprict.Hund = m_HundNumber;
+            Pokersprict.HundM = m_HundMark;
+
+
         }
 
         
