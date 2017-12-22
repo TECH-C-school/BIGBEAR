@@ -8,14 +8,20 @@ namespace Assets.Scripts.Bar0404 {
 
     public class PokerHand : MonoBehaviour {
 
-        int[] m_Hund;
+        int[] m_HundNumber;
+        char[] m_HundMark;
         int m_Poker;
 
 
         public int[] Hund
         {
-            get { return m_Hund; }
-            set { m_Hund = value; }
+            get { return m_HundNumber; }
+            set { m_HundNumber = value; }
+        }
+
+        public char[] HundM {
+            get { return m_HundMark; }
+            set { m_HundMark = value; }
         }
 
         void Start(){
@@ -24,15 +30,17 @@ namespace Assets.Scripts.Bar0404 {
 
         public void PokerCheck() {
 
-            if (FullHouse(m_Hund)) {
+            if (FullHouse(m_HundNumber)) {
                 Debug.Log("フルハウス");
-            }else if (Straight(m_Hund)) {
+            } else if(Flash(m_HundMark)){
+                Debug.Log("フラッシュ");
+            }else if (Straight(m_HundNumber)) {
                 Debug.Log("ストレート");
-            } else if (ThreeCard(m_Hund)) {
+            } else if (ThreeCard(m_HundNumber)) {
                 Debug.Log("スリーカード");
-            }else if (TwoPare(m_Hund)) {
+            } else if (TwoPare(m_HundNumber)) {
                 Debug.Log("ツーペア");
-            }else if(Onepare(m_Hund)) {
+            } else if (Onepare(m_HundNumber)) {
                 Debug.Log("ワンペア");
             }
 
@@ -99,8 +107,26 @@ namespace Assets.Scripts.Bar0404 {
             return Answer;
         }
 
+
+        bool Flash(char[] xyz) {
+            bool Answer = false;
+
+            char setMark = xyz[0];
+            for (int i = 0; i < xyz.Length; i++) {
+                if (setMark != xyz[i]) { break; }
+                if (i == xyz.Length - 1) { Answer = true; }
+            }
+
+            return Answer;
+        }
+
         bool FullHouse(int[] xyz) {
             bool Answer = false;
+            if (Onepare(xyz)){
+
+            }else if (ThreeCard(xyz)){
+                
+            }
 
 
             return Answer;
