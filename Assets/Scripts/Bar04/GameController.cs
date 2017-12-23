@@ -12,6 +12,9 @@ namespace Assets.Scripts.Bar04 {
         public int count3 = 0;
         public int count4 = 0;
         public int count5 = 0;
+        public GameObject canvas;
+        int screenWidth = 1136;
+        int screenHeight = 630;
         void Start()
         {
             var Card = GameObject.Find("Cards");
@@ -65,7 +68,9 @@ namespace Assets.Scripts.Bar04 {
                 Debug.Log(counter);
             }
             gameObject.SetActive(false);
-            
+            //Changeボタンを移動させる
+            var change = GameObject.Find("Change");
+            change.transform.position = CanvasPosition(443,-246);
         }
         
         public void ChangeCard()
@@ -193,6 +198,17 @@ namespace Assets.Scripts.Bar04 {
         public void SerectButton5()
         {
             count5 = Counter(count5, 4);
+        }
+        
+        Vector2 CanvasPosition(float x, float y)
+        {
+            float correctionX = (canvas.GetComponent<RectTransform>().sizeDelta.x - screenWidth) / 2;
+            float correctionY = (canvas.GetComponent<RectTransform>().sizeDelta.y - screenHeight) / 2;
+
+            float ratioX = (x + correctionX) / canvas.GetComponent<RectTransform>().sizeDelta.x;
+            float ratioY = (y + correctionY) / canvas.GetComponent<RectTransform>().sizeDelta.y;
+
+            return new Vector2(ratioX * Screen.width, ratioY * Screen.height);
         }
         public int LoadCard(int x, int y)
         {
