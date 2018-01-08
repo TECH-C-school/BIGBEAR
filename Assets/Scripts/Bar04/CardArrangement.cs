@@ -85,7 +85,23 @@ public class CardArrangement : MonoBehaviour
             number++;
         }
 
+        //ダイヤ1～13のカードを用意する
+        number = 1;
+        for (var i = 26; i < 39; i++)
+        {
+            cards[i].mark = Mark.Diamond;
+            cards[i].number = number;
+            number++;
+        }
 
+        //スペード１～１３のカードを用意する
+        number = 1;
+        for (var i = 39; i < 52; i++)
+        {
+            cards[i].mark = Mark.Spade;
+            cards[i].number = number;
+            number++;
+        }
         var counter = 0;
         while (counter < 52)
         {
