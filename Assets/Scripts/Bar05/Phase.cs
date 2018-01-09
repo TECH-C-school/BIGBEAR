@@ -6,15 +6,19 @@ namespace Assets.Scripts.Bar05
 {
     public class Phase : MonoBehaviour
     {
+        public int playerMoney;
+        public int playerBet;
+        public int enemyBet;
+        public int betMoney;
+        public int fieldBet;
+
         public GameObject card;
         public GameObject selectCard;
 
-        public List<GameObject> boardList = new List<GameObject>();
+        public List<int> mountList = new List<int>();
+        public List<GameObject> boardList = new List<GameObject>(); 
         public List<GameObject> handCard = new List<GameObject>();
         public List<GameObject> enemyHand = new List<GameObject>();
-        public List<int> mountList = new List<int>();
-
-
 
         public enum PhaseEnum
         {
@@ -25,10 +29,9 @@ namespace Assets.Scripts.Bar05
             ショーダウン
         }
 
-        public PhaseEnum phase;
+        public PhaseEnum phaseEnum;
 
-
-        public string[] cardStr =
+        private string[] cardStr =
         {
             "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13",
         "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13",
@@ -37,20 +40,24 @@ namespace Assets.Scripts.Bar05
 
         };
 
+        private int playerNumber;
         private int openCardCount;
         private Card cardScript;
+        private GameObject checkBtn;
+        private GameObject betCanvas;
+        private GameObject callBtn;
 
         void Start()
         {
+            checkBtn = GameObject.Find("Check");
+            betCanvas = GameObject.Find("BetCanvas");
+            callBtn = GameObject.Find("Call");
             MakeCard();
         }
 
-        void Update()
+        void PhaseManagement()
         {
-            if (phase == PhaseEnum.プリフロップ)
-            {
-
-            }
+            PuriFrop();
         }
 
         /// <summary>
@@ -61,7 +68,7 @@ namespace Assets.Scripts.Bar05
             mountList = MakeRandomNumbers();
             Sprite cardSprite = null;
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 4; i++)
             {
                 {
                     var cardObject = Instantiate(card, transform.position, Quaternion.identity);
@@ -95,36 +102,6 @@ namespace Assets.Scripts.Bar05
                             enemyHand.Add(cardObject);
                             cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
-                        case 4:
-                            cardObject.name = "Board 1";
-                            cardObject.transform.position = new Vector3(-2.7f, 0, -0.01f);
-                            boardList.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
-                        case 5:
-                            cardObject.name = "Board 2";
-                            cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
-                            boardList.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
-                        case 6:
-                            cardObject.name = "Board 3";
-                            cardObject.transform.position = new Vector3(0f, 0, -0.01f);
-                            boardList.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
-                        case 7:
-                            cardObject.name = "Board 4";
-                            cardObject.transform.position = new Vector3(1.35f, 0, -0.01f);
-                            boardList.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
-                        case 8:
-                            cardObject.name = "Board 5";
-                            cardObject.transform.position = new Vector3(2.7f, 0, -0.01f);
-                            boardList.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
                     }
                 }
             }
@@ -136,7 +113,7 @@ namespace Assets.Scripts.Bar05
                 spriteRenderer.sprite = cardSprite;
             }
 
-            mountList.RemoveRange(0, 9);
+            mountList.RemoveRange(0, 4);
         }
 
         /// <summary>
@@ -162,23 +139,105 @@ namespace Assets.Scripts.Bar05
             return numbers;
         }
 
+        void CreateBoard()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                var cardObject = Instantiate(card, transform.position, Quaternion.identity);
+                var selCard = Instantiate(selectCard);
+                selCard.name = selectCard.name;
+                selCard.transform.parent = cardObject.transform;
+
+                boardList.Add(cardObject);
+                cardObject.name = "Board " + (i + 1);
+                cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
+
+                switch (i)
+                {
+                    case 0:
+                        cardObject.transform.position = new Vector3(-2.7f, 0, -0.01f);
+                        break;
+                    case 1:
+                        cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
+                        break;
+                    case 2:
+                        cardObject.transform.position = new Vector3(0f, 0, -0.01f);
+                        break;
+                    case 3:
+                        cardObject.transform.position = new Vector3(1.35f, 0, -0.01f);
+                        break;
+                    case 4:
+                        cardObject.transform.position = new Vector3(2.7f, 0, -0.01f);
+                        break;
+                }
+            }
+
+            mountList.RemoveRange(0, 5);
+        }
+
         /// <summary>
         /// プレイヤーと敵の手札を生成
         /// </summary>
         
-        void NumberTemp()
+        void CreateBetBotton()
         {
+            int betAction = 0;
+            betCanvas.SetActive(true);
+
+            //場の金額と自分の金額が同じならチェックを表示
+            if (fieldBet == playerBet)
+            {
+                betAction = 1;
+            }
+            switch (betAction)
+            {
+                //Call
+                case 0:
+                    checkBtn.SetActive(false);
+                    callBtn.SetActive(true);
+                    break;
+                //Check
+                case 1:
+                    callBtn.SetActive(false);
+                    checkBtn.SetActive(true);
+                    break;
+                //Raise
+                //Fold
+            }
         }
 
-        void TurnCard()
+        void BetPhase()
+        {
+            if(fieldBet == playerBet && fieldBet == enemyBet)
+            {
+                phaseEnum++;
+            }
+
+            if (fieldBet != playerBet)
+            {
+                CreateBetBotton();
+            }
+        }
+
+
+        void PuriFrop()
         {
 
         }
 
-        void handDeal()
+        void Frop()
         {
 
         }
 
+        void TurnAndLibber()
+        {
+
+        }
+
+        void ShowDown()
+        {
+
+        }
     }
 }
