@@ -7,30 +7,60 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
 
-        public int count1 = 0;
-        public int count2 = 0;
-        public int count3 = 0;
-        public int count4 = 0;
-        public int count5 = 0;
+        int count1;
+        int count2;
+        int count3;
+        int count4;
+        int count5;
+
         void Start()
         {
-            var Card = GameObject.Find("Cards");
-            var cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar04/card");
-            for (var i = 0; i < 5; i++)
-            {
-                var cardObbject = Instantiate(cardPrefabs, transform.position, Quaternion.identity);
-                cardObbject.transform.position = new Vector2(i * 2.5f - 5, 0.5f);
-                cardObbject.transform.parent = Card.transform;
-            }
+            InitGame();
         }
         void Update()
         {
-            //Click();
+            Click();
         }
         public void ClickChangeButton()
         {
             Debug.Log("ChangeButtonClick");
-            ChangeCard();
+
+            var childTransform = GameObject.Find("RandomCards").GetComponentsInChildren<Transform>();
+            if (count1 == 1)
+            {
+                foreach (Transform child in childTransform[1])
+                {
+                    Debug.Log(child.name);
+                }
+            }
+            if (count2 == 1)
+            {
+                foreach (Transform child in childTransform[2])
+                {
+                    Debug.Log(child.name);
+                }
+            }
+            if (count3 == 1)
+            {
+                foreach (Transform child in childTransform[3])
+                {
+                    Debug.Log(child.name);
+                }
+            }
+            if (count4 == 1)
+            {
+                foreach (Transform child in childTransform[4])
+                {
+                    Debug.Log(child.name);
+                }
+            }
+            if (count5 == 1)
+            {
+                foreach (Transform child in childTransform[5])
+                {
+                    Debug.Log(child.name);
+                }
+            }
         }
         public void ClickFightButton()
         {
@@ -62,24 +92,15 @@ namespace Assets.Scripts.Bar04 {
             for (var j = 0; j < 5; j++)
             {
                 var counter = LoadCard(List[j], j);
-                Debug.Log(counter);
             }
             gameObject.SetActive(false);
             //Changeボタンを移動させる
             var change = GameObject.Find("Change");
             change.transform.position = new Vector2(1011,69);
         }
-        
-        public void ChangeCard()
-        {
-            Debug.Log("ChangeButtonClick");
-            if (count1 == 1)
-            {
-                
-            }
-        }
 
-        private void Click()
+
+        private void Click() 
         {
             var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
             GameObject obj = getClickObject();
@@ -159,21 +180,21 @@ namespace Assets.Scripts.Bar04 {
             return tmp;
         }
         
-        public int Counter(int x, int y)
+        public int Counter(int x,int y)
         {
             if (x == 0)
             {
                 //カードを選択する
                 var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
                 var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
-                cardFlame.name = "cardSerect" + y;
+                cardFlame.name = "cardSerect" + (y+1);
                 cardFlame.transform.position = new Vector3(y * 2.5f - 5, 0.5f, -1);
                 x = 1;
             }
             else
             {
                 //カードの選択を解除する
-                var cardFlame = GameObject.Find("cardSerect" + y);
+                var cardFlame = GameObject.Find("cardSerect" + (y+1));
                 Destroy(cardFlame);
                 x = 0;
             }
@@ -181,29 +202,39 @@ namespace Assets.Scripts.Bar04 {
         }
         public void SerectButton1()
         {
-            count1 = Counter(count1, 0);
+            count1 = Counter(count1,0);
         }
         public void SerectButton2()
         {
-            count2 = Counter(count2, 1);
+            count2 = Counter(count2,1);
         }
         public void SerectButton3()
         {
-            count3 = Counter(count3, 2);
+            count3 = Counter(count3,2);
         }
         public void SerectButton4()
         {
-            count4 = Counter(count4, 3);
+            count4 = Counter(count4,3);
         }
         public void SerectButton5()
         {
-            count5 = Counter(count5, 4);
+            count5 = Counter(count5,4);
         }
         
-        
+        public void InitGame()
+        {
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/card");
+            var Card = GameObject.Find("Cards");
+            for (var i = 0; i < 5; i++)
+            {
+                var cardObbject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObbject.transform.position = new Vector2(i * 2.5f - 5, 0.5f);
+                cardObbject.transform.parent = Card.transform;
+            }
+        }
         public int LoadCard(int x, int y)
         {
-            var RandomCrads = GameObject.Find("RandomCrads");
+            var RandomCrads = GameObject.Find("RandomCards");
             var i = 0;
             if (x == 0)
             {
