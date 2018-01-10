@@ -8,7 +8,8 @@ namespace Assets.Scripts.Bar04_06
 
     public class Card : MonoBehaviour
     {
-        
+        internal object mark;
+        internal int number;
     }
 
 }

@@ -9,83 +9,85 @@ namespace Assets.Scripts.Bar04_06
 {
     public class GameController : MonoBehaviour
     {
-
+        private void Start()
+        {
+            var cards = MakeRandomNumbers();
+            MakeBackCards(cards);
+        }
         public enum suit
         {
-            clover,
-            dia,
-            heart,
-            spade,
-            joker
+            Clover,
+            Dia,
+            Heart,
+            Spade
         }
-        public enum TrumpCards
+
+        public struct Card
         {
-            c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13,
-            d01, d02, d03, d04, d05, d06, d07, d08, d09, d10, d11, d12, d13,
-            h01, h02, h03, h04, h05, h06, h07, h08, h09, h10, h11, h12, h13,
-            s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13,
+            public int number;
+            public suit mark;
+
+            public string CardString()
+            {
+                string cardString = "";
+
+                switch (mark)
+                {
+                    case suit.Clover:
+                        cardString += "c";
+                        break;
+                    case suit.Spade:
+                        cardString += "s";
+                        break;
+                    case suit.Heart:
+                        cardString += "h";
+                        break;
+                    case suit.Dia:
+                        cardString += "d";
+                        break;
+                }
+
+                if (number < 10)
+                {
+                    cardString += "0";
+                }
+
+                cardString += number.ToString();
+
+                return cardString;
+            }
         }
 
-
-
-        /// <summary>
-        /// カードのシャッフル
-        /// </summary>
-        //Numberの作成
-        /*   public void number() {
-               int[] number = new int[51];
-               for (int i = 0;i < number.Length; i++)
-               {
-                   number[i] = i;
-               }
-               //シャッフルす
-               int[] ary2 = number.OrderBy(i => Guid.NewGuid()).ToArray();
-           }
-           /// <summary>
-           /// カードを配置する
-           /// </summary>
-
-          public void MakeCard()
-           {
-               int count = 0;
-               int[] randomNumbers = MakeRandomNumbers();
-               var cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
-               var cardsObject = GameObject.Find("Cards");
-
-               for (var i = 0; i < 5; i++)
-               {
-                   var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                   cardObject.transform.position = new Vector3(
-                           0, 0);
-                   if (cardObject(0, 0))
-                   {
-                       for (int j = 1; i < 3; j++)
-                       {
-                           cardObject.transform.position = new Vector3(
-                                   j * 2, 0);
-                           cardObject.transform.position = new Vector3(
-                                   j * -2, 0);
-                       }
-                       cardObject.transform.parent = cardsObject.transform;
-
-                       var card = cardObject.GetComponent<Card>();
-                       card.Number = number[count];
-                       card.ChangedCards();
-                       count++;
-                   }
-               }
-           }*/
         /// <summary>
         /// 山札の作成
         /// </summary>
 
-        public void MakeRandomNumbers()
+        public Card[] MakeRandomNumbers()
         {
 
-            int[] number = new int[51];
+            Card[] number = new Card[52];
             for (int i = 0; i < number.Length; i++)
             {
-                number[i] = i;
+                if (i <= 13)
+                {
+                    number[i].number = i;
+                    number[i].mark = suit.Clover;
+                }
+                else if (i <= 26)
+                {
+                    number[i].number = i - 13;
+                    number[i].mark = suit.Dia;
+                }
+                else if (i <= 39)
+                {
+                    number[i].number = i - 26;
+                    number[i].mark = suit.Heart;
+                }
+                else
+                {
+                    number[i].number = i - 39;
+                    number[i].mark = suit.Spade;
+                }
             }
             //シャッフルする
             System.Random rng = new System.Random();
@@ -94,18 +96,22 @@ namespace Assets.Scripts.Bar04_06
             {
                 n--;
                 int k = rng.Next(n + 1);
-                int tmp = number[k];
+                Card tmp = number[k];
                 number[k] = number[n];
                 number[n] = tmp;
 
              }
+
+            return number;
         }
         /// <summary>
-        /// カードの配置
+        /// カードの配置　　　
         /// </summary>
-        
-        public void MakeBackCards()
+
+        public void MakeBackCards(Card[] cards)
         {
+
+
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/Prefabs/Back");
             var cardsObject = GameObject.Find("Cards");
 
@@ -114,16 +120,16 @@ namespace Assets.Scripts.Bar04_06
             {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(
-                j, 0, 0);
+                j, 0,0);
                 cardObject.transform.parent = cardsObject.transform;
                 j = j + 2;
+
+                var spriteRenderer = cardObject.GetComponent<SpriteRenderer>();
+                spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cards[i].CardString());
             }
 
         }
-        private void Start()
-        {
-            MakeBackCards();
-        }
+        
         /// <summary>
         /// クリックしたカードをHoldし、クリックされていないカードを捨て場に送る
         /// </summary>
