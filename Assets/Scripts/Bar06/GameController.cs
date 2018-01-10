@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
+using System.IO;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
@@ -73,7 +75,7 @@ namespace Assets.Scripts.Bar06 {
                 AddcardObject.transform.position = new Vector2(PC, -2.5f);
                 AddcardObject.transform.localScale = new Vector2(0.17f, 0.17f);
                 PC++;
-                var playerCard = Random.Range(1, 14);
+                var playerCard = UnityEngine.Random.Range(1, 14);
                 playercount = playercount + playerCard;
                 Debug.Log(playercount);
             }
@@ -83,6 +85,7 @@ namespace Assets.Scripts.Bar06 {
         {
             Debug.Log(enemycount);
         }
+
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
