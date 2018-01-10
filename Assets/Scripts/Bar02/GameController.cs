@@ -128,23 +128,27 @@ namespace Assets.Scripts.Bar02
                 counter++;
             }
 
+            var cardPrefab = Resources.Load<GameObject>("Resources/Cards");
+            var cardsObject = GameObject.Find("Cards");
             Card[] trump = new Card[53];
             for (int i = 22; i < 53; i++)
             {
 
-                //19
                 trump[i].number = (cards[i] - 1) % 13 + 1;
                 trump[i].mark = (Mark)((cards[i] - 1) / 13);
             }
-/*
+
             for (int i = 0; i < 2; i++)
             {
-                var Cards = Resources.Load<GameObject>("Cards");
-                var cardObject = Instantiate(Cards, transform.position, Quaternion.identity);
-                cardObject.transform.parent = GameObject.Find("Cards").transform;
-                cardObject.transform.position = new Vector3(i * 1.27f - 3.84f,0);
+                  
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(
+                       i * 1.27f,
+                       - 3.84f,
+                       0);
+                cardObject.transform.parent = cardsObject.transform;
             }
-*/
+/**/
 
 
 
