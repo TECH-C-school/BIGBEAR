@@ -64,7 +64,7 @@ namespace Assets.Scripts.Bar06
 
 
 
-        /*private int[] MakeRandomNumbers()
+        private int[] MakeYamahuda()
         {
             int[] numbers = new int[52];
 
@@ -85,7 +85,7 @@ namespace Assets.Scripts.Bar06
                 Debug.Log(counter);
             }
             return numbers;
-        }*/
+        }
 
         private void Start()
         {
