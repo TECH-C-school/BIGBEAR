@@ -413,8 +413,10 @@ namespace Assets.Scripts.Bar02 {
         public void onClickResetButton()
         {
             resetCard();
+            clearReset();
             CardSet();
             deletedPyramid = 0;
+            clearNum = 0;
         }
 
 
@@ -442,6 +444,29 @@ namespace Assets.Scripts.Bar02 {
             var winObject = Resources.Load<GameObject>("Prefabs/Bar02/win");
             var winCard = Instantiate(winObject, transform.position, Quaternion.identity);
             winCard.transform.position = new Vector2(0, 2);
+        }
+
+
+
+        /// <summary>
+        /// winカードの消去
+        /// </summary>
+        private void clearReset()
+        {
+            //場所取得
+            Vector2 winPos = new Vector2(0, 2);
+            Collider2D[] getObj = Physics2D.OverlapPointAll(winPos);
+
+            //winのみか判断
+            if (getObj.Length != 1) return;
+            SpriteRenderer win = getObj[0].GetComponent<SpriteRenderer>();
+            string winName = win.sprite.ToString().Substring(0, 9);
+
+            if (winName == "bakarawin")
+            {
+                Destroy(win.gameObject);
+            }
+
         }
 
         
