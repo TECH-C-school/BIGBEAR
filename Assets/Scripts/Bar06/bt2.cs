@@ -12,6 +12,7 @@ public class bt2 : MonoBehaviour {
     {
         canb.SetActive("Button",true );
         canb.SetActive("Button (1)", true);
+        canb.SetActive("Button (3)", true);
         gameObject.SetActive(false);
     }
 }

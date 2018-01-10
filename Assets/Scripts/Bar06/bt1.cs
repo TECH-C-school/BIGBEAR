@@ -8,12 +8,14 @@ public class bt1 : MonoBehaviour {
     {
         canb.SetActive("Button", false);
         canb.SetActive("Button (1)", false);
+        canb.SetActive("Button (3)", false);
         canb.SetActive("Button (2)", true);
     }
     public void backOnClick()
     {
         canb.SetActive("Button", false);
         canb.SetActive("Button (1)", false);
+        canb.SetActive("Button (3)", false);
         canb.SetActive("Button (2)", true);
     }
 }

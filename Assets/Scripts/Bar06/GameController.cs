@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System;
+using System.Text;
+
 
 
 namespace Assets.Scripts.Bar06 {
@@ -19,6 +21,11 @@ namespace Assets.Scripts.Bar06 {
         private int[] tekki = new int[20];
         private int tekkicon = 0;
         private int tekkifl = 0;
+        public int coin = 10;
+        public int bet = 1;
+        public string guitxt = "";
+
+
 
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
@@ -26,7 +33,16 @@ namespace Assets.Scripts.Bar06 {
         public void Start()
         {
             MakeRandomNumbers();
-            
+            ReadFile();
+
+            coin = int.Parse(guitxt);
+            coin--;
+            mais.rirekii(coin);
+            bett.rirekii(bet);
+            makec();
+
+
+
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
             cardObject.transform.position = new Vector3(1.35f, -3.5f, 0);
@@ -69,6 +85,27 @@ namespace Assets.Scripts.Bar06 {
             makecard();
             
         }
+
+        public void betClick()
+        {
+            if (bet < 5) {
+                bet += 1;
+                coin--;
+                bett.rirekii(bet);
+                mais.rirekii(coin);
+                makec();
+            }             
+        }
+
+        public void makec()
+        {
+            var cardsObject = GameObject.Find("coin");
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin1");
+            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+            cardObject.transform.position = new Vector3(-5.68f + (-0.25f * bet), -4.2f, -1 * bet);
+            cardObject.transform.parent = cardsObject.transform;
+        }
+
         private void makecard()
         {
             var cardsObject = GameObject.Find("Cards");
@@ -98,7 +135,16 @@ namespace Assets.Scripts.Bar06 {
             mai++;
             textoku();
 
-            if (gou > 21) { lose.winhyou(); bt1.OnClick();syouritu.syouri(0); }
+            if (gou > 21) {
+                bet = 0;
+                textSave(coin.ToString());
+                mais.rirekii(coin);
+                lose.winhyou();
+                bt1.OnClick();
+                syouritu.syouri(0);
+                bett.rirekii(bet);
+                cderi();
+            }
 
         }
         private void tmakecard(int n)
@@ -146,7 +192,7 @@ namespace Assets.Scripts.Bar06 {
         {
             while (tgou < 17) {
                 
-           timei = 0; tmakecard(0);
+           tmakecard(0);
             
             }
             Debug.Log(tgou);
@@ -175,16 +221,46 @@ namespace Assets.Scripts.Bar06 {
                 if (gou==tgou) { draw.winhyou();
                 } else if (gou > tgou) {
                     win.winhyou(); syouritu.syouri(1);
+                    coin += bet*2;
+                    bet = 0;
+                    textSave(coin.ToString());
+                    mais.rirekii(coin);
+                    bett.rirekii(bet);
+                    cderi();
                 } else {
                     lose.winhyou(); syouritu.syouri(0);
+                    bet = 0;
+                    textSave(coin.ToString());
+                    mais.rirekii(coin);
+                    bett.rirekii(bet);
+                    cderi();
                 }
-            }else { win.winhyou(); syouritu.syouri(1); }
+            }else {
+                win.winhyou(); syouritu.syouri(1);
+                coin += bet*2;
+                bet = 0;
+                textSave(coin.ToString());
+                mais.rirekii(coin);
+                bett.rirekii(bet);
+                cderi();
+            }
 
 
 
 
 
         }
+
+        private void cderi()
+        {
+
+        var cardsObject = GameObject.Find("coin").transform;
+            foreach (Transform cardObject in cardsObject)
+            {
+                Destroy(cardObject.gameObject);
+            }
+        }
+
 
 
         private void textoku (){
@@ -204,11 +280,13 @@ namespace Assets.Scripts.Bar06 {
             {
                 Destroy(cardObject.gameObject);
             }
+
             cardsObject = GameObject.Find("Cards").transform;
             foreach (Transform cardObject in cardsObject)
             {
                 Destroy(cardObject.gameObject);
             }
+
             rireki.rirekii(gou);
             gou = 0;
             tgou = 0;
@@ -219,6 +297,11 @@ namespace Assets.Scripts.Bar06 {
             Atmine = 0;
             mai = 0;
             syotop = 0;
+            bet = 1;
+            coin--;
+            makec();
+            bett.rirekii(bet);
+            mais.rirekii(coin);
             MakeRandomNumbers();
 
             for (int i = 0; i < tekki.Length; i++)
@@ -234,6 +317,28 @@ namespace Assets.Scripts.Bar06 {
             win.winhihyou();
             lose.winhihyou();
             draw.winhihyou();
+        }
+
+
+        void ReadFile()
+        {
+            // FileReadTest.txtファイルを読み込む
+            FileInfo fi = new FileInfo(Application.dataPath + "/" + "Test1.txt");
+
+            // 一行毎読み込み
+            StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8);
+            guitxt = sr.ReadToEnd();
+
+
+        }
+
+        public void textSave(string txt)
+        {
+            StreamWriter sw = new StreamWriter(Application.dataPath + "/" + "Test1.txt", false);
+            //true=追記 false=上書き
+            sw.WriteLine(txt);
+            sw.Flush();
+            sw.Close();
         }
 
     }
