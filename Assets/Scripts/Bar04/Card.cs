@@ -36,6 +36,7 @@ namespace Assets.Scripts.Bar0404
            'h','h','h','h','h','h','h','h','h','h','h','h','h',
            'd','d','d','d','d','d','d','d','d','d','d','d','d',
            's','s','s','s','s','s','s','s','s','s','s','s','s',
+           'j'
         };
 
         int m_Number;

@@ -122,13 +122,12 @@ namespace Assets.Scripts.Bar0404 {
 
         bool FullHouse(int[] xyz) {
             bool Answer = false;
-            if (Onepare(xyz)){
-
-            }else if (ThreeCard(xyz)){
-                
+            if (xyz[0]==xyz[1] && xyz[0]==xyz[2]){
+                if (xyz[3] == xyz[4]) { Answer = true; }
+            }else if (xyz[0] == xyz[1]){
+                if (xyz[2] == xyz[3] && xyz[2] == xyz[4]){ Answer = true; }
             }
-
-
+            
             return Answer;
            
         }
