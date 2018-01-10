@@ -1,230 +1,22 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Bar04 {
-    public class GameController : MonoBehaviour {
+namespace Assete.Scripts.Bar04
+{
+    public class LoadCards : MonoBehaviour {
 
-        int count1;
-        int count2;
-        int count3;
-        int count4;
-        int count5;
-        List<int> List = new List<int>();
-
-        void Start()
-        {
-            InitGame();
-        }
-        void Update()
-        {
-            Click();
-        }
-        
-        public void ClickFightButton()
-        {
-            //Cardsの子要素を消す
-            var cardsObject = GameObject.Find("Cards");
-            foreach (Transform cardObject in cardsObject.transform)
-            {
-                Destroy(cardObject.gameObject);
-            }
-            Debug.Log("FightButtonClick");
-
-            MakeDeck();
-            //山札の上から5枚を配る
-            for (var j = 0; j < 5; j++)
-            {
-                LoadCard(List[j], j);
-            }
-            //Fightボタンを非表示にする
-            gameObject.SetActive(false);
-            //Changeボタン,NotChangeボタンを移動させる
-            var change = GameObject.Find("Change");
-            change.transform.position = new Vector2(1011,50);
-            var notchange = GameObject.Find("NotChange");
-            notchange.transform.position = new Vector2(1011, 140);
-        }
-        public void ClickChangeButton()
-        {
-            Debug.Log("ChangeButtonClick");
-
-            //選択ボタンで選択されているカードを交換する
-            int counter = 6;
-            var childTransform = GameObject.Find("RandomCards").GetComponentsInChildren<Transform>();
-            if (count1 == 0)
-            {
-                Debug.Log(childTransform[1]);
-                LoadCard(List[counter],0);
-                counter++;
-            }
-            if (count2 == 0)
-            {
-                Debug.Log(childTransform[2]);
-                LoadCard(List[counter], 1);
-                counter++;
-            }
-            if (count3 == 0)
-            {
-                Debug.Log(childTransform[3]);
-                LoadCard(List[counter], 2);
-                counter++;
-            }
-            if (count4 == 0)
-            {
-                Debug.Log(childTransform[4]);
-                LoadCard(List[counter], 3);
-                counter++;
-            }
-            if (count5 == 0)
-            {
-                Debug.Log(childTransform[5]);
-                LoadCard(List[counter], 4);
-                counter++;
-            }
-        }
-        /// <summary>
-        /// クリックした場所にcardSerectを配置する
-        /// </summary>
-        private void Click() 
-        {
-            var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
-            GameObject obj = getClickObject();
-            if(obj != null)
-            {
-                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
-                if (Input.GetMouseButtonDown(0))
-                {
-                    //クリックされた位置を取得
-                    var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    tapPoint = Input.mousePosition;
-                    Vector2 tmp = getObjectPosition();
-                    cardFlame.transform.position = tmp;
-                }
-            }
-
-        }
-        /// <summary>
-        /// 左クリックされたオブジェクトを取得する
-        /// </summary>
-        /// <returns></returns>
-        private GameObject getClickObject()
-        {
-            GameObject result = null;
-            //左クリックされた場所のオブジェクトを取得
-            if (Input.GetMouseButtonDown(0))
-            {
-                Vector2 tapPoint = Camera.main. ScreenToWorldPoint(Input.mousePosition);
-                Collider2D collition2d = Physics2D.OverlapPoint(tapPoint);
-                if (collition2d)
-                {
-                    result = collition2d.transform.gameObject;
-                }
-            }
-            return result;
-        }
-        
-        private Vector2 getObjectPosition()
-        {
-            Vector2 tmp = new Vector2();
-            //左クリックされた場所のオブジェクトの座標を取得
-            if (Input.GetMouseButtonDown(0))
-            {
-                Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Collider2D collition2d = Physics2D.OverlapPoint(tapPoint);
-                if (collition2d)
-                {
-                    tmp = GameObject.Find("c01").transform.position;
-                }
-            }
-            return tmp;
-        }
-        public int Counter(int x,int y)
-        {
-            if (x == 0)
-            {
-                //カードを選択する
-                var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
-                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
-                cardFlame.name = "cardSerect" + (y+1);
-                cardFlame.transform.position = new Vector3(y * 2.5f - 5, 0.5f, -1);
-                x = 1;
-            }
-            else
-            {
-                //カードの選択を解除する
-                var cardFlame = GameObject.Find("cardSerect" + (y+1));
-                Destroy(cardFlame);
-                x = 0;
-            }
-            return x;
-        }
-        public void SerectButton1()
-        {
-            count1 = Counter(count1,0);
-        }
-        public void SerectButton2()
-        {
-            count2 = Counter(count2,1);
-        }
-        public void SerectButton3()
-        {
-            count3 = Counter(count3,2);
-        }
-        public void SerectButton4()
-        {
-            count4 = Counter(count4,3);
-        }
-        public void SerectButton5()
-        {
-            count5 = Counter(count5,4);
-        }
-        /// <summary>
-        /// 山札を作成する
-        /// </summary>
-        public void MakeDeck()
-        {
-            //Listに0～51までの数値を追加する
-            for (int i = 0; i < 52; i++)
-            {
-                List.Add(i);
-            }
-            //Fisher-Yatesアルゴリズムでシャッフルする
-            System.Random rng = new System.Random();
-            int n = 52;
-            while (n > 1)
-            {
-                n--;
-                int k = rng.Next(n + 1);
-                int tmp = List[k];
-                List[k] = List[n];
-                List[n] = tmp;
-            }
-        }
-
-        public void InitGame()
-        {
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/card");
-            var Card = GameObject.Find("Cards");
-            for (var i = 0; i < 5; i++)
-            {
-                var cardObbject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObbject.transform.position = new Vector2(i * 2.5f - 5, 0.5f);
-                cardObbject.transform.parent = Card.transform;
-            }
-            List = new List<int>();
-        }
         public void LoadCard(int x, int y)
         {
             var RandomCrads = GameObject.Find("RandomCards");
+            var i = 0;
             if (x == 0)
             {
                 Debug.Log("Club_1");
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c01");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 1;
             }
             else if (x == 1)
             {
@@ -232,6 +24,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c02");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 2;
             }
             else if (x == 2)
             {
@@ -239,6 +32,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c03");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 3;
             }
             else if (x == 3)
             {
@@ -246,6 +40,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c04");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 4;
             }
             else if (x == 4)
             {
@@ -253,6 +48,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c05");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 5;
             }
             else if (x == 5)
             {
@@ -260,6 +56,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c06");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 6;
             }
             else if (x == 6)
             {
@@ -267,6 +64,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c07");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 7;
             }
             else if (x == 7)
             {
@@ -274,6 +72,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c08");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 8;
             }
             else if (x == 8)
             {
@@ -281,6 +80,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c09");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 9;
             }
             else if (x == 9)
             {
@@ -288,6 +88,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c10");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 10;
             }
             else if (x == 10)
             {
@@ -295,6 +96,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c11");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 11;
             }
             else if (x == 11)
             {
@@ -302,6 +104,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c12");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 12;
             }
             else if (x == 12)
             {
@@ -309,6 +112,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Club/c13");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 13;
             }
             else if (x == 13)
             {
@@ -316,6 +120,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h01");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 14;
             }
             else if (x == 14)
             {
@@ -323,6 +128,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h02");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 15;
             }
             else if (x == 15)
             {
@@ -330,6 +136,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h03");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 16;
             }
             else if (x == 16)
             {
@@ -337,6 +144,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h04");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 17;
             }
             else if (x == 17)
             {
@@ -344,6 +152,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h05");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 18;
             }
             else if (x == 18)
             {
@@ -351,6 +160,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h06");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 19;
             }
             else if (x == 19)
             {
@@ -358,6 +168,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h07");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 20;
             }
             else if (x == 20)
             {
@@ -365,6 +176,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h08");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 21;
             }
             else if (x == 21)
             {
@@ -372,6 +184,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h09");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 22;
             }
             else if (x == 22)
             {
@@ -379,6 +192,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h10");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 23;
             }
             else if (x == 23)
             {
@@ -386,6 +200,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h11");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 24;
             }
             else if (x == 24)
             {
@@ -393,6 +208,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h12");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 25;
             }
             else if (x == 25)
             {
@@ -400,6 +216,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Haert/h13");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 26;
             }
             else if (x == 26)
             {
@@ -407,6 +224,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d01");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 27;
             }
             else if (x == 27)
             {
@@ -414,6 +232,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d02");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 28;
             }
             else if (x == 28)
             {
@@ -421,6 +240,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d03");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 29;
             }
             else if (x == 29)
             {
@@ -428,6 +248,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d04");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 30;
             }
             else if (x == 30)
             {
@@ -435,6 +256,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d05");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 31;
             }
             else if (x == 31)
             {
@@ -442,6 +264,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d06");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 32;
             }
             else if (x == 32)
             {
@@ -449,6 +272,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d07");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 33;
             }
             else if (x == 33)
             {
@@ -456,6 +280,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d08");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 34;
             }
             else if (x == 34)
             {
@@ -463,6 +288,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d09");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 35;
             }
             else if (x == 35)
             {
@@ -470,6 +296,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d10");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 36;
             }
             else if (x == 36)
             {
@@ -477,6 +304,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d11");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 37;
             }
             else if (x == 37)
             {
@@ -484,6 +312,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d12");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 38;
             }
             else if (x == 38)
             {
@@ -491,6 +320,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Diamond/d13");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 39;
             }
             else if (x == 39)
             {
@@ -498,6 +328,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s01");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 40;
             }
             else if (x == 40)
             {
@@ -505,6 +336,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s02");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 41;
             }
             else if (x == 41)
             {
@@ -512,6 +344,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s03");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 42;
             }
             else if (x == 42)
             {
@@ -519,6 +352,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s04");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 43;
             }
             else if (x == 43)
             {
@@ -526,6 +360,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s05");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 44;
             }
             else if (x == 44)
             {
@@ -533,6 +368,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s06");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 45;
             }
             else if (x == 45)
             {
@@ -540,6 +376,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s07");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 46;
             }
             else if (x == 46)
             {
@@ -547,6 +384,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s08");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 47;
             }
             else if (x == 47)
             {
@@ -554,6 +392,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s09");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 48;
             }
             else if (x == 48)
             {
@@ -561,6 +400,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s10");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 49;
             }
             else if (x == 49)
             {
@@ -568,6 +408,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s11");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 50;
             }
             else if (x == 50)
             {
@@ -575,6 +416,7 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s12");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 51;
             }
             else if (x == 51)
             {
@@ -582,10 +424,8 @@ namespace Assets.Scripts.Bar04 {
                 var card = Resources.Load<GameObject>("Prefabs/Bar04/Spade/s13");
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
+                i = 52;
             }
         }
-        public void TransitionToResult() {
-            SceneManager.LoadScene("Result");
-                }
     }
 }
