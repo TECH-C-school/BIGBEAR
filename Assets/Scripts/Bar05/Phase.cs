@@ -22,6 +22,7 @@ namespace Assets.Scripts.Bar05
 
         public enum PhaseEnum
         {
+            スタンバイフェイズ = 0,
             プリフロップ,
             フロップ,
             ターン,
@@ -31,7 +32,7 @@ namespace Assets.Scripts.Bar05
 
         public PhaseEnum phaseEnum;
 
-        private string[] cardStr =
+        public string[] cardStr =
         {
             "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13",
         "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13",
@@ -42,22 +43,47 @@ namespace Assets.Scripts.Bar05
 
         private int playerNumber;
         private int openCardCount;
-        private Card cardScript;
+        private int betPhaseCount;
+        private int boardCount;
         private GameObject checkBtn;
         private GameObject betCanvas;
         private GameObject callBtn;
+        private GameObject allInBtn;
+        private bool allInBool;
 
         void Start()
         {
             checkBtn = GameObject.Find("Check");
             betCanvas = GameObject.Find("BetCanvas");
             callBtn = GameObject.Find("Call");
-            MakeCard();
+            allInBtn = GameObject.Find("AllIn");
+            PhaseManagement(phaseEnum);
         }
 
-        void PhaseManagement()
+        void PhaseManagement(PhaseEnum phases)
         {
-            PuriFrop();
+            Debug.Log(phaseEnum);
+            switch (phaseEnum)
+            {
+                case PhaseEnum.スタンバイフェイズ:
+                    Standby();
+                    break;
+                case PhaseEnum.プリフロップ:
+                    PuriFrop();
+                    break;
+                case PhaseEnum.フロップ:
+                    Frop();
+                    break;
+                case PhaseEnum.ターン:
+                    TurnAndLibber();
+                    break;
+                case PhaseEnum.リバー:
+                    ShowDown();
+                    break;
+                case PhaseEnum.ショーダウン:
+                    ShowDown();
+                    break;
+            }
         }
 
         /// <summary>
@@ -79,25 +105,25 @@ namespace Assets.Scripts.Bar05
                     switch (i)
                     {
                         case 0:
-                            cardObject.name = "Hand 1";
+                            cardObject.name = "Hand1";
                             cardObject.transform.position = new Vector3(-0.7f, -2.08f, -0.01f);
                             handCard.Add(cardObject);
                             cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
                         case 1:
-                            cardObject.name = "Hand 2";
+                            cardObject.name = "Hand2";
                             cardObject.transform.position = new Vector3(0.65f, -2.08f, -0.01f);
                             handCard.Add(cardObject);
                             cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
                         case 2:
-                            cardObject.name = "EnemyHand 1";
+                            cardObject.name = "EnemyHand1";
                             cardObject.transform.position = new Vector3(-0.7f, 2.08f, -0.01f);
                             enemyHand.Add(cardObject);
                             cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                             break;
                         case 3:
-                            cardObject.name = "EnemyHand 2";
+                            cardObject.name = "EnemyHand2";
                             cardObject.transform.position = new Vector3(0.65f, 2.08f, -0.01f);
                             enemyHand.Add(cardObject);
                             cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
@@ -139,40 +165,35 @@ namespace Assets.Scripts.Bar05
             return numbers;
         }
 
-        void CreateBoard()
+        void CreateBoard(int boardNumber)
         {
-            for (int i = 0; i < 5; i++)
+            var cardObject = Instantiate(card, transform.position, Quaternion.identity);
+            var selCard = Instantiate(selectCard);
+            selCard.name = selectCard.name;
+            selCard.transform.parent = cardObject.transform;
+
+            boardList.Add(cardObject);
+            cardObject.name = "Board " + (boardNumber + 1);
+            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[boardNumber]];
+
+            switch (boardNumber)
             {
-                var cardObject = Instantiate(card, transform.position, Quaternion.identity);
-                var selCard = Instantiate(selectCard);
-                selCard.name = selectCard.name;
-                selCard.transform.parent = cardObject.transform;
-
-                boardList.Add(cardObject);
-                cardObject.name = "Board " + (i + 1);
-                cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-
-                switch (i)
-                {
-                    case 0:
-                        cardObject.transform.position = new Vector3(-2.7f, 0, -0.01f);
-                        break;
-                    case 1:
-                        cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
-                        break;
-                    case 2:
-                        cardObject.transform.position = new Vector3(0f, 0, -0.01f);
-                        break;
-                    case 3:
-                        cardObject.transform.position = new Vector3(1.35f, 0, -0.01f);
-                        break;
-                    case 4:
-                        cardObject.transform.position = new Vector3(2.7f, 0, -0.01f);
-                        break;
-                }
+                case 0:
+                    cardObject.transform.position = new Vector3(-2.7f, 0, -0.01f);
+                    cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
+                    cardObject.transform.position = new Vector3(0f, 0, -0.01f);
+                    mountList.RemoveRange(0, 3);
+                    break;
+                case 1:
+                    cardObject.transform.position = new Vector3(1.35f, 0, -0.01f);
+                    mountList.RemoveRange(0, 1);
+                    break;
+                case 2:
+                    cardObject.transform.position = new Vector3(2.7f, 0, -0.01f);
+                    mountList.RemoveRange(0, 1);
+                    break;
             }
-
-            mountList.RemoveRange(0, 5);
+            boardCount++;
         }
 
         /// <summary>
@@ -183,56 +204,73 @@ namespace Assets.Scripts.Bar05
         {
             int betAction = 0;
             betCanvas.SetActive(true);
+            checkBtn.SetActive(false);
+            callBtn.SetActive(false);
+            allInBtn.SetActive(false);
 
             //場の金額と自分の金額が同じならチェックを表示
             if (fieldBet == playerBet)
             {
                 betAction = 1;
             }
+            else if (fieldBet >= playerMoney)
+            {
+                betAction = 2;
+            }
             switch (betAction)
             {
                 //Call
                 case 0:
-                    checkBtn.SetActive(false);
                     callBtn.SetActive(true);
                     break;
                 //Check
                 case 1:
-                    callBtn.SetActive(false);
                     checkBtn.SetActive(true);
                     break;
-                //Raise
-                //Fold
+                //AllIn
+                case 2:
+                    allInBtn.SetActive(true);
+                    break;
             }
         }
 
-        void BetPhase()
+        public void PlayerBetPhase()
         {
-            if(fieldBet == playerBet && fieldBet == enemyBet)
+            betPhaseCount++;
+            if(fieldBet == playerBet && fieldBet == enemyBet && betPhaseCount >= 2)
             {
                 phaseEnum++;
+                PhaseManagement(phaseEnum);
             }
 
-            if (fieldBet != playerBet)
+            if (fieldBet != playerBet || betPhaseCount <= 1)
             {
                 CreateBetBotton();
             }
         }
 
+        void Standby()
+        {
+            MakeCard();
+            phaseEnum++;
+            PhaseManagement(phaseEnum);
+        }
 
         void PuriFrop()
         {
-
+            PlayerBetPhase();
         }
 
         void Frop()
         {
-
+            CreateBoard(boardCount);
+            PlayerBetPhase();
         }
 
         void TurnAndLibber()
         {
-
+            CreateBoard(boardCount);
+            PlayerBetPhase();
         }
 
         void ShowDown()
