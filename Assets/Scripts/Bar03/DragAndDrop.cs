@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Draganddrop : MonoBehaviour
 {
-
     // Use this for initialization
     void Start()
     {
@@ -19,15 +18,10 @@ public class Draganddrop : MonoBehaviour
             {
                 var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 var selfPoint = gameObject.transform.position;
-                var selfWidth = gameObject.GetComponent<SpriteRenderer>().bounds.size.y;
-                var selfHeight = gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
-                var ClickPoint = 
+                var selfWidth = gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
+                var selfHeight = gameObject.GetComponent<SpriteRenderer>().bounds.size.y;
 
-                if (tapPoint != )
-                {
-                    return;
-                }
-                else
+                if (tapPoint.x <= -selfWidth / 2 || tapPoint.x >= selfWidth / 2 || tapPoint.y <= -selfHeight / 2 || tapPoint.y >= selfHeight / 2)
                 {
                     Vector3 objectPointInScreen
                       = Camera.main.WorldToScreenPoint(this.transform.position);
@@ -38,8 +32,11 @@ public class Draganddrop : MonoBehaviour
                                       objectPointInScreen.z);
 
                     Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
-                    mousePointInWorld.z = this.transform.position.z;
                     this.transform.position = mousePointInWorld;
+                }
+                else
+                {
+                    return;
                 }
 
                 ////Collider2D上クリックの判定
