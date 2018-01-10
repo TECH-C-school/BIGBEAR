@@ -34,22 +34,49 @@ namespace Assets.Scripts.Bar04
             //カード生成
             MakeCards();
             
-            hogehoge = Deck.MakeCards();
-            for (var i = 0; i < hogehoge.Count; i++)
-            {
-                Debug.Log(hogehoge.Dequeue());
-            }
         }
+
+
+        
+
+
 
 
         //カード複製 or 配置
         private void MakeCards()
         {
+  
+            //52枚のカードをランダムに生成
+            int[] cards = new int[51];
+            for (var i = 0; i < 51; i++)
+            {
+                cards[i] = i + 1;
+            }
+
+            var counter = 0;
+            while (counter < 51)
+            {
+                var index = Random.Range(counter, cards.Length);
+                var tmp = cards[counter];
+                cards[counter] = cards[index];
+                cards[index] = tmp;
+
+                counter++;
+            }
+
+            //ランダム作成したものを順番に入れる
+            Queue<int> decks = new Queue<int>() { };
+            for (var i = 0; i < 51; i++)
+            {
+                decks.Enqueue(cards[i]);
+            }
+            
+
             //カードを５枚複製する
             for (int i = 0; i < 5; i++)
             {
                 //デッキの上から5枚取り出す
-                while (Deck.MakeCards().Count < 41)
+                while (decks.Count < 41)
                 {
                  /*   decud*/
                 }
@@ -60,7 +87,7 @@ namespace Assets.Scripts.Bar04
                 cardObject.transform.position = new Vector2(i * 1.8f - 3.84f, 0);
 
                 //手札を反転する
-                //カードを切り替える方法を決める
+                
                 //SpriteRenderer
 
                 GameObject SelCard = Instantiate(cardSelect);
