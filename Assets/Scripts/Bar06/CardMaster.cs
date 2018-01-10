@@ -35,13 +35,13 @@ public class CardMaster : MonoBehaviour
         Invoke("Count",0.5f);
         Invoke("Num", 1);
     }
-    public Card[] setCard = new Card[11];
-    public Card[] setCard2 = new Card[6];
-    public MarkOut[] Markout = new MarkOut[16];
-    public int[] countcard = new int[11];
-    public int[] dealercountcard = new int [6];
-    public int puls = 0;
-    public int Ace = 0;
+    private Card[] setCard = new Card[11];
+    private Card[] setCard2 = new Card[6];
+    private MarkOut[] Markout = new MarkOut[16];
+    private int[] countcard = new int[11];
+    private int[] dealercountcard = new int [6];
+    private int puls = 0;
+    private int Ace = 0;
     public void MakeCard()
     {
         for (int i = 0; i < 15; i++)
@@ -201,11 +201,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 1;
+                            countcard[0] = 1;
                         }
                         else
                         {
-                            countcard[i] = 1;
+                            countcard[1] = 1;
                         }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
@@ -214,11 +214,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 1;
+                            countcard[0] = 1;
                         }
                         else
                         {
-                            countcard[i] = 1;
+                            countcard[1] = 1;
                         }
                     }
                     else if (setCard[i].mark == Mark.Heart)
@@ -227,11 +227,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 1;
+                            countcard[0] = 1;
                         }
                         else
                         {
-                            countcard[i] = 1;
+                            countcard[1] = 1;
                         }
                     }
                     else
@@ -240,11 +240,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 1;
+                            countcard[0] = 1;
                         }
                         else
                         {
-                            countcard[i] = 1;
+                            countcard[1] = 1;
                         }
                     }
                     break;
@@ -256,11 +256,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 2;
+                            countcard[0] = 2;
                         }
                         else
                         {
-                            countcard[i] = 2;
+                            countcard[1] = 2;
                         }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
@@ -269,11 +269,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 2;
+                            countcard[0] = 2;
                         }
                         else
                         {
-                            countcard[i] = 2;
+                            countcard[1] = 2;
                         }
                     }
                     else if (setCard[i].mark == Mark.Heart)
@@ -282,11 +282,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 2;
+                            countcard[0] = 2;
                         }
                         else
                         {
-                            countcard[i] = 2;
+                            countcard[1] = 2;
                         }
                     }
                     else
@@ -295,11 +295,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 2;
+                            countcard[0] = 2;
                         }
                         else
                         {
-                            countcard[i] = 2;
+                            countcard[1] = 2;
                         }
                     }
                     break;
@@ -311,11 +311,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 3;
+                            countcard[0] = 3;
                         }
                         else
                         {
-                            countcard[i] = 3;
+                            countcard[1] = 3;
                         }
 
                     }
@@ -325,11 +325,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 3;
+                            countcard[0] = 3;
                         }
                         else
                         {
-                            countcard[i] = 3;
+                            countcard[1] = 3;
                         }
                     }
                     else if (setCard[i].mark == Mark.Heart)
@@ -338,11 +338,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 3;
+                            countcard[0] = 3;
                         }
                         else
                         {
-                            countcard[i] = 3;
+                            countcard[1] = 3;
                         }
                     }
                     else
@@ -351,11 +351,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[i] = 3;
+                            countcard[0] = 3;
                         }
                         else
                         {
-                            countcard[i] = 3;
+                            countcard[1] = 3;
                         }
                     }
                     break;
@@ -755,11 +755,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 11;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 11;
+                            countcard[1] = 10;
                         }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
@@ -768,11 +768,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 11;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 11;
+                            countcard[1] = 10;
                         }
                     }
                     else if (setCard[i].mark == Mark.Heart)
@@ -781,11 +781,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 11;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 11;
+                            countcard[1] = 10;
                         }
                     }
                     else
@@ -794,11 +794,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 11;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 11;
+                            countcard[1] = 10;
                         }
                     }
                     break;
@@ -810,11 +810,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 12;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 12;
+                            countcard[1] = 10;
                         }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
@@ -823,11 +823,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 12;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 12;
+                            countcard[1] = 10;
                         }
                     }
                     else if (setCard[i].mark == Mark.Heart)
@@ -836,11 +836,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 12;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 12;
+                            countcard[1] = 10;
                         }
                     }
                     else
@@ -849,11 +849,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 12;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 12;
+                            countcard[1] = 10;
                         }
                     }
                     break;
@@ -865,11 +865,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if (i == 0)
                         {
-                            countcard[0] = 13;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 13;
+                            countcard[1] = 10;
                         }
                     }
                     else if (setCard[i].mark == Mark.Diamond)
@@ -878,11 +878,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if(i == 0)
                         {
-                            countcard[0] = 13;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 13;
+                            countcard[1] = 10;
                         }
                     }
                     else if (setCard[i].mark == Mark.Heart)
@@ -891,11 +891,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if(i == 0)
                         {
-                            countcard[0] = 13;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 13;
+                            countcard[1] = 10;
                         }
                     }
                     else
@@ -904,11 +904,11 @@ public class CardMaster : MonoBehaviour
                         CdRenderer.sprite = cdScripts;
                         if(i == 0)
                         {
-                            countcard[0] = 13;
+                            countcard[0] = 10;
                         }
                         else
                         {
-                            countcard[1] = 13;
+                            countcard[1] = 10;
                         }
                     }
                     break;
@@ -1238,7 +1238,7 @@ public class CardMaster : MonoBehaviour
         }
     }
     public int count = 5;
-    public int I = 1;
+    public int I = 2;
     public void hitCard()
     {
         if (j <= 11)
@@ -1946,7 +1946,7 @@ public class CardMaster : MonoBehaviour
 
         for (int i = 0; i <= I; i++)
         {
-            puls += countcard[I];
+            puls = countcard[I] + puls;
         }
         for (int j = 0; j < 2; j++)
         {
@@ -1993,74 +1993,37 @@ public class CardMaster : MonoBehaviour
                 case 10:
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
                     NumRenderer.sprite = numScripts;
-                    var numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
-                    var numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
-                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
-                    numObject2.transform.localScale = new Vector3(1, 1, 1);
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_0");
-                    NumRenderer.sprite = numScripts;
+                   
                     break;
                 case 11:
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
                     NumRenderer.sprite = numScripts;
-                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
-                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
-                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
-                    numObject2.transform.localScale = new Vector3(1, 1, 1);
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
-                    NumRenderer.sprite = numScripts;
+                   
                     break;
                 case 12:
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
                     NumRenderer.sprite = numScripts;
-                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
-                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
-                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
-                    numObject2.transform.localScale = new Vector3(1, 1, 1);
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
-                    NumRenderer.sprite = numScripts;
+                   
                     break;
                 case 13:
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
                     NumRenderer.sprite = numScripts;
-                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
-                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
-                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
-                    numObject2.transform.localScale = new Vector3(1, 1, 1);
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
-                    NumRenderer.sprite = numScripts;
+                    
                     break;
                 case 14:
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
                     NumRenderer.sprite = numScripts;
-                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
-                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
-                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
-                    numObject2.transform.localScale = new Vector3(1, 1, 1);
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_4");
-                    NumRenderer.sprite = numScripts;
+                   
                     break;
                 case 15:
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
                     NumRenderer.sprite = numScripts;
-                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
-                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
-                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
-                    numObject2.transform.localScale = new Vector3(1, 1, 1);
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_5");
-                    NumRenderer.sprite = numScripts;
+                    
                     break;
                 case 16:
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
                     NumRenderer.sprite = numScripts;
-                    numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
-                    numObject2 = Instantiate(numPrefab, transform.position, Quaternion.identity);
-                    numObject2.transform.position = new Vector3(1.9f * 0.6f - 0.4f, -4, 0);
-                    numObject2.transform.localScale = new Vector3(1, 1, 1);
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_6");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                default:
+
                     break;
             }
         }
