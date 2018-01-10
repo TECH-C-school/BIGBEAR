@@ -98,7 +98,7 @@ namespace Assets.Scripts.Bar06
             }
 
             var counter = 0;
-            while (counter < 52)
+            while (counter < 4)
             {
                 var index = Random.Range(counter, cards.Length);
                 var tmp = cards[counter];
@@ -108,14 +108,25 @@ namespace Assets.Scripts.Bar06
                 counter++;
             }
 
-            card[] trump = new card[53];
-            for (int i = 0; i < 53; i++)
+            card[] trump = new card[52];
+            for (int i = 0; i < 52; i++)
             {
 
-                //19
+
                 trump[i].number = (cards[i] - 1) % 13 + 1;
                 trump[i].mark = (Mark)((cards[i] - 1) / 13);
             }
+
+
+
+
+
+
+
+
+
+
+
 
 
             //4枚のカードの表示
@@ -130,11 +141,11 @@ namespace Assets.Scripts.Bar06
                     case Mark.S:
                         fileName += "s";
                         break;
-                    case Mark.H:
-                        fileName += "h";
-                        break;
                     case Mark.C:
                         fileName += "c";
+                        break;
+                    case Mark.H:
+                        fileName += "h";
                         break;
                     default:
                         fileName += "d";
