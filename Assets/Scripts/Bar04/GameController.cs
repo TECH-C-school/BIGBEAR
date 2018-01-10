@@ -44,11 +44,11 @@ namespace Assets.Scripts.Bar0404
 
         //山札をシャッフルするための乱数生成
         public int[] MakeRundumNumber(){
-            int[] values = new int[53];
-            for (int i = 0; i < 53; i++){
+            int[] values = new int[52];
+            for (int i = 0; i < 52; i++){
                 values[i] = i;
             }
-            for (int i = 0; i < 53; i++) {
+            for (int i = 0; i < 52; i++) {
                 int abc = UnityEngine.Random.Range(0, values.Length);
                 int xyz;
                 xyz = values[i];

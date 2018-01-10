@@ -29,8 +29,11 @@ namespace Assets.Scripts.Bar0404 {
         }
 
         public void PokerCheck() {
-
-            if (FullHouse(m_HundNumber)) {
+            if (RoyalStraightFlush(m_HundNumber,m_HundMark)){ 
+                Debug.Log("ロイヤルストレートフラッシュ");
+            }else if (FooCard(m_HundNumber)) {
+                Debug.Log("フォーカード");
+            } else if (FullHouse(m_HundNumber)) {
                 Debug.Log("フルハウス");
             } else if(Flash(m_HundMark)){
                 Debug.Log("フラッシュ");
@@ -127,12 +130,42 @@ namespace Assets.Scripts.Bar0404 {
             }else if (xyz[0] == xyz[1]){
                 if (xyz[2] == xyz[3] && xyz[2] == xyz[4]){ Answer = true; }
             }
-            
             return Answer;
-           
+        }
+
+        bool FooCard(int[] xyz) {
+            bool Answer =false;
+            for (int i = 0; i < xyz.Length; i++)
+            {
+                for (int j = i + 1; j < xyz.Length; j++)
+                {
+                    if (xyz[i] == xyz[j])
+                    {
+                        for (int k = j + 1; k < xyz.Length; k++)
+                        {
+                            if (xyz[i] == xyz[k])
+                            {
+                                for (int l = k + 1; l < xyz.Length; l++)
+                                {
+                                    if (xyz[i] == xyz[l])
+                                    {
+                                        Answer = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return Answer;
         }
 
 
+        bool RoyalStraightFlush(int[] xyz,char[]abc) {
+            if (Flash(abc) && xyz[0] == 10 && xyz[1] == 11 && xyz[2] == 12 && xyz[3] == 13 && xyz[4] == 14) { return true; }
+            else { return false; }
+        }
 
     }
 
