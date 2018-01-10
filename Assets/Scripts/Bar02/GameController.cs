@@ -460,9 +460,9 @@ namespace Assets.Scripts.Bar02 {
             //winのみか判断
             if (getObj.Length != 1) return;
             SpriteRenderer win = getObj[0].GetComponent<SpriteRenderer>();
-            string winName = win.sprite.ToString().Substring(0, 9);
+            string winName = win.sprite.ToString().Substring(0, 3);
 
-            if (winName == "bakarawin")
+            if (winName == "win")
             {
                 Destroy(win.gameObject);
             }
