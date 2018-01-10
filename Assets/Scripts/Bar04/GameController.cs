@@ -38,7 +38,7 @@ namespace Assets.Scripts.Bar0404
 
 
         public void Update(){
-
+            CardClick();
 
         }
 
@@ -146,7 +146,16 @@ namespace Assets.Scripts.Bar0404
 
         }
 
-        
+        void CardClick() {
+            if (!Input.GetMouseButtonDown(0)) { return; }
+            Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D collision2D = Physics2D.OverlapPoint(tapPoint);
+            if (!collision2D) { return; }
+            GameObject Card = collision2D.transform.gameObject;
+            var CardSprict = Card.GetComponent<Card>();
+            CardSprict.CardSelect();
+            
+        }
 
 
 
