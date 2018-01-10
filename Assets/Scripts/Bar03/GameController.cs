@@ -24,19 +24,24 @@ namespace Assets.Scripts.Bar03
         {
 
         }
-        //enumクラスの用意と宣言
-        public enum CardNumber
+        //クラスの用意と宣言
+        string[] Card =
         {
-            c01 = 1, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13,
-            d01, d02, d03, d04, d05, d06, d07, d08, d09, d10, d11, d12, d13,
-            h01, h02, h03, h04, h05, h06, h07, h08, h09, h10, h11, h12, h13,
-            s01, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13,
-        }
+            "c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "c11", "c12", "c13",
+            "d01", "d02", "d03", "d04", "d05", "d06", "d07", "d08", "d09", "d10", "d11", "d12", "d13",
+            "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13",
+            "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13",
+            "c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "c11", "c12", "c13",
+            "d01", "d02", "d03", "d04", "d05", "d06", "d07", "d08", "d09", "d10", "d11", "d12", "d13",
+            "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13",
+            "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13",
+        };
+
 
         // カードの生成
         public void MakeBackCards()
         {
-            int count = 0;
+
             m_Cards = MakeRandomCardNumbers();
 
             //カードオブジェクトの生成
@@ -44,7 +49,7 @@ namespace Assets.Scripts.Bar03
             var CardPrefab = Resources.Load<GameObject>("Prefabs/Bar03/Cards");
             Transform DeckObject = GameObject.Find("Deck").transform;
             Transform CardObjectf = GameObject.Find("FrontCards").transform;
-            var CardPrefabf = Resources.Load<GameObject>("Prefabs/Bar03/FrontCard");
+
 
             //４×６（5枚裏面1枚表面）でカードを配置
             for (int a = 0; a < 4; a++)
@@ -62,12 +67,14 @@ namespace Assets.Scripts.Bar03
                     }
                     else
                     {
+                        var CardPrefabf = Resources.Load<GameObject>("Prefabs/Bar03/Front/" + Card[m_Cards[NextCard]]);
                         var cardObject = Instantiate(CardPrefabf, transform.position, Quaternion.identity);
                         cardObject.transform.position = new Vector3(
                             a * 1.7f + -7.9f,
                             -b * -0.25f + 2.35f,
                             0);
                         cardObject.transform.parent = CardObjectf;
+                        NextCard++;
                     }
 
                 }
@@ -89,6 +96,7 @@ namespace Assets.Scripts.Bar03
                     }
                     else
                     {
+                        var CardPrefabf = Resources.Load<GameObject>("Prefabs/Bar03/Front/" + Card[m_Cards[NextCard]]);
                         var cardObject2f = Instantiate(CardPrefabf, transform.position, Quaternion.identity);
                         cardObject2f.transform.position = new Vector3(
                             c * 1.7f + -1.0f,
@@ -96,14 +104,15 @@ namespace Assets.Scripts.Bar03
                             0
                             );
                         cardObject2f.transform.parent = CardObjectf;
+                        NextCard++;
                     }
                 }
             }
-            
+
             //残りのカードでデッキを生成
-            for(var f = NextCard;f < m_Cards.Length - 54; f++)
+            for (var f = NextCard; f < m_Cards.Length - 54; f++)
             {
-                var cardObject3 = Instantiate(CardPrefab, transform.position,Quaternion.identity);
+                var cardObject3 = Instantiate(CardPrefab, transform.position, Quaternion.identity);
                 cardObject3.transform.position = new Vector3(
                     -7.84f,
                     -2.5f,
@@ -111,13 +120,13 @@ namespace Assets.Scripts.Bar03
                     );
                 cardObject3.transform.parent = DeckObject;
             }
-            
+
         }
 
-        
+
 
         //山札を作る際のカウント
-        public  int[] MakeRandomCardNumbers()
+        int[] MakeRandomCardNumbers()
         {
             int[] values = new int[104];
             for (int a = 0; a < values.Length; a++)
@@ -138,9 +147,20 @@ namespace Assets.Scripts.Bar03
             return values;
         }
 
-        public void ClickCards()
+        //マウスドラッグでオブジェクトを動かす
+        void OnMouseDrag()
         {
+            Vector3 objectPointInScreen
+                = Camera.main.WorldToScreenPoint(this.transform.position);
 
+            Vector3 mousePointInScreen
+                = new Vector3(Input.mousePosition.x,
+                              Input.mousePosition.y,
+                              objectPointInScreen.z);
+
+            Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
+            mousePointInWorld.z = this.transform.position.z;
+            this.transform.position = mousePointInWorld;
         }
 
 
