@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LOSE : MonoBehaviour {
+public class Lose : MonoBehaviour {
 
-   /* private void Start()
+    public void vanish()
     {
-        gameObject.SetActive(false);
+
     }
-    public void Lose()
-    {
-        gameObject.SetActive(true);
-    }*/
+
 }
