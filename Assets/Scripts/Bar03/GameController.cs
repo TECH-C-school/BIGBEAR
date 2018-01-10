@@ -8,6 +8,7 @@ namespace Assets.Scripts.Bar03 {
     {
         private string _nextCardString = "c01";
         private int _nextCardNumber = 1;
+        private int[] _deckMaxNumber = new int[20];
         private Vector3  thisHit;
 
         private Cards TappedCard　= null;
@@ -32,7 +33,7 @@ namespace Assets.Scripts.Bar03 {
         /// カードをセットする関数
         /// </summary>
         //裏面のカードをセットする関数
-        private void MakeBackCards()
+        /*private void MakeBackCards()
         {
             int count = 0;
             string[] cardMarkNumber = new string[104];
@@ -62,6 +63,7 @@ namespace Assets.Scripts.Bar03 {
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
                         cardSet.Deck = x;
+                        _deckMaxNumber[x] = y;
                         cardSet.TurnCardFaceDown();
                         count++;
                     }
@@ -76,6 +78,7 @@ namespace Assets.Scripts.Bar03 {
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
                         cardSet.Deck = x;
+                        _deckMaxNumber[x] = y;
                         cardSet.TurnCardFaceUp();
                         Debug.Log(cardMarkNumber[count]);
                         count++;
@@ -92,7 +95,9 @@ namespace Assets.Scripts.Bar03 {
                 cardSet.TurnCardFaceDown();
                 count++;
             }
-        }
+        }*/
+
+        //cardを配置する関数
         private void CardsSet()
         {
             int count = 0;
@@ -122,6 +127,8 @@ namespace Assets.Scripts.Bar03 {
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
                         cardSet.Deck = x;
+                        cardSet.DeckNum = y;
+                        _deckMaxNumber[x] = y;
                         cardSet.TurnCardFaceDown();
                         count++;
                     }
@@ -134,6 +141,8 @@ namespace Assets.Scripts.Bar03 {
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
                         cardSet.Deck = x;
+                        cardSet.DeckNum = y;
+                        _deckMaxNumber[x] = y;
                         cardSet.TurnCardFaceUp();
                         Debug.Log(cardMarkNumber[count]);
                         count++;
@@ -293,16 +302,29 @@ namespace Assets.Scripts.Bar03 {
             //カードから数字のみをとりだす
             bool parsed = System.Int32.TryParse(card.String.Substring(1, 2), out numValue);
 
+            Debug.Log("このデッキのMAX"+_deckMaxNumber[card.Deck]);
+            Debug.Log("このカードのｙ" + card.DeckNum);
+
+
             //前回クリックカード+1と今回クリックしたカードが同じ
-            if (_nextCardNumber == numValue) {
+            if (_nextCardNumber == numValue && card.DeckNum == _deckMaxNumber[card.Deck] && TappedCard != null) {
                 Debug.Log("OK");
                 TappedCard.transform.position = new Vector3(hitTransform.x,hitTransform.y - 0.31f, hitTransform.z - 0.1f);
                 var cardchange = Physics2D.Raycast(tapPoint, -Vector3.up);
+                _deckMaxNumber[card.Deck]++;
+                _deckMaxNumber[TappedCard.Deck]--;
+                TappedCard.DeckNum = _deckMaxNumber[card.Deck];
                 TappedCard.Deck = card.Deck;
-                
             }
 
-
+            //カードをクリックして一番上にあり裏だったらそのカードを表にする
+            if(_deckMaxNumber[card.Deck] == card.DeckNum && !card.IsFront)
+            {
+                Debug.Log("クリックしたカードを表にします。");
+                card.TurnCardFaceUp();
+            }
+            
+            
 
             //次のカードを判明させる。13だったら変えない
             if (numValue != 13) {
@@ -315,19 +337,22 @@ namespace Assets.Scripts.Bar03 {
                 Debug.Log("次のカードはないです");
             }
             //前回のカードを覚えさせる
-            if (TappedCard == null)
+            if (card.DeckNum == _deckMaxNumber[card.Deck])
             {
-                TappedCard = card;
+                if (TappedCard == null)
+                {
+                    TappedCard = card;
+                }
+                else
+                {
+                    TappedCard = null;
+                }
             }
-            else
-            {
-                TappedCard = null;
-            }
-
+            
         }
         public void ButtonPush()
         {
-            Debug.Log("ButtonPush");
+            
         }
         public void DeckCardCheck()
         {
@@ -338,6 +363,24 @@ namespace Assets.Scripts.Bar03 {
             }
 
 
+        }
+        public void DragMouse()
+        {
+            
+            if (Input.GetMouseButtonDown(0)) 
+            {
+                Ray ray = new Ray();
+                RaycastHit hit = new RaycastHit();
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if(Physics.Raycast(ray.origin, ray.direction,out hit, Mathf.Infinity))
+                {
+                    if (hit.collider.gameObject)
+                    {
+
+                    }
+                }
+            }
         }
     }
 
