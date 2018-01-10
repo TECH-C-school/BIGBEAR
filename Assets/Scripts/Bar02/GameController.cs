@@ -96,6 +96,7 @@ namespace Assets.Scripts.Bar02
 
 
             counter = 1;
+            int num = 0;
             for (int x = 0; x < 7; x++)
             {
                 for (int y = 0; y < counter; y++)
@@ -109,7 +110,11 @@ namespace Assets.Scripts.Bar02
 
                     cardpos.GetComponent<Renderer>().sortingOrder = counter;
                     cardpos.transform.parent = fieldcard.transform;
-                    choice++;
+                    var card = cardpos.GetComponent<Cards>();
+                    //CardスクリプトのNumberにMakeRandomの値代入
+                    card.Number = num;
+                    card.TurnCardFaceUp();
+                    choice++; num++;
                 }
                 counter++;
             }
@@ -122,7 +127,7 @@ namespace Assets.Scripts.Bar02
 
             //クリックされた位置を取得
             var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            tapPoint.z = 0;
+            //tapPoint.z = 0;
             //ScreenToWorldPoint(位置(Vector3)):スクリーン座標をワールド座標に変換する
 
 
@@ -133,19 +138,19 @@ namespace Assets.Scripts.Bar02
             var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
             if (!hitObject) return;
 
-            var colidercard = hitObject.collider.GetComponent<BoxCollider2D>();
+            /*var colidercard = hitObject.collider.GetComponent<BoxCollider2D>();
             OnTriggerStay2D(colidercard);
-            if (!colidercard) return;
+            if (!colidercard) return;*/
 
             //クリックされた位置にflameを装着
             var Flame = GameObject.Find("cardflame");
             Flame.transform.position = hitObject.transform.position;
             
         }
-        public void OnTriggerStay2D(Collider2D collision)
+        /*public void OnTriggerStay2D(Collider2D collision)
         {
             collision.GetComponent<BoxCollider2D>().enabled = false;
-        }
+        }*/
         /* public void TransitionToResult()
          {
              SceneManager.LoadScene("Result");

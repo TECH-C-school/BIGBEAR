@@ -6,20 +6,41 @@ namespace Assets.Scripts.Bar02
 {
     public class Cards : MonoBehaviour
     {
-        public void SettingCards()
+
+        private int _number;
+
+        public int Number
         {
-            GameObject backCard = GameObject.Find("Back");
 
-            backCard.transform.position = new Vector3(
-            6.0f,
-            3.9f,
-            0);
-
-
+            get { return _number; }
+            set { _number = value; }
         }
-        public void ClickEvent()
+
+        public void TurnCardFaceUp()
         {
-            //var card = cardObject.GetComponent<Card>();
+            TurnCard(true);
+        }
+        public void TurnCardFaceDown()
+        {
+            TurnCard(false);
+        }
+        public void TurnCard(bool faceup)
+        {
+            Sprite cardSprite = null;
+            GameObject onField = null;
+            var oncard = GameObject.Find("FieldCards").gameObject;
+
+
+            if (faceup)
+            {
+                onField = oncard.transform.GetChild(_number).gameObject;
+            }
+            else
+            {
+                cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+            }
+            var spriteRenderer = transform.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = cardSprite;
         }
     }
 }
