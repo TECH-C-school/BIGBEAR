@@ -16,8 +16,9 @@ public class Cards : MonoBehaviour
 
     }
     GameObject[] FloorCardHolder = new GameObject[28];//場に置かれるカード
-    GameObject[] DeckcardHolder = new GameObject[24];//山札に置かれるカード
-    GameObject[] MemoryCards = new GameObject[24];
+    GameObject[] DeckcardHolder = new GameObject[25];//山札に置かれるカード
+    GameObject[] MemoryCards = new GameObject[24];//山札からめっくったカードを記録する
+    private GameObject deckbackcard;
     private GameObject selectCred;
     private Vector3 RecordPosition;
     private GameObject LoadBackCard;
@@ -39,7 +40,11 @@ public class Cards : MonoBehaviour
 
     void Update()
     {
-        ClickCard();
+        if (0 < deckcount)
+        {
+            MemoryCards[deckcount - 1].GetComponent<BoxCollider2D>().enabled = true;
+        }
+            ClickCard();
         if (selectCred)
         {
             Vector3 setPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -140,9 +145,11 @@ public class Cards : MonoBehaviour
         FloorCheckCard = GameObject.Find("FloorCards");
         //カード置き場にbackカードの生成
         MemoryDeckBackCard = Resources.Load<GameObject>("Prefabs/Bar01/deckback");
+        //MemoryDeckBackCard.transform.position = new Vector3(-4.5f,1.97f,5);
+        //Debug.Log(MemoryDeckBackCard.transform.position);
         MakeCard = Instantiate(MemoryDeckBackCard, transform.position, Quaternion.identity);
         MakeCard.transform.position = new Vector3(-4.5f, 1.97f, -1);
-        MemoryDeckBackCard.gameObject.SetActive(true);
+        MemoryDeckBackCard.SetActive(true);
         LoadBackCard = Resources.Load<GameObject>("Prefabs/Bar01/back");
 
         //表のカードを生成する
@@ -218,14 +225,18 @@ public class Cards : MonoBehaviour
 
         if (HitObject.transform.name == x)
         {
-            //Debug.Log(MemoryDeckBackCard);
+            if (DeckcardHolder[deckcount] == null)
+            {
+                HitObject.transform.position = new Vector3(-40.5f, 50, -1);
+            }
             DeckTrunCards();
-            //Debug.Log("hogehoge");
             return;
         }
 
+        //if (HitObject == MemoryCards)
         RecordPosition = HitObject.transform.position;
         selectCred = HitObject.transform.gameObject;
+        selectCred.GetComponent<BoxCollider2D>().enabled = false;
 
     }
 
@@ -247,7 +258,7 @@ public class Cards : MonoBehaviour
     /// </summary>
     private void DeckTrunCards()
     {
-        TurnDeckCard = GameObject.Find("DeckCards");
+        //TurnDeckCard = GameObject.Find("DeckCards");
         if (2 < deckcount)
         {
             /*
@@ -270,20 +281,36 @@ public class Cards : MonoBehaviour
             Debug.Log(TurnDeckCard.transform.position);
             */
         }
+        for (int x = 0; x < deckcount; x++)
+        {
+            MemoryCards[x].GetComponent<BoxCollider2D>().enabled = false;
+        }
         for (int i = 0; i < 3; i++)
         {
             if (DeckcardHolder[deckcount] == null)
             {
-                //MemoryDeckBackCard.gameObject.SetActive(false);
-                Debug.Log("hogehoge");
+                //MemoryDeckBackCard.SetActive(false);
+                /*
+                MemoryDeckBackCard.transform.position = new Vector3(100, 0, 1);
+                Debug.Log(MemoryDeckBackCard.transform.position);
+                */
+
+                //MakeCard = Instantiate(MemoryDeckBackCard, transform.position, Quaternion.identity);
+                //Debug.Log(MakeCard);
+                //MakeCard.transform.position = new Vector3(-40.5f, 50, -1);
+
+                //Destroy(MemoryDeckBackCard);
+                //Debug.Log("hogehoge");
                 return;
             }
             MakeCard = Instantiate(DeckcardHolder[deckcount], transform.position, Quaternion.identity);
             MakeCard.transform.position = new Vector3(-3f + 0.2f * i, 1.97f, -14 - i);
             MemoryCards[deckcount] = MakeCard;
-            Debug.Log(MemoryCards[deckcount]);
-            deckcount++;
+            MemoryCards[deckcount].GetComponent<BoxCollider2D>().enabled = false;
 
+            //Debug.Log(MemoryCards[deckcount]);
+            deckcount++;
+            //Debug.Log(deckcount);
         }
     }
 }
