@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
-        private int positioncounter = 1;
+        private int positioncounter = 2;
+        private int enemyposition = 0;
         private int playercounter = 0;
         private int enemycounter = 0;
         private int DeckCounter = 0;
@@ -63,41 +64,59 @@ namespace Assets.Scripts.Bar06 {
             MakeDeck();
 
             //プレイヤーの初期カードの表示           
-            for (i = 0; i < 2; i++)
+            for(i = 0; i < 4; i += 2)
             {
-                var playerCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
-                var playerCard = Instantiate(playerCardPrefab, transform.position, Quaternion.identity);
-                playerCard.transform.position = new Vector3(0 - i, -2.5f, 0);
-                playerCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
-                if(numbers[DeckCounter] >= 11)
+                var playerCardPrefab1 = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
+                var playerCard1 = Instantiate(playerCardPrefab1, transform.position, Quaternion.identity);
+                playerCard1.transform.position = new Vector3(-2 + i, -2, 0);
+                playerCard1.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
+                if (numbers[DeckCounter] >= 11)
                 {
                     numbers[DeckCounter] = 10;
+                }
+                if (numbers[DeckCounter] == 1)
+                {
+                    if (playercounter < 11)
+                    {
+                        numbers[DeckCounter] = 11;
+                    }
+                    else
+                    {
+                        numbers[DeckCounter] = 1;
+                    }
                 }
                 playercounter = playercounter + numbers[DeckCounter];
                 DeckCounter++;
             }
+            
+
+           
 
             //ディーラーの初期カードの表示
             var enemyCardPrefab_1 = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var enemyCardPrefab_1UP = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
             var enemyCard_1 = Instantiate(enemyCardPrefab_1, transform.position, Quaternion.identity);
-            enemyCard_1.transform.position = new Vector3(0, 2.5f, 0);
+            enemyCard_1.transform.position = new Vector3(0, 2, 0);
             enemyCard_1.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
-            if (numbers[DeckCounter] >= 11)
-            {
-                numbers[DeckCounter] = 10;
-            }
-            enemycounter = enemycounter + numbers[DeckCounter];
-            DeckCounter++;
             
 
             var enemyCardPefab_2 = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
             var enemyCard_2 = Instantiate(enemyCardPefab_2, transform.position, Quaternion.identity);
-            enemyCard_2.transform.position = new Vector3(-1, 2.5f, 0);
+            enemyCard_2.transform.position = new Vector3(-2, 2, 0);
             enemyCard_2.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
             if (numbers[DeckCounter] >= 11)
             {
                 numbers[DeckCounter] = 10;
+            }
+            if (numbers[DeckCounter] == 1)
+            {
+                if (enemycounter < 11)
+                {
+                    numbers[DeckCounter] = 11;
+                }
+                else
+                {
+                    numbers[DeckCounter] = 1;
+                }
             }
             enemycounter = enemycounter + numbers[DeckCounter];
             DeckCounter++;
@@ -112,22 +131,62 @@ namespace Assets.Scripts.Bar06 {
                 
                 var addCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
                 var addCard = Instantiate(addCardPrefab, transform.position, Quaternion.identity);
-                addCard.transform.position = new Vector3(positioncounter, -2.5f, 0);
+                addCard.transform.position = new Vector3(positioncounter, -2, 0);
                 addCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
-                positioncounter++;
+                positioncounter += 2;
                 if (numbers[DeckCounter] >= 11)
                 {
                     numbers[DeckCounter] = 10;
                 }
+                if (numbers[DeckCounter] == 1)
+                {
+                    if (playercounter < 11)
+                    {
+                        numbers[DeckCounter] = 11;
+                    }
+                    else
+                    {
+                        numbers[DeckCounter] = 1;
+                    }
+                }
                 playercounter = playercounter + numbers[DeckCounter];
                 DeckCounter++;
+                if (playercounter >= 22)
+                {
+                    Battle();
+                }
             }
             
         }
         
         public void Battle()
         {
-            Debug.Log(enemycounter);
+            
+            while (enemycounter < 17)
+            {
+                var addEnemyCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
+                var addEnemyCard= Instantiate(addEnemyCardPrefab, transform.position, Quaternion.identity);
+                addEnemyCard.transform.position = new Vector3(enemyposition, 2, 0);
+                addEnemyCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
+                enemyposition += 2;
+                if (numbers[DeckCounter] >= 11)
+                {
+                    numbers[DeckCounter] = 10;
+                }
+                if (numbers[DeckCounter] == 1)
+                {
+                    if (enemycounter < 11)
+                    {
+                        numbers[DeckCounter] = 11;
+                    }
+                    else
+                    {
+                        numbers[DeckCounter] = 1;
+                    }
+                }
+                enemycounter = enemycounter + numbers[DeckCounter];
+                DeckCounter++;
+            }
         }
 
         public void TransitionToResult() {
