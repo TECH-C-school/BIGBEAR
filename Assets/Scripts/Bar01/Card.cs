@@ -26,15 +26,13 @@ using UnityEngine;
            's','s','s','s','s','s','s','s','s','s','s','s','s',
        };
 
-    int n_Number;
-
-
+    int m_Number;
 
     //n_Numberをpublic変数として取得
     public int Number
     {
-        get { return n_Number; }
-        set { n_Number = value; }
+        get { return m_Number; }
+        set { m_Number = value; }
     }
 
     public void TurnCardFaceUp()
@@ -53,8 +51,8 @@ using UnityEngine;
         if (FaceUp)
         {           
             //CardsCollar[n_Number]+ CardsNumber[n_Number]
-            Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Cards[n_Number]);
-            Debug.Log(Cards[n_Number]);
+            Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Cards[m_Number]);
+            Debug.Log(Cards[m_Number]);
         }
         else
         {

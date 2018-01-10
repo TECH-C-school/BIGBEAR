@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class Bar0104 : MonoBehaviour {
 
-    int n_NextCard = 0;
+    GameObject Catch;
+
+    int m_NextCard = 0;
+    public int[] Dack;
+    
+    public int NextCard {
+        get { return m_NextCard; }
+        set { m_NextCard = value; }
+    }
+
     // Use this for initialization
-    void Start () {}
+    void Start () { Dack = MakeRandomNunbers(); }
 	// Update is called once per frame
 	void Update () {}
+
+
 
     private int[] MakeRandomNunbers()
     {
@@ -28,7 +39,7 @@ public class Bar0104 : MonoBehaviour {
         return values;
     }
 
-    private void ClickCard()
+    private void ClickCards()
     {
         //マウスクリックの判定
         if (!Input.GetMouseButtonDown(0)) return;
@@ -38,13 +49,17 @@ public class Bar0104 : MonoBehaviour {
 
         //Collider2D上のクリックの判定
         if (!Physics2D.OverlapPoint(tapPoint)) return;
-
+        Debug.Log("hogehoge");
         //クリックした位置のオブジェクトを取得
         var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
+        Debug.Log(hitObject);
         if (!hitObject) return;
 
+        Catch = hitObject.transform.gameObject;
+        Debug.Log(Catch);
+
         //クリックされたカードスクリプトを取得
-        var card = hitObject.collider.gameObject.GetComponent<Card>();
-        Debug.Log("hit object is " + card.Number);                            
+        //var card = hitObject.collider.gameObject.GetComponent<Card>();
+        //Debug.Log("hit object is " + card.Number);                            
     }
 }
