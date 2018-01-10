@@ -66,7 +66,7 @@ namespace Assets.Scripts.Bar07
         }
 
 
-        //指定したナンバーのスプライトを渡す
+        //指定したナンバーの数字スプライトを渡す
         private Sprite SpriteSearch(int number)
         {
             Sprite result;

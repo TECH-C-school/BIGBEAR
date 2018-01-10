@@ -9,38 +9,74 @@ namespace Assets.Scripts.Bar07
     {
         //カードに付けてクリックで反転
 
+        ResultController RC;
 
 
         //初期設定で裏
         private bool cardstate = false;
 
-        private string[,] testcase = new string[4,13];
+        private bool side;
+
+        private int resultnumber;
+
+        public SpriteRenderer cardRenderer;
+
+        private void Start()
+        {
+            RC = GameObject.Find("ResultPlate(Clone)").GetComponent<ResultController>();
+            cardRenderer = transform.GetComponent<SpriteRenderer>();
+        }
+
 
 
         void OnMouseDown()
         { 
-                testcase[0, 0] = "images/Bar/Cards/c01";  
             cardaction();
         }
 
         //カードステートが偽で表に変える
-        //要追加:カードのナンバーをランダムで取得して表示する処理
+
         public void cardaction()
         {
-            SpriteRenderer cardRenderer = transform.GetComponent<SpriteRenderer>();
-            if (cardstate != true)
+
+            if (cardstate == false)
             {
-                cardRenderer.sprite = Resources.Load<Sprite>(testcase[0,0]);
+                if (transform.position.x < 0) {side = true;}
+                else if (transform.position.x > 0) {side = false;}
+
+                cardRenderer.sprite = RC.CardChange();
+
+
+
+
+                
+                resultnumber = (RC.randomarray[RC.count - 1] + 1) % 13;
+                if(resultnumber >= 10)
+                {
+                    RC.ChangeScore(0, side);
+                }
+                else
+                {
+                    RC.ChangeScore(resultnumber, side);
+                }
+
+
+
                 cardstate = true;
-            }
-            else
-            {
-                cardRenderer.sprite = Resources.Load<Sprite>("images/Bar/Cards/back");
-                cardstate = false;
+
+
+                
+                //ゲーム終了条件、試験用
+                if (RC.count >= 2)
+                {
+                    RC.DesideWinner();
+                }
+
             }
 
 
         }
+
 
 
     }

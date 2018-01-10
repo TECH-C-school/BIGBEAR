@@ -9,38 +9,19 @@ namespace Assets.Scripts.Bar07
     {
         //カードフレームに付けてクリックでコイン生成
 
+        CoinController CC;
 
-        public GameObject coin;
-        private GameObject[] coins;
-
+        private void Start()
+        {
+            CC = GameObject.Find("CoinCounter(Clone)").GetComponent<CoinController>();
+        }
 
         void OnMouseDown()
         {
-            //要追加：回数を重ねる度コインの生成個所をずらす処理
-            GameObject coins = Instantiate(coin, transform.position+new Vector3(0,0,-1), Quaternion.identity);
-
-            if (transform.name == "draw_cardflame(Clone)")
-            {
-                //名前付け
-                coins.name = "drawcoin";
-            }
-            else if(transform.name == "player_cardflame")
-            {
-                //名前付け
-                coins.name = "playercoin";
-            }else if(transform.name == "dealer_cardflame")
-            {
-                //名前付け
-                coins.name = "dealercoin";
-            }
-
+            CC.coincreate(transform.position);
         }
 
 
-        public void CoinReset()
-        {
-            Debug.Log("Reset");
-           
-        }
+
     }
 }
