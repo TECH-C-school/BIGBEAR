@@ -671,48 +671,7 @@ namespace Assets.Scripts.Bar01 {
                         return card.From;
                 }
             }
-            //else if(hitCard.name.IndexOf("firstColumn") != -1)
-            //{
-            //    if (selectCard.GetComponent<Card>().CardNumber != 13) { return selectCard.GetComponent<Card>().From; }
-            //    int i = 0;
-            //    for(i = 0; i < firstPositions.Length; i++)
-            //    {
-            //        if(hit.transform.position == firstPositions[i].transform.position)
-            //        {
-            //            CardMove(card, stageArray[i]);
-            //            break;
-            //        }
-            //    }
-                
-            //    return hit.transform.position;
-            //}
-            //else if(hitCard.name == "CardFlame")
-            //{
-            //    switch (hit.transform.GetChild(0).name)
-            //    {
-            //        case "d":
-            //            if(card.CardType != Card.CardTypes.Diamond) { return card.From; }
-            //            if(card.CardNumber != outArray1[0]) { return card.From; }
-            //            outArray1[0]++;
-            //            return hit.transform.position;
-            //        case "s":
-            //            if(card.CardType != Card.CardTypes.Spade) { return card.From; }
-            //            if (card.CardNumber != outArray1[1]) { return card.From; }
-            //            outArray1[1]++;
-            //            return hit.transform.position;
-            //        case "h":
-            //            if(card.CardType != Card.CardTypes.Heart) { return card.From; }
-            //            if (card.CardNumber != outArray1[2]) { return card.From; }
-            //            outArray1[2]++;
-            //            return hit.transform.position;
-            //        case "c":
-            //            if(card.CardType != Card.CardTypes.Clover) { return card.From; }
-            //            if (card.CardNumber != outArray1[3]) { return card.From; }
-            //            outArray1[3]++;
-            //            return hit.transform.position;
-            //    }
-            //    return selectCard.GetComponent<Card>().From;
-            //}
+            
             return card.From;
         }
        
@@ -777,6 +736,10 @@ namespace Assets.Scripts.Bar01 {
                 moveCardList.Add(card);
 
             }
+            else if (fromCard.OutCard)
+            {
+
+            }
             else
             {
                 do
@@ -801,6 +764,7 @@ namespace Assets.Scripts.Bar01 {
                 if (selectCards[i].OutCard)
                 {
                     outArray1[(int)selectCards[i].CardType]--;
+                    selectCards[i].OutCard = false;
                 }
                 if (selectCards[i].dack)
                 {
