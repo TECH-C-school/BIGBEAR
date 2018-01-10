@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> ロイヤルストレートフラッシュ実装(のつもり)
+ * 今回作業 --> 
  */
 
 /*
@@ -28,7 +28,7 @@ namespace Assets.Scripts.Bar05 {
 
         private void Update()
         {
-            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown("z") || Input.GetKeyDown("x") || Input.GetKeyDown("c") || Input.GetKeyDown("v") || Input.GetKeyDown("space"))
+            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown("z") || Input.GetKeyDown("x") || Input.GetKeyDown("c") || Input.GetKeyDown("v") || Input.GetKeyDown("space")  )
             {
                 //Debug.Log("<color=red>--------------------</color>");
                 PhaseChange();
@@ -99,7 +99,7 @@ namespace Assets.Scripts.Bar05 {
                         cardList_p1[x - 1] = cardNum;
                     }
                     //役を判定する関数にカードリストを渡す
-                    PlayerCards(Player1Cards, cardList_p1);
+                    /**/PlayerCards(Player1Cards, cardList_p1);
 
                     //デバッグ
                     //毎回アルファベッド+数字に戻したほうがわかりやすいかね
@@ -135,7 +135,7 @@ namespace Assets.Scripts.Bar05 {
                         string cardNum = cardNumber.ToString();
                         cardList_P2[x - 1] = cardNum;
                     }
-                    PlayerCards(Player2Cards, cardList_P2);
+                    /**/PlayerCards(Player2Cards, cardList_P2);
 
                     Debug.Log("<color=red>相手のカード生成完了</color>");
                     Debug.Log("--------------------");
@@ -167,7 +167,7 @@ namespace Assets.Scripts.Bar05 {
                         string cardNum = cardNumber.ToString();
                         cardList_St[x - 1] = cardNum;
                     }
-                    PlayerCards(StackCards, cardList_St);
+                    /**/PlayerCards(StackCards, cardList_St);
 
                     Debug.Log("<color=yellow>場札のカード生成完了</color>");
                     Debug.Log("--------------------");
@@ -382,6 +382,53 @@ namespace Assets.Scripts.Bar05 {
             // */
         }
 
+        //やっぱり数字だけの塊作るわ
+        string str = null;
+        int[] Player1NumHands = new int[7];
+        int[] Player2NumHands = new int[7];
+        private void CheckSubCards()
+        {            
+            for (int i = 0; i < 2; i++)
+            {
+                if (i == 0)
+                {
+                    str = null;                    
+                    for (int x = 0; x < 7; x++)
+                    {
+                        if (x <= 1)
+                        {
+                            Player1NumHands[x] = Player1Cards[x];
+                            str = str + Player1Cards[x] + ":";
+                        }
+                        else
+                        {
+                            Player1NumHands[x] = StackCards[x - 2];
+                            str = str + StackCards[x - 2] + ":";
+                        }
+                    }
+                    Debug.Log(str);
+                }
+                else if (i == 1)
+                {
+                    str = null;
+                    for (int x = 0; x < 7; x++)
+                    {
+                        if (x <= 1)
+                        {
+                            Player2NumHands[x] = Player2Cards[x];
+                            str = str + Player2Cards[x] + ":";
+                        }
+                        else
+                        {
+                            Player2NumHands[x] = StackCards[x - 2];
+                            str = str + StackCards[x - 2] + ":";
+                        }
+                    }
+                    Debug.Log(str);
+                }
+            }
+        }
+
         //ロイヤルストレートフラッシュとストレートフラッシュ用にリストを作る関数
         //処理軽減のために判定をする時のみ実行
         int tmp = 0;
@@ -504,7 +551,7 @@ namespace Assets.Scripts.Bar05 {
 
         //役判定するゾ～
 
-        /* 役一覧(handLevel)                   実装状況(0:未実装 1:実装 2:おかしい)
+        /* 役一覧(handLevel)                   実装状況(0:未実装 1:半実装 2:詳細なHandRankまで)
          * ハイカード(0)                       1
          * ワンペア(1)                         1
          * ツーペア(2)                         1
@@ -526,12 +573,12 @@ namespace Assets.Scripts.Bar05 {
         int[] Player2NumberManager = new int[13];
         //int[] DebugNumberManager = new int[13];
         int Playercount = 0;
-        
-        public void CheckHandLevel(int PlayerHandLevel, int[]CardList, int[]NumberManager, int[]Marks)
-        {
-            PlayerHandLevel = 0;
-            NumberManager = new int[13];
+        int[] Player1SubHandLevels = new int[6];
+        int[] Player2SubHandLevels = new int[6];
 
+        public void CheckHandLevel(int PlayerHandLevel, int[]CardList, int[]NumberManager, int[]Marks)
+        {            
+            NumberManager = new int[13];
             //CardListを1～13の配列に入れてわかりやすくする
             for (int i = 0; i < CardList.Length; i++)
             {
@@ -578,6 +625,7 @@ namespace Assets.Scripts.Bar05 {
                     PlayerHandLevel = 5;
                     Debug.Log("フラッシュ:<color=red>" + Markstr + "</color>");
                     SFFlag = SFFlag + 1;
+                    SubHandLevelCheck(0, Playercount, MarkNum);
                     break;
                 }
                 x++;
@@ -629,7 +677,8 @@ namespace Assets.Scripts.Bar05 {
                 if(RSFFlag)
                 {
                     //A.10.J.Q.Kでマーク違いってストレートになる?
-                    //PlayerHandLevel = 5;
+                    //答え:なります             
+                    PlayerHandLevel = 5;
                     Debug.Log("特殊ストレート!!");
                 }
                 else
@@ -747,11 +796,106 @@ namespace Assets.Scripts.Bar05 {
                     Debug.Log("ノーペア");
                 }
             }
+
+            if(Playercount == 0)
+            {
+                Player1HandLevel = PlayerHandLevel;
+            }
+            else
+            {
+                Player2HandLevel = PlayerHandLevel;
+            }
+
             Playercount++;
             //デバッグ用
             Debug.Log("ペア" + PHand2 + ":スリーカード" + PHand3 + ":HandLevel" + PlayerHandLevel);
+
         }
-        
+
+        //どっちのプレイヤーが勝ちかを調べる
+
+        int WhoWin;
+
+        private void WhoPlayerWin()
+        {
+            Debug.Log(Player1HandLevel);
+            Debug.Log(Player2HandLevel);
+            if (Player1HandLevel > Player2HandLevel)
+            {
+                WhoWin = 1;
+                Debug.Log("<color=green>Player1Winner</color>");
+            }
+            else if(Player1HandLevel < Player2HandLevel)
+            {
+                WhoWin = 2;
+                Debug.Log("<color=green>Player2Winner</color>");
+            }
+            else if(Player1HandLevel == Player2HandLevel)
+            {
+                Debug.Log("引き分け？？？");
+            }
+        }
+
+        public void SubHandLevelCheck(int ModeNum, int TargetPlayer, int SubSet)
+        {
+            //フラッシュ
+            if(ModeNum == 0)
+            {
+                int ArrayNum = 0;
+                int tgt = SubSet * 13;
+                if(TargetPlayer == 0)
+                {
+                    Player1SubHandLevels[ArrayNum] = SubSet;
+                    ArrayNum++;
+                    for(int i = 14; i > 1; i--)
+                    {
+                        //ここでの14はAと同等
+                        if(i == 14)
+                        {
+                            //Aを探す
+                            for(int x = 0; x < 7; x++)
+                            {
+                                if(Player1NumHands[x] == tgt)
+                                {
+                                    Debug.Log("Aを見つけた");
+                                    Player1SubHandLevels[ArrayNum] = i;
+                                    ArrayNum++;
+                                    break;
+                                }
+                            }
+                            tgt = tgt + 13;
+                        }
+                        //その他を探す
+                        else
+                        {
+                            tgt--;
+                            for (int x = 0; x < 7; x++)
+                            {
+                                if (Player1NumHands[x] == tgt)
+                                {
+                                    Player1SubHandLevels[ArrayNum] = i;
+                                    Debug.Log(Player1SubHandLevels[ArrayNum]);
+                                    ArrayNum++;
+                                    break;
+                                }
+                            }
+                            if(ArrayNum == 6)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    //デバッグ用
+                    string str = null;
+                    for (int i = 0; i < Player1SubHandLevels.Length; i++)
+                    {
+                        str = str + Player1SubHandLevels[i] + ":";
+                    }
+                    Debug.Log(str);
+                }
+            }
+        }
+
         //役の判定ここまで
 
         //ゲーム進行ここから
@@ -766,7 +910,12 @@ namespace Assets.Scripts.Bar05 {
             RemoveCards();
             MakeCards();
             MakeLists();
+            Player1HandLevel = 0;
+            Player2HandLevel = 0;
             CheckhandLevels();
+            WhoWin = 0;
+            WhoPlayerWin();
+            CheckSubCards();
         }
 
         private enum GamePhase
