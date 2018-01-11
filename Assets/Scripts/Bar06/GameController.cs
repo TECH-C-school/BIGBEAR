@@ -64,13 +64,15 @@ namespace Assets.Scripts.Bar06
 
 
 
-        private int[] MakeYamahuda()
+        //52個の数字用意
+        public int[] MakeYamahuda()
         {
             int[] numbers = new int[52];
 
             for (int i = 0; i < numbers.Length; i++)
             {
                 numbers[i] = i + 1;
+
             }
             var counter = 0;
             while (counter < 52)
@@ -82,7 +84,6 @@ namespace Assets.Scripts.Bar06
 
 
                 counter++;
-                Debug.Log(counter);
             }
             return numbers;
         }
@@ -115,6 +116,7 @@ namespace Assets.Scripts.Bar06
 
                 trump[i].number = (cards[i] - 1) % 13 + 1;
                 trump[i].mark = (Mark)((cards[i] - 1) / 13);
+                Debug.Log(i);
             }
 
 
@@ -174,7 +176,7 @@ namespace Assets.Scripts.Bar06
     
 
             PlayerMakeCards();
-            //MakeRandomNumbers();
+            MakeYamahuda();
             NPCMakeCards();
         }
 
