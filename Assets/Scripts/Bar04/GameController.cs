@@ -11,6 +11,7 @@ namespace Assets.Scripts.Bar0404
         //UI関係のGameObjectの設定
         public GameObject StartButton;
         public GameObject ChangeButton;
+        public GameObject Phase;
 
         //カード関係の変数
         public int[] shuffulCards;
