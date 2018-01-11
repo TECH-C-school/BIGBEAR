@@ -9,6 +9,8 @@ namespace Assets.Scripts.Bar04_06
 {
     public class GameController : MonoBehaviour
     {
+        private object cardObject;
+
         private void Start()
         {
             var cards = MakeRandomNumbers();
@@ -55,6 +57,11 @@ namespace Assets.Scripts.Bar04_06
                 cardString += number.ToString();
 
                 return cardString;
+            }
+
+            internal void HoldCardFaceDown()
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -126,24 +133,47 @@ namespace Assets.Scripts.Bar04_06
 
                 var spriteRenderer = cardObject.GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cards[i].CardString());
+
+                Card cardSet = cardObject.GetComponent<Card>();
+                cardSet.HoldCardFaceUp();
+                
             }
 
         }
-        
+
         /// <summary>
         /// クリックしたカードをHoldし、クリックされていないカードを捨て場に送る
         /// </summary>
+        private void ClickCard()
+        {
+            //マウスクリックの判定
+            if (!Input.GetMouseButtonDown(0)) return;
 
+            //クリックされた位置を取得
+            var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            //Collider2D上クリックの判定
+            if (!Physics2D.OverlapPoint(tapPoint)) return;
+
+            //クリックされた位置のオブジェクトを取得
+            var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
+            if (!hitObject) return;
+
+            //クリックされたカードスクリプトを取得
+            var card = hitObject.collider.gameObject.GetComponent<Card>();
+
+            card.HoldCardFaceDown();
+        }
         /// <summary>
         /// 捨て場に送った枚数分手札に加える
         /// </summary>
 
 
 
-        /// <summary>
-        /// 所持しているカードの役を判別する
-        /// </summary>
-        /// 
+            /// <summary>
+            /// 所持しているカードの役を判別する
+            /// </summary>
+            /// 
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
