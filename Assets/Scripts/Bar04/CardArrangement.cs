@@ -11,19 +11,23 @@ public class CardArrangement : MonoBehaviour
     void Start()
     {
         var cards = MakeRandomNumbers();
-        var eachCard = cards[0];
+        //5枚になるまで生成を繰り返す
+        for (var i = 0; i < 5; i++)
+        {
+            var eachCard = cards[i];
 
-        string cardString = eachCard.CardString();
-
-        var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/Card");
-        var cardObject = Instantiate(cardPrefab, new Vector3(0, 1.5f, 0), Quaternion.identity);
-        var spriteRenderer = cardObject.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardString);
+            string cardString = eachCard.CardString();
 
 
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/Card");
+            //Instantiate(生成するオブジェクト、場所、回転)；　回転がそのままなら↓ -5から2.5を5間になるまで足していく
+            var cardObject = Instantiate(cardPrefab, new Vector3(-5 + 2.5f*i, 1.5f, 0), Quaternion.identity);
+            var spriteRenderer = cardObject.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardString);
+
+        }
         
     }
-
     public enum Mark
     {
         Clover,
@@ -154,67 +158,7 @@ public class CardArrangement : MonoBehaviour
 
             counter++;
         }
-        //Sprite c01 = Resources.Load<Sprite>("Images/Bar/Cards/c01");
-        //Sprite c02 = Resources.Load<Sprite>("Images/Bar/Cards/c02");
-        //Sprite c03 = Resources.Load<Sprite>("Images/Bar/Cards/c03");
-        //Sprite c04 = Resources.Load<Sprite>("Images/Bar/Cards/c04");
-        //Sprite c05 = Resources.Load<Sprite>("Images/Bar/Cards/c05");
-        //Sprite c06 = Resources.Load<Sprite>("Images/Bar/Cards/c06");
-        //Sprite c07 = Resources.Load<Sprite>("Images/Bar/Cards/c07");
-        //Sprite c08 = Resources.Load<Sprite>("Images/Bar/Cards/c08");
-        //Sprite c09 = Resources.Load<Sprite>("Images/Bar/Cards/c09");
-        //Sprite c10 = Resources.Load<Sprite>("Images/Bar/Cards/c10");
-        //Sprite c11 = Resources.Load<Sprite>("Images/Bar/Cards/c11");
-        //Sprite c12 = Resources.Load<Sprite>("Images/Bar/Cards/c12");
-        //Sprite c13 = Resources.Load<Sprite>("Images/Bar/Cards/c13");
-        //Sprite d01 = Resources.Load<Sprite>("Images/Bar/Cards/d01");
-        //Sprite d02 = Resources.Load<Sprite>("Images/Bar/Cards/d02");
-        //Sprite d03 = Resources.Load<Sprite>("Images/Bar/Cards/d03");
-        //Sprite d04 = Resources.Load<Sprite>("Images/Bar/Cards/d04");
-        //Sprite d05 = Resources.Load<Sprite>("Images/Bar/Cards/d05");
-        //Sprite d06 = Resources.Load<Sprite>("Images/Bar/Cards/d06");
-        //Sprite d07 = Resources.Load<Sprite>("Images/Bar/Cards/d07");
-        //Sprite d08 = Resources.Load<Sprite>("Images/Bar/Cards/d08");
-        //Sprite d09 = Resources.Load<Sprite>("Images/Bar/Cards/d09");
-        //Sprite d10 = Resources.Load<Sprite>("Images/Bar/Cards/d10");
-        //Sprite d11 = Resources.Load<Sprite>("Images/Bar/Cards/d11");
-        //Sprite d12 = Resources.Load<Sprite>("Images/Bar/Cards/d12");
-        //Sprite d13 = Resources.Load<Sprite>("Images/Bar/Cards/d13");
-        //Sprite h01 = Resources.Load<Sprite>("Images/Bar/Cards/h01");
-        //Sprite h02 = Resources.Load<Sprite>("Images/Bar/Cards/h02");
-        //Sprite h03 = Resources.Load<Sprite>("Images/Bar/Cards/h03");
-        //Sprite h04 = Resources.Load<Sprite>("Images/Bar/Cards/h04");
-        //Sprite h05 = Resources.Load<Sprite>("Images/Bar/Cards/h05");
-        //Sprite h06 = Resources.Load<Sprite>("Images/Bar/Cards/h06");
-        //Sprite h07 = Resources.Load<Sprite>("Images/Bar/Cards/h07");
-        //Sprite h08 = Resources.Load<Sprite>("Images/Bar/Cards/h08");
-        //Sprite h09 = Resources.Load<Sprite>("Images/Bar/Cards/h09");
-        //Sprite h10 = Resources.Load<Sprite>("Images/Bar/Cards/h10");
-        //Sprite h11 = Resources.Load<Sprite>("Images/Bar/Cards/h11");
-        //Sprite h12 = Resources.Load<Sprite>("Images/Bar/Cards/h12");
-        //Sprite h13 = Resources.Load<Sprite>("Images/Bar/Cards/h13");
-        //Sprite s01 = Resources.Load<Sprite>("Images/Bar/Cards/s01");
-        //Sprite s02 = Resources.Load<Sprite>("Images/Bar/Cards/s02");
-        //Sprite s03 = Resources.Load<Sprite>("Images/Bar/Cards/s03");
-        //Sprite s04 = Resources.Load<Sprite>("Images/Bar/Cards/s04");
-        //Sprite s05 = Resources.Load<Sprite>("Images/Bar/Cards/s05");
-        //Sprite s06 = Resources.Load<Sprite>("Images/Bar/Cards/s06");
-        //Sprite s07 = Resources.Load<Sprite>("Images/Bar/Cards/s07");
-        //Sprite s08 = Resources.Load<Sprite>("Images/Bar/Cards/s08");
-        //Sprite s09 = Resources.Load<Sprite>("Images/Bar/Cards/s09");
-        //Sprite s10 = Resources.Load<Sprite>("Images/Bar/Cards/s10");
-        //Sprite s11 = Resources.Load<Sprite>("Images/Bar/Cards/s11");
-        //Sprite s12 = Resources.Load<Sprite>("Images/Bar/Cards/s12");
-        //Sprite s13 = Resources.Load<Sprite>("Images/Bar/Cards/s13");
 
-        
-
-       /* var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-        cardObject.transform.position = new Vector3(
-            i * 1.27f - 3.87f,
-            j * 1.27f - 2.54f,
-            0);
-        cardObject.transform.parent = cardsObject.transform;*/
 
         for (int i = 0; i < 52; i++)
         {
