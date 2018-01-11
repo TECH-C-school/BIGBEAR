@@ -60,7 +60,7 @@ namespace Assets.Scripts.Bar06
         public void Start()
         {
             MakeDeck();
-            //player
+            //player default
             for (i = 0; i < 2; i += 1)
             {
                 var pCP_1 = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DC] + numbers[DC]);
@@ -85,7 +85,7 @@ namespace Assets.Scripts.Bar06
                 pc = pc + numbers[DC];
                 DC++;
             }
-            //enemy
+            //enemy default
             var eCP_1 = Resources.Load<GameObject>("Prefabs/Bar06/card");
             var eC_1 = Instantiate(eCP_1, transform.position, Quaternion.identity);
             eC_1.transform.position = new Vector2(0, 1.5f);
@@ -113,6 +113,7 @@ namespace Assets.Scripts.Bar06
             ec = ec + numbers[DC];
             DC++;
         }
+        //player addcard
         public void AddCard()
         {
             if (pc <= 21)
@@ -146,6 +147,7 @@ namespace Assets.Scripts.Bar06
             }
 
         }
+        //fight
         public void fight()
         {
             while (ec <= 16)
@@ -174,6 +176,10 @@ namespace Assets.Scripts.Bar06
                 DC++;
             }
         }
+       /* public void Result()
+        {
+
+        }*/
     }
 }
  
