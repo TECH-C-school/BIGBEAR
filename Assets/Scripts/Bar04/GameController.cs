@@ -7,13 +7,13 @@ using UnityEngine.SceneManagement;
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
 
-        int count1;
-        int count2;
-        int count3;
-        int count4;
-        int count5;
-        List<int> List = new List<int>();
-
+        static int count1;
+        static int count2;
+        static int count3;
+        static int count4;
+        static int count5;
+        static List<int> List = new List<int>(52);
+        
         void Start()
         {
             InitGame();
@@ -25,65 +25,114 @@ namespace Assets.Scripts.Bar04 {
         
         public void ClickFightButton()
         {
+
+            GameObject cardsObject = GameObject.Find("Cards");
             //Cardsの子要素を消す
-            var cardsObject = GameObject.Find("Cards");
             foreach (Transform cardObject in cardsObject.transform)
             {
                 Destroy(cardObject.gameObject);
             }
             Debug.Log("FightButtonClick");
-
+            //デッキを作る
             MakeDeck();
             //山札の上から5枚を配る
             for (var j = 0; j < 5; j++)
             {
                 LoadCard(List[j], j);
             }
-            //Fightボタンを非表示にする
-            gameObject.SetActive(false);
-            //Changeボタン,NotChangeボタンを移動させる
+            //Fightボタンを移動(非表示)する
+            transform.position = new Vector2(1011, -100);
+            //Changeボタン、NotChangeボタンを移動(表示)する
             var change = GameObject.Find("Change");
-            change.transform.position = new Vector2(1011,50);
+            change.transform.position = new Vector2(1011, 50);
             var notchange = GameObject.Find("NotChange");
-            notchange.transform.position = new Vector2(1011, 140);
+            notchange.transform.position = new Vector2(1011, 142);
+            
+            
         }
         public void ClickChangeButton()
         {
+            int counter = 5;
             Debug.Log("ChangeButtonClick");
-
             //選択ボタンで選択されているカードを交換する
-            int counter = 6;
             var childTransform = GameObject.Find("RandomCards").GetComponentsInChildren<Transform>();
-            if (count1 == 0)
+            if (count1 == 1)
             {
-                Debug.Log(childTransform[1]);
-                LoadCard(List[counter],0);
+                Destroy(childTransform[1].gameObject);
+                LoadCard(List[counter], 0);
                 counter++;
             }
-            if (count2 == 0)
+            if (count2 == 1)
             {
-                Debug.Log(childTransform[2]);
+                Destroy(childTransform[2].gameObject);
                 LoadCard(List[counter], 1);
                 counter++;
             }
-            if (count3 == 0)
+            if (count3 == 1)
             {
-                Debug.Log(childTransform[3]);
+                Destroy(childTransform[3].gameObject);
                 LoadCard(List[counter], 2);
                 counter++;
             }
-            if (count4 == 0)
+            if (count4 == 1)
             {
-                Debug.Log(childTransform[4]);
+                Destroy(childTransform[4].gameObject);
                 LoadCard(List[counter], 3);
                 counter++;
             }
-            if (count5 == 0)
+            if (count5 == 1)
             {
-                Debug.Log(childTransform[5]);
+                Destroy(childTransform[5].gameObject);
                 LoadCard(List[counter], 4);
                 counter++;
             }
+            ButtonAndFlame();
+            Prize();
+        }
+        public void ClickNotChangebutton()
+        {
+            Debug.Log("NotChangeButtonClick");
+            ButtonAndFlame();
+            Prize();
+        }
+        public void ClickResetButton()
+        {
+            var cardsObject = GameObject.Find("RandomCards");
+            foreach (Transform cardObject in cardsObject.transform)
+            {
+                Destroy(cardObject.gameObject);
+            }
+            InitGame();
+        }
+        public void ButtonAndFlame()
+        {
+            //ChangeボタンとNotChangeボタンを移動(非表示)する
+            var change = GameObject.Find("Change");
+            transform.position = new Vector2(-100, 0);
+            var notchange = GameObject.Find("NotChange");
+            notchange.transform.position = new Vector2(-100, 0);
+            //Resetボタンを移動(表示)する
+            var reset = GameObject.Find("Reset");
+            reset.transform.position = new Vector2(1011, 74);
+            //カードの枠を消す
+            var flame = GameObject.Find("CardFlame");
+            foreach (Transform cardObject in flame.transform)
+            {
+                Destroy(cardObject.gameObject);
+            }
+            count1 = 0;
+            count2 = 0;
+            count3 = 0;
+            count4 = 0;
+            count5 = 0;
+        }
+        /// <summary>
+        /// 役の判定
+        /// </summary>
+        public void Prize()
+        {
+            var cards = GameObject.Find("RandomCards").transform;
+            onePare();
         }
         /// <summary>
         /// クリックした場所にcardSerectを配置する
@@ -141,6 +190,9 @@ namespace Assets.Scripts.Bar04 {
             }
             return tmp;
         }
+        /// <summary>
+        /// カード選択時のflameをつける
+        /// </summary>
         public int Counter(int x,int y)
         {
             if (x == 0)
@@ -148,6 +200,8 @@ namespace Assets.Scripts.Bar04 {
                 //カードを選択する
                 var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
                 var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
+                var flameBox = GameObject.Find("CardFlame");
+                cardFlame.transform.parent = flameBox.transform;
                 cardFlame.name = "cardSerect" + (y+1);
                 cardFlame.transform.position = new Vector3(y * 2.5f - 5, 0.5f, -1);
                 x = 1;
@@ -161,6 +215,9 @@ namespace Assets.Scripts.Bar04 {
             }
             return x;
         }
+        /// <summary>
+        /// それぞれの選択ボタンの処理
+        /// </summary>
         public void SerectButton1()
         {
             count1 = Counter(count1,0);
@@ -180,6 +237,13 @@ namespace Assets.Scripts.Bar04 {
         public void SerectButton5()
         {
             count5 = Counter(count5,4);
+        }
+        public void onePare()
+        {
+            for (var i = 0; i < 5; i++)
+            {
+
+            }
         }
         /// <summary>
         /// 山札を作成する
@@ -203,9 +267,12 @@ namespace Assets.Scripts.Bar04 {
                 List[n] = tmp;
             }
         }
-
+        /// <summary>
+        /// ゲームを初期状態に戻す関数
+        /// </summary>
         public void InitGame()
         {
+            //裏面のカードを配置
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/card");
             var Card = GameObject.Find("Cards");
             for (var i = 0; i < 5; i++)
@@ -214,7 +281,16 @@ namespace Assets.Scripts.Bar04 {
                 cardObbject.transform.position = new Vector2(i * 2.5f - 5, 0.5f);
                 cardObbject.transform.parent = Card.transform;
             }
-            List = new List<int>();
+            //Fightボタンを移動(表示)する
+            var fihgt = GameObject.Find("Fight");
+            fihgt.transform.position = new Vector2(1011, 74);
+            //Fightボタン以外を移動(非表示)する
+            var change = GameObject.Find("Change");
+            change.transform.position = new Vector2(1011, -100);
+            var notchange = GameObject.Find("NotChange");
+            notchange.transform.position = new Vector2(1011, -100);
+            var reset = GameObject.Find("Reset");
+            reset.transform.position = new Vector2(1011, -200);
         }
         public void LoadCard(int x, int y)
         {
@@ -586,6 +662,6 @@ namespace Assets.Scripts.Bar04 {
         }
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
-                }
+        }
     }
 }
