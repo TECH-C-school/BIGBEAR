@@ -23,7 +23,7 @@ namespace Assets.Scripts.Bar06
                         i++;
                         x = 1;
                     }
-                    LoadCard(cards[i + j], i - x, j);
+                    LoadCards(cards[i + j], i - x, j);
                 }
             } 
         }
@@ -35,9 +35,8 @@ namespace Assets.Scripts.Bar06
             BetplusButton();
             BetmainusButton();
         }
-        /// <summary>
-        /// 山札をシャッフルで作る
-        /// </summary>
+
+        // 山札をシャッフルで作る
         private void MakeDeck()
         {
             for (int i = 0; i < cards.Length; i++)
@@ -56,9 +55,7 @@ namespace Assets.Scripts.Bar06
                 
             }
         }
-        /// <summary>
-        /// カードを２枚ずつ配る
-        /// </summary>
+        // カードを２枚ずつ配る
         private void Dealcards()
         {
             for(int i = 0; i < 4; i++)
@@ -66,10 +63,8 @@ namespace Assets.Scripts.Bar06
                 Debug.Log(cards[i]);
             } 
         }
-        /// <summary>
-        /// カードを表示する
-        /// </summary>
-        private void LoadCard(int x, int y,int z)
+        // カードを表示する
+        private void LoadCards(int x, int y,int z)
         {
             if (x == 1)
             {
@@ -436,26 +431,41 @@ namespace Assets.Scripts.Bar06
                 Card.transform.parent = card.transform;
             }
         }
+        // ディーラー側のカードに裏向きのカードをかぶせる
+        private void LoadCard()
+        {
+         
+        }
+        // クリックしたら勝負する
         private void BattleButton()
         {
 
         }
+        // クリックしたらカードを追加する
         private void AddCardButton()
         {
 
         }
+        // クリックしたら勝負をあきらめる
         private void SurrenderButton()
         {
 
         }
+        // クリックしたら掛け金を増やす
         private void BetplusButton()
         {
 
         }
+        // クリックしたら掛け金を減らす
         private void BetmainusButton()
         {
 
         }
+        //メニューを呼び出す
+        private void MenuButton()
+        {
+          
+        } 
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
