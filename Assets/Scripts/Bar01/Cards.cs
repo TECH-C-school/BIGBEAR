@@ -11,13 +11,14 @@ public class Cards : MonoBehaviour
     {
         s01 = 1, s02, s03, s04, s05, s06, s07, s08, s09, s10, s11, s12, s13,
         d01, d02, d03, d04, d05, d06, d07, d08, d09, d10, d11, d12, d13,
-        h01, h02, h03, h04, h05, h06, h07, h08, h09, h10, h11, h12, h13,
-        c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13
+        c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, c11, c12, c13,
+        h01, h02, h03, h04, h05, h06, h07, h08, h09, h10, h11, h12, h13
 
     }
     GameObject[] FloorCardHolder = new GameObject[28];//場に置かれるカード
     GameObject[] DeckcardHolder = new GameObject[25];//山札に置かれるカード
     GameObject[] MemoryCards = new GameObject[24];//山札からめっくったカードを記録する
+    int[] Card_Character = new int[52];
     private GameObject deckbackcard;
     private GameObject selectCred;
     private Vector3 RecordPosition;
@@ -27,8 +28,12 @@ public class Cards : MonoBehaviour
     private GameObject TurnDeckCard;
     private GameObject MakeCard;
     private GameObject MemoryDeckBackCard;
+    private GameObject Memory_Select_Cards;
     private int deckcount;
     private int memory_deck_count;
+    private int SelectCardNamber;
+    private int Memory_Card_Namber;
+    private bool OverlaidOK;
 
 
     void Start()
@@ -36,6 +41,7 @@ public class Cards : MonoBehaviour
         MakeCardFlame();
         SetRandomCard();
         MakeStartCard();
+        OverlaidOK = false;
     }
 
     void Update()
@@ -44,7 +50,7 @@ public class Cards : MonoBehaviour
         {
             MemoryCards[deckcount - 1].GetComponent<BoxCollider2D>().enabled = true;
         }
-            ClickCard();
+        ClickCard();
         if (selectCred)
         {
             Vector3 setPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -187,6 +193,9 @@ public class Cards : MonoBehaviour
         for (int i = 0; i < 52; i++)
         {
             card[i] = i + 1;
+
+            Card_Character[i] = i + 1;
+
         }
 
         int count = 0;
@@ -245,11 +254,33 @@ public class Cards : MonoBehaviour
     /// </summary>
     private void ReturnCard()
     {
+        var InputPosition = Input.mousePosition;
+
         if (!Input.GetMouseButtonUp(0)) return;
         if (!selectCred) return;
-        selectCred.transform.position = RecordPosition;
+        var TapPoint = Camera.main.ScreenToWorldPoint(InputPosition);
+        if (Physics2D.OverlapPoint(TapPoint))
+        {
+            var HitObject = Physics2D.Raycast(TapPoint, -Vector3.up);
+            Memory_Select_Cards = HitObject.transform.gameObject;
+            //Debug.Log(Memory_Select_Cards.transform.name);
+            InvestigateCard();
+            OverlaidCard();
+            if (OverlaidOK)
+            {
+                selectCred.transform.position = new Vector3(HitObject.transform.position.x, HitObject.transform.position.y-0.3f, HitObject.transform.position.z - 1);
+                selectCred.transform.parent = HitObject.transform;
+                selectCred.GetComponent<BoxCollider2D>().enabled = true;
+                selectCred = null;
+                OverlaidOK = false;
+                return;
+            }
+        }
 
+        selectCred.transform.position = RecordPosition;
+        selectCred.GetComponent<BoxCollider2D>().enabled = true;
         selectCred = null;
+
 
     }
 
@@ -311,6 +342,103 @@ public class Cards : MonoBehaviour
             //Debug.Log(MemoryCards[deckcount]);
             deckcount++;
             //Debug.Log(deckcount);
+        }
+    }
+
+    /// <summary>
+    /// カードを調べる
+    /// </summary>
+    private void InvestigateCard()
+    {
+        for (int x = 0; x < 52; x++)
+        {
+            var y = (Card)Card_Character[x];
+            string hoge = y.ToString() + "(Clone)";
+            //Debug.Log(hoge);
+            if (hoge == Memory_Select_Cards.transform.name)
+            {
+                Memory_Card_Namber = (int)(Card)Card_Character[x];
+                Debug.Log(Memory_Card_Namber);
+
+            }
+            if (hoge == selectCred.transform.name)
+            {
+                ///Debug.Log(Memory_Select_Cards.transform.name);
+                SelectCardNamber = (int)(Card)Card_Character[x];
+                Debug.Log(SelectCardNamber);
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// 重ねていいか調べる
+    /// </summary>
+    private void OverlaidCard()
+    {
+        Debug.Log("hoge");
+        if (0 < SelectCardNamber)
+        {
+            if (SelectCardNamber < 14)
+            {
+                if (Memory_Card_Namber == SelectCardNamber + 14)
+                {
+                    Debug.Log("hogehoge");
+                    OverlaidOK = true;
+                }
+                if (Memory_Card_Namber == SelectCardNamber + 40)
+                {
+                    Debug.Log("hogehoge");
+                    OverlaidOK = true;
+                }
+            }
+            
+        }
+        if (13 < SelectCardNamber)
+        {
+            if (SelectCardNamber < 27)
+            {
+                if (Memory_Card_Namber == SelectCardNamber - 12)
+                {
+                    Debug.Log("hogehoge");
+                    OverlaidOK = true;
+                }
+                if (Memory_Card_Namber == SelectCardNamber + 14)
+                {
+                    Debug.Log("hogehoge");
+                    OverlaidOK = true;
+                }
+            }
+            
+        }
+        if (26 < SelectCardNamber)
+        {
+            if (SelectCardNamber < 40)
+            {
+                if (Memory_Card_Namber == SelectCardNamber - 12)
+                {
+                    Debug.Log("hogehoge");
+                    OverlaidOK = true;
+                }
+                if (Memory_Card_Namber == SelectCardNamber + 14)
+                {
+                    Debug.Log("hogehoge");
+                    OverlaidOK = true;
+                }
+            }
+        }
+        if (39 < SelectCardNamber)
+        {
+            if (Memory_Card_Namber == SelectCardNamber - 12)
+            {
+                Debug.Log("hogehoge");
+                OverlaidOK = true;
+            }
+            if (Memory_Card_Namber == SelectCardNamber - 38)
+            {
+                Debug.Log("hogehoge");
+                OverlaidOK = true;
+            }
         }
     }
 }
