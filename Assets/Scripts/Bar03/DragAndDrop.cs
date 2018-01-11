@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Draganddrop : MonoBehaviour
 {
+    public bool frag = true;
     // Use this for initialization
     void Start()
     {
@@ -19,9 +20,10 @@ public class Draganddrop : MonoBehaviour
                 var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 var selfPoint = gameObject.transform.position;
                 var selfWidth = gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
+                Debug.Log(selfWidth);
                 var selfHeight = gameObject.GetComponent<SpriteRenderer>().bounds.size.y;
 
-                if (tapPoint.x <= -selfWidth / 2 || tapPoint.x >= selfWidth / 2 || tapPoint.y <= -selfHeight / 2 || tapPoint.y >= selfHeight / 2)
+                if (tapPoint.x >= selfPoint.x - selfWidth / 2 && tapPoint.x <= selfPoint.x + selfWidth / 2 && tapPoint.y >= selfPoint.y - selfHeight / 2 && tapPoint.y <= selfPoint.y + selfHeight / 2)
                 {
                     Vector3 objectPointInScreen
                       = Camera.main.WorldToScreenPoint(this.transform.position);
@@ -38,22 +40,6 @@ public class Draganddrop : MonoBehaviour
                 {
                     return;
                 }
-
-                ////Collider2D上クリックの判定
-                //if (!Physics2D.OverlapPoint(tapPoint)) return;
-
-                ////クリックした位置のオブジェクトを取得
-                //var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
-                //if (!hitObject) return;
-
-                //Vector3 mousePointInScreen
-                //   = new Vector3(Input.mousePosition.x,
-                //                  Input.mousePosition.y,
-                //                  tapPoint.z);
-
-                //Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
-                //mousePointInWorld.z = this.transform.position.z;
-
             }
         }
     }

@@ -132,7 +132,6 @@ public class start : MonoBehaviour
     void Update()
     {
         ClickCard();
-
     }
 
     /// <summary>

@@ -8,5 +8,12 @@ namespace Assets.Scripts.Game03 {
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
+        public void Notcatch()
+        {
+            if ()
+            {
+
+            }
+        }
     }
 }
