@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-    public class Card : MonoBehaviour {
+using UnityEngine.UI;
+
+public class Card : MonoBehaviour {
 
     Renderer Cardcorol;
     //カードの山札を作成

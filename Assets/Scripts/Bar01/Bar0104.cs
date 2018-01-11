@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bar0104 : MonoBehaviour {
 
@@ -18,8 +19,6 @@ public class Bar0104 : MonoBehaviour {
     void Start () { Dack = MakeRandomNunbers(); }
 	// Update is called once per frame
 	void Update () {}
-
-
 
     private int[] MakeRandomNunbers()
     {
