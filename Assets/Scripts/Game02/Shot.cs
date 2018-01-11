@@ -18,6 +18,7 @@ namespace Assets.Scripts.Game02 {
 			if(Physics.Raycast(ray, out rHit)){
 				if(rHit.collider.tag == "Enemy"){
 					Debug.LogFormat ("Hit!!!!!!, pos:{0}", rHit.point);
+					rHit.collider.gameObject.GetComponent<EnemyBase> ().Eliminate();
 				}
 			}
 			Debug.DrawRay (ray.origin, ray.direction, Color.red);
