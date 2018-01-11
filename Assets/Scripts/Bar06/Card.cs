@@ -2,34 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card : MonoBehaviour{
-
-
-    public void TurnCardFaceUp(){
-        TurnCard(true);
-    }
-
-    public void TurnCardFaceDown(){
-        TurnCard(false);
-    }
-
-    private void TurnCard(bool faceUp)
-    {
-        Sprite cardSprite = null;
-
-        if (faceUp){
-            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/c01");
-        }else{
-            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
-        }
-        var spriteRenderer = transform.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = cardSprite;
-    }
-
-
-
-
-}
 public class deck{
     
     static public int[] randomnum = new int[52];

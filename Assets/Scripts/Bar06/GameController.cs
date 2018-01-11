@@ -13,95 +13,34 @@ namespace Assets.Scripts.Bar06 {
         private int DNumCount = 0;          //相手の数値
         private int AMycount = 0;           //自分のAの枚数
         private int ADcount = 0;            //相手のAの枚数
+        private int Coin = 20;              //初期コイン
+        private int Bet = 1;                //初期ベット
         public Text MyText;                 //自分の数値のテキスト
         public Text DText;                  //相手の数値のテキスト
+        public Text CoinText;               //コインテキスト
+        public Text BetText;                //ベットテキスト
         public Image image_Lose;            //負け画像
         public Image image_Win;             //勝ち画像
         public Image image_Draw;            //引き分け画像
         public Button AddB;                 //追加ボタン
         public Button BattleB;              //勝負ボタン
         public Button ReB;                  //再配置ボタン
+        public Button AddBetB;              //ベット増やすボタン
+        public Button TakeBetB;             //ベット減らすボタン
         public void Start()
         {
-            deck.RondomNum();
             image_Lose.fillAmount = 0;
             image_Win.fillAmount = 0;
             image_Draw.fillAmount = 0;
-
-            //自分の初期カード
-            var CardsObj = GameObject.Find("Cards");
-            Sprite cardSprite = null;                       //変数にカードの画像格納
-            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + deck.randommark[DeckCount] + deck.randomnum[DeckCount]);
-            if (deck.randomnum[DeckCount] > 10){            //カードの数値計算
-                MyNumCount += 10;
-            }else if(deck.randomnum[DeckCount] == 1){
-                MyNumCount += 11;
-                AMycount++;
-            }else{
-                MyNumCount += deck.randomnum[DeckCount];
-            }
+            EndButtun();
+        } 
             
-
-            DeckCount++;                                    //デッキを次のカードへ
-            var Mycard1 = Resources.Load<GameObject>("Prefabs/Bar06/card");         //画像表示
-            var MycardObject1 = Instantiate(Mycard1, transform.position, Quaternion.identity);
-            MycardObject1.transform.position = new Vector3(-1.5f,-1);             //位置
-            MycardObject1.transform.parent = CardsObj.transform;                    //Cardsに入れる
-            var spriteRenderer = MycardObject1.transform.GetComponent<SpriteRenderer>();    //画像差し替え
-            spriteRenderer.sprite = cardSprite;
-
-            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + deck.randommark[DeckCount] + deck.randomnum[DeckCount]);
-            if (deck.randomnum[DeckCount] > 10){
-                MyNumCount += 10;
-            }else if (deck.randomnum[DeckCount] == 1){
-                MyNumCount += 11;
-                AMycount++;              
-            }else{
-                MyNumCount += deck.randomnum[DeckCount];
-            }
-            while (MyNumCount > 21 && AMycount > 0)
-            {
-                MyNumCount -= 10;
-                AMycount--;
-            }
-
-
-            DeckCount++;
-            var Mycard2 = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var MycardObject2 = Instantiate(Mycard2, transform.position, Quaternion.identity);
-            MycardObject2.transform.position = new Vector3(-0.8f, -1,-1);
-            MycardObject2.transform.parent = CardsObj.transform;
-            spriteRenderer = MycardObject2.transform.GetComponent<SpriteRenderer>();
-            spriteRenderer.sprite = cardSprite;
-
-            //相手の初期カード
-            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + deck.randommark[DeckCount] + deck.randomnum[DeckCount]);
-            if (deck.randomnum[DeckCount] > 10){
-                DNumCount += 10;
-            }else if (deck.randomnum[DeckCount] == 1){
-                DNumCount += 11;
-                ADcount++;
-            }else{
-                DNumCount += deck.randomnum[DeckCount];
-            }
-            DeckCount++;
-            var Dcard1 = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var DcardObject1 = Instantiate(Dcard1, transform.position, Quaternion.identity);
-            DcardObject1.transform.position = new Vector3(-1.5f, 2, 0);
-            DcardObject1.transform.parent = CardsObj.transform;
-            spriteRenderer = DcardObject1.transform.GetComponent<SpriteRenderer>();
-            spriteRenderer.sprite = cardSprite;
-
-           
-            var Dcard2 = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var DcardObject2 = Instantiate(Dcard2, transform.position, Quaternion.identity);
-            DcardObject2.transform.position = new Vector3(-0.8f, 2, 0);
-            DcardObject2.transform.parent = CardsObj.transform;
-        }
         void Update()
         {
             MyText.text = MyNumCount.ToString();
             DText.text = DNumCount.ToString();
+            CoinText.text = Coin.ToString();
+            BetText.text = Bet.ToString();
         }
         public void AddBottunClick()
         {
@@ -130,6 +69,7 @@ namespace Assets.Scripts.Bar06 {
             }
             if(MyNumCount > 21){
                 image_Lose.fillAmount = 1;
+                Coin -= Bet;
                 EndButtun();
             }
 
@@ -192,12 +132,15 @@ namespace Assets.Scripts.Bar06 {
             //勝敗判定
             if(DNumCount > 21){
                 image_Win.fillAmount = 1;
+                Coin += Bet;
             }else if(MyNumCount < DNumCount){
                 image_Lose.fillAmount = 1;
+                Coin -= Bet;
             }else if(MyNumCount == DNumCount){
                 image_Draw.fillAmount = 1;
             }else{
                 image_Win.fillAmount = 1;
+                Coin += Bet;
             }
             EndButtun();
         }
@@ -212,13 +155,21 @@ namespace Assets.Scripts.Bar06 {
             image_Win.fillAmount = 0;
             image_Draw.fillAmount = 0;
 
+            MyNumCount = 0;
+            DNumCount = 0;
+            count = 2;
+            Dcount = 0;
+            DeckCount = 0;
+            AMycount = 0;
+            ADcount = 0;
+
             var Cardsobj = GameObject.Find("Cards").transform;
-            foreach(Transform CradObj in Cardsobj)
+            for (int i = 0; i < Cardsobj.childCount; ++i)
             {
-                Destroy(Cardsobj.gameObject);
+                GameObject.Destroy(Cardsobj.GetChild(i).gameObject);
             }
 
-            Start();
+            Initializ();
         }
 
         void EndButtun()
@@ -229,6 +180,107 @@ namespace Assets.Scripts.Bar06 {
             ReB.enabled = true;
             BattleB.image.fillAmount = 0;
             BattleB.enabled = false;
+            AddBetB.image.fillAmount = 1;
+            AddBetB.enabled = true;
+            TakeBetB.image.fillAmount = 1;
+            TakeBetB.enabled = true;
+
+        }
+
+        void Initializ()
+        {
+            deck.RondomNum();
+            image_Lose.fillAmount = 0;
+            image_Win.fillAmount = 0;
+            image_Draw.fillAmount = 0;
+            ReB.enabled = false;
+            AddBetB.image.fillAmount = 0;
+            AddBetB.enabled = false;
+            TakeBetB.image.fillAmount = 0;
+            TakeBetB.enabled = false;
+
+
+            //自分の初期カード
+            var CardsObj = GameObject.Find("Cards");
+            Sprite cardSprite = null;                       //変数にカードの画像格納
+            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + deck.randommark[DeckCount] + deck.randomnum[DeckCount]);
+            if (deck.randomnum[DeckCount] > 10){            //カードの数値計算
+                MyNumCount += 10;
+            }else if (deck.randomnum[DeckCount] == 1){
+                MyNumCount += 11;
+                AMycount++;
+            }else{
+                MyNumCount += deck.randomnum[DeckCount];
+            }
+
+
+            DeckCount++;                                    //デッキを次のカードへ
+            var Mycard1 = Resources.Load<GameObject>("Prefabs/Bar06/card");         //画像表示
+            var MycardObject1 = Instantiate(Mycard1, transform.position, Quaternion.identity);
+            MycardObject1.transform.position = new Vector3(-1.5f, -1);             //位置
+            MycardObject1.transform.parent = CardsObj.transform;                    //Cardsに入れる
+            var spriteRenderer = MycardObject1.transform.GetComponent<SpriteRenderer>();    //画像差し替え
+            spriteRenderer.sprite = cardSprite;
+
+            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + deck.randommark[DeckCount] + deck.randomnum[DeckCount]);
+            if (deck.randomnum[DeckCount] > 10){
+                MyNumCount += 10;
+            }else if (deck.randomnum[DeckCount] == 1){
+                MyNumCount += 11;
+                AMycount++;
+            }else{
+                MyNumCount += deck.randomnum[DeckCount];
+            }
+            while (MyNumCount > 21 && AMycount > 0){
+                MyNumCount -= 10;
+                AMycount--;
+            }
+
+
+            DeckCount++;
+            var Mycard2 = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var MycardObject2 = Instantiate(Mycard2, transform.position, Quaternion.identity);
+            MycardObject2.transform.position = new Vector3(-0.8f, -1, -1);
+            MycardObject2.transform.parent = CardsObj.transform;
+            spriteRenderer = MycardObject2.transform.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = cardSprite;
+
+            //相手の初期カード
+            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + deck.randommark[DeckCount] + deck.randomnum[DeckCount]);
+            if (deck.randomnum[DeckCount] > 10){
+                DNumCount += 10;
+            }else if (deck.randomnum[DeckCount] == 1){
+                DNumCount += 11;
+                ADcount++;
+            }else{
+                DNumCount += deck.randomnum[DeckCount];
+            }
+            DeckCount++;
+            var Dcard1 = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var DcardObject1 = Instantiate(Dcard1, transform.position, Quaternion.identity);
+            DcardObject1.transform.position = new Vector3(-1.5f, 2, 0);
+            DcardObject1.transform.parent = CardsObj.transform;
+            spriteRenderer = DcardObject1.transform.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = cardSprite;
+
+
+            var Dcard2 = Resources.Load<GameObject>("Prefabs/Bar06/card");
+            var DcardObject2 = Instantiate(Dcard2, transform.position, Quaternion.identity);
+            DcardObject2.transform.position = new Vector3(-0.8f, 2, 0);
+            DcardObject2.transform.parent = CardsObj.transform;
+        }
+
+        public void AddBet()
+        {
+            if (Bet < 10){
+                Bet++;
+            }
+        }
+        public void TakeBet()
+        {
+            if (Bet > 1){
+                Bet--;
+            }
         }
 
         public void TransitionToResult() {
