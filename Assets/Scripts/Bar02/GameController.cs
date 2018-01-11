@@ -55,7 +55,12 @@ namespace Assets.Scripts.Bar02 {
 
         //cardselectの格納
         private SpriteRenderer cardSelect1;
-        private SpriteRenderer cardSelect2;
+
+        //flameカード格納
+        private SpriteRenderer flameRenserer;
+
+        //winカード格納
+        private SpriteRenderer winCardRenserer;
 
 
         /// <summary>
@@ -98,8 +103,7 @@ namespace Assets.Scripts.Bar02 {
                 Sprite card = Resources.Load<Sprite>("Images/Bar/Cards/back");
                 sr.sprite = card;
                 sr.sortingOrder = countCardNum;
-                var cardPlaceObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardPlaceObject.transform.position = new Vector2(4.5f,2.0f);
+                var cardPlaceObject = Instantiate(cardPrefab, new Vector2(4.5f, 2.0f), Quaternion.identity);
                 _AllObject[countCardNum] = cardPlaceObject;
                 countCardNum--;
             }
@@ -158,8 +162,7 @@ namespace Assets.Scripts.Bar02 {
             Collider2D[] hitObjects = Physics2D.OverlapPointAll(tapPoint);
             if (hitObjects.Length <= 0)
             {
-                _countClick = countClick.Noi;
-                selectCard();
+                selectCard(0);
                 return;
             } 
 
@@ -184,15 +187,14 @@ namespace Assets.Scripts.Bar02 {
                 {
                     var card = hitObjects[i].GetComponent<SpriteRenderer>();
                     
-                    //1番下のオブジェクト取得(oederInLayerの数値が一番大きいものを取得)
+                    //1番下のオブジェクト取得(oederInLayerの数値が一番小さいものを取得)
                     if (placeCard.sortingOrder > card.sortingOrder) placeCard = card;
                 }
                 //ピラミッドの裏返しをクリックしたらreturn
                 Vector2 placeCardPosition = placeCard.transform.position;
                 if (placeCardPosition != new Vector2(4.5f, 2.0f))
                 {
-                    _countClick = countClick.Noi;
-                    selectCard();
+                    selectCard(0);
                     return;
                 }
 
@@ -201,8 +203,7 @@ namespace Assets.Scripts.Bar02 {
                 placeCard.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[placeCard.sortingOrder]);
                 placeCard.transform.position = new Vector2(3.0f, 2.0f);
                 
-                _countClick = countClick.Noi;
-                selectCard();
+                selectCard(0);
                 return;
                 
             }
@@ -211,8 +212,7 @@ namespace Assets.Scripts.Bar02 {
                 //cardflame(山札の枠)をクリックした場合、山札を戻す
                 //最後まで山札めくらないと発動せず
                 ReturnPlaceCard();
-                _countClick = countClick.Noi;
-                selectCard();
+                selectCard(0);
             }
             else
             {
@@ -225,8 +225,7 @@ namespace Assets.Scripts.Bar02 {
                     //クリックしたobject収納
                     click1 = maxCard;
                     sumNum[0] = maxCardNum;
-                    _countClick = countClick.No1;
-                    selectCard();
+                    selectCard(1);
 
                     //13をクリックしたらその場で消去、クリック回数初期化
                     if (sumNum[0] == 13)
@@ -236,8 +235,7 @@ namespace Assets.Scripts.Bar02 {
                             deletedPyramid++;
                         }
                         Destroy(click1.gameObject);
-                        _countClick = countClick.Noi;
-                        selectCard();
+                        selectCard(0);
                     }
                 }
                 //2回目のクリック
@@ -246,8 +244,7 @@ namespace Assets.Scripts.Bar02 {
                     //クリックしたobject収納
                     click2 = maxCard;
                     sumNum[1] = maxCardNum;
-                    _countClick = countClick.No2;
-                    selectCard();
+                    selectCard(2);
                 }
 
                 //2このobjectを選択したかどうか判断
@@ -259,6 +256,7 @@ namespace Assets.Scripts.Bar02 {
                 //関数sumが13だったらobject消去
                 if (sum == 13)
                 {
+                    //場のカードが消えた場合、deletedPyramidを1追加
                     if (click1.transform.position != new Vector3(3, 2, 0))
                     {
                         deletedPyramid++;
@@ -274,8 +272,7 @@ namespace Assets.Scripts.Bar02 {
 
 
                 //すべて終了 初期化
-                _countClick = countClick.Noi;
-                selectCard();
+                selectCard(0);
             }
             
         }
@@ -288,8 +285,7 @@ namespace Assets.Scripts.Bar02 {
         private void ReturnPlaceCard()
         {
             //場所returnPlaceにあるobject取得
-            Vector2 returnPlace = new Vector2(3.0f, 2.0f);
-            Collider2D[] place = Physics2D.OverlapPointAll(returnPlace);
+            Collider2D[] place = Physics2D.OverlapPointAll(new Vector2(3.0f, 2.0f));
             //全部裏返して山札へ
             for (int i = 0; i < place.Length; i++)
             {
@@ -381,16 +377,16 @@ namespace Assets.Scripts.Bar02 {
         private void addFlame()
         {
             //場所取得
-            Vector2 placePos = new Vector2(4.5f, 2.0f);
-            Collider2D[] placeSheets = Physics2D.OverlapPointAll(placePos);
+            Collider2D[] placeSheets = Physics2D.OverlapPointAll(new Vector2(4.5f, 2.0f));
             if (placeSheets.Length == 0)
             {
                 //何もなかったらflame表示
                 var flamePrefab = Resources.Load<GameObject>("Prefabs/Bar02/cardflame");
                 var flameObject = Instantiate(flamePrefab, transform.position, Quaternion.identity);
                 flameObject.transform.position = new Vector2(4.5f, 2.0f);
+                flameRenserer = flameObject.GetComponent<SpriteRenderer>();
             }
-            else if (placeSheets.Length == 1 && placeSheets[0].GetComponent<SpriteRenderer>().sprite.ToString().Substring(0,9) ==  "cardflame")
+            else if (placeSheets.Length == 1 && flameRenserer != null)
             {
                 //placePocにcardflameのみ描画されている場合、return
                 return;
@@ -398,22 +394,14 @@ namespace Assets.Scripts.Bar02 {
             else
             {
                 //カードがあったらflame消去
-                //placeSheetsの中からframe探す
-                SpriteRenderer deletePrefab = null;
-                for(int i = 0; i < placeSheets.Length; i++)
+
+                if(flameRenserer != null)
                 {
-                    SpriteRenderer PrefabSprite = placeSheets[i].GetComponent<SpriteRenderer>();
-                    string prefabName = PrefabSprite.sprite.ToString().Substring(0, 9);
-                    if (prefabName == "cardflame")
-                    {
-                        deletePrefab = PrefabSprite;
-                    }
+                    //flame消去
+                    Destroy(flameRenserer.gameObject);
                 }
 
-                if (!deletePrefab) return;
-
-                //flame消去
-                Destroy(deletePrefab.gameObject);
+                
             }
         }
 
@@ -441,7 +429,7 @@ namespace Assets.Scripts.Bar02 {
             for (int i = 1; i < _AllObject.Length; i++)
             {
                 if (!_AllObject[i]) continue;
-                Destroy(_AllObject[i]);
+                Destroy(_AllObject[i].gameObject);
             }
         }
 
@@ -456,6 +444,7 @@ namespace Assets.Scripts.Bar02 {
             var winObject = Resources.Load<GameObject>("Prefabs/Bar02/win");
             var winCard = Instantiate(winObject, transform.position, Quaternion.identity);
             winCard.transform.position = new Vector2(0, 2);
+            winCardRenserer = winCard.GetComponent<SpriteRenderer>();
         }
 
 
@@ -465,18 +454,9 @@ namespace Assets.Scripts.Bar02 {
         /// </summary>
         private void clearReset()
         {
-            //場所取得
-            Vector2 winPos = new Vector2(0, 2);
-            Collider2D[] getObj = Physics2D.OverlapPointAll(winPos);
-
-            //winのみか判断
-            if (getObj.Length != 1) return;
-            SpriteRenderer win = getObj[0].GetComponent<SpriteRenderer>();
-            string winName = win.sprite.ToString().Substring(0, 3);
-
-            if (winName == "win")
+            if (winCardRenserer != null)
             {
-                Destroy(win.gameObject);
+                DestroyImmediate(winCardRenserer.gameObject, true);
             }
 
         }
@@ -485,10 +465,16 @@ namespace Assets.Scripts.Bar02 {
 
         /// <summary>
         /// cardselect表示 countClickが変わるたびに呼び出す
+        /// 0=No.i 1=no.1 2=No.2
         /// </summary>
-        private void selectCard()
+        private void selectCard(int number)
         {
-            //order in layer は100と101
+            //countClickが変わるたびに呼び出す=countClickを同時に変えてしまう(スリム化)
+            if (number == 0){ _countClick = countClick.Noi; }else 
+            if (number == 1){ _countClick = countClick.No1; }else
+            if (number == 2){ _countClick = countClick.No2; }else return;
+
+            //order in layer は100
             var selectPrefab = Resources.Load<GameObject>("Prefabs/Bar02/cardselect");
             SpriteRenderer selectRenderer = selectPrefab.GetComponent<SpriteRenderer>();
 
@@ -498,10 +484,6 @@ namespace Assets.Scripts.Bar02 {
                 if (cardSelect1 != null)
                 {
                     DestroyImmediate(cardSelect1.gameObject, true);
-                }
-                if (cardSelect2 != null)
-                {
-                    DestroyImmediate(cardSelect2.gameObject, true);
                 }
 
             }
@@ -519,19 +501,7 @@ namespace Assets.Scripts.Bar02 {
                 }
 
             }
-            else
-            {
-                //2個目のcardが選択された時
-                if (click2 != null)
-                {
-                    Vector2 click2Pos = click2.transform.position;
-                    selectRenderer.sortingOrder = 101;
 
-                    var Select2 = Instantiate(selectPrefab, transform.position, Quaternion.identity);
-                    Select2.transform.position = click2Pos;
-                    cardSelect2 = Select2.GetComponent<SpriteRenderer>();
-                }
-            }
         }
         
     }
