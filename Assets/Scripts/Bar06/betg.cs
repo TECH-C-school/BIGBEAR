@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class textt : MonoBehaviour {
+public class betg : MonoBehaviour
+{
 
     private Text targetText;
 
-    static public string nume="";
+    static public string num = "";
 
     void Start()
     {
-        nume = "";
+        num = "1";
     }
-    static public void textupt(int gou) {
-        nume = gou.ToString();
+    static public void textupt(int gou)
+    {
+        num = gou.ToString();
     }
 
     public void Update()
     {
         this.targetText = this.GetComponent<Text>();
-        this.targetText.text = nume.ToString(); 
+        this.targetText.text = num.ToString();
     }
-
 }
+

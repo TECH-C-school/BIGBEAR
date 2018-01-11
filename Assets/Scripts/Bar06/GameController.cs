@@ -24,7 +24,7 @@ namespace Assets.Scripts.Bar06 {
         public int coin = 10;
         public int bet = 1;
         public string guitxt = "";
-
+        private int strt = 0;
 
 
         public void TransitionToResult() {
@@ -39,24 +39,21 @@ namespace Assets.Scripts.Bar06 {
             coin--;
             mais.rirekii(coin);
             bett.rirekii(bet);
-            makec();
+            //makec();
 
 
 
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
-            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(1.35f, -3.5f, 0);
 
-            var cardPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
-            var cardObjec2t = Instantiate(cardPrefab2, transform.position, Quaternion.identity);
-            cardObjec2t.transform.position = new Vector3(1.35f, 1.22f, 0);
 
+
+            /*
             makecard();
             tmakecard(1);
             texttoku();
             makecard();
             tmakecard(0);
-
+            */
+            //saiClick();
 
 
         }
@@ -93,16 +90,30 @@ namespace Assets.Scripts.Bar06 {
                 coin--;
                 bett.rirekii(bet);
                 mais.rirekii(coin);
-                makec();
+                betg.textupt(bet);
+                //makec();
             }             
         }
+        public void betClickm()
+        {
+            if (bet > 1)
+            {
+                bet -= 1;
+                coin++;
+                bett.rirekii(bet);
+                mais.rirekii(coin);
+                betg.textupt(bet);
+                //makec();
+            }
+        }
 
-        public void makec()
+
+        public void makec(int bet2)
         {
             var cardsObject = GameObject.Find("coin");
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin1");
             var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3(-5.68f + (-0.25f * bet), -4.2f, -1 * bet);
+            cardObject.transform.position = new Vector3(-5.68f + (-0.25f * bet2), -4.2f, -1 * bet2);
             cardObject.transform.parent = cardsObject.transform;
         }
 
@@ -136,7 +147,7 @@ namespace Assets.Scripts.Bar06 {
             textoku();
 
             if (gou > 21) {
-                bet = 0;
+
                 textSave(coin.ToString());
                 mais.rirekii(coin);
                 lose.winhyou();
@@ -218,18 +229,18 @@ namespace Assets.Scripts.Bar06 {
             mai = maimaimai;
             texttoku();
             if (tgou < 22) {
-                if (gou==tgou) { draw.winhyou();
+                if (gou==tgou) {
+                    draw.winhyou();
+                    coin += bet;
                 } else if (gou > tgou) {
                     win.winhyou(); syouritu.syouri(1);
                     coin += bet*2;
-                    bet = 0;
                     textSave(coin.ToString());
                     mais.rirekii(coin);
                     bett.rirekii(bet);
                     cderi();
                 } else {
                     lose.winhyou(); syouritu.syouri(0);
-                    bet = 0;
                     textSave(coin.ToString());
                     mais.rirekii(coin);
                     bett.rirekii(bet);
@@ -238,7 +249,6 @@ namespace Assets.Scripts.Bar06 {
             }else {
                 win.winhyou(); syouritu.syouri(1);
                 coin += bet*2;
-                bet = 0;
                 textSave(coin.ToString());
                 mais.rirekii(coin);
                 bett.rirekii(bet);
@@ -274,6 +284,17 @@ namespace Assets.Scripts.Bar06 {
 
         public void saiClick()
         {
+            if (strt == 0)
+            {
+                var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
+                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.position = new Vector3(1.35f, -3.5f, 0);
+
+                var cardPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/bj_flame");
+                var cardObjec2t = Instantiate(cardPrefab2, transform.position, Quaternion.identity);
+                cardObjec2t.transform.position = new Vector3(1.35f, 1.22f, 0);
+                strt += 1;
+            }else { strt += 1; }
 
             var cardsObject = GameObject.Find("Cards2").transform;
             foreach (Transform cardObject in cardsObject)
@@ -286,8 +307,10 @@ namespace Assets.Scripts.Bar06 {
             {
                 Destroy(cardObject.gameObject);
             }
-
-            rireki.rirekii(gou);
+            if (strt != 1)
+            {
+                rireki.rirekii(gou);
+            }
             gou = 0;
             tgou = 0;
             zmai = 0;
@@ -297,9 +320,8 @@ namespace Assets.Scripts.Bar06 {
             Atmine = 0;
             mai = 0;
             syotop = 0;
-            bet = 1;
-            coin--;
-            makec();
+            coin-=bet;
+            //makec();
             bett.rirekii(bet);
             mais.rirekii(coin);
             MakeRandomNumbers();
@@ -308,6 +330,12 @@ namespace Assets.Scripts.Bar06 {
             {
                 tekki[i] = 0;
             }
+
+            for(int j = 0; j < bet; j++)
+            {
+                makec(j+1);
+            }
+
 
             makecard();
             tmakecard(1);
@@ -322,19 +350,30 @@ namespace Assets.Scripts.Bar06 {
 
         void ReadFile()
         {
-            // FileReadTest.txtファイルを読み込む
-            FileInfo fi = new FileInfo(Application.dataPath + "/" + "Test1.txt");
 
-            // 一行毎読み込み
-            StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8);
-            guitxt = sr.ReadToEnd();
+            // FileReadTest.txtファイルを読み込む
+            FileInfo fi = new FileInfo(Application.dataPath + "/" + "Test.txt");
+
+            try
+            {
+                // 一行毎読み込み
+                using (StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8))
+                {
+                    guitxt = sr.ReadToEnd();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
 
 
         }
 
         public void textSave(string txt)
         {
-            StreamWriter sw = new StreamWriter(Application.dataPath + "/" + "Test1.txt", false);
+            StreamWriter sw = new StreamWriter(Application.dataPath + "/" + "Test.txt", false);
             //true=追記 false=上書き
             sw.WriteLine(txt);
             sw.Flush();

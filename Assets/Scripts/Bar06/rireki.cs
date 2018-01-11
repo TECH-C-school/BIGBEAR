@@ -7,9 +7,12 @@ public class rireki : MonoBehaviour {
 
 	    private Text targetText;
 
-    static public string nume=""; 
+    static public string nume="";
 
-
+    void Start()
+    {
+        nume = "";
+    }
     static public void rirekii(int gou) {
         nume = gou.ToString()+ "\n" + nume;
     }

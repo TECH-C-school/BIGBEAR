@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bt3 : MonoBehaviour
+public class bt4 : MonoBehaviour
 {
+
     void Start()
     {
         gameObject.SetActive(false);
     }
-    public void OnClick()
-    {
-        canb.SetActive("Button (3)", false);
 
-    }
+
 }
+

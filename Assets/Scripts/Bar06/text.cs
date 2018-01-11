@@ -7,11 +7,14 @@ public class text : MonoBehaviour {
 
     private Text targetText;
 
-    static public int num=0; 
+    static public string num="";
 
-
+    void Start()
+    {
+        num = "";
+    }
     static public void textupt(int gou) {
-        num = gou;
+        num = gou.ToString();
     }
 
     public void Update()
@@ -21,7 +24,8 @@ public class text : MonoBehaviour {
     }
 
 
- 
+
+ 
 
 
 
