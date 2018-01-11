@@ -20,11 +20,42 @@ public class Card : MonoBehaviour
         public PlayingCards CardType;
         //トランプの数
         public int Number;
+        //トランプのイメージを読み込む
+        public Sprite GetImage()
+        {
+            string cardFileName = "";
+
+            switch (CardType)
+            {
+                case PlayingCards.s:
+                    cardFileName = "s";
+                    break;
+                case PlayingCards.h:
+                    cardFileName = "h";
+                    break;
+                case PlayingCards.d:
+                    cardFileName = "d";
+                    break;
+                case PlayingCards.c:
+                    cardFileName = "c";
+                    break;
+            }
+            //今回の場合imageの名前がs01などとなっており、基本数値が2桁なので、数値が10未満の場合0を10の位に足す処理をする
+            if (Number < 10)
+            {
+                cardFileName += "0";
+            }
+
+            cardFileName += Number.ToString();
+
+            Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/" + cardFileName);
+            return image;
+        }
 
     }
+
     //structをnewで初期化
     card cards = new card();
-
 
     private void Cardfolder()
     {
@@ -33,250 +64,79 @@ public class Card : MonoBehaviour
             //enum内の要素数(この場合sなど)を数で判断(要素数の数を指定していればその指定した数で判断する)
             //enumでcaseを使う際、case(enumの構造体名(この場合PlayingCards))要素数(この場合s=0としているので0)をするとエラーが出ない
             case (PlayingCards)0:
-                if (cards.Number == 1) {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s01");
-                }
-                else if (cards.Number == 2)
+                for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
                 {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s02");
-                }
-                else if (cards.Number == 3)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s03");
-                }
-                else if (cards.Number == 4)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s04");
-                }
-                else if (cards.Number == 5)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s05");
-                }
-                else if (cards.Number == 6)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s06");
-                }
-                else if (cards.Number == 7)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s07");
-                }
-                else if (cards.Number == 8)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s08");
-                }
-                else if (cards.Number == 9)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s09");
-                }
-                else if (cards.Number == 10)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s10");
-                }
-                else if (cards.Number == 11)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s11");
-                }
-                else if (cards.Number == 12)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s12");
-                }
-                else if (cards.Number == 13)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/s13");
+                    cards.GetImage();
                 }
                 break;
-                
+
             case (PlayingCards)1:
-                if (cards.Number == 14)
+                for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
                 {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h01");
-                }
-                else if (cards.Number == 15)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h02");
-                }
-                else if (cards.Number == 16)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h03");
-                }
-                else if (cards.Number == 17)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h04");
-                }
-                else if (cards.Number == 18)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h05");
-                }
-                else if (cards.Number == 19)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h06");
-                }
-                else if (cards.Number == 20)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h07");
-                }
-                else if (cards.Number == 21)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h08");
-                }
-                else if (cards.Number == 22)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h09");
-                }
-                else if (cards.Number == 23)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h10");
-                }
-                else if (cards.Number == 24)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h11");
-                }
-                else if (cards.Number == 25)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h12");
-                }
-                else if (cards.Number == 26)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/h13");
+                    cards.GetImage();
                 }
                 break;
 
             case (PlayingCards)2:
-                if (cards.Number == 27)
+                for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
                 {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d01");
-                }
-                else if (cards.Number == 28)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d02");
-                }
-                else if (cards.Number == 29)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d03");
-                }
-                else if (cards.Number == 30)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d04");
-                }
-                else if (cards.Number == 31)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d05");
-                }
-                else if (cards.Number == 32)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d06");
-                }
-                else if (cards.Number == 33)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d07");
-                }
-                else if (cards.Number == 34)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d08");
-                }
-                else if (cards.Number == 35)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d09");
-                }
-                else if (cards.Number == 36)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d10");
-                }
-                else if (cards.Number == 37)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d11");
-                }
-                else if (cards.Number == 38)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d12");
-                }
-                else if (cards.Number == 39)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/d13");
+                    cards.GetImage();
                 }
                 break;
 
             case (PlayingCards)3:
-                if (cards.Number == 40)
+                for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
                 {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c01");
-                }
-                else if (cards.Number == 41)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c02");
-                }
-                else if (cards.Number == 42)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c03");
-                }
-                else if (cards.Number == 43)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c04");
-                }
-                else if (cards.Number == 44)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c05");
-                }
-                else if (cards.Number == 45)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c06");
-                }
-                else if (cards.Number == 46)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c07");
-                }
-                else if (cards.Number == 47)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c08");
-                }
-                else if (cards.Number == 48)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c09");
-                }
-                else if (cards.Number == 49)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c10");
-                }
-                else if (cards.Number == 50)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c11");
-                }
-                else if (cards.Number == 51)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c12");
-                }
-                else if (cards.Number == 52)
-                {
-                    Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/c13");
+                    cards.GetImage();
                 }
                 break;
+
         }
     }
 
+    //他にもSprite [] image = Resources.LoadAll<Sprite> ();で指定したフォルダから画像をまとめて読み込む
+    //例:private Sprite[] image = Resources.LoadAll<Sprite>("Images/Bar/Cards/");
+
     //ランダムな整数の生成
-    private int[] MakeRandomNumbers()
+    private card[] MakeRandomNumbers()
+    {
+        card[] numbers = new card[52];
+
+        for (int i = 0; i < 13; i++)  //配列の初期化
         {
-            int[] numbers = new int[52];
-
-            for (int i = 0; i < numbers.Length; i++)  //配列の初期化
-            {
-                numbers[i] = i + 1;
-            }
-            var counter = 0;
-            while (counter < 52)
-            {
-                var index = Random.Range(counter, numbers.Length);
-                var tmp = numbers[counter];
-                numbers[counter] = numbers[index];
-                numbers[index] = tmp;
-
-                counter++;
-            }
-            return numbers;
+            numbers[i].Number = i + 1;
+            numbers[i].CardType = PlayingCards.s;
+        }
+        for (int i = 13; i < 26; i++)  //配列の初期化
+        {
+            numbers[i].Number = i + 1 - 13;
+            numbers[i].CardType = PlayingCards.d;
+        }
+        for (int i = 26; i < 39; i++)  //配列の初期化
+        {
+            numbers[i].Number = i + 1 - 26;
+            numbers[i].CardType = PlayingCards.c;
+        }
+        for (int i = 39; i < 52; i++)  //配列の初期化
+        {
+            numbers[i].Number = i + 1 - 39;
+            numbers[i].CardType = PlayingCards.h;
         }
 
-    //Sprite [] image = Resources.LoadAll<Sprite> ();で指定したフォルダから画像をまとめて読み込む
-    //private Sprite[] image = Resources.LoadAll<Sprite>("Images/Bar/Cards/");
+
+
+        var counter = 0;
+        while (counter < 52)
+        {
+            var index = Random.Range(counter, numbers.Length);
+            var tmp = numbers[counter];
+            numbers[counter] = numbers[index];
+            numbers[index] = tmp;
+
+            counter++;
+        }
+        return numbers;
+    }
 
     /* public Card(int number,PlayingCards s)
     {
