@@ -45,7 +45,7 @@ public class move : MonoBehaviour {
         if(move1 == true)
         {
             Debug.Log("true");
-            this.transform.position += new Vector3(-1f * Time.deltaTime, 0f, 0f);
+            this.transform.position += new Vector3(-0.5f * Time.deltaTime, 0f, 0f);
             if (Input.GetKey("k"))
             {
                 Debug.Log("false");
