@@ -96,6 +96,7 @@ namespace Assets.Scripts.Bar03
                     }
                     else
                     {
+
                         var CardPrefabf = Resources.Load<GameObject>("Prefabs/Bar03/Front/" + Card[m_Cards[NextCard]]);
                         var cardObject2f = Instantiate(CardPrefabf, transform.position, Quaternion.identity);
                         cardObject2f.transform.position = new Vector3(
@@ -147,21 +148,7 @@ namespace Assets.Scripts.Bar03
             return values;
         }
 
-        //マウスドラッグでオブジェクトを動かす
-        void OnMouseDrag()
-        {
-            Vector3 objectPointInScreen
-                = Camera.main.WorldToScreenPoint(this.transform.position);
-
-            Vector3 mousePointInScreen
-                = new Vector3(Input.mousePosition.x,
-                              Input.mousePosition.y,
-                              objectPointInScreen.z);
-
-            Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
-            mousePointInWorld.z = this.transform.position.z;
-            this.transform.position = mousePointInWorld;
-        }
+       
 
 
 
