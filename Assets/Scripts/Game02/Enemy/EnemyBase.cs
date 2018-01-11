@@ -21,7 +21,8 @@ namespace Assets.Scripts.Game02 {
 			Debug.Log ("Parent"); 
 		}
 
-		protected void Eliminate() {
+		public void Eliminate() {
+			Debug.Log ("Delete");
 			this.gameObject.SetActive (false);
 			this.gameObject.transform.position = _parentTransform.position;
 		}
