@@ -20,6 +20,8 @@ namespace Assets.Scripts.Bar02
         void Start()
         {
             MakeCards();
+
+            //OpenCard();
         }
         void Update()
         {
@@ -113,7 +115,7 @@ namespace Assets.Scripts.Bar02
                     var card = cardpos.GetComponent<Cards>();
                     //CardスクリプトのNumberにMakeRandomの値代入
                     card.Number = num;
-                    card.TurnCardFaceUp();
+                    card.TurnCardFaceDown();
                     choice++; num++;
                 }
                 counter++;
@@ -122,8 +124,10 @@ namespace Assets.Scripts.Bar02
 
         public void ClickCard()
         {
+
             //マウスクリックの判定
             if (!Input.GetMouseButtonDown(0)) return; //左クリックされていなければreturn
+
 
             //クリックされた位置を取得
             var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -145,7 +149,7 @@ namespace Assets.Scripts.Bar02
             //クリックされた位置にflameを装着
             var Flame = GameObject.Find("cardflame");
             Flame.transform.position = hitObject.transform.position;
-            
+
         }
         /*public void OnTriggerStay2D(Collider2D collision)
         {
@@ -155,5 +159,55 @@ namespace Assets.Scripts.Bar02
          {
              SceneManager.LoadScene("Result");
          }*/
+
+        //    public void OpenCard()
+        //    {
+        //        int counter = 2;
+        //        int num = 0;
+        //        var a = GameObject.Find("FieldCards");
+        //        GameObject[] b = new GameObject[28];
+        //        var empty = GameObject.Find("Empty");
+        //        GameObject[] d = new GameObject[35];
+        //        for (int i = 0; i < 7; i++)
+        //        {
+        //            for (int j = 0; j < counter; j++)
+        //            {
+        //                d[counter] = Instantiate(empty, transform.position, Quaternion.identity);
+        //                d[counter].transform.position = new Vector3(
+        //                -0.87f * (i + 1) + 1.665f * (j + 1),
+        //                3.50f - 0.92f * (i + 1),
+        //                0);
+
+        //                d[counter].transform.parent = empty.transform;
+        //            }
+        //            counter++;
+        //        }
+        //        counter = 1;
+        //        for (int i = 0; i < 7; i++)
+        //        {
+        //            for (int j = 0; j < counter; j++)
+        //            {
+        //                b[counter-1] = a.transform.GetChild(num).gameObject;
+        //                if (num > 1)
+        //                {
+        //                    if (d[i * counter + j].transform.position == b[counter].transform.position
+        //                        && d[i + j * counter].transform.position == b[counter+1].transform.position)
+        //                    {
+        //                        b[counter-1].GetComponent<BoxCollider2D>().enabled = false;
+        //                    }
+        //                    else
+        //                    {
+        //                        var cardd = GetComponent<Cards>();
+        //                        cardd.TurnCardFaceUp();
+        //                        Destroy(d.gameObject);
+        //                    }
+        //                }
+        //                num++;
+        //            }
+        //            counter++;
+        //        }
+        //    }
+        //}
     }
 }
+
