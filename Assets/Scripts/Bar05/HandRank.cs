@@ -34,7 +34,9 @@ namespace Assets.Scripts.Bar05
             NoPair,
         }
         public RankCheck handRank;
+        public RankCheck enemyRank;
 
+        private int number;
         private int playerPoint;
         private int enemyPoint;
         private int playerCount;
@@ -42,8 +44,11 @@ namespace Assets.Scripts.Bar05
         private string playerSuitCount;
         private string enemySuitCount;
 
+        private int[] handArray;
+        private int[] enemyArray;
+
         // Use this for initialization
-        void Start()
+        public void CheckReady()
         {
             playerList = phase.handCard;
 
@@ -69,6 +74,10 @@ namespace Assets.Scripts.Bar05
                 string strTemp = boardList[i].GetComponent<Card>().cardStrPath;
                 board.Add(strTemp);
             }
+
+            handArray = CardSubstring(hand);
+            enemyArray = CardSubstring(enemy); 
+
             hand.AddRange(board);
             enemy.AddRange(board);
             //SuitCheck(hand);
@@ -86,7 +95,21 @@ namespace Assets.Scripts.Bar05
             List<string> debugOneList = new List<string>() { "c10", "d04", "s09", "h01", "s01", "s02", "s03" };
             List<string> debugNoList = new List<string>() { "c10", "d04", "s09", "h08", "s01", "s02", "s03" };
             
-            handRank = HandCheck(debugStraightFlushList);
+            handRank = HandCheck(hand);
+            enemyRank = HandCheck(enemy);
+
+            phase.Win(WinnerCheck());
+        }
+
+        int[] CardSubstring(List<string> cards)
+        {
+            int[] numbers = new int[2];
+            for (int i = 0; i < cards.Count; i++)
+            {
+                int number = int.Parse(cards[i].Substring(1, 2));
+                numbers[i] = number;
+            }
+            return numbers;
         }
 
         public RankCheck HandCheck(List<string> cards)
@@ -97,9 +120,8 @@ namespace Assets.Scripts.Bar05
             int fourCount = 0;
             for (int i = 0; i < cards.Count; i++)
             {
-                string numberStr = cards[i].Substring(1, 2);
-                int numberTemp = int.Parse(numberStr);
-                numberCount[numberTemp]++;
+                int number = int.Parse(cards[i].Substring(1, 2));
+                numberCount[number]++;
             }
             numberCount[14] = numberCount[1];
 
@@ -182,6 +204,36 @@ namespace Assets.Scripts.Bar05
             else if (pairCount >= 1) return RankCheck.OnePair;
 
             return RankCheck.NoPair;
+        }
+
+        private int WinnerCheck()
+        {
+            if (handRank < enemyRank) return 0;
+            else if (handRank > enemyRank) return 1;
+
+            if (handRank == enemyRank)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    if (handArray[i] == 1) handArray[i] = 14;
+                    if (enemyArray[i] == 1) enemyArray[i] = 14;
+                }
+
+                int handMax = Mathf.Max(enemyArray[0], enemyArray[1]);
+                int enemyMax = Mathf.Max(handArray[0], handArray[1]);
+
+                if (handMax > enemyMax)return 0;
+                else if (enemyMax > handMax) return 1;
+                else if (handMax == enemyMax)
+                {
+                    int handMin = Mathf.Min(handArray[0], handArray[1]);
+                    int enemyMin = Mathf.Min(handArray[0], handArray[1]);
+
+                    if (handMin > enemyMin)return 0;
+                    else if (enemyMin > handMin)return 1;
+                }  
+            }
+            return -1;
         }
     }
 }

@@ -32,7 +32,8 @@ namespace Assets.Scripts.Bar05
 
         public PhaseEnum phaseEnum;
 
-        public string[] cardStr =
+        [SerializeField]
+        private string[] cardStr =
         {
             "s01", "s02", "s03", "s04", "s05", "s06", "s07", "s08", "s09", "s10", "s11", "s12", "s13",
         "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13",
@@ -50,6 +51,8 @@ namespace Assets.Scripts.Bar05
         private GameObject callBtn;
         private GameObject allInBtn;
         private bool allInBool;
+
+        private HandRank handRank;
 
         void Start()
         {
@@ -275,7 +278,14 @@ namespace Assets.Scripts.Bar05
 
         void ShowDown()
         {
+            handRank.CheckReady();
+        }
 
+        public void Win(int winPlayer)
+        {
+            //0がプレイヤー
+            //1が敵
+            //-1が引き分け
         }
     }
 }

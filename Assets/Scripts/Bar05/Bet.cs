@@ -44,6 +44,7 @@ namespace Assets.Scripts.Bar05
         {
             playerMoney -= fieldBetMoney - playerBetMoney;
             playerBetMoney = fieldBetMoney;
+            phase.fieldBet = fieldBetMoney;
             betCanvas.SetActive(false);
             Invoke("enemy.EnemyBet",1);
         }
@@ -52,7 +53,8 @@ namespace Assets.Scripts.Bar05
         {
             fieldBetMoney *= raiseMagnification;
             playerMoney -= fieldBetMoney / raiseMagnification;
-            playerBetMoney = fieldBetMoney; 
+            playerBetMoney = fieldBetMoney;
+            phase.fieldBet = fieldBetMoney;
             betCanvas.SetActive(false);
             Invoke("enemy.EnemyBet", 1);
         }
@@ -86,15 +88,7 @@ namespace Assets.Scripts.Bar05
         void Fold()
         {
             betCanvas.SetActive(false);
-
-            if (enemyBetMoney == fieldBetMoney)
-            {
-                phase.phaseEnum++;
-            }
-            else if (enemyBetMoney != fieldBetMoney)
-            {
-                Invoke("enemy.EnemyBet", 1);
-            }
+            phase.Win(1);
         }
     }
 }
