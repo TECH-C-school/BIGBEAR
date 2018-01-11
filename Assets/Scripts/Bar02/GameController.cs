@@ -51,8 +51,21 @@ namespace Assets.Scripts.Bar02
                 //19
                 trump[i].number = (cards[i] - 1) % 13 + 1;
                 trump[i].mark = (Mark)((cards[i] - 1) / 13);
+                Debug.Log("生成"+trump[i].mark+trump[i].number);
             }
 
+            //残りの31枚のカードを山札にする
+            
+              Card[] remaindertrump = new Card[31];
+            for (int i = 0; i < 31; i++)
+            {
+
+                 remaindertrump[i].number = (cards[i] - 1) % 13 + 1;
+                remaindertrump[i].mark = (Mark)((cards[i] - 1) / 13);
+                Debug.Log("山札" + remaindertrump[i].mark + remaindertrump[i].number);
+            }
+
+            Debug.Log("残りのカードの枚数は");
 
             //21枚のカードを表示する
             var counterForTrump = 0;
@@ -109,9 +122,9 @@ namespace Assets.Scripts.Bar02
         public void Yamahuda()
         {
 
-            int[] cards = new int[53];
+          /*  int[] cards = new int[53];
             //31枚のカードを用意する
-            for (int i = 22; i < 53; i++)
+            for (int i = 21; i < 53; i++)
             {
                 cards[i] = i + 1;
 
@@ -127,8 +140,8 @@ namespace Assets.Scripts.Bar02
 
                 counter++;
             }
-
-            var cardPrefab = Resources.Load<GameObject>("Resources/Cards");
+            //山札をクリックしたとき、隣にカードを配置する
+            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Card");
             var cardsObject = GameObject.Find("Cards");
             Card[] trump = new Card[53];
             for (int i = 22; i < 53; i++)
@@ -138,33 +151,20 @@ namespace Assets.Scripts.Bar02
                 trump[i].mark = (Mark)((cards[i] - 1) / 13);
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                   
-                var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+               var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                cardObject.transform.parent = GameObject.Find("Cards").transform;
                 cardObject.transform.position = new Vector3(
-                       i * 1.27f,
-                       - 3.84f,
+                       5f,
+                       - 3.5f,
                        0);
                 cardObject.transform.parent = cardsObject.transform;
-            }
-/**/
 
+            }*/
+            
 
-
-            /* //最下段以外選択できないようにする
-              void OnClick() {
-          if (Cursor.lockState == CursorLockMode.Locked) {
-              return;  //lockStateがLockedだったら以後の処理をしない
-          }
-                 //以下、クリックされた時の処理
-
-             }
-             //jokerの処理
-             private void jokers_Click(object senter,EventArgs e)
-             {
-                 listBoX1.
-             }*/
         }
         
     }
