@@ -5,14 +5,11 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game02 {
 	public class EnemyContoroller : MonoBehaviour {
+		[SerializeField]
 		List<EnemyBase> enemys = new List<EnemyBase> ();
 
-//		List<float> buildingColumns = new List<float> ();
-//		List<float> buildingRow = new List<float>();
-
-//		float[][] genPos = {
-//			{}
-//		};
+		[SerializeField] List<float> buildingHierarchy = new List<float>();
+		[SerializeField] List<float> buildingColumns = new List<float>();
 
 		void Start() {
 			EnemyGeneratePosSet ();
@@ -22,6 +19,10 @@ namespace Assets.Scripts.Game02 {
 			var enemy = enemys.FirstOrDefault(e => e.gameObject.activeSelf == false);
 			if (enemy == null)
 				return;
+			var rnd_h = Random.Range (1, 6);
+			var rnd_c = Random.Range (1, 6);
+			var genPos = new Vector3 (buildingColumns [rnd_c], buildingHierarchy [rnd_h], 0);
+			enemy.Generate (genPos);
 		}
 	}
 }
