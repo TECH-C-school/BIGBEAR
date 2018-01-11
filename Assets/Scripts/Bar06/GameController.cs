@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar06 {
     public class GameController : MonoBehaviour {
-        private int positioncounter = 2;
-        private int enemyposition = 0;
+        private int playerpositionX = 2;
+        private int playerpositionY = 0;
+        private int enemypositionX = 0;
+        private int enemypositionY = 0;
         private int playercounter = 0;
         private int enemycounter = 0;
         private int DeckCounter = 0;
@@ -14,6 +16,9 @@ namespace Assets.Scripts.Bar06 {
         private string[] mark = new string[52];
         private int i, j, k, value;
         private string val;
+        private int DeckLock = 0;
+        
+
 
         public void MakeDeck()
         {
@@ -123,17 +128,18 @@ namespace Assets.Scripts.Bar06 {
 
         }
 
+
         //プレイヤーのカード追加
         public void AddCard()
         {
-            if(playercounter < 22)
+            if(DeckLock == 0)
             {
                 
                 var addCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
                 var addCard = Instantiate(addCardPrefab, transform.position, Quaternion.identity);
-                addCard.transform.position = new Vector3(positioncounter, -2, 0);
+                addCard.transform.position = new Vector3(playerpositionX, -2 - playerpositionY, 0);
                 addCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
-                positioncounter += 2;
+                playerpositionX += 2;
                 if (numbers[DeckCounter] >= 11)
                 {
                     numbers[DeckCounter] = 10;
@@ -151,6 +157,11 @@ namespace Assets.Scripts.Bar06 {
                 }
                 playercounter = playercounter + numbers[DeckCounter];
                 DeckCounter++;
+                if(playerpositionX > 6)
+                {
+                    playerpositionX = -2;
+                    playerpositionY = 1;
+                }
                 if (playercounter >= 22)
                 {
                     Battle();
@@ -161,14 +172,14 @@ namespace Assets.Scripts.Bar06 {
         
         public void Battle()
         {
-            
+            DeckLock = 1;
             while (enemycounter < 17)
             {
                 var addEnemyCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
                 var addEnemyCard= Instantiate(addEnemyCardPrefab, transform.position, Quaternion.identity);
-                addEnemyCard.transform.position = new Vector3(enemyposition, 2, 0);
+                addEnemyCard.transform.position = new Vector3(enemypositionX, 2 + enemypositionY, 0);
                 addEnemyCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
-                enemyposition += 2;
+                enemypositionX += 2;
                 if (numbers[DeckCounter] >= 11)
                 {
                     numbers[DeckCounter] = 10;
@@ -186,7 +197,17 @@ namespace Assets.Scripts.Bar06 {
                 }
                 enemycounter = enemycounter + numbers[DeckCounter];
                 DeckCounter++;
+                if(enemypositionX > 6)
+                {
+                    enemypositionX = -2;
+                    enemypositionY = 1;
+                }
             }
+        }
+
+        public void ReSTART()
+        {
+            
         }
 
         public void TransitionToResult() {
