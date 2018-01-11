@@ -25,14 +25,34 @@ namespace Assets.Scripts.Bar04
 
         private Card[] cards;
 
+        public enum Mark
+        {
+            Clover,
+            Heart,
+            Spade,
+            Diamond,
+        }
+
+        public struct Card
+        {
+            public int number;
+            public Mark mark;
+        }
+
+        private Card[] cards;
+
         public GameObject Startbutton;
 
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
         }
+<<<<<<< HEAD
         public void GameStart()
         {
+=======
+        public void GameStart() {
+>>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
             Debug.Log("ゲームスタート");
             Startbutton.SetActive(false);
         }
@@ -56,8 +76,11 @@ namespace Assets.Scripts.Bar04
                 cards[i].number = number;
                 number++;
             }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
             //ハート1～13のカードを用意する
             number = 1;
             for (int i = 13; i < 26; i++)
@@ -73,6 +96,17 @@ namespace Assets.Scripts.Bar04
                 cards[i].mark = Mark.Spade;
                 cards[i].number = number;
                 number++;
+<<<<<<< HEAD
+=======
+            }
+            //ダイヤ1～13のカードを用意する
+            number = 1;
+            for (int i = 39; i < 51; i++)
+            {
+                cards[i].mark = Mark.Diamond;
+                cards[i].number = number;
+                number++;
+>>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
             }
             //ダイヤ1～13のカードを用意する
             number = 1;
@@ -84,7 +118,12 @@ namespace Assets.Scripts.Bar04
             }
 
 
+<<<<<<< HEAD
             //52枚をシャッフルする
+=======
+
+            //52枚をシャッフルにする
+>>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
             var counter = 0;
             while (counter < 52)
             {
@@ -97,6 +136,7 @@ namespace Assets.Scripts.Bar04
                 counter++;
           
             }
+<<<<<<< HEAD
             
         }
         /*52枚をランダムにconsoleに出す
@@ -144,8 +184,25 @@ namespace Assets.Scripts.Bar04
             }
         }
 
+=======
+
+            /*52枚をconsoleに出す
+            for (int i = 0; i < 52; i++)
+            {
+                Debug.Log(cards[i].number + ":" + cards[i].mark);
+            }*/
+
+        }
+
+>>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
     }
+
 }
 
 
+<<<<<<< HEAD
 //手役
+=======
+        //手役
+
+>>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
