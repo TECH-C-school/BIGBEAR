@@ -52,7 +52,11 @@ namespace Assets.Scripts.Bar02 {
 
         //消えたピラミッドのカードの枚数取得
         private int deletedPyramid = 0;
-        
+
+        //cardselectの格納
+        private SpriteRenderer cardSelect1;
+        private SpriteRenderer cardSelect2;
+
 
         /// <summary>
         /// カードを表示
@@ -155,6 +159,7 @@ namespace Assets.Scripts.Bar02 {
             if (hitObjects.Length <= 0)
             {
                 _countClick = countClick.Noi;
+                selectCard();
                 return;
             } 
 
@@ -187,6 +192,7 @@ namespace Assets.Scripts.Bar02 {
                 if (placeCardPosition != new Vector2(4.5f, 2.0f))
                 {
                     _countClick = countClick.Noi;
+                    selectCard();
                     return;
                 }
 
@@ -196,6 +202,7 @@ namespace Assets.Scripts.Bar02 {
                 placeCard.transform.position = new Vector2(3.0f, 2.0f);
                 
                 _countClick = countClick.Noi;
+                selectCard();
                 return;
                 
             }
@@ -205,6 +212,7 @@ namespace Assets.Scripts.Bar02 {
                 //最後まで山札めくらないと発動せず
                 ReturnPlaceCard();
                 _countClick = countClick.Noi;
+                selectCard();
             }
             else
             {
@@ -218,6 +226,7 @@ namespace Assets.Scripts.Bar02 {
                     click1 = maxCard;
                     sumNum[0] = maxCardNum;
                     _countClick = countClick.No1;
+                    selectCard();
 
                     //13をクリックしたらその場で消去、クリック回数初期化
                     if (sumNum[0] == 13)
@@ -228,6 +237,7 @@ namespace Assets.Scripts.Bar02 {
                         }
                         Destroy(click1.gameObject);
                         _countClick = countClick.Noi;
+                        selectCard();
                     }
                 }
                 //2回目のクリック
@@ -237,6 +247,7 @@ namespace Assets.Scripts.Bar02 {
                     click2 = maxCard;
                     sumNum[1] = maxCardNum;
                     _countClick = countClick.No2;
+                    selectCard();
                 }
 
                 //2このobjectを選択したかどうか判断
@@ -264,6 +275,7 @@ namespace Assets.Scripts.Bar02 {
 
                 //すべて終了 初期化
                 _countClick = countClick.Noi;
+                selectCard();
             }
             
         }
@@ -469,6 +481,58 @@ namespace Assets.Scripts.Bar02 {
 
         }
 
+
+
+        /// <summary>
+        /// cardselect表示 countClickが変わるたびに呼び出す
+        /// </summary>
+        private void selectCard()
+        {
+            //order in layer は100と101
+            var selectPrefab = Resources.Load<GameObject>("Prefabs/Bar02/cardselect");
+            SpriteRenderer selectRenderer = selectPrefab.GetComponent<SpriteRenderer>();
+
+            if (_countClick == countClick.Noi)
+            {
+                //何も選択されていない時の処理
+                if (cardSelect1 != null)
+                {
+                    DestroyImmediate(cardSelect1.gameObject, true);
+                }
+                if (cardSelect2 != null)
+                {
+                    DestroyImmediate(cardSelect2.gameObject, true);
+                }
+
+            }
+            else if (_countClick==countClick.No1)
+            {
+                //1個目のcardが選択された時
+                if (click1 != null)
+                {
+                    Vector2 click1Pos = click1.transform.position;
+                    selectRenderer.sortingOrder = 100;
+
+                    var Select1 = Instantiate(selectPrefab, transform.position, Quaternion.identity);
+                    Select1.transform.position = click1Pos;
+                    cardSelect1 = Select1.GetComponent<SpriteRenderer>();
+                }
+
+            }
+            else
+            {
+                //2個目のcardが選択された時
+                if (click2 != null)
+                {
+                    Vector2 click2Pos = click2.transform.position;
+                    selectRenderer.sortingOrder = 101;
+
+                    var Select2 = Instantiate(selectPrefab, transform.position, Quaternion.identity);
+                    Select2.transform.position = click2Pos;
+                    cardSelect2 = Select2.GetComponent<SpriteRenderer>();
+                }
+            }
+        }
         
     }
 }
