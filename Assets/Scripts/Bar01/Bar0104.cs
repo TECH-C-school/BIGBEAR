@@ -38,7 +38,7 @@ public class Bar0104 : MonoBehaviour {
         return values;
     }
 
-    private void ClickCards()
+    /*private void ClickCards()
     {
         //マウスクリックの判定
         if (!Input.GetMouseButtonDown(0)) return;
@@ -60,5 +60,5 @@ public class Bar0104 : MonoBehaviour {
         //クリックされたカードスクリプトを取得
         //var card = hitObject.collider.gameObject.GetComponent<Card>();
         //Debug.Log("hit object is " + card.Number);                            
-    }
+    }*/
 }

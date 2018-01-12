@@ -53,11 +53,14 @@ public class Card : MonoBehaviour {
         if (FaceUp)
         {           
             //CardsCollar[n_Number]+ CardsNumber[n_Number]
-            Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Cards[m_Number]);
+            //Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Cards[m_Number]);
+            //Debug.Log(Cards[m_Number]);
+            Cardsprite = Resources.Load<Sprite>("Prefabs/Bar01/Cards/" + Cards[m_Number]);
             Debug.Log(Cards[m_Number]);
         }
         else
         {
+            //Cardsprite = Resources.Load<Sprite>("Prefabs/Bar01/Cards/back");
             Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
         }
         var spriteRenderer = transform.GetComponent<SpriteRenderer>();
