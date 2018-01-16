@@ -24,42 +24,57 @@ namespace Assets.Scripts.Bar05
 
         private void Start()
         {
-            enemy = GameObject.Find("GameController").GetComponent<Enemy>();
-            phase = GameObject.Find("GameController").GetComponent<Phase>();
+            enemy = gameObject.GetComponent<Enemy>();
+            phase = gameObject.GetComponent<Phase>();
             betCanvas = GameObject.Find("BetCanvas");
+            
+            raiseMagnification = 2;
+        }
+
+        void BetChange()
+        {
             fieldBetMoney = phase.fieldBet;
             playerBetMoney = phase.playerBet;
             enemyBetMoney = phase.enemyBet;
             playerMoney = phase.playerMoney;
-            raiseMagnification = 2;
         }
 
-        void Check()
+        void PhaseChange()
+        {
+            phase.fieldBet = fieldBetMoney;
+            phase.playerBet = playerBetMoney;
+            phase.enemyBet = enemyBetMoney;
+            phase.playerMoney =  playerMoney;
+        }
+
+        public void Check()
         {
             betCanvas.SetActive(false);
-            Invoke("enemy.EnemyBet", 1);
+            enemy.EnemyBet();
         }
 
-        void Call()
+        public void Call()
         {
+            PhaseChange();
             playerMoney -= fieldBetMoney - playerBetMoney;
             playerBetMoney = fieldBetMoney;
-            phase.fieldBet = fieldBetMoney;
+            BetChange();
             betCanvas.SetActive(false);
-            Invoke("enemy.EnemyBet",1);
+            enemy.EnemyBet();
         }
 
-        void Raise()
+        public void Raise()
         {
+            PhaseChange();
             fieldBetMoney *= raiseMagnification;
             playerMoney -= fieldBetMoney / raiseMagnification;
             playerBetMoney = fieldBetMoney;
-            phase.fieldBet = fieldBetMoney;
+            BetChange();
             betCanvas.SetActive(false);
-            Invoke("enemy.EnemyBet", 1);
+            enemy.EnemyBet();
         }
 
-        void RateUp()
+        public void RateUp()
         {
             RaiseCalculation(1);
             if (maxMagnification > raiseMagnification && playerMoneyTemp >= 0)
@@ -68,7 +83,7 @@ namespace Assets.Scripts.Bar05
             }
         }
 
-        void RateDown()
+        public void RateDown()
         {
             RaiseCalculation(-1);
             if (minMagnification < raiseMagnification)
@@ -77,7 +92,7 @@ namespace Assets.Scripts.Bar05
             }
         }
 
-        void RaiseCalculation(int rate)
+        private void RaiseCalculation(int rate)
         {
             playerMoneyTemp = playerMoney;
             fieldMoneyTemp = fieldBetMoney;
@@ -85,7 +100,7 @@ namespace Assets.Scripts.Bar05
             playerMoneyTemp -= fieldMoneyTemp / raiseMagnification;
         }
 
-        void Fold()
+        public void Fold()
         {
             betCanvas.SetActive(false);
             phase.Win(1);

@@ -7,6 +7,7 @@ namespace Assets.Scripts.Bar05
     public class Phase : MonoBehaviour
     {
         public int playerMoney;
+        public int enemyMoney;
         public int playerBet;
         public int enemyBet;
         public int betMoney;
@@ -42,6 +43,7 @@ namespace Assets.Scripts.Bar05
 
         };
 
+
         private int playerNumber;
         private int openCardCount;
         private int betPhaseCount;
@@ -53,18 +55,25 @@ namespace Assets.Scripts.Bar05
         private bool allInBool;
 
         private HandRank handRank;
+        private Enemy enemy;
 
         void Start()
         {
-            checkBtn = GameObject.Find("Check");
             betCanvas = GameObject.Find("BetCanvas");
+            checkBtn = GameObject.Find("Check");
             callBtn = GameObject.Find("Call");
             allInBtn = GameObject.Find("AllIn");
+            betCanvas.SetActive(false);
+            handRank = gameObject.GetComponent<HandRank>();
+            enemy = gameObject.GetComponent<Enemy>();
             PhaseManagement(phaseEnum);
+            playerMoney = 10;
+            enemyMoney = 10;
         }
 
         void PhaseManagement(PhaseEnum phases)
         {
+            betPhaseCount = 0;
             Debug.Log(phaseEnum);
             switch (phaseEnum)
             {
@@ -149,7 +158,7 @@ namespace Assets.Scripts.Bar05
         /// 山札の数字をランダムにする
         /// </summary>
 
-        public List<int> MakeRandomNumbers()
+        public static List<int> MakeRandomNumbers()
         {
             List<int> numbers = new List<int>();
 
@@ -212,23 +221,23 @@ namespace Assets.Scripts.Bar05
             allInBtn.SetActive(false);
 
             //場の金額と自分の金額が同じならチェックを表示
-            if (fieldBet == playerBet)
-            {
-                betAction = 1;
-            }
-            else if (fieldBet >= playerMoney)
+            if (fieldBet >= playerMoney)
             {
                 betAction = 2;
+            }
+            else if (fieldBet != playerBet || (phaseEnum == PhaseEnum.プリフロップ && betPhaseCount <= 1))
+            {
+                betAction = 1;
             }
             switch (betAction)
             {
                 //Call
                 case 0:
-                    callBtn.SetActive(true);
+                    checkBtn.SetActive(true);
                     break;
                 //Check
                 case 1:
-                    checkBtn.SetActive(true);
+                    callBtn.SetActive(true);
                     break;
                 //AllIn
                 case 2:
@@ -245,8 +254,7 @@ namespace Assets.Scripts.Bar05
                 phaseEnum++;
                 PhaseManagement(phaseEnum);
             }
-
-            if (fieldBet != playerBet || betPhaseCount <= 1)
+            else
             {
                 CreateBetBotton();
             }
@@ -256,7 +264,14 @@ namespace Assets.Scripts.Bar05
         {
             MakeCard();
             phaseEnum++;
-            PhaseManagement(phaseEnum);
+            if (playerMoney >= enemyMoney)
+            {
+                enemy.EnemyBet();
+            }
+            else
+            {
+                PhaseManagement(phaseEnum);
+            }
         }
 
         void PuriFrop()
@@ -267,6 +282,7 @@ namespace Assets.Scripts.Bar05
         void Frop()
         {
             CreateBoard(boardCount);
+            handRank.CheckReady();
             PlayerBetPhase();
         }
 
@@ -279,6 +295,7 @@ namespace Assets.Scripts.Bar05
         void ShowDown()
         {
             handRank.CheckReady();
+            
         }
 
         public void Win(int winPlayer)

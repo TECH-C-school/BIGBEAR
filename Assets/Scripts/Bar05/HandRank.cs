@@ -7,10 +7,10 @@ namespace Assets.Scripts.Bar05
 {
     public class HandRank : MonoBehaviour
     {
-        public Phase phase;
+        private Phase phase;
 
         public int[] suitCount = new int[4];
-        public int[] numberCount = new int[13];
+        public int[] numberCount;
         public List<string> hand;
         public List<string> enemy;
         public List<string> board;
@@ -33,8 +33,9 @@ namespace Assets.Scripts.Bar05
             OnePair,
             NoPair,
         }
-        public RankCheck handRank;
-        public RankCheck enemyRank;
+        public int handRank;
+        public int enemyRank;
+
 
         private int number;
         private int playerPoint;
@@ -46,14 +47,18 @@ namespace Assets.Scripts.Bar05
 
         private int[] handArray;
         private int[] enemyArray;
+        private int[] boardArray;
+
+        private void Start()
+        {
+            phase = gameObject.GetComponent<Phase>();
+        }
 
         // Use this for initialization
         public void CheckReady()
         {
             playerList = phase.handCard;
-
             enemyList = phase.enemyHand;
-
             boardList = phase.boardList;
 
             for (int i = 0; i < playerList.Count; i++)
@@ -61,60 +66,48 @@ namespace Assets.Scripts.Bar05
                 string strTemp = playerList[i].GetComponent<Card>().cardStrPath;
                 hand.Add(strTemp);
             }
-            hand.AddRange(board);
 
             for (int i = 0; i < enemyList.Count; i++)
             {
                 string strTemp = enemyList[i].GetComponent<Card>().cardStrPath;
                 enemy.Add(strTemp);
             }
-            enemy.AddRange(board);
+
+            boardArray = new int[15];
             for (int i = 0; i < boardList.Count; i++)
             {
                 string strTemp = boardList[i].GetComponent<Card>().cardStrPath;
                 board.Add(strTemp);
+                int number = int.Parse(strTemp.Substring(1, 2));
+                boardArray[number]++;
             }
-
-            handArray = CardSubstring(hand);
-            enemyArray = CardSubstring(enemy); 
-
-            hand.AddRange(board);
-            enemy.AddRange(board);
-            //SuitCheck(hand);
-            //SuitCheck(enemy);
-
-            //デバッグ用
-            List<string> debugRoyalStrightFlushList = new List<string>() { "c10", "c11", "c12", "c13", "c01", "s02", "s03" };
-            List<string> debugStraightFlushList = new List<string>() { "s02", "s03", "s04", "s05", "s06", "h03", "d03" };
-            List<string> debugStraightList = new List<string>() { "c10", "d10", "s05", "h04", "s01", "s02", "s03" };
-            List<string> debugFlushList = new List<string>() { "c10", "d10", "s10", "s07", "s01", "s02", "s03" };
-            List<string>debugFourList = new List<string>() { "c10","d10","s10","h10","s01","s02","s03"};
-            List<string> debugFullList = new List<string>() { "c10", "d10", "s10", "h01", "s01", "s02", "s03" };
-            List<string> debugThreeList = new List<string>() { "c10", "d10", "s10", "h04", "s01", "s02", "s03" };
-            List<string> debugTwoList = new List<string>() { "c10", "d10", "s09", "h01", "s01", "s02", "s03" };
-            List<string> debugOneList = new List<string>() { "c10", "d04", "s09", "h01", "s01", "s02", "s03" };
-            List<string> debugNoList = new List<string>() { "c10", "d04", "s09", "h08", "s01", "s02", "s03" };
             
+            //デバッグ用
+            //List<string> debugRoyalStrightFlushList = new List<string>() { "c10", "c11", "c12", "c13", "c01", "s02", "s03" };
+            //List<string> debugStraightFlushList = new List<string>() { "s02", "s03", "s04", "s05", "s06", "h03", "d03" };
+            //List<string> debugStraightList = new List<string>() { "c10", "d10", "s05", "h04", "s01", "s02", "s03" };
+            //List<string> debugFlushList = new List<string>() { "c10", "d10", "s10", "s07", "s01", "s02", "s03" };
+            //List<string>debugFourList = new List<string>() { "c10","d10","s10","h10","s01","s02","s03"};
+            //List<string> debugFullList = new List<string>() { "c10", "d10", "s10", "h01", "s01", "s02", "s03" };
+            //List<string> debugThreeList = new List<string>() { "c10", "d10", "s10", "h04", "s01", "s02", "s03" };
+            //List<string> debugTwoList = new List<string>() { "c10", "d10", "s09", "h01", "s01", "s02", "s03" };
+            //List<string> debugOneList = new List<string>() { "c10", "d04", "s09", "h01", "s01", "s02", "s03" };
+            //List<string> debugNoList = new List<string>() { "c10", "d04", "s09", "h08", "s01", "s02", "s03" };
+        }
+
+        void PlayerHandCheck()
+        {
             handRank = HandCheck(hand);
-            enemyRank = HandCheck(enemy);
-
-            phase.Win(WinnerCheck());
         }
 
-        int[] CardSubstring(List<string> cards)
+        public int EnemyHandCheck()
         {
-            int[] numbers = new int[2];
-            for (int i = 0; i < cards.Count; i++)
-            {
-                int number = int.Parse(cards[i].Substring(1, 2));
-                numbers[i] = number;
-            }
-            return numbers;
+            return enemyRank = HandCheck(enemy);
         }
 
-        public RankCheck HandCheck(List<string> cards)
+        public int HandCheck(List<string> cards)
         {
-            numberCount = new int[15];
+            numberCount = boardArray;
             int pairCount = 0;
             int threeCount = 0;
             int fourCount = 0;
@@ -193,21 +186,24 @@ namespace Assets.Scripts.Bar05
                 }
             }
 
-            if (flush && royalStraightFlush) return RankCheck.RoyalStraightFlush;
-            else if (straight && flush) return RankCheck.StraightFlush;
-            else if (fourCount >= 1) return RankCheck.FourOfAKind;
-            else if (threeCount >= 1 && pairCount >= 1) return RankCheck.FullHouse;
-            else if (flush) return RankCheck.Flush;
-            else if (straight) return RankCheck.Straight;
-            else if (threeCount >= 1) return RankCheck.ThreeOfAKind;
-            else if (pairCount >= 2) return RankCheck.TwoPair;
-            else if (pairCount >= 1) return RankCheck.OnePair;
+            if (flush && royalStraightFlush) return 9;
+            else if (straight && flush) return 8;
+            else if (fourCount >= 1) return 7;
+            else if (threeCount >= 1 && pairCount >= 1) return 6;
+            else if (flush) return 5;
+            else if (straight) return 4;
+            else if (threeCount >= 1) return 3;
+            else if (pairCount >= 2) return 2;
+            else if (pairCount >= 1) return 1;
 
-            return RankCheck.NoPair;
+            return 0;
         }
 
         private int WinnerCheck()
         {
+            handRank = HandCheck(hand);
+            enemyRank = HandCheck(enemy);
+
             if (handRank < enemyRank) return 0;
             else if (handRank > enemyRank) return 1;
 
