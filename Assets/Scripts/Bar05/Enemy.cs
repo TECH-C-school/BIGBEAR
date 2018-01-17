@@ -14,6 +14,8 @@ namespace Assets.Scripts.Bar05
         private int fieldBet;
         private int enemyBet;
         private int raiseCount;
+        private int firstCount;
+             
         private string enemySuit1;
         private string enemySuit2;
         private int firstBet;
@@ -21,10 +23,14 @@ namespace Assets.Scripts.Bar05
         private bool attackRaiseBool;
         private bool strongBool;
 
-        private void Start()
+        private void Awake()
         {
             phase = gameObject.GetComponent<Phase>();
             handRank = gameObject.GetComponent<HandRank>();
+        }
+
+        private void Start()
+        { 
             fieldBet = phase.fieldBet;
             enemyBet = phase.enemyBet;
             firstBet = 0;
@@ -34,18 +40,19 @@ namespace Assets.Scripts.Bar05
         {
             fieldBet = phase.fieldBet;
             enemyBet = phase.enemyBet;
-            if (firstBet == 0)
+
+            if (phase.phaseEnum == Phase.PhaseEnum.プリフロップ)
             {
                 EnemyFirstBet();
-                firstBet++;
             }
             else
             {
                 EnemyAfterBet();
             }
+
             phase.fieldBet = fieldBet;
             phase.enemyBet = enemyBet;
-            phase.PlayerBetPhase();
+            phase.PlayerBet();
         }
 
         private void EnemyFirstBet()
@@ -53,16 +60,22 @@ namespace Assets.Scripts.Bar05
             attackRaiseBool = false;
             bigRaiseBool = false;
 
-            string enemyHand1 = GameObject.Find("EnemyHand1").GetComponent<Card>().cardStrPath;
-            string enemyHand2 = GameObject.Find("EnemyHand2").GetComponent<Card>().cardStrPath;
-
-            enemyNumber1 = int.Parse(enemyHand1.ToString().Substring(1, 2));
-            enemyNumber2 = int.Parse(enemyHand2.ToString().Substring(1, 2));
-
-            enemySuit1 = enemyHand1.ToString().Substring(0, 1);
-            enemySuit2 = enemyHand2.ToString().Substring(0, 1);
-
             int enemyNumberAbs = Mathf.Abs(enemyNumber1 - enemyNumber2);
+
+            if (firstCount == 0)
+            {
+                string enemyHand1 = GameObject.Find("EnemyHand1").GetComponent<Card>().cardStrPath;
+                string enemyHand2 = GameObject.Find("EnemyHand2").GetComponent<Card>().cardStrPath;
+
+                enemyNumber1 = int.Parse(enemyHand1.ToString().Substring(1, 2));
+                enemyNumber2 = int.Parse(enemyHand2.ToString().Substring(1, 2));
+
+                enemySuit1 = enemyHand1.ToString().Substring(0, 1);
+                enemySuit2 = enemyHand2.ToString().Substring(0, 1);
+
+                
+                firstCount = 1;
+            }
 
             int tenRandom = Random.Range(1, 10);
 
@@ -72,7 +85,7 @@ namespace Assets.Scripts.Bar05
                 int raiseRandom = Random.Range(2,3);
                 strongBool = true;
 
-                EnemyRaise(raiseRandom);
+                EnemyRaise();
             }
             //普通
             else if (enemyNumberAbs == 1 || enemySuit1 == enemySuit2 ||
@@ -86,12 +99,12 @@ namespace Assets.Scripts.Bar05
                 else if (tenRandom == 1)
                 {
                     bigRaiseBool = true;
-                    EnemyRaise(3);
+                    EnemyRaise();
                 }
                 else
                 {
                     attackRaiseBool = true;
-                    EnemyRaise(2);
+                    EnemyRaise();
                 }
             }
             //弱気
@@ -107,7 +120,7 @@ namespace Assets.Scripts.Bar05
                 }
                 else if (tenRandom == 0)
                 {
-                    EnemyRaise(2);
+                    EnemyRaise();
                 }
                 else
                 {
@@ -120,17 +133,16 @@ namespace Assets.Scripts.Bar05
         {
             int handPower = 0;
 
-            if (phase.phaseEnum != Phase.PhaseEnum.プリフロップ)
-            {
-                handPower = handRank.EnemyHandCheck();
-            }
+            handRank.BoardReady();
+            handPower = handRank.EnemyHandCheck();
+
             int tenRandom = Random.Range(1, 10);
 
             if (strongBool == true || handPower >= 2)
             {
-                if (tenRandom >= 4)
+                if (tenRandom >= 4 )
                 {
-                    EnemyRaise(2);
+                    EnemyRaise();
                 }
                 else
                 {
@@ -139,13 +151,13 @@ namespace Assets.Scripts.Bar05
             }
             else if(attackRaiseBool == true || bigRaiseBool == true || handPower == 1)
             {
-                if (tenRandom == 1)
+                if (tenRandom == 1 && raiseCount != 1)
                 {
-                    EnemyRaise(2);
+                    EnemyRaise();
                 }
                 else if (bigRaiseBool == false)
                 {
-                    EnemyRaise(2);
+                    EnemyRaise();
                     attackRaiseBool = false;
                 }
                 else
@@ -181,11 +193,12 @@ namespace Assets.Scripts.Bar05
         /// <summary>
         /// レイズの処理
         /// </summary>
-        void EnemyRaise(int raiseMagnification)
+        void EnemyRaise()
         {
             raiseCount++;
-            enemyBet = fieldBet * raiseMagnification;
+            enemyBet = fieldBet * 2;
             fieldBet = enemyBet;
+            Debug.Log("レイズ");
         }
 
         void EnemyFold()

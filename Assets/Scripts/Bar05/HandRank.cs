@@ -7,6 +7,7 @@ namespace Assets.Scripts.Bar05
 {
     public class HandRank : MonoBehaviour
     {
+        [SerializeField]
         private Phase phase;
 
         public int[] suitCount = new int[4];
@@ -45,11 +46,12 @@ namespace Assets.Scripts.Bar05
         private string playerSuitCount;
         private string enemySuitCount;
 
+        [SerializeField]
         private int[] handArray;
         private int[] enemyArray;
         private int[] boardArray;
 
-        private void Start()
+        private void Awake()
         {
             phase = gameObject.GetComponent<Phase>();
         }
@@ -61,18 +63,25 @@ namespace Assets.Scripts.Bar05
             enemyList = phase.enemyHand;
             boardList = phase.boardList;
 
+            handArray = new int[2];
+
             for (int i = 0; i < playerList.Count; i++)
             {
                 string strTemp = playerList[i].GetComponent<Card>().cardStrPath;
                 hand.Add(strTemp);
+                handArray[i] = playerList[i].GetComponent<Card>().number;
             }
+
 
             for (int i = 0; i < enemyList.Count; i++)
             {
                 string strTemp = enemyList[i].GetComponent<Card>().cardStrPath;
                 enemy.Add(strTemp);
             }
+        }
 
+        public void BoardReady()
+        {
             boardArray = new int[15];
             for (int i = 0; i < boardList.Count; i++)
             {
@@ -81,18 +90,6 @@ namespace Assets.Scripts.Bar05
                 int number = int.Parse(strTemp.Substring(1, 2));
                 boardArray[number]++;
             }
-            
-            //デバッグ用
-            //List<string> debugRoyalStrightFlushList = new List<string>() { "c10", "c11", "c12", "c13", "c01", "s02", "s03" };
-            //List<string> debugStraightFlushList = new List<string>() { "s02", "s03", "s04", "s05", "s06", "h03", "d03" };
-            //List<string> debugStraightList = new List<string>() { "c10", "d10", "s05", "h04", "s01", "s02", "s03" };
-            //List<string> debugFlushList = new List<string>() { "c10", "d10", "s10", "s07", "s01", "s02", "s03" };
-            //List<string>debugFourList = new List<string>() { "c10","d10","s10","h10","s01","s02","s03"};
-            //List<string> debugFullList = new List<string>() { "c10", "d10", "s10", "h01", "s01", "s02", "s03" };
-            //List<string> debugThreeList = new List<string>() { "c10", "d10", "s10", "h04", "s01", "s02", "s03" };
-            //List<string> debugTwoList = new List<string>() { "c10", "d10", "s09", "h01", "s01", "s02", "s03" };
-            //List<string> debugOneList = new List<string>() { "c10", "d04", "s09", "h01", "s01", "s02", "s03" };
-            //List<string> debugNoList = new List<string>() { "c10", "d04", "s09", "h08", "s01", "s02", "s03" };
         }
 
         void PlayerHandCheck()
@@ -122,18 +119,9 @@ namespace Assets.Scripts.Bar05
             {
                 for (int j = 2; j <= 4; j++)
                 {
-                    if (numberCount[i] == 2)
-                    {
-                        pairCount++;
-                    }
-                    if (numberCount[i] == 3)
-                    {
-                        threeCount++;
-                    }
-                    if (numberCount[i] == 4)
-                    {
-                        fourCount++;
-                    }
+                    if (numberCount[i] == 2) pairCount++;
+                    if (numberCount[i] == 3) threeCount++;
+                    if (numberCount[i] == 4)fourCount++;
                 }
             }
 
@@ -163,27 +151,22 @@ namespace Assets.Scripts.Bar05
             //配列の数値が5以上ならフラッシュ
             for (int i = 0; i < suitCount.Length; i++)
             {
-                if (suitCount[i] >= 5)
-                {
-                    flush = true;
-                }
+                if (suitCount[i] >= 5) flush = true;
             }
 
             bool royalStraightFlush = false;
             
-            if (numberCount[1] >= 1 && numberCount[10] >= 1 && numberCount[11] >= 1 && numberCount[12] >= 1 && numberCount[13] >= 1)
-            {
+            if (numberCount[1] >= 1 && numberCount[10] >= 1 && numberCount[11] >= 1 &&
+                numberCount[12] >= 1 && numberCount[13] >= 1)
                 royalStraightFlush = true;
-            }
             
             bool straight = false;
             
             for(int i = 1; i < 11; i++)
             {
-                if (numberCount[i] >= 1 && numberCount[i + 1] >= 1 && numberCount[i + 2] >= 1 && numberCount[i + 3] >= 1 && numberCount[i + 4] >= 1)
-                {
+                if (numberCount[i] >= 1 && numberCount[i + 1] >= 1 && numberCount[i + 2] >= 1 && 
+                    numberCount[i + 3] >= 1 && numberCount[i + 4] >= 1)
                     straight = true;
-                }
             }
 
             if (flush && royalStraightFlush) return 9;
@@ -199,7 +182,7 @@ namespace Assets.Scripts.Bar05
             return 0;
         }
 
-        private int WinnerCheck()
+        public int WinnerCheck()
         {
             handRank = HandCheck(hand);
             enemyRank = HandCheck(enemy);

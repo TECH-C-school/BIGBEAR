@@ -22,12 +22,14 @@ namespace Assets.Scripts.Bar05
         private Phase phase;
         private Enemy enemy;
 
-        private void Start()
+        private void Awake()
         {
             enemy = gameObject.GetComponent<Enemy>();
             phase = gameObject.GetComponent<Phase>();
+        }
+        private void Start()
+        {
             betCanvas = GameObject.Find("BetCanvas");
-            
             raiseMagnification = 2;
         }
 
@@ -67,38 +69,20 @@ namespace Assets.Scripts.Bar05
         {
             PhaseChange();
             fieldBetMoney *= raiseMagnification;
-            playerMoney -= fieldBetMoney / raiseMagnification;
+            playerMoney -= fieldBetMoney / 2;
             playerBetMoney = fieldBetMoney;
             BetChange();
             betCanvas.SetActive(false);
             enemy.EnemyBet();
         }
 
-        public void RateUp()
-        {
-            RaiseCalculation(1);
-            if (maxMagnification > raiseMagnification && playerMoneyTemp >= 0)
-            {
-                raiseMagnification++;
-            }
-        }
-
-        public void RateDown()
-        {
-            RaiseCalculation(-1);
-            if (minMagnification < raiseMagnification)
-            {
-                raiseMagnification--;
-            }
-        }
-
-        private void RaiseCalculation(int rate)
-        {
-            playerMoneyTemp = playerMoney;
-            fieldMoneyTemp = fieldBetMoney;
-            fieldMoneyTemp *= raiseMagnification + rate;
-            playerMoneyTemp -= fieldMoneyTemp / raiseMagnification;
-        }
+        //private void RaiseCalculation(int rate)
+        //{
+        //    playerMoneyTemp = playerMoney;
+        //    fieldMoneyTemp = fieldBetMoney;
+        //    fieldMoneyTemp *= raiseMagnification + rate;
+        //    playerMoneyTemp -= fieldMoneyTemp / raiseMagnification;
+        //}
 
         public void Fold()
         {

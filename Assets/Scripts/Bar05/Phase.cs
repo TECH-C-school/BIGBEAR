@@ -1,4 +1,4 @@
-﻿    using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,35 +40,41 @@ namespace Assets.Scripts.Bar05
         "h01", "h02", "h03", "h04", "h05", "h06", "h07", "h08", "h09", "h10", "h11", "h12", "h13",
         "d01", "d02", "d03", "d04", "d05", "d06", "d07", "d08", "d09", "d10", "d11", "d12", "d13",
         "c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10", "c11", "c12", "c13",
-
         };
 
 
         private int playerNumber;
         private int openCardCount;
         private int betPhaseCount;
-        private int boardCount;
+        public int boardCount;
+        private int preceding;
+        private bool allInBool;
+
         private GameObject checkBtn;
         private GameObject betCanvas;
         private GameObject callBtn;
         private GameObject allInBtn;
-        private bool allInBool;
 
         private HandRank handRank;
         private Enemy enemy;
+        private Card cardS;
 
-        void Start()
+        void Awake()
         {
             betCanvas = GameObject.Find("BetCanvas");
             checkBtn = GameObject.Find("Check");
             callBtn = GameObject.Find("Call");
-            allInBtn = GameObject.Find("AllIn");
-            betCanvas.SetActive(false);
             handRank = gameObject.GetComponent<HandRank>();
             enemy = gameObject.GetComponent<Enemy>();
+            cardS = gameObject.GetComponent<Card>();
+        }
+
+        private void Start()
+        {
+            betCanvas.SetActive(false);
+            playerMoney = 20;
+            enemyMoney = 20;
             PhaseManagement(phaseEnum);
-            playerMoney = 10;
-            enemyMoney = 10;
         }
 
         void PhaseManagement(PhaseEnum phases)
@@ -104,7 +110,6 @@ namespace Assets.Scripts.Bar05
         private void MakeCard()
         {
             mountList = MakeRandomNumbers();
-            Sprite cardSprite = null;
 
             for (int i = 0; i < 4; i++)
             {
@@ -147,8 +152,7 @@ namespace Assets.Scripts.Bar05
             for (int i = 0; i < 2; i++)
             {
                 var spriteRenderer = handCard[i].GetComponent<SpriteRenderer>();
-                cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardStr[mountList[i]]);
-                spriteRenderer.sprite = cardSprite;
+                spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardStr[mountList[i]]);
             }
 
             mountList.RemoveRange(0, 4);
@@ -177,7 +181,7 @@ namespace Assets.Scripts.Bar05
             return numbers;
         }
 
-        void CreateBoard(int boardNumber)
+        void CreateBoard()
         {
             var cardObject = Instantiate(card, transform.position, Quaternion.identity);
             var selCard = Instantiate(selectCard);
@@ -185,26 +189,40 @@ namespace Assets.Scripts.Bar05
             selCard.transform.parent = cardObject.transform;
 
             boardList.Add(cardObject);
-            cardObject.name = "Board " + (boardNumber + 1);
-            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[boardNumber]];
+            cardObject.name = "Board " + (boardCount + 3);
+            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[boardCount]];
 
-            switch (boardNumber)
+            switch (boardCount)
             {
                 case 0:
                     cardObject.transform.position = new Vector3(-2.7f, 0, -0.01f);
-                    cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
-                    cardObject.transform.position = new Vector3(0f, 0, -0.01f);
-                    mountList.RemoveRange(0, 3);
+                    mountList.RemoveRange(0, 1);
                     break;
+
                 case 1:
+                    cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
+                    mountList.RemoveRange(0, 1);
+                    break;
+
+                case 2:
+                    cardObject.transform.position = new Vector3(0f, 0, -0.01f);
+                    mountList.RemoveRange(0, 1);
+                    break;
+
+                case 3:
                     cardObject.transform.position = new Vector3(1.35f, 0, -0.01f);
                     mountList.RemoveRange(0, 1);
                     break;
-                case 2:
+
+                case 4:
                     cardObject.transform.position = new Vector3(2.7f, 0, -0.01f);
                     mountList.RemoveRange(0, 1);
                     break;
             }
+
+            var spriteRenderer = boardList[boardCount].GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = 
+                Resources.Load<Sprite>("Images/Bar/Cards/" + cardStr[mountList[boardCount]]);
             boardCount++;
         }
 
@@ -218,14 +236,8 @@ namespace Assets.Scripts.Bar05
             betCanvas.SetActive(true);
             checkBtn.SetActive(false);
             callBtn.SetActive(false);
-            allInBtn.SetActive(false);
 
-            //場の金額と自分の金額が同じならチェックを表示
-            if (fieldBet >= playerMoney)
-            {
-                betAction = 2;
-            }
-            else if (fieldBet != playerBet || (phaseEnum == PhaseEnum.プリフロップ && betPhaseCount <= 1))
+            if (fieldBet != playerBet || (phaseEnum == PhaseEnum.プリフロップ && betPhaseCount <= 1))
             {
                 betAction = 1;
             }
@@ -239,17 +251,30 @@ namespace Assets.Scripts.Bar05
                 case 1:
                     callBtn.SetActive(true);
                     break;
-                //AllIn
-                case 2:
-                    allInBtn.SetActive(true);
+            }
+        }
+
+
+        public void BetPhase()
+        {
+            handRank.BoardReady();
+
+            switch (preceding)
+            {
+                case 0:
+                    PlayerBet();
+                    break;
+
+                case 1:
+                    enemy.EnemyBet();
                     break;
             }
         }
 
-        public void PlayerBetPhase()
+        public void PlayerBet()
         {
             betPhaseCount++;
-            if(fieldBet == playerBet && fieldBet == enemyBet && betPhaseCount >= 2)
+            if (fieldBet == playerBet && fieldBet == enemyBet && betPhaseCount >= 2)
             {
                 phaseEnum++;
                 PhaseManagement(phaseEnum);
@@ -263,39 +288,39 @@ namespace Assets.Scripts.Bar05
         void Standby()
         {
             MakeCard();
+            cardS.CardReady();
+            //先行を決める
+            if (enemyMoney < playerMoney) preceding = 1;
+            else preceding = 0;
+            
             phaseEnum++;
-            if (playerMoney >= enemyMoney)
-            {
-                enemy.EnemyBet();
-            }
-            else
-            {
-                PhaseManagement(phaseEnum);
-            }
+            PhaseManagement(phaseEnum);
         }
 
         void PuriFrop()
         {
-            PlayerBetPhase();
+            handRank.CheckReady();
+            BetPhase();
         }
 
         void Frop()
         {
-            CreateBoard(boardCount);
-            handRank.CheckReady();
-            PlayerBetPhase();
+            CreateBoard();
+            CreateBoard();
+            CreateBoard();
+            BetPhase();
         }
 
         void TurnAndLibber()
         {
-            CreateBoard(boardCount);
-            PlayerBetPhase();
+            CreateBoard();
+            BetPhase();
         }
 
         void ShowDown()
         {
-            handRank.CheckReady();
-            
+            CreateBoard();
+            handRank.WinnerCheck();
         }
 
         public void Win(int winPlayer)

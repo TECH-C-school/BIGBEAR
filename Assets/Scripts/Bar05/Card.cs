@@ -24,7 +24,7 @@ namespace Assets.Scripts.Bar05
         public Suit suit;
 
 
-        void Start()
+        public void CardReady()
         {
             selectCard = (GameObject)Resources.Load("Prefabs/Bar05/cardselect");
             //selectCard = gameObject.transform.FindChild("cardselect").gameObject;
