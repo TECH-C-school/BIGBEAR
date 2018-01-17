@@ -10,7 +10,9 @@ namespace Assets.Scripts.Bar03 {
         private int _nextCardNumber = 1;
         private int[] _deckMaxNumber = new int[20];
         private Vector3  thisHit;
+        private int[] _deckCard = new int[104];
 
+        private int _buttonState = 0;
         private Cards TappedCard　= null;
 
 
@@ -97,7 +99,9 @@ namespace Assets.Scripts.Bar03 {
             }
         }*/
 
-        //cardを配置する関数
+        /// <summary>
+        /// カードをセットする関数
+        /// </summary>
         private void CardsSet()
         {
             int count = 0;
@@ -129,6 +133,8 @@ namespace Assets.Scripts.Bar03 {
                         cardSet.Deck = x;
                         cardSet.DeckNum = y;
                         _deckMaxNumber[x] = y;
+                        _deckCard[count] = 0;
+                        cardSet.Count = count;
                         cardSet.TurnCardFaceDown();
                         count++;
                     }
@@ -143,6 +149,8 @@ namespace Assets.Scripts.Bar03 {
                         cardSet.Deck = x;
                         cardSet.DeckNum = y;
                         _deckMaxNumber[x] = y;
+                        _deckCard[count] = 0;
+                        cardSet.Count = count;
                         cardSet.TurnCardFaceUp();
                         Debug.Log(cardMarkNumber[count]);
                         count++;
@@ -156,6 +164,8 @@ namespace Assets.Scripts.Bar03 {
                 cardObject.transform.parent = deckCard;
                 Cards cardSet = cardObject.GetComponent<Cards>();
                 cardSet.String = cardMarkNumber[count];
+                _deckCard[count] = 1;
+                cardSet.Count = count;
                 cardSet.TurnCardFaceDown();
                 count++;
             }
@@ -299,6 +309,29 @@ namespace Assets.Scripts.Bar03 {
             //クリックされたカードを数字にする
             int numValue = 0;
 
+            //クリックされたカードがデッキのカードだったら
+            if(_deckCard[card.Count] == 1)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    _deckCard[card.Count] = 0;
+                    int y = _deckMaxNumber[i]+1;
+                    Vector3 cardPosition = GameObject.Find("Cards" + i).transform.position;
+                    card.transform.parent = GameObject.Find("Cards" + i.ToString()).transform;
+                    card.transform.position = new Vector3(cardPosition.x, cardPosition.y - y * 0.31f, cardPosition.z - y * 0.1f);
+                    _deckMaxNumber[i]++;
+                    card.DeckNum = _deckMaxNumber[i];
+                    card.Deck = i;
+                    card.TurnCardFaceUp();
+                    if (!Physics2D.OverlapPoint(tapPoint)) return;
+                    hitObject = Physics2D.Raycast(tapPoint, -Vector3.up);
+                    if (!hitObject) return;
+                    card = hitObject.collider.gameObject.GetComponent<Cards>();
+
+                }
+                return;
+            }
+
             //カードから数字のみをとりだす
             bool parsed = System.Int32.TryParse(card.String.Substring(1, 2), out numValue);
 
@@ -350,9 +383,24 @@ namespace Assets.Scripts.Bar03 {
             }
             
         }
+        /// <summary>
+        /// ボタンが押された時メニューを開く関数
+        /// </summary>
         public void ButtonPush()
         {
-            
+            if (_buttonState == 0)
+            {
+                _buttonState = 1;
+                Vector2 buttonPosition = GetComponent<RectTransform>().anchoredPosition;
+                buttonPosition.x /= 2;
+                GetComponent<RectTransform>().anchoredPosition = buttonPosition;
+                Debug.Log("もう一回押すとメニューが開きます");
+            }
+            else
+            {
+                _buttonState = 0;
+                Debug.Log("メニューを開きます");
+            }
         }
         public void DeckCardCheck()
         {
@@ -382,6 +430,7 @@ namespace Assets.Scripts.Bar03 {
                 }
             }
         }
+        
     }
 
 }

@@ -13,6 +13,8 @@ public class Cards : MonoBehaviour
     private int _deckNumber;
     [SerializeField]
     private bool _isFront;
+    [SerializeField]
+    private int _cardCount;
 
     public int Deck
     {
@@ -30,7 +32,11 @@ public class Cards : MonoBehaviour
         get { return _string; }
         set { _string = value; }
     }
-
+    public int Count
+    {
+        get { return _cardCount; }
+        set { _cardCount = value; }
+    }
     public bool IsFront
     {
         get
