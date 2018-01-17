@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Bar0404
 {
@@ -11,7 +12,15 @@ namespace Assets.Scripts.Bar0404
         //UI関係のGameObjectの設定
         public GameObject StartButton;
         public GameObject ChangeButton;
-        public GameObject Phase;
+        public GameObject RestartButton;
+        public GameObject ScoreScreen;
+        public Text ScoreText;
+        //フェイズ管理用
+        public Image Phase;
+        public Sprite SetchipPhase;
+        public Sprite CardChangePhase;
+        public Sprite ResultPhase;
+        
 
         //カード関係の変数
         public int[] shuffulCards;
@@ -68,7 +77,9 @@ namespace Assets.Scripts.Bar0404
             StartButton.SetActive(false);
             ChangeButton.SetActive(true);
             CardSort();
+            Phase.sprite = CardChangePhase;
         }
+
         //入れ替えを実行したときの処理
         public void CardChange() {
             for (int i = 0; i < Card.Count; i++){
@@ -82,6 +93,21 @@ namespace Assets.Scripts.Bar0404
             }
             CardSort();
             Debug.Log(m_HundMark[0] + "" + m_HundMark[1] + m_HundMark[2] + m_HundMark[3] + m_HundMark[4]);
+            ChangeButton.SetActive(false);
+            RestartButton.SetActive(true);
+            Phase.sprite = ResultPhase;
+        }
+
+        //Restart時の処理
+        public void Restart() {
+            for (int i = 0; i < Card.Count; i++){
+                var cardScript = Card[i].GetComponent<Card>();
+                cardScript.TurnCardBack();
+            }
+            nextCard = 0;
+            RestartButton.SetActive(false);
+            StartButton.SetActive(true);
+            Phase.sprite = SetchipPhase;
         }
 
         //最初のカードを配る        
@@ -147,6 +173,8 @@ namespace Assets.Scripts.Bar0404
 
         }
 
+
+        //カードを押すための関数
         void CardClick() {
             if (!Input.GetMouseButtonDown(0)) { return; }
             Vector2 tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
