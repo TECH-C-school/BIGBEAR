@@ -29,11 +29,11 @@ namespace Assets.Scripts.Bar06
         }
         private void Update()
         {
-            BattleButton();
-            AddCardButton();
-            SurrenderButton();
-            BetplusButton();
-            BetmainusButton();
+            ClickBattleButton();
+            ClickAddCardButton();
+            ClickSurrenderButton();
+            ClickBetplusButton();
+            ClickBetmainusButton();
         }
 
         // 山札をシャッフルで作る
@@ -434,38 +434,43 @@ namespace Assets.Scripts.Bar06
         // ディーラー側のカードに裏向きのカードをかぶせる
         private void LoadCard()
         {
-         
+            
         }
         // クリックしたら勝負する
-        private void BattleButton()
+        private void ClickBattleButton()
         {
 
         }
         // クリックしたらカードを追加する
-        private void AddCardButton()
+        private void ClickAddCardButton()
         {
-
+            
         }
         // クリックしたら勝負をあきらめる
-        private void SurrenderButton()
+        private void ClickSurrenderButton()
         {
 
         }
         // クリックしたら掛け金を増やす
-        private void BetplusButton()
+        private void ClickBetplusButton()
         {
 
         }
         // クリックしたら掛け金を減らす
-        private void BetmainusButton()
+        private void ClickBetmainusButton()
         {
 
         }
-        //メニューを呼び出す
-        private void MenuButton()
+        //カードの合計を出す
+        private void Cardsum()
         {
-          
-        } 
+
+        }
+        //役の判定
+        private void Role()
+        {
+
+        }
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
