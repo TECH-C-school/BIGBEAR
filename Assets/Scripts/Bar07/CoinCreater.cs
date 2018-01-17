@@ -13,12 +13,18 @@ namespace Assets.Scripts.Bar07
 
         private void Start()
         {
+
             CC = GameObject.Find("CoinCounter(Clone)").GetComponent<CoinController>();
         }
 
         void OnMouseDown()
         {
-            CC.coincreate(transform.position);
+            if (CC.mycoins > 0 && CC.createflag == true)
+            {
+                CC.coincreate(transform.position);
+                CC.CoinResult(-1);
+            }
+
         }
 
 

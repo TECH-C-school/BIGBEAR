@@ -12,17 +12,22 @@ namespace Assets.Scripts.Bar07 {
         private GameObject CardflameSub;
         private GameObject faze;
         private GameObject Buttons;
+        private GameObject MenuButtons;
         private GameObject HystoryText;
         private GameObject Timer;
         private GameObject ResultPlate;
         private GameObject CoinCounter;
+        private GameObject fazeword;
 
+        //カウントフラグ
         public bool timerflag = false;
-        private float timers = 0;
+        //カウント設定秒数、代入のタイミング注意
+        public float timers = 0;
+
         private int timeri = 0;
-
+        private bool thisfaze;
         TimerController TC;
-
+        CoinController CC;
 
         private void Start()
         {
@@ -45,19 +50,23 @@ namespace Assets.Scripts.Bar07 {
 
             Buttons = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Buttons"), transform.position = new Vector3(0, 0, 0), Quaternion.identity);
             Buttons.transform.SetParent(canvas.transform,false);
+            MenuButtons = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/MenuButtons"), transform.position = new Vector3(0, 0, 0), Quaternion.identity);
+            MenuButtons.transform.SetParent(canvas.transform, false);
             HystoryText = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/historytext"), transform.position = new Vector3(0, 0, 0), Quaternion.identity);
             HystoryText.transform.SetParent(canvas.transform, false);
 
             TC = GameObject.Find("Timer(Clone)").GetComponent<TimerController>();
+            CC = GameObject.Find("CoinCounter(Clone)").GetComponent<CoinController>();
 
-            timers = 10;
-            timerflag = true;
+            fazeword = GameObject.Find("f_word");
+
+            FazeStart();
 
 
         }
         private void Update()
         {
-            //timerflagが真の時、20カウントする
+            //timerflagが真の時、カウントする
             CountTimer();
 
 
@@ -82,21 +91,30 @@ namespace Assets.Scripts.Bar07 {
 
                 if (timers < 0)
                 {
-                    //20秒経過でタイマーは止まる
+                    //timersに設定した秒数経過でタイマーは止まる
                     TC.TimerSprite(-1);
                     timerflag = false;
-                    timers = 20;
                     timeri = 0;
 
-                    FazeCChange();
+                    if(thisfaze == true)
+                    {
+                        FazeChange();
+
+                    }
+                    else
+                    {
+                        FazeStart();
+
+                    }
+
                 }
             }
         }
 
 
         //勝負フェイズ開始の処理
-        private void FazeCChange() {
-            GameObject fazeword = GameObject.Find("f_word");
+        private void FazeChange() {
+
             Sprite fazeword2 = Resources.Load<Sprite>("Images/Bar/f_word4");
             fazeword.GetComponent<SpriteRenderer>().sprite = fazeword2;
 
@@ -107,35 +125,71 @@ namespace Assets.Scripts.Bar07 {
             {
                 case 1:
                     CC.coins[0].SetActive(false);
-
-                    //再配置用にbetcoinsは保持
-                    CC.betcoins = CC.betcoins * -1;
                     break;
                 case 2:
                     CC.coins[0].SetActive(false);
                     CC.coins[1].SetActive(false);
-
-                    //再配置用にbetcoinsは保持
-                    CC.betcoins = CC.betcoins * -1;
                     break;
                 case 3:
                     CC.coins[0].SetActive(false);
                     CC.coins[1].SetActive(false);
                     CC.coins[2].SetActive(false);
-
-                    //再配置用にbetcoinsは保持
-                    CC.betcoins = CC.betcoins * -1;
                     break;
             }
 
-            ResultPlate.SetActive(true);
+            timers = 8;
+            thisfaze = false;
+            CC.createflag = false;
 
+            ResultPlate.SetActive(true);
+            CardflameSub.SetActive(false);
             Buttons.SetActive(false);
 
-            CardflameSub.SetActive(false);
 
-            Card = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Card"), transform.position = new Vector3(-3, 0, -1), Quaternion.identity);
-            Card = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Card"), transform.position = new Vector3(2, 0, -1), Quaternion.identity);
+            CardCreate(0);
+            CardCreate(1);
+        }
+
+        //掛け金決定フェイズ開始の処理
+        private void FazeStart()
+        {
+            for(int i = 0; i < 4; i++)
+            {
+                //次回対策
+                //カードがデストロイされない問題！
+                //せっとあくてぃぶふぁるすするとカードステートもいじらなければいけないのでちとめんどい
+                //あとでかんがえる
+                Card = GameObject.Find("Card(Clone)");
+                Debug.Log(Card);
+                Destroy(Card);
+
+            }
+
+
+            Sprite fazeword1 = Resources.Load<Sprite>("Images/Bar/f_word2");
+            fazeword.GetComponent<SpriteRenderer>().sprite = fazeword1;
+
+            ResultPlate.SetActive(false);
+            CardflameSub.SetActive(true);
+            Buttons.SetActive(true);
+
+            if (CC.betcoins > 0)
+            {
+                CC.betcoins = CC.betcoins * -1;
+            }
+
+            timers = 12;
+            timerflag = true;
+            thisfaze = true;
+            CC.createflag = true;
+
+        }
+
+        //指定した分(１＝半枚)位置を右にずらしてカードを２枚ずつ生成する
+        public void CardCreate(int pos)
+        {
+            Card = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Card"), transform.position = new Vector3(-3+pos, 0, -1), Quaternion.identity);
+            Card = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Card"), transform.position = new Vector3(2+pos, 0, -1), Quaternion.identity);
         }
 
         public void TransitionToResult() {

@@ -9,8 +9,9 @@ namespace Assets.Scripts.Bar07
     {
         //カードに付けてクリックで反転
 
-        ResultController RC;
 
+        ResultController RC;
+        GameController GC;
 
         //初期設定で裏
         private bool cardstate = false;
@@ -23,6 +24,7 @@ namespace Assets.Scripts.Bar07
 
         private void Start()
         {
+            GC = GameObject.Find("GameController").GetComponent<GameController>();
             RC = GameObject.Find("ResultPlate(Clone)").GetComponent<ResultController>();
             cardRenderer = transform.GetComponent<SpriteRenderer>();
         }
@@ -58,6 +60,7 @@ namespace Assets.Scripts.Bar07
                 else
                 {
                     RC.ChangeScore(resultnumber, side);
+
                 }
 
 
@@ -66,10 +69,12 @@ namespace Assets.Scripts.Bar07
 
 
                 
-                //ゲーム終了条件、試験用
-                if (RC.count >= 2)
+                //カード捲り終了条件
+                if (RC.count >= 4)
                 {
                     RC.DesideWinner();
+                    RC.count = 0;
+                    GC.timerflag = true;
                 }
 
             }

@@ -11,8 +11,10 @@ namespace Assets.Scripts.Bar07
         private SpriteRenderer dealer;
         private GameObject playermessage;
         private GameObject dealermessage;
+
         //0…lose 1…win
         private Sprite[] resultsprite = new Sprite[2];
+
         private Sprite[] numberSprite = new Sprite[10];
         private Sprite[] cardSprite = new Sprite[52];
         private int playerscore = 0;
@@ -23,6 +25,7 @@ namespace Assets.Scripts.Bar07
         private string[] cardstr = new string[52];
 
         HistoryController HC;
+        CoinController CC;
 
         private void Start()
         {
@@ -36,6 +39,7 @@ namespace Assets.Scripts.Bar07
             randomarray[0] = -1;
 
             HC = GameObject.Find("historytext(Clone)").GetComponent<HistoryController>();
+            CC = GameObject.Find("CoinCounter(Clone)").GetComponent<CoinController>();
 
             cardstr[0] = "c01";
             cardstr[1] = "c02";
@@ -92,27 +96,39 @@ namespace Assets.Scripts.Bar07
 
         }
 
+
+        //勝者を決定して反映する
         public void DesideWinner()
         {
-            if(playerscore < dealerscore)
+            if (playerscore < dealerscore)
             {
                 playermessage.GetComponent<SpriteRenderer>().sprite = resultsprite[0];
                 dealermessage.GetComponent<SpriteRenderer>().sprite = resultsprite[1];
 
                 HC.ChangeHistory("D");
 
+                //持ちコインを増やす　倍率は2,2,10
+                //要修正
+                //betcoinsではリセット時も存在する扱いになり、結果不正にコインが増えてしまう
+                CC.CoinResult(CC.betcoins  % 100 / 10 * 2);
+
             }
             else if(playerscore > dealerscore)
             {
                 playermessage.GetComponent<SpriteRenderer>().sprite = resultsprite[1];
                 dealermessage.GetComponent<SpriteRenderer>().sprite = resultsprite[0];
+
                 HC.ChangeHistory("P");
+
+                CC.CoinResult(CC.betcoins  % 10 * 2);
             }
             else if(playerscore == dealerscore)
             {
                 playermessage.GetComponent<SpriteRenderer>().sprite = resultsprite[0];
                 dealermessage.GetComponent<SpriteRenderer>().sprite = resultsprite[0];
                 HC.ChangeHistory((playerscore).ToString());
+
+                CC.CoinResult(CC.betcoins  / 100 * 10);
             }
             playermessage.SetActive(true);
             dealermessage.SetActive(true);
@@ -127,12 +143,16 @@ namespace Assets.Scripts.Bar07
             {
                 playerscore = (playerscore + number) % 10;
                 player.sprite = SpriteSearch(playerscore);
+
             }else if(side == false)
             {
-                dealerscore = (playerscore + number) % 10;
+                dealerscore = (dealerscore + number) % 10;
                 dealer.sprite = SpriteSearch(dealerscore);
+
             }
         }
+
+
 
 
 
@@ -232,6 +252,7 @@ namespace Assets.Scripts.Bar07
         private Sprite CardSearch(int number)
         {
             Sprite result;
+
             if (cardSprite[number] == null)
             {
                 cardSprite[number] = Resources.Load<Sprite>("Images/Bar/Cards/" + cardstr[number]);
@@ -243,6 +264,8 @@ namespace Assets.Scripts.Bar07
 
             return result;
         }
+
+
 
     }
 }

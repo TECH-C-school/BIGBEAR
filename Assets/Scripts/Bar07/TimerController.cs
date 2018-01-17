@@ -8,7 +8,6 @@ namespace Assets.Scripts.Bar07
 {
     public class TimerController : MonoBehaviour
     {
-        //関数使用領域
         Sprite[] numberSprite = new Sprite[10];
 
         GameObject timerm;

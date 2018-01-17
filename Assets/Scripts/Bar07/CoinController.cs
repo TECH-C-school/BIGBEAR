@@ -22,7 +22,9 @@ namespace Assets.Scripts.Bar07
         public GameObject[] coins = new GameObject[3];
 
         //所持コインの枚数
-        public int mycoins;
+        public int mycoins = 0;
+
+        public bool createflag;
 
         //ベットしたコインの枚数
         //桁数でベット先を管理
@@ -41,17 +43,17 @@ namespace Assets.Scripts.Bar07
             counton = gameObject.transform.FindChild("counton").gameObject;
             countte = gameObject.transform.FindChild("countte").gameObject;
             bet = gameObject.transform.FindChild("bet").gameObject;
-
-
+            CoinResult(10);
         }
 
 
-        //コインカウントの表示部分の処理
-        //０～９９９の数値を受け取って画像で表示する
-
-        public void CoinSprite(int number)
+        //コインカウントの処理
+        //数値を受け取って所持コインに反映する
+        //1000を超えたら表示できなくなる
+        public void CoinResult(int number)
         {
-            if (number >= 100)
+            mycoins = mycoins + number;
+            if (mycoins >= 100)
             {
                 counto.SetActive(true);
                 countt.SetActive(true);
@@ -59,16 +61,16 @@ namespace Assets.Scripts.Bar07
                 counton.SetActive(false);
                 countte.SetActive(false);
 
-                timerx = number / 100;
+                timerx = mycoins / 100;
                 counth.GetComponent<SpriteRenderer>().sprite = SpriteSearch(timerx);
 
-                timerx = number / 10 % 10;
+                timerx = mycoins / 10 % 10;
                 countt.GetComponent<SpriteRenderer>().sprite = SpriteSearch(timerx);
 
-                timerx = number % 10;
+                timerx = mycoins % 10;
                 countt.GetComponent<SpriteRenderer>().sprite = SpriteSearch(timerx);
             }
-            else if (number >= 10)
+            else if (mycoins >= 10)
             {
                 counto.SetActive(false);
                 countt.SetActive(false);
@@ -76,14 +78,14 @@ namespace Assets.Scripts.Bar07
                 counton.SetActive(true);
                 countte.SetActive(true);
 
-                timerx = number / 10;
+                timerx = mycoins / 10;
                 countte.GetComponent<SpriteRenderer>().sprite = SpriteSearch(timerx);
 
-                timerx = number % 10;
+                timerx = mycoins % 10;
                 counton.GetComponent<SpriteRenderer>().sprite = SpriteSearch(timerx);
 
             }
-            else if (number >= 0)
+            else if (mycoins >= 0)
             {
                 counto.SetActive(false);
                 countt.SetActive(true);
@@ -91,7 +93,7 @@ namespace Assets.Scripts.Bar07
                 counton.SetActive(false);
                 countte.SetActive(false);
 
-                countt.GetComponent<SpriteRenderer>().sprite = SpriteSearch(number);
+                countt.GetComponent<SpriteRenderer>().sprite = SpriteSearch(mycoins);
             }
             //負の値の時は非表示にする
             else
@@ -276,6 +278,7 @@ namespace Assets.Scripts.Bar07
                     CC.BetController(0);
                     //再配置用にbetcoinsは保持
                     CC.betcoins = CC.betcoins * -1;
+                    CC.CoinResult(1);
                     break;
                 case 2:
                     CC.coins[0].SetActive(false);
@@ -284,6 +287,7 @@ namespace Assets.Scripts.Bar07
                     CC.BetController(0);
                     //再配置用にbetcoinsは保持
                     CC.betcoins = CC.betcoins * -1;
+                    CC.CoinResult(2);
                     break;
                 case 3:
                     CC.coins[0].SetActive(false);
@@ -293,6 +297,7 @@ namespace Assets.Scripts.Bar07
                     CC.BetController(0);
                     //再配置用にbetcoinsは保持
                     CC.betcoins = CC.betcoins * -1;
+                    CC.CoinResult(3);
                     break;
             }
 
@@ -313,12 +318,14 @@ namespace Assets.Scripts.Bar07
                     CC.coins[0].SetActive(true);
                     CC.BetController(number);
                     CC.betcoins = CC.betcoins * -1;
+                    CC.CoinResult(-1);
                     break;
                 case 2:
                     CC.coins[0].SetActive(true);
                     CC.coins[1].SetActive(true);
                     CC.BetController(number);
                     CC.betcoins = CC.betcoins * -1;
+                    CC.CoinResult(-2);
                     break;
                 case 3:
                     CC.coins[0].SetActive(true);
@@ -326,6 +333,7 @@ namespace Assets.Scripts.Bar07
                     CC.coins[2].SetActive(true);
                     CC.BetController(number);
                     CC.betcoins = CC.betcoins * -1;
+                    CC.CoinResult(-3);
                     break;
             }
 

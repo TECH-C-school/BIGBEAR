@@ -18,7 +18,8 @@ namespace Assets.Scripts.Bar07
             }
         }
 
-
+        //渡されたテキストを履歴に表示する
+        //一番下のものは消える
         public void ChangeHistory(string text) {
             for (int i = 1; i < 7; i++)
             {
