@@ -49,20 +49,25 @@ public class Card : MonoBehaviour {
 
     private void TurnCard(bool FaceUp)
     {
+
         Sprite Cardsprite = null;
+        //GameObject Prefabs = null;
+
         if (FaceUp)
-        {           
+        {
             //CardsCollar[n_Number]+ CardsNumber[n_Number]
-            //Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Cards[m_Number]);
-            //Debug.Log(Cards[m_Number]);
-            Cardsprite = Resources.Load<Sprite>("Prefabs/Bar01/Cards/" + Cards[m_Number]);
+            Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Cards[m_Number]);
             Debug.Log(Cards[m_Number]);
+            //Prefabs = Resources.Load<GameObject>("Prefabs/Bar01/Cards/" + Cards[m_Number]);
+            //Debug.Log(Cards[m_Number]);
         }
         else
         {
-            //Cardsprite = Resources.Load<Sprite>("Prefabs/Bar01/Cards/back");
+            //Prefabs = Resources.Load<GameObject>("Prefabs/Bar01/Cards/back");
             Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
         }
+        //var GameObject= transform.GetComponent<GameObject>();
+        //GameObject = Prefabs;
         var spriteRenderer = transform.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = Cardsprite;
     }   
