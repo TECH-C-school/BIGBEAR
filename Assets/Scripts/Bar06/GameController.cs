@@ -16,6 +16,10 @@ namespace Assets.Scripts.Bar06
         private string[] mark = new string[52];
         private int i, j, k, value;
         private string val;
+        public Canvas image_win;
+        public Canvas image_lose;
+        public Canvas image_drow;
+
 
         public void MakeDeck()
         {
@@ -174,8 +178,25 @@ namespace Assets.Scripts.Bar06
                 }
                 ec = ec + numbers[DC];
                 DC++;
+                if (pc > 21)
+                {
+                    "Prefabs/Bar06/win"fillAmount = 1;
+                }else if (pc < ec)
+                {
+                    
+                }
             }
         }
+
+
+        public GameObject Score;
+        private GUIText Scoretext;
+        public void Text()
+        {
+            Scoretext = Score.GetComponent<GUIText>();
+        }
+
+        
        /* public void Result()
         {
 
