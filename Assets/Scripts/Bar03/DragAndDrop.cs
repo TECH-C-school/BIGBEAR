@@ -2,44 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Draganddrop : MonoBehaviour
+namespace Assets.Scripts.Bar03
 {
-    public bool frag = true;
-    // Use this for initialization
-    void Start()
+    public class Draganddrop : MonoBehaviour
     {
+        private bool flg = false;
+        // Use this for initialization
+        void Start()
+        {
+            flg = false;
+        }
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        // Update is called once per frame
+        void Update()
         {
             if (Input.GetMouseButton(0))
             {
                 var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 var selfPoint = gameObject.transform.position;
                 var selfWidth = gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
-                Debug.Log(selfWidth);
                 var selfHeight = gameObject.GetComponent<SpriteRenderer>().bounds.size.y;
 
-                if (tapPoint.x >= selfPoint.x - selfWidth / 2 && tapPoint.x <= selfPoint.x + selfWidth / 2 && tapPoint.y >= selfPoint.y - selfHeight / 2 && tapPoint.y <= selfPoint.y + selfHeight / 2)
+
+                if (GameController.frag == false)
                 {
-                    Vector3 objectPointInScreen
-                      = Camera.main.WorldToScreenPoint(this.transform.position);
+                    if (tapPoint.x >= selfPoint.x - selfWidth / 2 && tapPoint.x <= selfPoint.x + selfWidth / 2 && tapPoint.y >= selfPoint.y - selfHeight / 2 && tapPoint.y <= selfPoint.y + selfHeight / 2)
+                    {
+                        flg = true;
+                        Vector3 objectPointInScreen
+                          = Camera.main.WorldToScreenPoint(this.transform.position);
 
-                    Vector3 mousePointInScreen
-                        = new Vector3(Input.mousePosition.x,
-                                      Input.mousePosition.y,
-                                      objectPointInScreen.z);
+                        Vector3 mousePointInScreen
+                            = new Vector3(Input.mousePosition.x,
+                                          Input.mousePosition.y,
+                                          objectPointInScreen.z);
 
-                    Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
-                    this.transform.position = mousePointInWorld;
+                        Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
+                        this.transform.position = mousePointInWorld;
+
+                        GameController.frag = true;
+
+                    }
                 }
                 else
                 {
-                    return;
+                    // (flg) と(flg == true)は一緒
+                    if (flg)
+                    {
+                        Vector3 inputPositon = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        inputPositon.z += 10;
+                        transform.position = inputPositon;
+                        
+                    }
                 }
+
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                GameController.frag = false;
+                flg = false;
             }
         }
     }
