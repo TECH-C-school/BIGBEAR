@@ -18,10 +18,45 @@ namespace Assets.Scripts.Bar02
     {
         public int number;
         public Mark mark;
+
+        public string GetPath()
+        {
+            var fileName = "";
+
+            switch (mark)
+            {
+                case Mark.Spade:
+                    fileName += "s";
+                    break;
+                case Mark.Heart:
+                    fileName += "h";
+                    break;
+                case Mark.Clover:
+                    fileName += "c";
+                    break;
+                default:
+                    fileName += "d";
+                    break;
+            }
+
+            if (number < 10)
+            {
+                fileName += "0" + number;
+            }
+            else
+            {
+                fileName += number;
+            }
+
+            return fileName;
+        }
     }
 
     public class GameController : MonoBehaviour
     {
+        private Card[] remaindertrump;
+        private int remaindertrump_index = 0;
+
         public void Start()
         {
 
@@ -56,7 +91,7 @@ namespace Assets.Scripts.Bar02
 
             //残りの31枚のカードを山札にする
             
-              Card[] remaindertrump = new Card[31];
+            remaindertrump = new Card[31];
             for (int i = 0; i < 31; i++)
             {
 
@@ -64,8 +99,6 @@ namespace Assets.Scripts.Bar02
                 remaindertrump[i].mark = (Mark)((cards[i] - 1) / 13);
                 Debug.Log("山札" + remaindertrump[i].mark + remaindertrump[i].number);
             }
-
-            Debug.Log("残りのカードの枚数は");
 
             //21枚のカードを表示する
             var counterForTrump = 0;
@@ -118,38 +151,38 @@ namespace Assets.Scripts.Bar02
 
 
         }
-        //山札の処理
+        //山札をクリックしたとき、隣にカードを配置する
         public void Yamahuda()
         {
 
-          /*  int[] cards = new int[53];
-            //31枚のカードを用意する
-            for (int i = 21; i < 53; i++)
-            {
-                cards[i] = i + 1;
+           //int[] cards = new int[53];
 
-            }
+           // for (int i = 21; i < 53; i++)
+           // {
+           //     cards[i] = i + 1;
 
-            var counter = 22;
-            while (counter < 52)
-            {
-                var index = Random.Range(counter, cards.Length);
-                var tmp = cards[counter];
-                cards[counter] = cards[index];
-                cards[index] = tmp;
+           // }
 
-                counter++;
-            }
-            //山札をクリックしたとき、隣にカードを配置する
+           // var counter = 22;
+           // while (counter < 52)
+           // {
+           //     var index = Random.Range(counter, cards.Length);
+           //     var tmp = cards[counter];
+           //     cards[counter] = cards[index];
+           //     cards[index] = tmp;
+
+           //     counter++;
+           // }
+         
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Card");
             var cardsObject = GameObject.Find("Cards");
-            Card[] trump = new Card[53];
-            for (int i = 22; i < 53; i++)
-            {
+            //Card[] trump = new Card[53];
+            //for (int i = 22; i < 53; i++)
+            //{
 
-                trump[i].number = (cards[i] - 1) % 13 + 1;
-                trump[i].mark = (Mark)((cards[i] - 1) / 13);
-            }
+            //    trump[i].number = (cards[i] - 1) % 13 + 1;
+            //    trump[i].mark = (Mark)((cards[i] - 1) / 13);
+            //}
 
             for (int i = 0; i < 1; i++)
             {
@@ -162,10 +195,29 @@ namespace Assets.Scripts.Bar02
                        0);
                 cardObject.transform.parent = cardsObject.transform;
 
-            }*/
+                cardObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + remaindertrump[remaindertrump_index].GetPath());
+                remaindertrump_index++;
+
+
+               //カードを2つクリックして合計値が13ならば、カードが消える
+
+              
+
+
+
+            }
+            
+
+            
+
+
+                 
+
+               
+
             
 
         }
-        
+
+        }
     }
-}
