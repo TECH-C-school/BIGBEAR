@@ -18,22 +18,40 @@ public class Cards : MonoBehaviour
     GameObject[] FloorCardHolder = new GameObject[28];//場に置かれるカード
     GameObject[] DeckcardHolder = new GameObject[25];//山札に置かれるカード
     GameObject[] MemoryCards = new GameObject[24];//山札からめっくったカードを記録する
-    int[] Card_Character = new int[52];
+    GameObject[] SecondLine = new GameObject[2];//2列目のオブジェクトの配列
+    GameObject[] ThirdLine = new GameObject[3];//3列目のオブジェクトの配列
+    GameObject[] FourthLine = new GameObject[4];//4列目のオブジェクトの配列
+    GameObject[] FifthLine = new GameObject[5];//5列目のオブジェクトの配列
+    GameObject[] SixthLine = new GameObject[6];//6列目のオブジェクトの配列
+    GameObject[] SeventhLine = new GameObject[7];//7列目のオブジェクトの配列
+
+    int[] Card_Character = new int[52];//カードの名前を調べるときに使う配列
+
     private GameObject deckbackcard;
-    private GameObject selectCred;
-    private Vector3 RecordPosition;
-    private GameObject LoadBackCard;
+    private GameObject selectCred;//マウスで選択してつかんだオブジェクト
+    private Vector3 RecordPosition;// マウスで選択したつかんだオブジェクトの元々の場所を記録する
+    private GameObject LoadBackCard;//裏向きのカードを読み込むときに使う変数
     private GameObject BackCheckCard;
     private GameObject FloorCheckCard;
-    private GameObject TurnDeckCard;
-    private GameObject MakeCard;
-    private GameObject MemoryDeckBackCard;
-    private GameObject Memory_Select_Cards;
-    private int deckcount;
+    //private GameObject TurnDeckCard;
+    private GameObject MakeCard;//場に出すカードを読み込むときに使う変数
+    private GameObject MemoryDeckBackCard;//デッキの裏向きのカードを読み込むときに使う変数
+    private GameObject Memory_Select_Cards;//重ねられるオブジェクトを入れる変数
+    private GameObject Children_Card;//選択されたオブジェクトの子供を入れる変数
+
+    private int deckcount;//デッキの中身をカウントする変数
     private int memory_deck_count;
-    private int SelectCardNamber;
-    private int Memory_Card_Namber;
-    private bool OverlaidOK;
+    private int SelectCardNamber;//選択したカードのナンバーを入れる変数
+    private int Memory_Card_Namber;//場に置かれてるカードのナンバーを入れる変数
+    private int SecondLine_Count;//2列目のオブジェクトの配列カウント
+    private int ThirdLine_Count;//3列目のオブジェクトの配列カウント
+    private int FourthLine_Count;//4列目のオブジェクトの配列カウント
+    private int FifthLine_Count;//5列目のオブジェクトの配列カウント
+    private int SixthLine_Count;//6列目のオブジェクトの配列カウント
+    private int SeventhLine_Count;//7列目のオブジェクトの配列カウント
+    private int FloorCardHolder_Count;
+
+    private bool OverlaidOK;//重ねていいならtrueになる変数
 
 
     void Start()
@@ -168,15 +186,75 @@ public class Cards : MonoBehaviour
                 //場のカードの列の先頭に表のカードを表示する
                 if (i == j)
                 {
-                    MakeCard = Instantiate(FloorCardHolder[count], transform.position, Quaternion.identity);
+                    MakeCard = Instantiate(FloorCardHolder[FloorCardHolder_Count], transform.position, Quaternion.identity);
                     MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.15f * j, 0 - 1 * j);
                     //MakeCard.transform.parent = FloorCheckCard.transform;
-                    count++;
+                    if (i == 1)
+                    {
+                        SecondLine[j] = MakeCard;
+                        SecondLine_Count++;
+                    }
+                    if (i == 2)
+                    {
+                        ThirdLine[j] = MakeCard;
+                        ThirdLine_Count++;
+                    }
+                    if (i == 3)
+                    {
+                        FourthLine[j] = MakeCard;
+                        FourthLine_Count++;
+                    }
+                    if (i == 4)
+                    {
+                        FifthLine[j] = MakeCard;
+                        FifthLine_Count++;
+                    }
+                    if (i == 5)
+                    {
+                        SixthLine[j] = MakeCard;
+                        SixthLine_Count++;
+                    }
+                    if (i == 6)
+                    {
+                        SeventhLine[j] = MakeCard;
+                        SeventhLine_Count++;
+                    }
+                    FloorCardHolder_Count++;
                     break;
                 }
                 //先頭以外のカードは裏向きに表示する
                 MakeCard = Instantiate(LoadBackCard, transform.position, Quaternion.identity);
                 MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.15f * j, 0 - 1 * j);
+                if (i == 1)
+                {
+                    SecondLine[j] = MakeCard;
+                    SecondLine_Count++;
+                }
+                if (i == 2)
+                {
+                    ThirdLine[j] = MakeCard;
+                    ThirdLine_Count++;
+                }
+                if (i == 3)
+                {
+                    FourthLine[j] = MakeCard;
+                    FourthLine_Count++;
+                }
+                if (i == 4)
+                {
+                    FifthLine[j] = MakeCard;
+                    FifthLine_Count++;
+                }
+                if (i == 5)
+                {
+                    SixthLine[j] = MakeCard;
+                    SixthLine_Count++;
+                }
+                if (i == 6)
+                {
+                    SeventhLine[j] = MakeCard;
+                    SeventhLine_Count++;
+                }
                 //MakeCard.transform.parent = BackCheckCard.transform;
 
             }
@@ -246,6 +324,14 @@ public class Cards : MonoBehaviour
         RecordPosition = HitObject.transform.position;
         selectCred = HitObject.transform.gameObject;
         selectCred.GetComponent<BoxCollider2D>().enabled = false;
+        var hoge = selectCred.GetComponentsInChildren<Transform>();
+        foreach (Transform child in hoge)
+        {
+            //Debug.Log(child.name);
+            Children_Card = child.transform.gameObject;
+            Children_Card.GetComponent<BoxCollider2D>().enabled = false;
+
+        }
 
     }
 
@@ -263,14 +349,18 @@ public class Cards : MonoBehaviour
         {
             var HitObject = Physics2D.Raycast(TapPoint, -Vector3.up);
             Memory_Select_Cards = HitObject.transform.gameObject;
+
+
             //Debug.Log(Memory_Select_Cards.transform.name);
             InvestigateCard();
             OverlaidCard();
             if (OverlaidOK)
             {
-                selectCred.transform.position = new Vector3(HitObject.transform.position.x, HitObject.transform.position.y-0.3f, HitObject.transform.position.z - 1);
+                selectCred.transform.position = new Vector3(HitObject.transform.position.x, HitObject.transform.position.y - 0.3f, HitObject.transform.position.z - 1);
                 selectCred.transform.parent = HitObject.transform;
                 selectCred.GetComponent<BoxCollider2D>().enabled = true;
+                SearchCard();
+                TurnBackCard();
                 selectCred = null;
                 OverlaidOK = false;
                 return;
@@ -279,7 +369,11 @@ public class Cards : MonoBehaviour
 
         selectCred.transform.position = RecordPosition;
         selectCred.GetComponent<BoxCollider2D>().enabled = true;
+        Children_Card.GetComponent<BoxCollider2D>().enabled = true;
+        
+        
         selectCred = null;
+        Children_Card = null;
 
 
     }
@@ -358,41 +452,40 @@ public class Cards : MonoBehaviour
             if (hoge == Memory_Select_Cards.transform.name)
             {
                 Memory_Card_Namber = (int)(Card)Card_Character[x];
-                Debug.Log(Memory_Card_Namber);
+                //Debug.Log(Memory_Card_Namber);
 
             }
             if (hoge == selectCred.transform.name)
             {
                 ///Debug.Log(Memory_Select_Cards.transform.name);
                 SelectCardNamber = (int)(Card)Card_Character[x];
-                Debug.Log(SelectCardNamber);
+                //Debug.Log(SelectCardNamber);
             }
         }
     }
-
 
     /// <summary>
     /// 重ねていいか調べる
     /// </summary>
     private void OverlaidCard()
     {
-        Debug.Log("hoge");
+        //Debug.Log("hoge");
         if (0 < SelectCardNamber)
         {
             if (SelectCardNamber < 14)
             {
                 if (Memory_Card_Namber == SelectCardNamber + 14)
                 {
-                    Debug.Log("hogehoge");
+                    //Debug.Log("hogehoge");
                     OverlaidOK = true;
                 }
                 if (Memory_Card_Namber == SelectCardNamber + 40)
                 {
-                    Debug.Log("hogehoge");
+                    //Debug.Log("hogehoge");
                     OverlaidOK = true;
                 }
             }
-            
+
         }
         if (13 < SelectCardNamber)
         {
@@ -400,16 +493,16 @@ public class Cards : MonoBehaviour
             {
                 if (Memory_Card_Namber == SelectCardNamber - 12)
                 {
-                    Debug.Log("hogehoge");
+                    //Debug.Log("hogehoge");
                     OverlaidOK = true;
                 }
                 if (Memory_Card_Namber == SelectCardNamber + 14)
                 {
-                    Debug.Log("hogehoge");
+                    //Debug.Log("hogehoge");
                     OverlaidOK = true;
                 }
             }
-            
+
         }
         if (26 < SelectCardNamber)
         {
@@ -417,12 +510,12 @@ public class Cards : MonoBehaviour
             {
                 if (Memory_Card_Namber == SelectCardNamber - 12)
                 {
-                    Debug.Log("hogehoge");
+                    //Debug.Log("hogehoge");
                     OverlaidOK = true;
                 }
                 if (Memory_Card_Namber == SelectCardNamber + 14)
                 {
-                    Debug.Log("hogehoge");
+                    //Debug.Log("hogehoge");
                     OverlaidOK = true;
                 }
             }
@@ -431,14 +524,111 @@ public class Cards : MonoBehaviour
         {
             if (Memory_Card_Namber == SelectCardNamber - 12)
             {
-                Debug.Log("hogehoge");
+                //Debug.Log("hogehoge");
                 OverlaidOK = true;
             }
             if (Memory_Card_Namber == SelectCardNamber - 38)
             {
-                Debug.Log("hogehoge");
+                //Debug.Log("hogehoge");
                 OverlaidOK = true;
             }
+        }
+    }
+
+    /// <summary>
+    /// 場にあるカードが移動したときに裏カードの次のカードだったら配列からカードを消す
+    /// </summary>
+    private void SearchCard()
+    {
+        Debug.Log("hogehoge");
+        for (int x = 0; x < SecondLine.Length; x++)
+        {
+            if (SecondLine[x] == selectCred)
+            {
+                Debug.Log("hogehoge");
+                SecondLine[x] = null;
+            }
+        }
+            if (ThirdLine[x] == selectCred)
+            {
+                Debug.Log("hogehoge");
+                ThirdLine[x] = null;
+            }
+            if (FourthLine[x] == selectCred)
+            {
+                Debug.Log("hogehoge");
+                FourthLine[x] = null;
+            }
+            if (FifthLine[x] == selectCred)
+            {
+                Debug.Log("hogehoge");
+                FifthLine[x] = null;
+            }
+            if (SixthLine[x] == selectCred)
+            {
+                Debug.Log("hogehoge");
+                SixthLine[x] = null;
+            }
+            if (SeventhLine[x] == selectCred)
+            {
+                Debug.Log("hogehoge");
+                SeventhLine[x] = null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 裏向きのカードを表にする
+    /// </summary>
+    private void TurnBackCard()
+    {
+        if (SecondLine[SecondLine_Count] == null)
+        {
+            MakeCard = Instantiate(FloorCardHolder[FloorCardHolder_Count], transform.position, Quaternion.identity);
+            MakeCard.transform.position = SecondLine[SecondLine_Count - 1].transform.position;
+            SecondLine[SecondLine_Count - 1] = MakeCard;
+            SecondLine_Count--;
+            FloorCardHolder_Count++;
+        }
+        if (ThirdLine[ThirdLine_Count] == null)
+        {
+            MakeCard = Instantiate(FloorCardHolder[FloorCardHolder_Count], transform.position, Quaternion.identity);
+            MakeCard.transform.position = ThirdLine[ThirdLine_Count-1].transform.position;
+            ThirdLine[ThirdLine_Count - 1] = MakeCard;
+            ThirdLine_Count--;
+            FloorCardHolder_Count++;
+        }
+        if (FourthLine[FourthLine_Count] == null)
+        {
+            MakeCard = Instantiate(FloorCardHolder[FloorCardHolder_Count], transform.position, Quaternion.identity);
+            MakeCard.transform.position = FourthLine[FourthLine_Count - 1].transform.position;
+            FourthLine[FourthLine_Count-1] = MakeCard;
+            FourthLine_Count--;
+            FloorCardHolder_Count++;
+        }
+        if (FifthLine[FifthLine_Count] == null)
+        {
+            MakeCard = Instantiate(FloorCardHolder[FloorCardHolder_Count], transform.position, Quaternion.identity);
+            MakeCard.transform.position = FifthLine[FifthLine_Count].transform.position;
+            FifthLine[FifthLine_Count-1] = MakeCard;
+            FifthLine_Count--;
+            FloorCardHolder_Count++;
+        }
+        if (SixthLine[SixthLine_Count] == null)
+        {
+            MakeCard = Instantiate(FloorCardHolder[FloorCardHolder_Count], transform.position, Quaternion.identity);
+            MakeCard.transform.position = SixthLine[SixthLine_Count - 1].transform.position;
+            SixthLine[SixthLine_Count-1] = MakeCard;
+            SixthLine_Count--;
+            FloorCardHolder_Count++;
+        }
+        if (SeventhLine[SeventhLine_Count] == null)
+        {
+            MakeCard = Instantiate(FloorCardHolder[FloorCardHolder_Count], transform.position, Quaternion.identity);
+            MakeCard.transform.position = SeventhLine[SeventhLine_Count].transform.position;
+            SeventhLine[SeventhLine_Count-1] = MakeCard;
+            SeventhLine_Count--;
+            FloorCardHolder_Count++;
         }
     }
 }
