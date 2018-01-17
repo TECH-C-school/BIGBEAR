@@ -8,6 +8,8 @@ namespace Assets.Scripts.Bar02
     {
 
         private int _number;
+        private int _cardnumber;
+        //private string _cardmark;
 
         public int Number
         {
@@ -15,6 +17,18 @@ namespace Assets.Scripts.Bar02
             get { return _number; }
             set { _number = value; }
         }
+        public int CardNumber
+        {
+
+            get { return _cardnumber; }
+            set { _cardnumber = value; }
+        }
+        //public string CardMark
+        //{
+
+        //    get { return _cardmark; }
+        //    set { _cardmark = value; }
+        //}
 
         public void TurnCardFaceUp()
         {
@@ -26,24 +40,27 @@ namespace Assets.Scripts.Bar02
         }
         public void TurnCard(bool faceup)
         {
-            Sprite cardSprite = null;
+            //Sprite cardSprite = null;
             //GameObject onField = null;
             var oncard = GameObject.Find("FieldCards");
-
+            var backprefabs = GameObject.Find("BackCards");
+            var onField = oncard.transform.GetChild(_number);
+            var backfield = backprefabs.transform.GetChild(_number);
 
             if (faceup)
             {
-                var onField = oncard.transform.GetChild(_number);
-                string Fieldcard = onField.ToString();
-                string Subfield = Fieldcard.Substring(0, 3);
-                cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Subfield);
+                onField.GetComponent<Renderer>().sortingOrder = _number + 2;
             }
             else
             {
-                cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
+                backfield.GetComponent<Renderer>().sortingOrder = _number + 2;
             }
-            var spriteRenderer = transform.GetComponent<SpriteRenderer>();
-            spriteRenderer.sprite = cardSprite;
+
         }
+        //public void StringNumber(int a)
+        //{
+        //    int number = 0; 
+        //    return number;
+        //}
     }
 }

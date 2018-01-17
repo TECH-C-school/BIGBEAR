@@ -19,12 +19,11 @@ namespace Assets.Scripts.Bar02
         public int[] cardnum = new int[52];
         void Start()
         {
-            MakeCards();
-
-            //OpenCard();
+            MakeCards();            
         }
         void Update()
         {
+            OpenCard();
             ClickCard();
         }
         public class cardy
@@ -78,6 +77,8 @@ namespace Assets.Scripts.Bar02
 
             var fieldcard = GameObject.Find("FieldCards");
             var remaincard = GameObject.Find("RemainCards");
+            var backcards = GameObject.Find("BackCards");
+            var backPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Back");
 
             counter = 0;
             while (counter < 28)
@@ -110,8 +111,18 @@ namespace Assets.Scripts.Bar02
                     3.50f - 0.92f * x,
                     0);
 
+                    GameObject backpos = Instantiate(backPrefab, transform.position, Quaternion.identity);
+
+                    backpos.transform.position = new Vector3(
+                    -0.87f * x + 1.665f * y,
+                    3.50f - 0.92f * x,
+                    0);
+
                     cardpos.GetComponent<Renderer>().sortingOrder = counter;
+                    backpos.GetComponent<Renderer>().sortingOrder = 0;
+
                     cardpos.transform.parent = fieldcard.transform;
+                    backpos.transform.parent = backcards.transform;
                     var card = cardpos.GetComponent<Cards>();
                     //CardスクリプトのNumberにMakeRandomの値代入
                     card.Number = num;
@@ -142,11 +153,10 @@ namespace Assets.Scripts.Bar02
             var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
             if (!hitObject) return;
 
-            /*var colidercard = hitObject.collider.GetComponent<BoxCollider2D>();
-            OnTriggerStay2D(colidercard);
-            if (!colidercard) return;*/
+            var card = hitObject.collider.gameObject.GetComponent<Cards>();
+            Debug.Log(card.CardNumber);
 
-            //クリックされた位置にflameを装着
+            ////クリックされた位置にflameを装着
             var Flame = GameObject.Find("cardflame");
             Flame.transform.position = hitObject.transform.position;
 
@@ -160,54 +170,69 @@ namespace Assets.Scripts.Bar02
              SceneManager.LoadScene("Result");
          }*/
 
-        //    public void OpenCard()
-        //    {
-        //        int counter = 2;
-        //        int num = 0;
-        //        var a = GameObject.Find("FieldCards");
-        //        GameObject[] b = new GameObject[28];
-        //        var empty = GameObject.Find("Empty");
-        //        GameObject[] d = new GameObject[35];
-        //        for (int i = 0; i < 7; i++)
-        //        {
-        //            for (int j = 0; j < counter; j++)
-        //            {
-        //                d[counter] = Instantiate(empty, transform.position, Quaternion.identity);
-        //                d[counter].transform.position = new Vector3(
-        //                -0.87f * (i + 1) + 1.665f * (j + 1),
-        //                3.50f - 0.92f * (i + 1),
-        //                0);
+        public void OpenCard()
+        {
+            var judgecard = GameObject.Find("FieldCards");
+            int num = 0; int counter = 1;
+            string once = "";
 
-        //                d[counter].transform.parent = empty.transform;
-        //            }
-        //            counter++;
-        //        }
-        //        counter = 1;
-        //        for (int i = 0; i < 7; i++)
-        //        {
-        //            for (int j = 0; j < counter; j++)
-        //            {
-        //                b[counter-1] = a.transform.GetChild(num).gameObject;
-        //                if (num > 1)
-        //                {
-        //                    if (d[i * counter + j].transform.position == b[counter].transform.position
-        //                        && d[i + j * counter].transform.position == b[counter+1].transform.position)
-        //                    {
-        //                        b[counter-1].GetComponent<BoxCollider2D>().enabled = false;
-        //                    }
-        //                    else
-        //                    {
-        //                        var cardd = GetComponent<Cards>();
-        //                        cardd.TurnCardFaceUp();
-        //                        Destroy(d.gameObject);
-        //                    }
-        //                }
-        //                num++;
-        //            }
-        //            counter++;
-        //        }
-        //    }
-        //}
+            for (int i = 1; i < 8; i++)
+            {
+                for (int j = 0; j < counter; j++)
+                {
+                    var one = judgecard.transform.GetChild(num).gameObject;
+                    string ones = one.ToString();
+                    if (ones.IndexOf("1") == 1)
+                    {
+
+                        once = ones.Substring(1, 3);
+                    }else
+                    {
+                        once = ones.Substring(2, 3);
+                    }
+                    int stringnum = int.Parse(once);
+                    //Debug.Log(once);
+
+                    if (num > 20)
+                    {
+                        one.GetComponent<BoxCollider2D>().enabled = true;
+                        var card = one.GetComponent<Cards>();
+                        card.Number = num;
+                        card.CardNumber = stringnum;
+                        card.TurnCardFaceUp();
+                    }
+                    else
+                    {
+                        var two = judgecard.transform.GetChild(num + i).gameObject;
+                        var three = judgecard.transform.GetChild(num + i + 1).gameObject;
+
+                        if (two == null)
+                        {
+                            if (three == null)
+                            {
+                                one.GetComponent<BoxCollider2D>().enabled = true;
+                                var card = one.GetComponent<Cards>();
+                                card.Number = num;
+                                card.CardNumber = stringnum;
+                                card.TurnCardFaceUp();
+                            }
+                        }
+                        else
+                        {
+                            one.GetComponent<BoxCollider2D>().enabled = false;
+                            var card = one.GetComponent<Cards>();
+                            card.CardNumber = stringnum;
+                            card.Number = num;
+                            card.TurnCardFaceDown();
+                        }
+                    }
+                    num++;
+                }
+                counter++;
+            }
+        }        
+
     }
 }
+
 
