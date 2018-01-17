@@ -9,9 +9,9 @@ public class Button2 : MonoBehaviour {
     {
         {
             // Textコンポーネント郡を取得します。
-            var components = this.gameObject.GetComponentsInChildren<Text>();
+          //  var components = this.gameObject.GetComponentsInChildren< Text > ();
             // テキストを文字の状態によって変更するようにします。
-            components[0].text = components[0].text == "ホールド" ? "チェンジ" : "Button";
+          //  components[0].text = components[0].text == "ホールド" ? "チェンジ" : "Button";
         }
         /* Debug.Log("Button click!");
          // 非表示にする
