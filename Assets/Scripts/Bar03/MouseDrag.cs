@@ -5,34 +5,64 @@ using UnityEngine;
 
 public class MouseDrag : MonoBehaviour {
 
-    public Vector3 startposition;
+
+    private GameObject startposition;
+    private bool button;
+    Vector3 hit;
+    Vector3 position;
+
     private void Start()
     {
-        //開始時の座標を取得
-        startposition = gameObject.transform.position;
+     
     }
-
+    private void Update()
+    {
+        OnMouseDrag();
+        MouseUp();
+        if (button == true)
+        {
+            hit = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            hit.z = -9;
+            startposition.transform.position = hit;
+        }
+        
+    }
     //マウスドラッグでオブジェクトを動かす
     void OnMouseDrag()
     {
-        startposition = transform.position;
-        Vector3 objectPointInScreen
-            = Camera.main.WorldToScreenPoint(this.transform.position);
 
-        Vector3 mousePointInScreen
-            = new Vector3(Input.mousePosition.x,
-                          Input.mousePosition.y,
-                          objectPointInScreen.z);
+        //マウスクリックの判定
+        if (!Input.GetMouseButtonDown(0)) return;
 
-        Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
-        mousePointInWorld.z = this.transform.position.z;
-        this.transform.position = mousePointInWorld;
+        //クリックした位置を取得
+        var x = Input.mousePosition;
+        var tapPoint = Camera.main.ScreenToWorldPoint(x);
+        hit = tapPoint;
+        hit.z = -9;
 
-        //ドラッグを離したら元の位置に戻る
-        if ()
-        {
-            gameObject.transform.position = startposition;
-        }
+        //Collider2D上のクリックの判定
+        if (!Physics2D.OverlapPoint(tapPoint)) return;
+        
+        //クリックした位置のオブジェクトを取得
+        var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
+        //if (!hitObject) return;
 
+        startposition = hitObject.transform.gameObject;
+        position = startposition.transform.position;
+
+        //常に起動させる
+        button = true;
+
+    }
+     void MouseUp()
+    {
+        //マウスを離したかの判定
+        if (!Input.GetMouseButtonUp(0)) return;
+
+        //positionの取得
+        startposition.transform.position = position;
+
+        button = false;
+  
     }
 }
