@@ -21,22 +21,36 @@ namespace Assets.Scripts.Bar04
         {
             public int number;
             public Mark mark;
-        }
 
-        private Card[] cards;
+            public string GetPath()
+            {
+                string path;
+                switch (mark)
+                {
+                    case Mark.Heart:
+                        path = "h";
+                        break;
+                    case Mark.Spade:
+                        path = "s";
+                        break;
+                    case Mark.Diamond:
+                        path = "d";
+                        break;
+                    case Mark.Clover:
+                        path = "c";
+                        break;
+                    default:
+                        return "";
+                }
 
-        public enum Mark
-        {
-            Clover,
-            Heart,
-            Spade,
-            Diamond,
-        }
+                if (number < 10)
+                {
+                    path += "0";
+                }
+                path += number.ToString();
 
-        public struct Card
-        {
-            public int number;
-            public Mark mark;
+                return path;
+            }
         }
 
         private Card[] cards;
@@ -47,12 +61,8 @@ namespace Assets.Scripts.Bar04
         {
             SceneManager.LoadScene("Result");
         }
-<<<<<<< HEAD
         public void GameStart()
         {
-=======
-        public void GameStart() {
->>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
             Debug.Log("ゲームスタート");
             Startbutton.SetActive(false);
         }
@@ -76,11 +86,6 @@ namespace Assets.Scripts.Bar04
                 cards[i].number = number;
                 number++;
             }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
             //ハート1～13のカードを用意する
             number = 1;
             for (int i = 13; i < 26; i++)
@@ -96,17 +101,6 @@ namespace Assets.Scripts.Bar04
                 cards[i].mark = Mark.Spade;
                 cards[i].number = number;
                 number++;
-<<<<<<< HEAD
-=======
-            }
-            //ダイヤ1～13のカードを用意する
-            number = 1;
-            for (int i = 39; i < 51; i++)
-            {
-                cards[i].mark = Mark.Diamond;
-                cards[i].number = number;
-                number++;
->>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
             }
             //ダイヤ1～13のカードを用意する
             number = 1;
@@ -118,12 +112,7 @@ namespace Assets.Scripts.Bar04
             }
 
 
-<<<<<<< HEAD
             //52枚をシャッフルする
-=======
-
-            //52枚をシャッフルにする
->>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
             var counter = 0;
             while (counter < 52)
             {
@@ -134,37 +123,40 @@ namespace Assets.Scripts.Bar04
                 cards[index] = tmp;
 
                 counter++;
-          
             }
-<<<<<<< HEAD
-            
+
+            /*52枚をランダムにconsoleに出す
+            for (int i = 0; i < 52; i++)
+            {
+                Debug.Log(cards[i].number + ":" + cards[i].mark);
+            }*/
+
+            //GameObject card = GameObject.Find("c10");
+            //card.transform.position = GetPosition(1);
+
+            //GameObject card1 = GameObject.Find("c09");
+            //card1.transform.position = GetPosition(2);
+
+            //GameObject card2 = GameObject.Find("c08");
+            //card2.transform.position = GetPosition(3);
+
+            //GameObject card3 = GameObject.Find("c07");
+            //card3.transform.position = GetPosition(4);
+
+            //GameObject card4 = GameObject.Find("c06");
+            //card4.transform.position = GetPosition(5);
+
+            for(int i = 0; i < cards.Length; ++i)
+            {
+                var prefab = Resources.Load<GameObject>("Prefabs/Bar04/Card");
+                var card = Instantiate(prefab, new Vector2(i,i), Quaternion.identity);
+                var spriteRenderer = card.GetComponent<SpriteRenderer>();
+                spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cards[i].GetPath());
+                
+            }
+
         }
-        /*52枚をランダムにconsoleに出す
-        for (int i = 0; i < 52; i++)
-        {
-            Debug.Log(cards[i].number + ":" + cards[i].mark);
-        }*/
 
-        //カード五枚をゲーム画面上に配置
-        public void Cards() { 
-            GameObject card = GameObject.Find("c01");
-            card.transform.position = GetPosition(1);
-            
-            GameObject card1 = GameObject.Find("c02");
-            card1.transform.position = GetPosition(2);
-
-            GameObject card2 = GameObject.Find("h03");
-            card2.transform.position = GetPosition(3);
-
-            GameObject card3 = GameObject.Find("h04");
-            card3.transform.position = GetPosition(4);
-
-            GameObject card4 = GameObject.Find("s05");
-            card4.transform.position = GetPosition(5);
-
-        }
-
-        //カード五枚の座標(空の箱を用意)
         public Vector2 GetPosition(int index)
         {
             switch (index)
@@ -183,26 +175,7 @@ namespace Assets.Scripts.Bar04
                     return new Vector2(-100, -100);
             }
         }
-
-=======
-
-            /*52枚をconsoleに出す
-            for (int i = 0; i < 52; i++)
-            {
-                Debug.Log(cards[i].number + ":" + cards[i].mark);
-            }*/
-
-        }
-
->>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
     }
-
 }
 
 
-<<<<<<< HEAD
-//手役
-=======
-        //手役
-
->>>>>>> 01ce8ed687f78da83200015da85bc26c867bf3d0
