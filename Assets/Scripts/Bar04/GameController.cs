@@ -13,14 +13,15 @@ namespace Assets.Scripts.Bar04 {
         static int count4;
         static int count5;
         static List<int> List = new List<int>(52);
-        
+        static int[] numbers = new int[5];
+
         void Start()
         {
             InitGame();
         }
         void Update()
         {
-            Click();
+           //Click();
         }
         
         public void ClickFightButton()
@@ -38,7 +39,7 @@ namespace Assets.Scripts.Bar04 {
             //山札の上から5枚を配る
             for (var j = 0; j < 5; j++)
             {
-                LoadCard(List[j], j);
+                 numbers[j] = LoadCard(List[j], j);
             }
             //Fightボタンを移動(非表示)する
             transform.position = new Vector2(1011, -100);
@@ -47,8 +48,6 @@ namespace Assets.Scripts.Bar04 {
             change.transform.position = new Vector2(1011, 50);
             var notchange = GameObject.Find("NotChange");
             notchange.transform.position = new Vector2(1011, 142);
-            
-            
         }
         public void ClickChangeButton()
         {
@@ -59,31 +58,31 @@ namespace Assets.Scripts.Bar04 {
             if (count1 == 1)
             {
                 Destroy(childTransform[1].gameObject);
-                LoadCard(List[counter], 0);
+                numbers[0] = LoadCard(List[counter], 0);
                 counter++;
             }
             if (count2 == 1)
             {
                 Destroy(childTransform[2].gameObject);
-                LoadCard(List[counter], 1);
+                numbers[1] = LoadCard(List[counter], 1);
                 counter++;
             }
             if (count3 == 1)
             {
                 Destroy(childTransform[3].gameObject);
-                LoadCard(List[counter], 2);
+                numbers[2] = LoadCard(List[counter], 2);
                 counter++;
             }
             if (count4 == 1)
             {
                 Destroy(childTransform[4].gameObject);
-                LoadCard(List[counter], 3);
+                numbers[3] = LoadCard(List[counter], 3);
                 counter++;
             }
             if (count5 == 1)
             {
                 Destroy(childTransform[5].gameObject);
-                LoadCard(List[counter], 4);
+                numbers[4] = LoadCard(List[counter], 4);
                 counter++;
             }
             ButtonAndFlame();
@@ -108,7 +107,7 @@ namespace Assets.Scripts.Bar04 {
         {
             //ChangeボタンとNotChangeボタンを移動(非表示)する
             var change = GameObject.Find("Change");
-            transform.position = new Vector2(-100, 0);
+            change.transform.position = new Vector2(-100, 0);
             var notchange = GameObject.Find("NotChange");
             notchange.transform.position = new Vector2(-100, 0);
             //Resetボタンを移動(表示)する
@@ -131,8 +130,40 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public void Prize()
         {
-            var cards = GameObject.Find("RandomCards").transform;
-            onePare();
+            for (int i = 0; i < 5; i++)
+            {
+                if(numbers[i] > 13)
+                {
+                    if (numbers[i] > 26)
+                    {
+                        if (numbers[i] > 39)
+                        {
+                            numbers[i] -= 13;
+                        }
+                        numbers[i] -= 13;
+                    }
+                    numbers[i] -= 13;
+                }
+            }
+            //スリーカード
+            if (numbers[0] == numbers[1] && numbers[0] == numbers[2] || numbers[0] == numbers[1] && numbers[0] == numbers[3] || numbers[0] == numbers[1] && numbers[0] == numbers[4] || numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[0] == numbers[2] && numbers[0] == numbers[4] || numbers[0] == numbers[3] && numbers[0] == numbers[4])
+            {
+                Debug.Log("スリーカード");
+            }
+            //ツーペア
+            if (numbers[0] == numbers[1] || numbers[0] == numbers[2] || numbers[0] == numbers[3] || numbers[0] == numbers[4] || numbers[1] == numbers[2] || numbers[1] == numbers[3] || numbers[1] == numbers[4] || numbers[2] == numbers[3] || numbers[2] == numbers[4] || numbers[3] == numbers[4])
+            {
+                if (numbers[0] == numbers[1] || numbers[0] == numbers[2] || numbers[0] == numbers[3] || numbers[0] == numbers[4] || numbers[1] == numbers[2] || numbers[1] == numbers[3] || numbers[1] == numbers[4] || numbers[2] == numbers[3] || numbers[2] == numbers[4] || numbers[3] == numbers[4])
+                {
+                    Debug.Log("ツーペア");
+                }
+            }
+            //ワンペア
+            if (numbers[0] == numbers[1] || numbers[0] == numbers[2] || numbers[0] == numbers[3] || numbers[0] == numbers[4] || numbers[1] == numbers[2] || numbers[1] == numbers[3] || numbers[1] == numbers[4] || numbers[2] == numbers[3] || numbers[2] == numbers[4] || numbers[3] == numbers[4])
+            {
+                Debug.Log("ワンペア");
+            }
+            
         }
         /// <summary>
         /// クリックした場所にcardSerectを配置する
@@ -238,13 +269,7 @@ namespace Assets.Scripts.Bar04 {
         {
             count5 = Counter(count5,4);
         }
-        public void onePare()
-        {
-            for (var i = 0; i < 5; i++)
-            {
-
-            }
-        }
+        
         /// <summary>
         /// 山札を作成する
         /// </summary>
@@ -292,7 +317,7 @@ namespace Assets.Scripts.Bar04 {
             var reset = GameObject.Find("Reset");
             reset.transform.position = new Vector2(1011, -200);
         }
-        public void LoadCard(int x, int y)
+        public int LoadCard(int x, int y)
         {
             var RandomCrads = GameObject.Find("RandomCards");
             if (x == 0)
@@ -659,6 +684,7 @@ namespace Assets.Scripts.Bar04 {
                 var cardObject = Instantiate(card, new Vector2(y * 2.5f - 5, 0.5f), Quaternion.identity);
                 cardObject.transform.parent = RandomCrads.transform;
             }
+            return x++;
         }
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
