@@ -24,7 +24,7 @@ namespace Assets.Scripts.Bar04 {
             // 非表示にする
             gameObject.SetActive(false);
             // Buttonを表示する
-            MyCanvas.SetActive("Button", true);
+           // MyCanvas.SetActive("Button", true);
         }
     }
 
