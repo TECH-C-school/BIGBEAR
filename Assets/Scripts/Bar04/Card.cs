@@ -12,7 +12,7 @@ namespace Assets.Scripts.Bar04
 
         private LayerMask mask;
         private int alpha;
-        private Queue<int> hogehoge;
+        //private Queue<int> hogehoge;
         // Use this for initialization
 
 
@@ -46,38 +46,44 @@ namespace Assets.Scripts.Bar04
 
         }
 
-        //作成したデッキの上からカードを5枚出す
+        ////作成したデッキの上からカードを5枚出す
 
             
 
       
 
-        //ランダムに出した5つの数値を、カードの画像に当てはめる
+        ////ランダムに出した5つの数値を、カードの画像に当てはめる
        
-        public enum Suit
-        {
-            SPADE,
-            HEART,
-            CLUB,
-            DIA
-        }
+        //public enum Suit
+        //{
+        //    SPADE,
+        //    HEART,
+        //    CLUB,
+        //    DIA
+        //}
 
-        public Suit suit;
+        //public Suit suit;
 
-        void Start()
-        {
+        //void Start()
+        //{
             
-        }
+        //}
 
         //void Update()
         //{
-        //    if (hogehoge < 12) ;
+            
+        //}
+
+        //private  hand card()
+        //{
 
         //}
-        //SPADE(s01~s13)
-        //HEART(h01~h13)
-        //CLUB(c01~c13)
-        //DIA(d01~d13)
+
+
+        ////SPADE(s01~s13)(0~12)
+        ////HEART(h01~h13)(13~25)
+        ////CLUB(c01~c13)(26~38)
+        ////DIA(d01~d13)(39~51)
 
 
 
