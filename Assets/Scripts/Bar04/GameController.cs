@@ -59,6 +59,11 @@ namespace Assets.Scripts.Bar04_06
                 return cardString;
             }
 
+            internal void HoldCardFaceUp()
+            {
+                throw new NotImplementedException();
+            }
+
             internal void HoldCardFaceDown()
             {
                 throw new NotImplementedException();
@@ -107,7 +112,7 @@ namespace Assets.Scripts.Bar04_06
                 number[k] = number[n];
                 number[n] = tmp;
 
-             }
+            }
 
             return number;
         }
@@ -127,23 +132,25 @@ namespace Assets.Scripts.Bar04_06
             {
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(
-                j, 0,0);
+                j, 0, 0);
                 cardObject.transform.parent = cardsObject.transform;
                 j = j + 2;
 
                 var spriteRenderer = cardObject.GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cards[i].CardString());
 
-                Card cardSet = cardObject.GetComponent<Card>();
-                cardSet.HoldCardFaceUp();
-                
-            }
 
+
+            }
+            var TrumpCard = GameObject.Find("Cards").transform;
+            var card = TrumpCard.GetComponent<Card>();
+            card.HoldCardFaceUp();
         }
 
         /// <summary>
         /// クリックしたカードをHoldし、クリックされていないカードを捨て場に送る
         /// </summary>
+        // 左クリックしたオブジェクトを取得する関数(2D)
         private void ClickCard()
         {
             //マウスクリックの判定
@@ -161,8 +168,10 @@ namespace Assets.Scripts.Bar04_06
 
             //クリックされたカードスクリプトを取得
             var card = hitObject.collider.gameObject.GetComponent<Card>();
-
             card.HoldCardFaceDown();
+
+
+
         }
         /// <summary>
         /// 捨て場に送った枚数分手札に加える
@@ -170,10 +179,12 @@ namespace Assets.Scripts.Bar04_06
 
 
 
-            /// <summary>
-            /// 所持しているカードの役を判別する
-            /// </summary>
-            /// 
+        /// <summary>
+        /// 所持しているカードの役を判別する
+        /// </summary>
+        /// 
+
+        
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");

@@ -20,12 +20,12 @@ namespace Assets.Scripts.Bar04_06
         {
             HoldCard(false);
         }
-        private void HoldCard(bool faceUp)
+        private void HoldCard(bool facedown)
         {
             Sprite cardSprite = null;
             Sprite numberSprite = null;
 
-            if (faceUp)
+            if (facedown)
             {
                 cardSprite = Resources.Load<Sprite>("Images/Bar/cardselect");
             }
