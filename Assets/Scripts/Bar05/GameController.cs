@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> イカサマ機能改修
- *              同役の時の処理
+ * 今回作業 --> 同役の時の処理(ハイカード/フォーカード/ワンペア途中)
+ *              KickerBattle編集中
  */
 
 /*
@@ -567,14 +567,14 @@ namespace Assets.Scripts.Bar05
         //役判定するゾ～
 
         /* 役一覧(handLevel)                   実装状況(0:未実装 1:半実装 2:詳細なHandRankまで)
-         * ハイカード(0)                       1
+         * ハイカード(0)                       2
          * ワンペア(1)                         1
          * ツーペア(2)                         1
          * スリーカード(3)                     1
          * ストレート(4)                       1
          * フラッシュ(5)                       1
          * フルハウス(6)                       1
-         * フォーカード(7)                     1
+         * フォーカード(7)                     2
          * ストレートフラッシュ(8)             2
          * ロイヤルストレートフラッシュ(9)     2(そもそもない)
          */
@@ -590,6 +590,12 @@ namespace Assets.Scripts.Bar05
         int Playercount = 0;
         int Player1SubHandLevel = 0;
         int Player2SubHandLevel = 0;
+        int Player1subsubHandLevel = 0;
+        int Player2subsubHandLevel = 0;
+        int[] Player1ThreeCard = new int[2];
+        int[] Player2ThreeCard = new int[2];
+        int[] Player1PairCard = new int[3];
+        int[] Player2PairCard = new int[3];
         bool Player1StAceFlag = false;
         bool Player2StAceFlag = false;
 
@@ -779,17 +785,41 @@ namespace Assets.Scripts.Bar05
                 {
                     PlayerHandLevel = 7;
                     Debug.Log("フォーカード");
+                    if(Playercount == 0)
+                    {
+                        Player1SubHandLevel = x + 1;
+                    }
+                    else
+                    {
+                        Player2SubHandLevel = x + 1;
+                    }
                     break;
                 }
                 //スリーカードを検出
                 //スリーカードが2組ある場合、フルハウスになる
                 if (NumberManager[x] == 3)
                 {
+                    if(Playercount == 0)
+                    {
+                        Player1ThreeCard[PHand3] = x + 1;
+                    }
+                    else
+                    {
+                        Player2ThreeCard[PHand3] = x + 1;
+                    }
                     PHand3 = PHand3 + 1;
                 }
                 //ペアを見る
                 else if (NumberManager[x] == 2)
                 {
+                    if(Playercount == 0)
+                    {
+                        Player1PairCard[PHand2] = x + 1;
+                    }
+                    else
+                    {
+                        Player2PairCard[PHand2] = x + 1;
+                    }
                     PHand2 = PHand2 + 1;
                 }
                 x++;
@@ -855,6 +885,7 @@ namespace Assets.Scripts.Bar05
 
         private void WhoPlayerWin()
         {
+            WhoWin = 0;
             Debug.Log("Player1is" + Player1HandLevel);
             Debug.Log("Player2is" + Player2HandLevel);
             if (Player1HandLevel > Player2HandLevel)
@@ -952,16 +983,380 @@ namespace Assets.Scripts.Bar05
                         Debug.Log("<color=green>Player2Winner</color>");
                     }
                 }
-                //ハイカード
-                else if(Player1HandLevel == 0)
+                //ストレートフラッシュここまで
+                //フォーカード
+                else if(Player1HandLevel == 7)
+                {
+                    //場札でフォーカードになっていた場合
+                    if(Player1SubHandLevel == Player2SubHandLevel)
+                    {
+                        HighCard();
+                    }
+                    //Aを持っていた場合
+                    else if(Player1SubHandLevel == 1 || Player2SubHandLevel == 1)
+                    {
+                        //Aで勝負がつく場合
+                        if(Player1SubHandLevel == 1)
+                        {
+                            Debug.Log("<color=green>Player1Winner</color>");
+                        }
+                        else
+                        {
+                            Debug.Log("<color=green>Player2Winner</color>");
+                        }
+                    }
+                    //A以外で勝負がつく場合
+                    else if(Player1SubHandLevel > Player2SubHandLevel)
+                    {
+                        Debug.Log("<color=green>Player1Winner</color>");
+                    }
+                    else
+                    {
+                        Debug.Log("<color=green>Player2Winner</color>");
+                    }
+                }
+                //フォーカードここまで
+                //フルハウス
+                else if(Player1HandLevel == 6)
                 {
                     //Player1
-
                     //Player2
+                    //判定
                 }
+                //フルハウスここまで
+                //フラッシュ
+                else if (Player1HandLevel == 5)
+                {
+                    //Player1
+                    //Player2
+                    //判定
+                }
+                //フラッシュここまで
+                //ストレート
+                else if (Player1HandLevel == 4)
+                {
+                    //Player1
+                    //Player2
+                    //判定
+                }
+                //ストレートここまで
+                //スリーカード
+                else if (Player1HandLevel == 3)
+                {
+                    //Player1
+                    //Player2
+                    //判定
+                }
+                //スリーカードここまで
+                //ツーペア
+                else if (Player1HandLevel == 2)
+                {
+                    //Player1
+                    //Player2
+                    //判定
+                }
+                //ツーペアここまで
+                //ワンペア
+                else if (Player1HandLevel == 1)
+                {
+                    //判定
+                    //ペアの数字で勝負が引き分けだった場合
+                    if(Player1PairCard[0] == Player2PairCard[0])
+                    {
+                        //処理
+                    }
+                    //ペアの数字で勝負がつくとき(A)
+                    else if(Player1PairCard[0] == 1 || Player2PairCard[0] == 1)
+                    {
+                        if(Player1PairCard[0] == 1)
+                        {
+                            Debug.Log("<color=green>Player1Winner</color>");
+                        }
+                        else
+                        {
+                            Debug.Log("<color=green>Player2Winner</color>");
+                        }
+                    }
+                    //ペアの数字で勝負がつくとき(A以外)
+                    else if (Player1PairCard[0] > Player2PairCard[0])
+                    {                        
+                        Debug.Log("<color=green>Player1Winner</color>");
+                    }
+                    else
+                    {
+                        Debug.Log("<color=green>Player2Winner</color>");
+                    }
+                }
+                //ワンペアここまで
+                //ハイカード
+                else if (Player1HandLevel == 0)
+                {
+                    HighCard();
+                }
+                //ハイカードここまで
             }
         }
 
+        //ハイカードとかそこらへん
+        private void HighCard()
+        {
+            //Player1
+            Player1SubHandLevel = Player1Cards[0] % 13 + 1;
+            if (Player1SubHandLevel != 1 & Player1SubHandLevel < Player1Cards[1] % 13 + 1)
+            {
+                Player1subsubHandLevel = Player1SubHandLevel;
+                Player1SubHandLevel = Player1Cards[1] % 13 + 1;
+            }
+            else
+            {
+                Player1subsubHandLevel = Player1Cards[1] % 13 + 1;
+            }
+            Debug.Log(Player1SubHandLevel);
+
+            //Player2
+            Player2SubHandLevel = Player2Cards[0] % 13 + 1;
+            if (Player2SubHandLevel != 1 & Player2SubHandLevel < Player2Cards[1] % 13 + 1)
+            {
+                Player2subsubHandLevel = Player2SubHandLevel;
+                Player2SubHandLevel = Player2Cards[1] % 13 + 1;
+            }
+            else
+            {
+                Player2subsubHandLevel = Player2Cards[1] % 13 + 1;
+            }
+            Debug.Log(Player2SubHandLevel);
+
+            //判定
+            //Aがどっちかに入っている場合
+            if (Player1SubHandLevel == 1 || Player2SubHandLevel == 1)
+            {
+                //どっちもAで引き分けだった場合
+                if (Player1SubHandLevel == Player2SubHandLevel)
+                {
+                    //2枚目どっちかがAだった場合
+                    if (Player1subsubHandLevel == 1 || Player2subsubHandLevel == 1)
+                    {
+                        //2枚目もどちらともAだった場合
+                        if (Player1subsubHandLevel == Player2subsubHandLevel)
+                        {
+                            Debug.Log("引き分け");
+                        }
+                        //2枚目どっちかがAで勝負がつく場合
+                        else if (Player1subsubHandLevel == 1)
+                        {
+                            Debug.Log("<color=green>Player1Winner</color>");
+                        }
+                        else
+                        {
+                            Debug.Log("<color=green>Player2Winner</color>");
+                        }
+                    }
+                    //2枚目がAでなくて、引き分けだった場合
+                    else if (Player1subsubHandLevel == Player2subsubHandLevel)
+                    {
+                        Debug.Log("引き分け");
+                    }
+                    //2枚目がAでなくて、勝負がつく場合
+                    else if (Player1subsubHandLevel > Player2subsubHandLevel)
+                    {
+                        Debug.Log("<color=green>Player1Winner</color>");
+                    }
+                    else
+                    {
+                        Debug.Log("<color=green>Player2Winner</color>");
+                    }
+                }
+                //Aがどっちかに入っていて、勝負がつく場合
+                else if (Player1SubHandLevel == 1)
+                {
+                    Debug.Log("<color=green>Player1Winner</color>");
+                }
+                else
+                {
+                    Debug.Log("<color=green>Player2Winner</color>");
+                }
+            }
+            //1枚目がAではなくて、引き分けだった場合
+            else if (Player1HandLevel == Player2HandLevel)
+            {
+                //2枚目どっちかがAだった場合
+                if (Player1subsubHandLevel == 1 || Player2subsubHandLevel == 1)
+                {
+                    //2枚目もどちらともAだった場合
+                    if (Player1subsubHandLevel == Player2subsubHandLevel)
+                    {
+                        Debug.Log("引き分け");
+                    }
+                    //2枚目どっちかがAで勝負がつく場合
+                    else if (Player1subsubHandLevel == 1)
+                    {
+                        Debug.Log("<color=green>Player1Winner</color>");
+                    }
+                    else
+                    {
+                        Debug.Log("<color=green>Player2Winner</color>");
+                    }
+                }
+                //2枚目がAでなくて、引き分けだった場合
+                else if (Player1subsubHandLevel == Player2subsubHandLevel)
+                {
+                    Debug.Log("引き分け");
+                }
+                //2枚目がAでなくて、勝負がつく場合
+                else if (Player1subsubHandLevel > Player2subsubHandLevel)
+                {
+                    Debug.Log("<color=green>Player1Winner</color>");
+                }
+                else
+                {
+                    Debug.Log("<color=green>Player2Winner</color>");
+                }
+            }
+            //1枚目がAではなくて、勝負がつく場合
+            else if (Player1HandLevel > Player2HandLevel)
+            {
+                Debug.Log("<color=green>Player1Winner</color>");
+            }
+            else
+            {
+                Debug.Log("<color=green>Player2Winner</color>");
+            }
+            //なげーよ
+        }
+
+        //ペア系・スリーカード系の判定用
+        int[] Player1Kickers = new int[5];
+        int[] Player2Kickers = new int[5];
+        bool Player1AceFlag = false;
+        bool Player2AceFlag = false;
+        bool FalseFlag = true;
+        int tgt = 0;
+        private void KickerBattle()
+        {
+            for(int i = 0; i < 2; i++)
+            {
+                //Player1
+                if(i == 0)
+                {
+                    tgt = 0;
+                    //キッカーに数字を入れる
+                    for(int y = 0; i < Player1NumHands.Length; y++)
+                    {
+                        //AがあったらFlagをONにする
+                        if(Player1NumHands[y] % 13 + 1 == 1)
+                        {
+                            Player1AceFlag = true;
+                        }
+                        FalseFlag = true;
+                        //比較
+                        for(int x = 0; x < 5; x++)
+                        {
+                            //ペア
+                            if(x <= 2)
+                            {
+                                if (Player1NumHands[y] % 13 + 1 == Player1PairCard[x])
+                                {
+                                    FalseFlag = false;
+                                    break;
+                                }
+                            }
+                            //スリーカード
+                            else
+                            {
+                                if(Player1NumHands[y] % 13 + 1 == Player1ThreeCard[x - 3])
+                                {
+                                    FalseFlag = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if(FalseFlag)
+                        {
+                            Player1Kickers[tgt] = Player1NumHands[y];
+                            tgt++;
+                        }
+                    }
+                    //ソート
+                    int Left;
+                    int Right;
+                    for(int s = 0; s < Player1Kickers.Length - 1; i++)
+                    {
+                        Left = Player1Kickers[s];
+                        Right = Player1Kickers[s + 1];
+                        //0だったら無視する
+                        if (Left != 0 & Right != 0 & Left > Right)
+                        {
+                            Player1Kickers[s] = Right;
+                            Player1Kickers[s + 1] = Left;
+                            s = 0;
+                        }
+                    }
+                }
+                //Player2
+                else
+                {
+                    tgt = 0;
+                    //キッカーに数字を入れる
+                    for (int y = 0; i < Player2NumHands.Length; y++)
+                    {
+                        //AがあったらFlagをONにする
+                        if (Player2NumHands[y] % 13 + 1 == 1)
+                        {
+                            Player2AceFlag = true;
+                        }
+                        FalseFlag = true;
+                        //比較
+                        for (int x = 0; x < 5; x++)
+                        {
+                            //ペア
+                            if (x <= 2)
+                            {
+                                if (Player2NumHands[y] % 13 + 1 == Player2PairCard[x])
+                                {
+                                    FalseFlag = false;
+                                    break;
+                                }
+                            }
+                            //スリーカード
+                            else
+                            {
+                                if (Player2NumHands[y] % 13 + 1 == Player2ThreeCard[x - 3])
+                                {
+                                    FalseFlag = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (FalseFlag)
+                        {
+                            Player2Kickers[tgt] = Player2NumHands[y];
+                            tgt++;
+                        }
+                    }
+                    //ソート
+                    int Left;
+                    int Right;
+                    for (int s = 0; s < Player2Kickers.Length - 1; i++)
+                    {
+                        Left = Player2Kickers[s];
+                        Right = Player2Kickers[s + 1];
+                        //降順にしたい
+                        if (Left < Right)
+                        {
+                            Player2Kickers[s] = Right;
+                            Player2Kickers[s + 1] = Left;
+                            s = 0;
+                        }
+                    }
+                }
+            }
+            //判定
+            for(int i = 0; i < Player1Kickers.Length; i++)
+            {
+                //Aで勝負がつく場合
+                //if()
+            }
+        }
 
         //役の判定ここまで
 
@@ -970,23 +1365,37 @@ namespace Assets.Scripts.Bar05
         //初期化処理
         private void InitGame()
         {
+            InitValue();
+            RemoveCards();
+            MakeCards();
+            MakeLists();
+            CheckhandLevels();
+            WhoPlayerWin();
+            CheckSubCards();
+        }
+        //変数の初期化
+        private void InitValue()
+        {
             //マークを数える配列の初期化をここでしてる
             Playercount = 0;
             Player1Marks = new int[4];
             Player2Marks = new int[4];
-            RemoveCards();
-            MakeCards();
-            MakeLists();
             Player1HandLevel = 0;
             Player2HandLevel = 0;
-            CheckhandLevels();
-            WhoWin = 0;
-            WhoPlayerWin();
-            CheckSubCards();
             Player1SubHandLevel = 0;
             Player2SubHandLevel = 0;
+            Player1subsubHandLevel = 0;
+            Player2subsubHandLevel = 0;
+            Player1ThreeCard = new int[2];
+            Player2ThreeCard = new int[2];
+            Player1PairCard = new int[3];
+            Player2PairCard = new int[3];
+            Player1Kickers = new int[5];
+            Player2Kickers = new int[5];
             Player1StAceFlag = false;
             Player2StAceFlag = false;
+            Player1AceFlag = false;
+            Player2AceFlag = false;
         }
 
         private enum GamePhase
