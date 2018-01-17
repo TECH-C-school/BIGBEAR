@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
+    public card[] numbers;
+
     //列挙型...トランプの種類
     public enum PlayingCards
     {
@@ -13,8 +15,8 @@ public class Card : MonoBehaviour
         c = 3,
     }
 
-    //struct内にまとめることで、構造体名(この場合card)[].関数名(この場合NumberやPlayingCards)でstruct内を読み込むことができる
-    private struct card
+    //struct内にまとめることで、構造体名(この場合card)+ 関数名(この場合NumberやPlayingCards)でstruct内を読み込むことができる
+    public struct card
     {
         //トランプの種類
         public PlayingCards CardType;
@@ -51,79 +53,35 @@ public class Card : MonoBehaviour
             Sprite image = Resources.Load<Sprite>("Images/Bar/Cards/" + cardFileName);
             return image;
         }
-
+        //他にもSprite [] image = Resources.LoadAll<Sprite> ();で指定したフォルダから画像をまとめて読み込む
+        //例:private Sprite[] image = Resources.LoadAll<Sprite>("Images/Bar/Cards/");
     }
-
-    //structをnewで初期化
-    card cards = new card();
-
-    private void Cardfolder()
-    {
-        switch (cards.CardType)
-        {
-            //enum内の要素数(この場合sなど)を数で判断(要素数の数を指定していればその指定した数で判断する)
-            //enumでcaseを使う際、case(enumの構造体名(この場合PlayingCards))要素数(この場合s=0としているので0)をするとエラーが出ない
-            case (PlayingCards)0:
-                for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
-                {
-                    cards.GetImage();
-                }
-                break;
-
-            case (PlayingCards)1:
-                for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
-                {
-                    cards.GetImage();
-                }
-                break;
-
-            case (PlayingCards)2:
-                for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
-                {
-                    cards.GetImage();
-                }
-                break;
-
-            case (PlayingCards)3:
-                for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
-                {
-                    cards.GetImage();
-                }
-                break;
-
-        }
-    }
-
-    //他にもSprite [] image = Resources.LoadAll<Sprite> ();で指定したフォルダから画像をまとめて読み込む
-    //例:private Sprite[] image = Resources.LoadAll<Sprite>("Images/Bar/Cards/");
 
     //ランダムな整数の生成
-    private card[] MakeRandomNumbers()
+    public void MakeRandomNumbers()
     {
-        card[] numbers = new card[52];
+        numbers = new card[52];
 
         for (int i = 0; i < 13; i++)  //配列の初期化
         {
             numbers[i].Number = i + 1;
             numbers[i].CardType = PlayingCards.s;
         }
-        for (int i = 13; i < 26; i++)  //配列の初期化
+        for (int i = 13; i < 26; i++)
         {
             numbers[i].Number = i + 1 - 13;
             numbers[i].CardType = PlayingCards.d;
         }
-        for (int i = 26; i < 39; i++)  //配列の初期化
+        for (int i = 26; i < 39; i++)
         {
             numbers[i].Number = i + 1 - 26;
             numbers[i].CardType = PlayingCards.c;
         }
-        for (int i = 39; i < 52; i++)  //配列の初期化
+        for (int i = 39; i < 52; i++)
         {
             numbers[i].Number = i + 1 - 39;
             numbers[i].CardType = PlayingCards.h;
         }
-
-
 
         var counter = 0;
         while (counter < 52)
@@ -135,22 +93,62 @@ public class Card : MonoBehaviour
 
             counter++;
         }
-        return numbers;
     }
-
-    /* public Card(int number,PlayingCards s)
-    {
-
-     Number = number;
-     CardType = s;
-
-    }
-
-    private void Start()
-    {
-        //C# tostring 書式で調べる
-        //string path = CardType.ToString() + Number.ToString("d2");
-        //Debug.Log(path);
-    }
-    */
 }
+
+/* public Card(int number,PlayingCards s)
+{
+
+ Number = number;
+ CardType = s;
+
+}
+
+private void Start()
+{
+    //C# tostring 書式で調べる
+    //string path = CardType.ToString() + Number.ToString("d2");
+    //Debug.Log(path);
+}
+
+//structをnewで初期化
+card cards = new card();
+
+
+private void Cardfolder()
+{
+switch (cards.CardType)
+{
+    //enum内の要素数(この場合sなど)を数で判断(要素数の数を指定していればその指定した数で判断する)
+    //enumでcaseを使う際、case(enumの構造体名(この場合PlayingCards))要素数(この場合s=0としているので0)をするとエラーが出ない
+    case (PlayingCards)0:
+        for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
+        {
+            cards.GetImage();
+        }
+        break;
+
+    case (PlayingCards)1:
+        for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
+        {
+            cards.GetImage();
+        }
+        break;
+
+    case (PlayingCards)2:
+        for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
+        {
+            cards.GetImage();
+        }
+        break;
+
+    case (PlayingCards)3:
+        for (cards.Number = 1; cards.Number <= 13; ++cards.Number)
+        {
+            cards.GetImage();
+        }
+        break;
+
+}
+}
+*/
