@@ -9,6 +9,15 @@ namespace Assets.Scripts.Bar06
     {
 
         int[] cards = new int[52];
+
+        string[] CardsName = 
+            {
+            "c01","c02","c03","c04","c05","c06","c07","c08","c09","c10","c11","c12","c13",
+            "h01","h02","h03","h04","h05","h06","h07","h08","h09","h10","h11","h12","h13",
+            "d01","d02","d03","d04","d05","d06","d07","d08","d09","d10","d11","d12","d13",
+            "s01","s02","s03","s04","s05","s06","s07","s08","s09","s10","s11","s12","s13",
+            };
+
         void Start()
         {
             MakeDeck();
@@ -29,11 +38,7 @@ namespace Assets.Scripts.Bar06
         }
         private void Update()
         {
-            ClickBattleButton();
-            ClickAddCardButton();
-            ClickSurrenderButton();
-            ClickBetplusButton();
-            ClickBetmainusButton();
+            
         }
 
         // 山札をシャッフルで作る
@@ -60,406 +65,36 @@ namespace Assets.Scripts.Bar06
         {
             for(int i = 0; i < 4; i++)
             {
-                Debug.Log(cards[i]);
+               //Debug.Log(cards[i]);
             } 
         }
         // カードを表示する
         private void LoadCards(int x, int y,int z)
         {
-            if (x == 1)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s01");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 2)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s02");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 3)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s03");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 4)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s04");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 5)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s05");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 6)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s06");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 7)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s07");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 8)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s08");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 9)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s09");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 10)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s10");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 11)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s11");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 12)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s12");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 13)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Spade/s13");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 14)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d01");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 15)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d02");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 16)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d03");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 17)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d04");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 18)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d05");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 19)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d06");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 20)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d07");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 21)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d08");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 22)   
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d09");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-                }
-            if (x == 23)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d10");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 24)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d11");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 25)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d12");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                 var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 26)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Diamond/d13");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 27)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c01");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 28)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c02");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 29)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c03");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 30)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c04");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 31)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c05");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 32)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c06");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 33)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c07");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 34)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c08");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 35)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c09");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 36)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c10");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 37)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c11");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 38)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c12");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 39)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Clover/c13");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 40)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h01");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 41)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h02");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 42)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h03");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 43)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h04");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 44)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h05");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 45)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h06");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 46)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h07");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 47)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h08");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 48)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h09");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 49)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h10");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 50)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h11");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 51)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h12");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
-            if (x == 52)
-            {
-                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Heart/h13");
-                Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
-                var card = GameObject.Find("Cards");
-                Card.transform.parent = card.transform;
-            }
+            var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x-1]);
+            Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
+            var card = GameObject.Find("Cards");
+            Card.transform.parent = card.transform;
+                 if(x == 14 || x == 27 || x == 40){x = 1;}
+            else if(x == 15 || x == 28 || x == 41){x = 2;}
+            else if(x == 16 || x == 29 || x == 42){x = 3;}
+            else if(x == 17 || x == 30 || x == 43){x = 4;}
+            else if(x == 18 || x == 31 || x == 44){x = 5;}
+            else if(x == 19 || x == 32 || x == 45){x = 6;}
+            else if(x == 20 || x == 33 || x == 46){x = 7;}
+            else if(x == 21 || x == 34 || x == 47){x = 8;}
+            else if(x == 22 || x == 35 || x == 48){x = 9;}
+            else if(x == 23 || x == 36 || x == 49){x = 10;}
+            else if(x == 24 || x == 37 || x == 50){x = 10;}
+            else if(x == 25 || x == 38 || x == 51){x = 10;}
+            else if(x == 26 || x == 39 || x == 52){x = 10;}
+            Debug.Log(x);
         }
+
         // ディーラー側のカードに裏向きのカードをかぶせる
         private void LoadCard()
         {
             
-        }
-        // クリックしたら勝負する
-        private void ClickBattleButton()
-        {
-
-        }
-        // クリックしたらカードを追加する
-        private void ClickAddCardButton()
-        {
-            
-        }
-        // クリックしたら勝負をあきらめる
-        private void ClickSurrenderButton()
-        {
-
-        }
-        // クリックしたら掛け金を増やす
-        private void ClickBetplusButton()
-        {
-
-        }
-        // クリックしたら掛け金を減らす
-        private void ClickBetmainusButton()
-        {
-
         }
         //カードの合計を出す
         private void Cardsum()
@@ -468,6 +103,26 @@ namespace Assets.Scripts.Bar06
         }
         //役の判定
         private void Role()
+        {
+
+        }
+        // クリックしたら勝負する
+        public void ClickBattleButton()
+        {
+
+        }
+        // クリックしたらカードを追加する
+       /* public void ClickAddCardButton()
+        {
+            
+            var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x - 1]);
+            Card = Instantiate(Card, new Vector2(- 0.5f, 2 - 1f), Quaternion.identity);
+            var card = GameObject.Find("Cards");
+            Card.transform.parent = card.transform;
+            Debug.Log(x);
+        }*/
+        // クリックしたら勝負をあきらめる
+        public void ClickSurrenderButton()
         {
 
         }
