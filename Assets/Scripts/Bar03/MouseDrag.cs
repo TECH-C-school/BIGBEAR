@@ -17,7 +17,7 @@ public class MouseDrag : MonoBehaviour {
     }
     private void Update()
     {
-        OnMouseDrag();
+        MouseD();
         MouseUp();
         if (button == true)
         {
@@ -28,7 +28,7 @@ public class MouseDrag : MonoBehaviour {
         
     }
     //マウスドラッグでオブジェクトを動かす
-    void OnMouseDrag()
+    void MouseD()
     {
 
         //マウスクリックの判定

@@ -16,6 +16,7 @@ namespace Assets.Scripts.Bar03
         // Use this for initialization
         void Start()
         {
+            
             MakeBackCards();
         }
 
@@ -148,11 +149,18 @@ namespace Assets.Scripts.Bar03
             return values;
         }
 
-       
+        public void OnClick()
+        { 
+            for(var a  = 0; a < 4; a++)
+            {
 
+            }
 
+            for (var b = 0; b < 6; b++)
+            {
 
-
+            }
+        }
 
         public void TransitionToResult()
         {
