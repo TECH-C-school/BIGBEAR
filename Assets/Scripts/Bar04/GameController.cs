@@ -23,7 +23,6 @@ namespace Assets.Scripts.Bar04 {
         {
            //Click();
         }
-        
         public void ClickFightButton()
         {
 
@@ -130,13 +129,35 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public void Prize()
         {
+            int min = 52;
+            int max = 0;
+            //ロイヤルストレートフラッシュ
+            for (int j = 0; j < 5; j++)
+            {
+                if (numbers[j] < min)
+                {
+                    min = numbers[j];
+                }
+                if (numbers[j] > max)
+                {
+                    max = numbers[j];
+                }
+            }
+            if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4])
+            {
+                if (numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 42 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 107 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 172 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 237 && min == 0)
+                {
+                    Debug.Log("ロイヤルストレートフラッシュ");
+                }
+            }
+
             for (int i = 0; i < 5; i++)
             {
-                if(numbers[i] > 13)
+                if(numbers[i] >= 13)
                 {
-                    if (numbers[i] > 26)
+                    if (numbers[i] >= 26)
                     {
-                        if (numbers[i] > 39)
+                        if (numbers[i] >= 39)
                         {
                             numbers[i] -= 13;
                         }
@@ -145,24 +166,59 @@ namespace Assets.Scripts.Bar04 {
                     numbers[i] -= 13;
                 }
             }
+            int min2 = 52;
+            int max2 = 0;
+            for (int j = 0; j < 5; j++)
+            {
+                if (numbers[j] < min)
+                {
+                    min = numbers[j];
+                }
+                if (numbers[j] > max)
+                {
+                    max = numbers[j];
+                }
+            }
+            
+            //ストレート
+            if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4]) 
+            {
+                if (max2 - min2 == 4)
+                {
+                    Debug.Log("ストレート");
+                }
+            }
+
+            //フルハウス
+            if (numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[3] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[3] && numbers[2] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[4] && numbers[2] == numbers[3] || numbers[0] == numbers[2] && numbers[0] == numbers[3] && numbers[1] == numbers[4] || numbers[0] == numbers[2] && numbers[0] == numbers[4] && numbers[1] == numbers[3] || numbers[0] == numbers[3] && numbers[0] == numbers[4] && numbers[1] == numbers[2] || numbers[1] == numbers[2] && numbers[1] == numbers[3] && numbers[0] == numbers[4] || numbers[1] == numbers[2] && numbers[1] == numbers[4] && numbers[0] == numbers[3] || numbers[1] == numbers[3] && numbers[1] == numbers[4] && numbers[0] == numbers[2] || numbers[2] == numbers[3] && numbers[2] == numbers[4] && numbers[0] == numbers[1])
+            {
+                Debug.Log("フルハウス");
+            }
+
+            //ファイブカード
+            if(numbers[0] == numbers[1] && numbers[2] == numbers[3] && numbers[0] == numbers[4] && numbers[2] == numbers[4])
+            {
+                Debug.Log("ファイブカード");
+            }
+
+            //フォーカード
+            if (numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[0] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[3] && numbers[0] == numbers[4] || numbers[0] == numbers[4] && numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[1] == numbers[4] && numbers[1] == numbers[2] && numbers[1] == numbers[3])
+            {
+                Debug.Log("フォーカード");
+            }
+
             //スリーカード
-            if (numbers[0] == numbers[1] && numbers[0] == numbers[2] || numbers[0] == numbers[1] && numbers[0] == numbers[3] || numbers[0] == numbers[1] && numbers[0] == numbers[4] || numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[0] == numbers[2] && numbers[0] == numbers[4] || numbers[0] == numbers[3] && numbers[0] == numbers[4])
+            if (numbers[0] == numbers[1] && numbers[0] == numbers[2] || numbers[0] == numbers[1] && numbers[0] == numbers[3] || numbers[0] == numbers[1] && numbers[0] == numbers[4] || numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[0] == numbers[2] && numbers[0] == numbers[4] || numbers[0] == numbers[3] && numbers[0] == numbers[4]|| numbers[1] == numbers[2] && numbers[1] == numbers[3]|| numbers[1] == numbers[2]&& numbers[1] == numbers[4]|| numbers[1] == numbers[3] && numbers[1] == numbers[4]||numbers[2] == numbers[3] && numbers[2] == numbers[4])
             {
                 Debug.Log("スリーカード");
             }
+
             //ツーペア
-            if (numbers[0] == numbers[1] || numbers[0] == numbers[2] || numbers[0] == numbers[3] || numbers[0] == numbers[4] || numbers[1] == numbers[2] || numbers[1] == numbers[3] || numbers[1] == numbers[4] || numbers[2] == numbers[3] || numbers[2] == numbers[4] || numbers[3] == numbers[4])
+            if (numbers[0] == numbers[1] && numbers[2] == numbers[3] || numbers[0] == numbers[1] && numbers[2] == numbers[4]|| numbers[0] == numbers[1] && numbers[3] == numbers[4]||numbers[0] == numbers[2] && numbers[1] == numbers[3]|| numbers[0] == numbers[2] && numbers[1] == numbers[4] || numbers[0] == numbers[2] && numbers[3] == numbers[4] || numbers[0] == numbers[3] && numbers[1] == numbers[2] || numbers[0] == numbers[3] && numbers[1] == numbers[4] || numbers[0] == numbers[3] && numbers[2] == numbers[4] || numbers[0] == numbers[4] && numbers[1] == numbers[2] || numbers[0] == numbers[4] && numbers[1] == numbers[3] || numbers[0] == numbers[4] && numbers[2] == numbers[3])
             {
-                if (numbers[0] == numbers[1] || numbers[0] == numbers[2] || numbers[0] == numbers[3] || numbers[0] == numbers[4] || numbers[1] == numbers[2] || numbers[1] == numbers[3] || numbers[1] == numbers[4] || numbers[2] == numbers[3] || numbers[2] == numbers[4] || numbers[3] == numbers[4])
-                {
-                    Debug.Log("ツーペア");
-                }
+                Debug.Log("ツーペア");
             }
-            //ワンペア
-            if (numbers[0] == numbers[1] || numbers[0] == numbers[2] || numbers[0] == numbers[3] || numbers[0] == numbers[4] || numbers[1] == numbers[2] || numbers[1] == numbers[3] || numbers[1] == numbers[4] || numbers[2] == numbers[3] || numbers[2] == numbers[4] || numbers[3] == numbers[4])
-            {
-                Debug.Log("ワンペア");
-            }
+            
             
         }
         /// <summary>
