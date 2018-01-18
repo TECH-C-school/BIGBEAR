@@ -8,6 +8,8 @@ namespace Assets.Scripts.Bar02
 {
     public class GameController : MonoBehaviour
     {
+        private GameObject hogehoge = null;
+
         public enum Gamestate
         {
             Prepare = 1,
@@ -19,7 +21,7 @@ namespace Assets.Scripts.Bar02
         public int[] cardnum = new int[52];
         void Start()
         {
-            MakeCards();            
+            MakeCards();
         }
         void Update()
         {
@@ -77,8 +79,8 @@ namespace Assets.Scripts.Bar02
 
             var fieldcard = GameObject.Find("FieldCards");
             var remaincard = GameObject.Find("RemainCards");
-            var backcards = GameObject.Find("BackCards");
-            var backPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Back");
+            //var backcards = GameObject.Find("BackCards");
+            //var backPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Back");
 
             counter = 0;
             while (counter < 28)
@@ -111,18 +113,18 @@ namespace Assets.Scripts.Bar02
                     3.50f - 0.92f * x,
                     0);
 
-                    GameObject backpos = Instantiate(backPrefab, transform.position, Quaternion.identity);
+                    //GameObject backpos = Instantiate(backPrefab, transform.position, Quaternion.identity);
 
-                    backpos.transform.position = new Vector3(
-                    -0.87f * x + 1.665f * y,
-                    3.50f - 0.92f * x,
-                    0);
+                    //backpos.transform.position = new Vector3(
+                    //-0.87f * x + 1.665f * y,
+                    //3.50f - 0.92f * x,
+                    //0);
 
                     cardpos.GetComponent<Renderer>().sortingOrder = counter;
-                    backpos.GetComponent<Renderer>().sortingOrder = 0;
+                    //backpos.GetComponent<Renderer>().sortingOrder = 0;
 
                     cardpos.transform.parent = fieldcard.transform;
-                    backpos.transform.parent = backcards.transform;
+                    //backpos.transform.parent = backcards.transform;
                     var card = cardpos.GetComponent<Cards>();
                     //CardスクリプトのNumberにMakeRandomの値代入
                     card.Number = num;
@@ -131,7 +133,32 @@ namespace Assets.Scripts.Bar02
                 }
                 counter++;
             }
+            var judgecard = GameObject.Find("RemainCards");
+            string once = "";
+
+            for (int i = 0; i < 24; i++)
+            {
+
+                var one = judgecard.transform.GetChild(i).gameObject;
+                string ones = one.ToString();
+                if (ones.IndexOf("1") == 1)
+                {
+
+                    once = ones.Substring(1, 2);
+                }
+                else
+                {
+                    once = ones.Substring(2, 1);
+                }
+
+                int stringnum = System.Int32.Parse(once);
+                var card = one.GetComponent<Cards>();
+                card.Number = num;
+                card.CardNumber = stringnum;
+            }
         }
+
+
 
         public void ClickCard()
         {
@@ -153,12 +180,37 @@ namespace Assets.Scripts.Bar02
             var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
             if (!hitObject) return;
 
-            var card = hitObject.collider.gameObject.GetComponent<Cards>();
-            Debug.Log(card.CardNumber);
 
+            var card = hitObject.collider.gameObject.GetComponent<Cards>();
+            //Debug.Log("一つ目のカード" + card.CardNumber);
+
+            if (hogehoge != null)
+            {
+                var card2 = hogehoge.GetComponent<Cards>();
+                if (card2.CardNumber + card.CardNumber == 13)
+                {
+                    hogehoge.SetActive(false);
+                    hitObject.collider.gameObject.SetActive(false);
+                    hogehoge = null;
+                }
+                else
+                {
+                    hogehoge = null;
+                    return;
+                }
+
+            }
+            else
+            {
+                hogehoge = hitObject.collider.gameObject;
+                Debug.Log("選んでいるカード" + card.CardNumber);
+                if (card.CardNumber != 13) return;
+                hitObject.collider.gameObject.SetActive(false);
+            }
+            return;
             ////クリックされた位置にflameを装着
-            var Flame = GameObject.Find("cardflame");
-            Flame.transform.position = hitObject.transform.position;
+            //var Flame = GameObject.Find("cardflame");
+            //Flame.transform.position = hitObject.transform.position;
 
         }
         /*public void OnTriggerStay2D(Collider2D collision)
@@ -185,13 +237,14 @@ namespace Assets.Scripts.Bar02
                     if (ones.IndexOf("1") == 1)
                     {
 
-                        once = ones.Substring(1, 3);
-                    }else
-                    {
-                        once = ones.Substring(2, 3);
+                        once = ones.Substring(1, 2);
                     }
-                    int stringnum = int.Parse(once);
-                    //Debug.Log(once);
+                    else
+                    {
+                        once = ones.Substring(2, 1);
+                    }
+
+                    int stringnum = System.Int32.Parse(once);
 
                     if (num > 20)
                     {
@@ -206,9 +259,9 @@ namespace Assets.Scripts.Bar02
                         var two = judgecard.transform.GetChild(num + i).gameObject;
                         var three = judgecard.transform.GetChild(num + i + 1).gameObject;
 
-                        if (two == null)
+                        if (two.activeSelf == false)
                         {
-                            if (three == null)
+                            if (three.activeSelf == false)
                             {
                                 one.GetComponent<BoxCollider2D>().enabled = true;
                                 var card = one.GetComponent<Cards>();
@@ -230,7 +283,7 @@ namespace Assets.Scripts.Bar02
                 }
                 counter++;
             }
-        }        
+        }
 
     }
 }

@@ -2,25 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RemainCards : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-    public void SettingCards()
+namespace Assets.Scripts.Bar02
+{
+    public class RemainCards : MonoBehaviour
     {
-        GameObject backCard = GameObject.Find("Back");
+        private int clicknum = 0;
+        private int sortnum = 5;
+        // Use this for initialization
+        
+        public void OnClick()
+        {
+            var remain = GameObject.Find("RemainCards");
+            var remainOnfield = remain.transform.GetChild(clicknum);
 
-        backCard.transform.position = new Vector3(
-        6.0f,
-        3.9f,
-        0);
-
+            remainOnfield.transform.position = new Vector3(
+                5.5f,
+                2.7f,
+                0);
+            remainOnfield.GetComponent<Renderer>().sortingOrder = sortnum;
+            clicknum++; sortnum++;
+            if (clicknum == 24)
+            {
+                clicknum = 0;
+            }
+        }
     }
 }
