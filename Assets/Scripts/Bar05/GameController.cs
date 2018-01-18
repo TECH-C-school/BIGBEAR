@@ -1617,6 +1617,7 @@ namespace Assets.Scripts.Bar05
                         }
                         if(FalseFlag)
                         {
+                            Debug.Log(Player1Kickers[tgt]);
                             Player1Kickers[tgt] = Player1NumHands[y] + 1;
                             tgt++;
                         }
@@ -1787,6 +1788,16 @@ namespace Assets.Scripts.Bar05
 
         private GamePhase _Phase = 0;
 
+        //var cardObject = GameObject.Find("player1Card" + x + "");
+        //var card = cardObject.GetComponent<Card>();
+
+        private void PhaseControll(int PhaseNum)
+        {
+            var PhaseSwitch = GameObject.Find("PhaseView");
+            var Phase = PhaseSwitch.GetComponent<PhaseSwitch>();
+            Phase.PhaseChange(PhaseNum);
+        }
+        
         //Phaseを進める/戻す
         private void PhaseChange()
         {
@@ -1797,69 +1808,34 @@ namespace Assets.Scripts.Bar05
             {
                 _Phase = 0;
                 InitGame();
-                //PhaseView(1);
+                PhaseControll(0);
             }
             if (_Phase == GamePhase.SecondBet)
             {
                 TurnStackCard(1);
-                //PhaseView(2);
-                _Phase++;
+                PhaseControll(1);
             }
             if (_Phase == GamePhase.ThirdBet)
             {
                 TurnStackCard(2);
-                //PhaseView(3);
-                _Phase++;
+                PhaseControll(2);
             }
             if (_Phase == GamePhase.FinalBet)
             {
                 TurnStackCard(3);
-                //PhaseView(4);
-                _Phase++;
+                PhaseControll(3);
             }
             if (_Phase == GamePhase.Result)
             {
-                //PhaseView(5);
+                PhaseControll(4);
             }
             //続けるかを聞く(間を入れているだけ)
             if (_Phase == GamePhase.Continue)
             {
                 RemoveCards();
             }
-            //Debug.Log(_Phase);
+            Debug.Log(_Phase);
         }
-
-        /*
-        //Phase画像の表示
-        public void PhaseView(int PhaseNum)
-        {
-            var PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word5");
-            switch (PhaseNum)
-            {
-                case 1:
-                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word5");
-                    break;
-                case 2:
-                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word6");
-                    break;
-                case 3:
-                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word7");
-                    break;
-                case 4:
-                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word8");
-                    break;
-                case 5:
-                    PhaseImage = Resources.Load<GameObject>("Images/Bar/f_word9");
-                    break;
-                default:
-                    Debug.Log("ExPhase");
-                    break;
-            }
-            var PhaseObject = Instantiate(PhaseImage, transform.position, Quaternion.identity);
-            PhaseObject.transform.position = new Vector3(-1, -1, 0);
-        }
-
-        */
 
         //場札をめくる
         public void TurnStackCard(int PhaseNum)
