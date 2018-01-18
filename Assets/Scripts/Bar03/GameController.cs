@@ -5,8 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Bar03 {
     public class GameController : MonoBehaviour {
-        public static bool frag = false;
-        public static bool frag2 = false;
+        public static bool flag = false;
 
         void Start()
         {
