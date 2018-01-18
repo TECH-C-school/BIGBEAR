@@ -23,6 +23,7 @@ namespace Assets.Scripts.Bar04
                 var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/Card");
                 //Instantiate(生成するオブジェクト、場所、回転)；　回転がそのままなら↓ -5から2.5を5間になるまで足していく
                 var cardObject = Instantiate(cardPrefab, new Vector3(-5 + 2.5f * i, 1.5f, 0), Quaternion.identity);
+                cardObject.name = "Card" + (i + 1).ToString();
                 var spriteRenderer = cardObject.GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardString);
 
