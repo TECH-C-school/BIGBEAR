@@ -123,7 +123,6 @@ namespace Assets.Scripts.Bar04_06
         public void MakeBackCards(Card[] cards)
         {
 
-
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/Prefabs/Back");
             var cardsObject = GameObject.Find("Cards");
 
@@ -136,22 +135,19 @@ namespace Assets.Scripts.Bar04_06
                 cardObject.transform.parent = cardsObject.transform;
                 j = j + 2;
 
+
                 var spriteRenderer = cardObject.GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cards[i].CardString());
 
-
-
+                
             }
-            var TrumpCard = GameObject.Find("Cards").transform;
-            var card = TrumpCard.GetComponent<Card>();
-            card.HoldCardFaceUp();
         }
 
         /// <summary>
         /// クリックしたカードをHoldし、クリックされていないカードを捨て場に送る
         /// </summary>
         // 左クリックしたオブジェクトを取得する関数(2D)
-        private void ClickCard()
+          void Update()
         {
             //マウスクリックの判定
             if (!Input.GetMouseButtonDown(0)) return;
@@ -166,12 +162,11 @@ namespace Assets.Scripts.Bar04_06
             var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
             if (!hitObject) return;
 
-            //クリックされたカードスクリプトを取得
-            var card = hitObject.collider.gameObject.GetComponent<Card>();
-            card.HoldCardFaceDown();
+            //選択したオブジェクトの位置にselectの生成
+            var select = Resources.Load<GameObject>("Prefabs/Bar04/Prefabs/cardselect");
+            Instantiate(select, hitObject.transform.position, Quaternion.identity);
 
-
-
+            //
         }
         /// <summary>
         /// 捨て場に送った枚数分手札に加える

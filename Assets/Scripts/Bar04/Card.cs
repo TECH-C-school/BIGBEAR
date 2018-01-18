@@ -23,14 +23,12 @@ namespace Assets.Scripts.Bar04_06
         private void HoldCard(bool facedown)
         {
             Sprite cardSprite = null;
-            Sprite numberSprite = null;
 
             if (facedown)
             {
-                cardSprite = Resources.Load<Sprite>("Images/Bar/cardselect");
+                
             }
-            var spriteRenderer = transform.GetComponent<SpriteRenderer>();
-            spriteRenderer.sprite = cardSprite;
+           
         }
     }
 
