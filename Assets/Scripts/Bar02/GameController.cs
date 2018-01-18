@@ -19,7 +19,7 @@ namespace Assets.Scripts.Bar02 {
             turnCard();
             checkCard();
             addFlame();
-            if (deletedPyramid == 28 && clearNum==0)
+            if (deletedPyramid == clearPyramid && clearNum==0)
             {
                 Cleared();
                 clearNum++;
@@ -53,6 +53,9 @@ namespace Assets.Scripts.Bar02 {
         //消えたピラミッドのカードの枚数取得
         private int deletedPyramid = 0;
 
+        //消えたピラミッドのカードの枚数計算int
+        private int clearPyramid = 21;
+
         //cardselectの格納
         private SpriteRenderer cardSelect1;
 
@@ -61,6 +64,12 @@ namespace Assets.Scripts.Bar02 {
 
         //winカード格納
         private SpriteRenderer winCardRenserer;
+
+        //6段7段変更時のy座標補正値格納 6=1f 7=1.5f
+        private float pyramidY = 1f;
+
+        //6段7段変更時の段計算
+        private int countPyra = 6;
 
 
         /// <summary>
@@ -71,7 +80,7 @@ namespace Assets.Scripts.Bar02 {
 
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Cards");
 
-            int countNumber = 7;
+            int countNumber = countPyra;
             int countCardNum = 52;
             cardNum = MakeRandCard();
             SpriteRenderer sr = cardPrefab.GetComponent<SpriteRenderer>();
@@ -79,7 +88,7 @@ namespace Assets.Scripts.Bar02 {
             
 
             //ピラミッド
-            for (int i = 1; i <= 7; i++)
+            for (int i = 1; i <= countPyra; i++)
             {
                 for (int j = 1; j <= countNumber; j++)
                 {
@@ -89,7 +98,7 @@ namespace Assets.Scripts.Bar02 {
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                     cardObject.transform.position = new Vector2(
                         j - (countNumber * 0.5f) - 0.5f ,
-                        i * 0.5f - 1.5f);
+                        i * 0.5f - pyramidY);
                     _AllObject[countCardNum] = cardObject;
 
                     countCardNum--;
@@ -302,12 +311,12 @@ namespace Assets.Scripts.Bar02 {
         /// </summary>
         private void turnCard()
         {
-            int countParagraph = 7;
-            for(int i = 1; i <= 7; i++)
+            int countParagraph = countPyra;
+            for(int i = 1; i <= countPyra; i++)
             {
                 for(int j = 1; j <= countParagraph; j++)
                 {
-                    Vector2 checkPosition = new Vector2(j - (countParagraph * 0.5f) - 0.5f, i * 0.5f - 1.5f);
+                    Vector2 checkPosition = new Vector2(j - (countParagraph * 0.5f) - 0.5f, i * 0.5f - pyramidY);
                     
                     //checkPositionのところにあるobject取得
                     Collider2D[] checkCard = Physics2D.OverlapPointAll(checkPosition);
@@ -504,5 +513,42 @@ namespace Assets.Scripts.Bar02 {
 
         }
         
+
+
+        /// <summary>
+        /// 6段変更
+        /// </summary>
+        public void turn6()
+        {
+            resetCard();
+            clearReset();
+
+            pyramidY = 1f;
+            countPyra = 6;
+            clearPyramid = 21;
+
+            CardSet();
+            deletedPyramid = 0;
+            clearNum = 0;
+        }
+
+
+
+        /// <summary>
+        /// 7段変更
+        /// </summary>
+        public void turn7()
+        {
+            resetCard();
+            clearReset();
+
+            pyramidY = 1.5f;
+            countPyra = 7;
+            clearPyramid = 28;
+
+            CardSet();
+            deletedPyramid = 0;
+            clearNum = 0;
+        }
     }
 }
