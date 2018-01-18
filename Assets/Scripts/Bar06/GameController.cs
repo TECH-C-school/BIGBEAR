@@ -20,6 +20,10 @@ namespace Assets.Scripts.Bar06 {
         public Button AddB;
         public Button BattleB;
         public Button ResetB;
+        public Button BUB;
+        public Button BDB;
+        private int coin = 10;
+        private int bet;
         
        
         public void Win()
@@ -30,6 +34,14 @@ namespace Assets.Scripts.Bar06 {
             win.transform.position = new Vector3(-7, -1, 0);
             win.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
             win.transform.parent = WinObject.transform;
+            if(coin < 999)
+            {
+                coin = coin + bet;
+                if(coin >= 999)
+                {
+                    coin = 999;
+                }
+            }
             Delete();
         }
 
@@ -41,6 +53,14 @@ namespace Assets.Scripts.Bar06 {
             lose.transform.position = new Vector3(-7, -1, 0);
             lose.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
             lose.transform.parent = LoseObject.transform;
+            if (coin > 0)
+            {
+                coin = coin - bet;
+                if (coin <= 0)
+                {
+                    coin = 0;
+                }
+            }
             Delete();
         }
 
@@ -50,7 +70,7 @@ namespace Assets.Scripts.Bar06 {
             var draw = Instantiate(drawPrefab, transform.position, Quaternion.identity);
             var DrawObject = GameObject.Find("Cards");
             draw.transform.position = new Vector3(-7, -1, 0);
-            draw.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            draw.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
             draw.transform.parent = DrawObject.transform;
             Delete();
         }
@@ -64,7 +84,34 @@ namespace Assets.Scripts.Bar06 {
             ResetB.image.fillAmount = 1;
             ResetB.enabled = true;
             
-    }
+        }
+
+        public void BetUP()
+        {
+            if(bet < 10)
+            {
+                if(bet < coin)
+                {
+                    bet++;
+                }
+            }
+        }
+
+        public void BetDown()
+        {
+            if (bet > 1)
+            {
+                bet--;
+            }
+        }
+
+        public void DeleteBetButton()
+        {
+            BUB.image.fillAmount = 0;
+            BUB.enabled = false;
+            BDB.image.fillAmount = 0;
+            BDB.enabled = false;
+        }
 
         public void MakeDeck()
         {
@@ -113,6 +160,14 @@ namespace Assets.Scripts.Bar06 {
         {
             //シャッフルされたデッキの用意
             MakeDeck();
+            if(coin < 5)
+            {
+                bet = coin;
+            }else
+            {
+                bet = 5;
+            }
+            
 
             var CardObject = GameObject.Find("Cards");
             
@@ -183,6 +238,10 @@ namespace Assets.Scripts.Bar06 {
             Score1.text = enemycounter.ToString();
             var Score2 = GameObject.Find("Canvas/Score2").GetComponent("Text") as Text;
             Score2.text = playercounter.ToString();
+            var COIN = GameObject.Find("Canvas/COIN").GetComponent("Text") as Text;
+            COIN.text = coin.ToString();
+            var BET = GameObject.Find("Canvas/BET").GetComponent("Text") as Text;
+            BET.text = bet.ToString();
         }
 
 
@@ -190,10 +249,10 @@ namespace Assets.Scripts.Bar06 {
         //プレイヤーのカード追加
         public void AddCard()
         {
+            DeleteBetButton();
             var CardObject2 = GameObject.Find("Cards");
-            if(playercounter < 22)
+            if (playercounter < 22)
             {
-                
                 var addCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
                 var addCard = Instantiate(addCardPrefab, transform.position, Quaternion.identity);
                 addCard.transform.position = new Vector3(playerpositionX, -2 - playerpositionY, 0);
@@ -232,6 +291,7 @@ namespace Assets.Scripts.Bar06 {
         
         public void Battle()
         {
+            DeleteBetButton();
             var CardObject3 = GameObject.Find("Cards");
             while (enemycounter < 17)
             {
@@ -278,15 +338,12 @@ namespace Assets.Scripts.Bar06 {
             }else if(playercounter == enemycounter)
             {
                 Draw();
+            }else if(playercounter < 22)
+            {
+                Win();
             }else
             {
-                if(playercounter < 22)
-                {
-                    Win();
-                }else
-                {
-                    Lose();
-                }
+                Lose();
             }
         }
 
@@ -298,10 +355,18 @@ namespace Assets.Scripts.Bar06 {
             BattleB.enabled = true;
             ResetB.image.fillAmount = 0;
             ResetB.enabled = false;
+            BUB.image.fillAmount = 1;
+            BUB.enabled = true;
+            BDB.image.fillAmount = 1;
+            BDB.enabled = true;
             var DeleteObject = GameObject.Find("Cards").transform;
             for (int i = 0; i < DeleteObject.childCount; ++i)
             {
                 GameObject.Destroy(DeleteObject.GetChild(i).gameObject);
+            }
+            if(coin == 0)
+            {
+                coin = 10;
             }
             playerpositionX = 0;
             playerpositionY = 0;
