@@ -51,6 +51,7 @@ public class CardMaster : MonoBehaviour
     private int puls = 0;
     private int Dpuls = 0;
     private int Ace = 0;
+
     public void PlayerCard()
     {
 
@@ -1270,987 +1271,7 @@ public class CardMaster : MonoBehaviour
     int J = 2;
     int j = 0;
     int Cpoint2 = 0;
-    public void hitCard()
-    {
-
-        if (j < 9 && Vs == 0)
-        {
-            int setNum = UnityEngine.Random.Range(1, 14);
-            int setMark = UnityEngine.Random.Range(0, 4);
-            if (j == 0)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                         setNum = UnityEngine.Random.Range(1, 14);
-                         setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-            else if (j == 1)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
-                                    {
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        setNum = UnityEngine.Random.Range(1, 14);
-                                        setMark = UnityEngine.Random.Range(0, 4);
-                                    }
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                        setNum = UnityEngine.Random.Range(1, 14);
-                        setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-            else if (j == 2)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
-                                    {
-                                        if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
-                                        {
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            setNum = UnityEngine.Random.Range(1, 14);
-                                            setMark = UnityEngine.Random.Range(0, 4);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        setNum = UnityEngine.Random.Range(1, 14);
-                                        setMark = UnityEngine.Random.Range(0, 4);
-                                    }
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                        setNum = UnityEngine.Random.Range(1, 14);
-                        setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-            else if (j == 3)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
-                                    {
-                                        if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
-                                        {
-                                            if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
-                                            {
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                setNum = UnityEngine.Random.Range(1, 14);
-                                                setMark = UnityEngine.Random.Range(0, 4);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            setNum = UnityEngine.Random.Range(1, 14);
-                                            setMark = UnityEngine.Random.Range(0, 4);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        setNum = UnityEngine.Random.Range(1, 14);
-                                        setMark = UnityEngine.Random.Range(0, 4);
-                                    }
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                        setNum = UnityEngine.Random.Range(1, 14);
-                        setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-            else if (j == 4)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
-                                    {
-                                        if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
-                                        {
-                                            if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
-                                            {
-                                                if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
-                                                {
-                                                    break;
-                                                }
-                                                else
-                                                {
-                                                    setNum = UnityEngine.Random.Range(1, 14);
-                                                    setMark = UnityEngine.Random.Range(0, 4);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                setNum = UnityEngine.Random.Range(1, 14);
-                                                setMark = UnityEngine.Random.Range(0, 4);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            setNum = UnityEngine.Random.Range(1, 14);
-                                            setMark = UnityEngine.Random.Range(0, 4);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        setNum = UnityEngine.Random.Range(1, 14);
-                                        setMark = UnityEngine.Random.Range(0, 4);
-                                    }
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                        setNum = UnityEngine.Random.Range(1, 14);
-                        setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-            else if (j == 5)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
-                                    {
-                                        if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
-                                        {
-                                            if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
-                                            {
-                                                if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
-                                                {
-                                                    if (setCard[6].number != setNum && setCard[6].mark != (Mark)setMark || setCard[6].number == setNum && setCard[6].mark != (Mark)setMark || setCard[6].number != setNum && setCard[6].mark == (Mark)setMark)
-                                                    {
-                                                        break;
-                                                    }
-                                                    else
-                                                    {
-                                                        setNum = UnityEngine.Random.Range(1, 14);
-                                                        setMark = UnityEngine.Random.Range(0, 4);
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    setNum = UnityEngine.Random.Range(1, 14);
-                                                    setMark = UnityEngine.Random.Range(0, 4);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                setNum = UnityEngine.Random.Range(1, 14);
-                                                setMark = UnityEngine.Random.Range(0, 4);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            setNum = UnityEngine.Random.Range(1, 14);
-                                            setMark = UnityEngine.Random.Range(0, 4);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        setNum = UnityEngine.Random.Range(1, 14);
-                                        setMark = UnityEngine.Random.Range(0, 4);
-                                    }
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                        setNum = UnityEngine.Random.Range(1, 14);
-                        setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-            else if (j == 6)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
-                                    {
-                                        if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
-                                        {
-                                            if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
-                                            {
-                                                if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
-                                                {
-                                                    if (setCard[6].number != setNum && setCard[6].mark != (Mark)setMark || setCard[6].number == setNum && setCard[6].mark != (Mark)setMark || setCard[6].number != setNum && setCard[6].mark == (Mark)setMark)
-                                                    {
-                                                        if (setCard[7].number != setNum && setCard[7].mark != (Mark)setMark || setCard[7].number == setNum && setCard[7].mark != (Mark)setMark || setCard[7].number != setNum && setCard[7].mark == (Mark)setMark)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            setNum = UnityEngine.Random.Range(1, 14);
-                                                            setMark = UnityEngine.Random.Range(0, 4);
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        setNum = UnityEngine.Random.Range(1, 14);
-                                                        setMark = UnityEngine.Random.Range(0, 4);
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    setNum = UnityEngine.Random.Range(1, 14);
-                                                    setMark = UnityEngine.Random.Range(0, 4);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                setNum = UnityEngine.Random.Range(1, 14);
-                                                setMark = UnityEngine.Random.Range(0, 4);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            setNum = UnityEngine.Random.Range(1, 14);
-                                            setMark = UnityEngine.Random.Range(0, 4);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        setNum = UnityEngine.Random.Range(1, 14);
-                                        setMark = UnityEngine.Random.Range(0, 4);
-                                    }
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                        setNum = UnityEngine.Random.Range(1, 14);
-                        setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-            else if (j == 7)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
-                                    {
-                                        if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
-                                        {
-                                            if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
-                                            {
-                                                if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
-                                                {
-                                                    if (setCard[6].number != setNum && setCard[6].mark != (Mark)setMark || setCard[6].number == setNum && setCard[6].mark != (Mark)setMark || setCard[6].number != setNum && setCard[6].mark == (Mark)setMark)
-                                                    {
-                                                        if (setCard[7].number != setNum && setCard[7].mark != (Mark)setMark || setCard[7].number == setNum && setCard[7].mark != (Mark)setMark || setCard[7].number != setNum && setCard[7].mark == (Mark)setMark)
-                                                        {
-                                                            if (setCard[8].number != setNum && setCard[8].mark != (Mark)setMark || setCard[8].number == setNum && setCard[8].mark != (Mark)setMark || setCard[8].number != setNum && setCard[8].mark == (Mark)setMark)
-                                                            {
-                                                                break;
-                                                            }
-                                                            else
-                                                            {
-                                                                setNum = UnityEngine.Random.Range(1, 14);
-                                                                setMark = UnityEngine.Random.Range(0, 4);
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            setNum = UnityEngine.Random.Range(1, 14);
-                                                            setMark = UnityEngine.Random.Range(0, 4);
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        setNum = UnityEngine.Random.Range(1, 14);
-                                                        setMark = UnityEngine.Random.Range(0, 4);
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    setNum = UnityEngine.Random.Range(1, 14);
-                                                    setMark = UnityEngine.Random.Range(0, 4);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                setNum = UnityEngine.Random.Range(1, 14);
-                                                setMark = UnityEngine.Random.Range(0, 4);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            setNum = UnityEngine.Random.Range(1, 14);
-                                            setMark = UnityEngine.Random.Range(0, 4);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        setNum = UnityEngine.Random.Range(1, 14);
-                                        setMark = UnityEngine.Random.Range(0, 4);
-                                    }
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                        setNum = UnityEngine.Random.Range(1, 14);
-                        setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-            else if (j == 8)
-            {
-                while (Cpoint2 == 0)
-                {
-                    if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
-                    {
-                        if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
-                        {
-                            if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
-                            {
-                                if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
-                                {
-                                    if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
-                                    {
-                                        if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
-                                        {
-                                            if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
-                                            {
-                                                if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
-                                                {
-                                                    if (setCard[6].number != setNum && setCard[6].mark != (Mark)setMark || setCard[6].number == setNum && setCard[6].mark != (Mark)setMark || setCard[6].number != setNum && setCard[6].mark == (Mark)setMark)
-                                                    {
-                                                        if (setCard[7].number != setNum && setCard[7].mark != (Mark)setMark || setCard[7].number == setNum && setCard[7].mark != (Mark)setMark || setCard[7].number != setNum && setCard[7].mark == (Mark)setMark)
-                                                        {
-                                                            if (setCard[8].number != setNum && setCard[8].mark != (Mark)setMark || setCard[8].number == setNum && setCard[8].mark != (Mark)setMark || setCard[8].number != setNum && setCard[8].mark == (Mark)setMark)
-                                                            {
-                                                                if (setCard[9].number != setNum && setCard[9].mark != (Mark)setMark || setCard[9].number == setNum && setCard[9].mark != (Mark)setMark || setCard[9].number != setNum && setCard[9].mark == (Mark)setMark)
-                                                                {
-                                                                    break;
-                                                                }
-                                                                else
-                                                                {
-                                                                    setNum = UnityEngine.Random.Range(1, 14);
-                                                                    setMark = UnityEngine.Random.Range(0, 4);
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                setNum = UnityEngine.Random.Range(1, 14);
-                                                                setMark = UnityEngine.Random.Range(0, 4);
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            setNum = UnityEngine.Random.Range(1, 14);
-                                                            setMark = UnityEngine.Random.Range(0, 4);
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        setNum = UnityEngine.Random.Range(1, 14);
-                                                        setMark = UnityEngine.Random.Range(0, 4);
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    setNum = UnityEngine.Random.Range(1, 14);
-                                                    setMark = UnityEngine.Random.Range(0, 4);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                setNum = UnityEngine.Random.Range(1, 14);
-                                                setMark = UnityEngine.Random.Range(0, 4);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            setNum = UnityEngine.Random.Range(1, 14);
-                                            setMark = UnityEngine.Random.Range(0, 4);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        setNum = UnityEngine.Random.Range(1, 14);
-                                        setMark = UnityEngine.Random.Range(0, 4);
-                                    }
-                                }
-                                else
-                                {
-                                    setNum = UnityEngine.Random.Range(1, 14);
-                                    setMark = UnityEngine.Random.Range(0, 4);
-                                }
-                            }
-                            else
-                            {
-                                setNum = UnityEngine.Random.Range(1, 14);
-                                setMark = UnityEngine.Random.Range(0, 4);
-                            }
-                        }
-                        else
-                        {
-                            setNum = UnityEngine.Random.Range(1, 14);
-                            setMark = UnityEngine.Random.Range(0, 4);
-                        }
-                    }
-                    else
-                    {
-                        setNum = UnityEngine.Random.Range(1, 14);
-                        setMark = UnityEngine.Random.Range(0, 4);
-                    }
-                }
-                setCard[j + 2].number = setNum;
-                setCard[j + 2].mark = (Mark)setMark;
-            }
-
-            Sprite cdScripts = null;
-
-            //カードの生成
-            var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
-            var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-            cardObject.transform.position = new Vector3((j + 1) * 0.6f - 0.4f, -2.8f, 0);
-            cardObject.transform.localScale = new Vector3(0.3f, 0.3f, 1);
-
-            SpriteRenderer CdRenderer = cardObject.GetComponent<SpriteRenderer>();
-
-            switch (setCard[j + 2].number)
-            {
-                case 1:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c01");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d01");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h01");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s01");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 2:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c02");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d02");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h02");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s02");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 3:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c03");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d03");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h03");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s03");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 4:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c04");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d04");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h04");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s04");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 5:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c05");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d05");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h05");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s05");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 6:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c06");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d06");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h06");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s06");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 7:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c07");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d07");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h07");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s07");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 8:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c08");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d08");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h08");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s08");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 9:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c09");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d09");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h09");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s09");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 10:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c10");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d10");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h10");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s10");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 11:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c11");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d11");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h11");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s11");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 12:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c12");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d12");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h12");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s12");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-
-                case 13:
-                    if (setCard[j + 2].mark == Mark.Clover)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c13");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Diamond)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d13");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else if (setCard[j + 2].mark == Mark.Heart)
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h13");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    else
-                    {
-                        cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s13");
-                        CdRenderer.sprite = cdScripts;
-                    }
-                    break;
-            }
-        }
-        puls = 0;
-        I++;
-        j++;
-    }
+    
     public void vs()
     {
         if (Vs == 0)
@@ -2496,16 +1517,19 @@ public class CardMaster : MonoBehaviour
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d09");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 9;
                     }
                     else if (setCard2[0].mark == Mark.Heart)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h09");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 9;
                     }
                     else
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s09");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 9;
                     }
                     break;
 
@@ -2514,21 +1538,25 @@ public class CardMaster : MonoBehaviour
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c10");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else if (setCard2[0].mark == Mark.Diamond)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d10");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else if (setCard2[0].mark == Mark.Heart)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h10");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s10");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     break;
 
@@ -2537,21 +1565,25 @@ public class CardMaster : MonoBehaviour
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c11");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else if (setCard2[0].mark == Mark.Diamond)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d11");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else if (setCard2[0].mark == Mark.Heart)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h11");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s11");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     break;
 
@@ -2560,21 +1592,25 @@ public class CardMaster : MonoBehaviour
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c12");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else if (setCard2[0].mark == Mark.Diamond)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d12");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else if (setCard2[0].mark == Mark.Heart)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h12");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s12");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     break;
 
@@ -2583,21 +1619,25 @@ public class CardMaster : MonoBehaviour
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c13");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else if (setCard2[0].mark == Mark.Diamond)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d13");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else if (setCard2[0].mark == Mark.Heart)
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h13");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     else
                     {
                         DcdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s13");
                         dealerCdRenderer.sprite = DcdScripts;
+                        Dcountcard[0] = 10;
                     }
                     break;
             }
@@ -2742,6 +1782,32 @@ public class CardMaster : MonoBehaviour
         }
         Vs = 1;
     }
+    public void judge()
+    {
+        Sprite JScripts = null;
+        var judgePrefab = Resources.Load<GameObject>("Prefabs/Bar06/Judge");
+        var judgeObject = Instantiate(judgePrefab, transform.position, Quaternion.identity);
+        judgeObject.transform.position = new Vector3(-0.2f, 0, 0);
+        judgeObject.transform.localScale = new Vector3(1, 1, 1);
+
+        SpriteRenderer judgeRenderer = judgeObject.GetComponent<SpriteRenderer>();
+
+        if (puls < Dpuls)
+        {
+            JScripts = Resources.Load<Sprite>("Images/Bar/lose");
+            judgeRenderer.sprite = JScripts;
+        }
+        else if (puls > Dpuls)
+        {
+            JScripts = Resources.Load<Sprite>("Images/Bar/win");
+            judgeRenderer.sprite = JScripts;
+        }
+        else if (puls == Dpuls)
+        {
+            JScripts = Resources.Load<Sprite>("Images/Bar/text_draw");
+            judgeRenderer.sprite = JScripts;
+        }
+    }
     public void Count()
     {
         var countPrefab = Resources.Load<GameObject>("Prefabs/Bar06/Count");
@@ -2782,12 +1848,23 @@ public class CardMaster : MonoBehaviour
                 Sum.second = puls - 20;
                 Sum.first = puls - Sum.second - 19;
             }
+            else if (puls == 30)
+            {
+                Sum.second = 0;
+                Sum.first = puls - 27;
+            }
+            else if (puls > 30)
+            {
+                Sum.second = puls - 30;
+                Sum.first = puls - Sum.second - 29;
+            }
 
             var numPrefab = Resources.Load<GameObject>("Prefabs/Bar06/num");
             var numObject = Instantiate(numPrefab, transform.position, Quaternion.identity);
             numObject.transform.position = new Vector3(0.5f, -4, 0);
             numObject.transform.localScale = new Vector3(1, 1, 1);
             SpriteRenderer NumRenderer = numObject.GetComponent<SpriteRenderer>();
+            numPrefab.tag = "num";
 
             switch (Sum.first)
             {
@@ -2799,6 +1876,10 @@ public class CardMaster : MonoBehaviour
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
                     NumRenderer.sprite = numScripts;
                     break;
+                case 3:
+                    numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
+                    NumRenderer.sprite = numScripts;
+                    break;
             }
 
             var numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
@@ -2806,6 +1887,7 @@ public class CardMaster : MonoBehaviour
             numObject2.transform.position = new Vector3(0.9f, -4, 0);
             numObject2.transform.localScale = new Vector3(1, 1, 1);
             SpriteRenderer NumRenderer2 = numObject2.GetComponent<SpriteRenderer>();
+            numPrefab2.tag = "num";
 
             switch (Sum.second)
             {
@@ -2859,6 +1941,7 @@ public class CardMaster : MonoBehaviour
             numObject.transform.position = new Vector3(0.75f, -4, 0);
             numObject.transform.localScale = new Vector3(1, 1, 1);
             SpriteRenderer NumRenderer = numObject.GetComponent<SpriteRenderer>();
+            numPrefab.tag = "num";
 
             switch (puls)
             {
@@ -2894,6 +1977,1082 @@ public class CardMaster : MonoBehaviour
                     numScripts = Resources.Load<Sprite>("Images/Bar/t_9");
                     NumRenderer.sprite = numScripts;
                     break;
+            }
+        }
+    }
+    int burst = 0;
+    public void hitCard()
+    {
+        if (burst == 0)
+        {
+            if (Vs == 0)
+            {
+
+                if (j < 9 && Vs == 0)
+                {
+                    int setNum = UnityEngine.Random.Range(1, 14);
+                    int setMark = UnityEngine.Random.Range(0, 4);
+                    if (j == 0)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+                    else if (j == 1)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
+                                            {
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                setMark = UnityEngine.Random.Range(0, 4);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+                    else if (j == 2)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
+                                            {
+                                                if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
+                                                {
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                setMark = UnityEngine.Random.Range(0, 4);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+                    else if (j == 3)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
+                                            {
+                                                if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
+                                                {
+                                                    if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        setNum = UnityEngine.Random.Range(1, 14);
+                                                        setMark = UnityEngine.Random.Range(0, 4);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                setMark = UnityEngine.Random.Range(0, 4);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+                    else if (j == 4)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
+                                            {
+                                                if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
+                                                {
+                                                    if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
+                                                    {
+                                                        if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            setNum = UnityEngine.Random.Range(1, 14);
+                                                            setMark = UnityEngine.Random.Range(0, 4);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        setNum = UnityEngine.Random.Range(1, 14);
+                                                        setMark = UnityEngine.Random.Range(0, 4);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                setMark = UnityEngine.Random.Range(0, 4);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+                    else if (j == 5)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
+                                            {
+                                                if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
+                                                {
+                                                    if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
+                                                    {
+                                                        if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
+                                                        {
+                                                            if (setCard[6].number != setNum && setCard[6].mark != (Mark)setMark || setCard[6].number == setNum && setCard[6].mark != (Mark)setMark || setCard[6].number != setNum && setCard[6].mark == (Mark)setMark)
+                                                            {
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                                setMark = UnityEngine.Random.Range(0, 4);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            setNum = UnityEngine.Random.Range(1, 14);
+                                                            setMark = UnityEngine.Random.Range(0, 4);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        setNum = UnityEngine.Random.Range(1, 14);
+                                                        setMark = UnityEngine.Random.Range(0, 4);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                setMark = UnityEngine.Random.Range(0, 4);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+                    else if (j == 6)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
+                                            {
+                                                if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
+                                                {
+                                                    if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
+                                                    {
+                                                        if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
+                                                        {
+                                                            if (setCard[6].number != setNum && setCard[6].mark != (Mark)setMark || setCard[6].number == setNum && setCard[6].mark != (Mark)setMark || setCard[6].number != setNum && setCard[6].mark == (Mark)setMark)
+                                                            {
+                                                                if (setCard[7].number != setNum && setCard[7].mark != (Mark)setMark || setCard[7].number == setNum && setCard[7].mark != (Mark)setMark || setCard[7].number != setNum && setCard[7].mark == (Mark)setMark)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                                setMark = UnityEngine.Random.Range(0, 4);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            setNum = UnityEngine.Random.Range(1, 14);
+                                                            setMark = UnityEngine.Random.Range(0, 4);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        setNum = UnityEngine.Random.Range(1, 14);
+                                                        setMark = UnityEngine.Random.Range(0, 4);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                setMark = UnityEngine.Random.Range(0, 4);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+                    else if (j == 7)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
+                                            {
+                                                if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
+                                                {
+                                                    if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
+                                                    {
+                                                        if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
+                                                        {
+                                                            if (setCard[6].number != setNum && setCard[6].mark != (Mark)setMark || setCard[6].number == setNum && setCard[6].mark != (Mark)setMark || setCard[6].number != setNum && setCard[6].mark == (Mark)setMark)
+                                                            {
+                                                                if (setCard[7].number != setNum && setCard[7].mark != (Mark)setMark || setCard[7].number == setNum && setCard[7].mark != (Mark)setMark || setCard[7].number != setNum && setCard[7].mark == (Mark)setMark)
+                                                                {
+                                                                    if (setCard[8].number != setNum && setCard[8].mark != (Mark)setMark || setCard[8].number == setNum && setCard[8].mark != (Mark)setMark || setCard[8].number != setNum && setCard[8].mark == (Mark)setMark)
+                                                                    {
+                                                                        break;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        setNum = UnityEngine.Random.Range(1, 14);
+                                                                        setMark = UnityEngine.Random.Range(0, 4);
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                                setMark = UnityEngine.Random.Range(0, 4);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            setNum = UnityEngine.Random.Range(1, 14);
+                                                            setMark = UnityEngine.Random.Range(0, 4);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        setNum = UnityEngine.Random.Range(1, 14);
+                                                        setMark = UnityEngine.Random.Range(0, 4);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                setMark = UnityEngine.Random.Range(0, 4);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+                    else if (j == 8)
+                    {
+                        while (Cpoint2 == 0)
+                        {
+                            if (setCard[0].number != setNum && setCard[0].mark != (Mark)setMark || setCard[0].number == setNum && setCard[0].mark != (Mark)setMark || setCard[0].number != setNum && setCard[0].mark == (Mark)setMark)
+                            {
+                                if (setCard[1].number != setNum && setCard[1].mark != (Mark)setMark || setCard[1].number == setNum && setCard[1].mark != (Mark)setMark || setCard[1].number != setNum && setCard[1].mark == (Mark)setMark)
+                                {
+                                    if (setCard2[0].number != setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number == setNum && setCard2[0].mark != (Mark)setMark || setCard2[0].number != setNum && setCard2[0].mark == (Mark)setMark)
+                                    {
+                                        if (setCard2[1].number != setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number == setNum && setCard2[1].mark != (Mark)setMark || setCard2[1].number != setNum && setCard2[1].mark == (Mark)setMark)
+                                        {
+                                            if (setCard[2].number != setNum && setCard[2].mark != (Mark)setMark || setCard[2].number == setNum && setCard[2].mark != (Mark)setMark || setCard[2].number != setNum && setCard[2].mark == (Mark)setMark)
+                                            {
+                                                if (setCard[3].number != setNum && setCard[3].mark != (Mark)setMark || setCard[3].number == setNum && setCard[3].mark != (Mark)setMark || setCard[3].number != setNum && setCard[3].mark == (Mark)setMark)
+                                                {
+                                                    if (setCard[4].number != setNum && setCard[4].mark != (Mark)setMark || setCard[4].number == setNum && setCard[4].mark != (Mark)setMark || setCard[4].number != setNum && setCard[4].mark == (Mark)setMark)
+                                                    {
+                                                        if (setCard[5].number != setNum && setCard[5].mark != (Mark)setMark || setCard[5].number == setNum && setCard[5].mark != (Mark)setMark || setCard[5].number != setNum && setCard[5].mark == (Mark)setMark)
+                                                        {
+                                                            if (setCard[6].number != setNum && setCard[6].mark != (Mark)setMark || setCard[6].number == setNum && setCard[6].mark != (Mark)setMark || setCard[6].number != setNum && setCard[6].mark == (Mark)setMark)
+                                                            {
+                                                                if (setCard[7].number != setNum && setCard[7].mark != (Mark)setMark || setCard[7].number == setNum && setCard[7].mark != (Mark)setMark || setCard[7].number != setNum && setCard[7].mark == (Mark)setMark)
+                                                                {
+                                                                    if (setCard[8].number != setNum && setCard[8].mark != (Mark)setMark || setCard[8].number == setNum && setCard[8].mark != (Mark)setMark || setCard[8].number != setNum && setCard[8].mark == (Mark)setMark)
+                                                                    {
+                                                                        if (setCard[9].number != setNum && setCard[9].mark != (Mark)setMark || setCard[9].number == setNum && setCard[9].mark != (Mark)setMark || setCard[9].number != setNum && setCard[9].mark == (Mark)setMark)
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            setNum = UnityEngine.Random.Range(1, 14);
+                                                                            setMark = UnityEngine.Random.Range(0, 4);
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        setNum = UnityEngine.Random.Range(1, 14);
+                                                                        setMark = UnityEngine.Random.Range(0, 4);
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                                setMark = UnityEngine.Random.Range(0, 4);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            setNum = UnityEngine.Random.Range(1, 14);
+                                                            setMark = UnityEngine.Random.Range(0, 4);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        setNum = UnityEngine.Random.Range(1, 14);
+                                                        setMark = UnityEngine.Random.Range(0, 4);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    setNum = UnityEngine.Random.Range(1, 14);
+                                                    setMark = UnityEngine.Random.Range(0, 4);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                setNum = UnityEngine.Random.Range(1, 14);
+                                                setMark = UnityEngine.Random.Range(0, 4);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            setNum = UnityEngine.Random.Range(1, 14);
+                                            setMark = UnityEngine.Random.Range(0, 4);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setNum = UnityEngine.Random.Range(1, 14);
+                                        setMark = UnityEngine.Random.Range(0, 4);
+                                    }
+                                }
+                                else
+                                {
+                                    setNum = UnityEngine.Random.Range(1, 14);
+                                    setMark = UnityEngine.Random.Range(0, 4);
+                                }
+                            }
+                            else
+                            {
+                                setNum = UnityEngine.Random.Range(1, 14);
+                                setMark = UnityEngine.Random.Range(0, 4);
+                            }
+                        }
+                        setCard[j + 2].number = setNum;
+                        setCard[j + 2].mark = (Mark)setMark;
+                    }
+
+                    Sprite cdScripts = null;
+
+                    //カードの生成
+                    var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/card");
+                    var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
+                    cardObject.transform.position = new Vector3((j + 1) * 0.6f - 0.4f, -2.8f, 0);
+                    cardObject.transform.localScale = new Vector3(0.3f, 0.3f, 1);
+
+                    SpriteRenderer CdRenderer = cardObject.GetComponent<SpriteRenderer>();
+
+                    switch (setCard[j + 2].number)
+                    {
+                        case 1:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c01");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 1;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d01");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 1;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h01");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 1;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s01");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 1;
+                            }
+                            break;
+
+                        case 2:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c02");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 2;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d02");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 2;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h02");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 2;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s02");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 2;
+                            }
+                            break;
+
+                        case 3:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c03");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 3;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d03");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 3;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h03");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 3;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s03");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 3;
+                            }
+                            break;
+
+                        case 4:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c04");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 4;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d04");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 4;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h04");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 4;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s04");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 4;
+                            }
+                            break;
+
+                        case 5:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c05");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 5;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d05");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 5;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h05");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 5;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s05");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 5;
+                            }
+                            break;
+
+                        case 6:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c06");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 6;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d06");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 6;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h06");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 6;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s06");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 6;
+                            }
+                            break;
+
+                        case 7:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c07");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 7;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d07");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 7;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h07");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 7;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s07");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 7;
+                            }
+                            break;
+
+                        case 8:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c08");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 8;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d08");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 8;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h08");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 8;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s08");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 8;
+                            }
+                            break;
+
+                        case 9:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c09");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 9;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d09");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 9;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h09");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 9;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s09");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 9;
+                            }
+                            break;
+
+                        case 10:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c10");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d10");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h10");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s10");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            break;
+
+                        case 11:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c11");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d11");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h11");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s11");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            break;
+
+                        case 12:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c12");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d12");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h12");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s12");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            break;
+
+                        case 13:
+                            if (setCard[j + 2].mark == Mark.Clover)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/c13");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Diamond)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/d13");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else if (setCard[j + 2].mark == Mark.Heart)
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/h13");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            else
+                            {
+                                cdScripts = Resources.Load<Sprite>("Images/Bar/Cards/s13");
+                                CdRenderer.sprite = cdScripts;
+                                countcard[j + 2] = 10;
+                            }
+                            break;
+                    }
+                }
+
+                I++;
+
+                GameObject[] numtagObj = GameObject.FindGameObjectsWithTag("num");
+                foreach (GameObject NObj in numtagObj)
+                {
+                    Destroy(NObj);
+                }
+
+                puls = 0;
+
+                PlayerNum();
+
+                if (puls > 21)
+                {
+                    Sprite JScripts = null;
+                    var judgePrefab = Resources.Load<GameObject>("Prefabs/Bar06/Judge");
+                    var judgeObject = Instantiate(judgePrefab, transform.position, Quaternion.identity);
+                    judgeObject.transform.position = new Vector3(-0.2f, 0, 0);
+                    judgeObject.transform.localScale = new Vector3(1, 1, 1);
+
+                    SpriteRenderer judgeRenderer = judgeObject.GetComponent<SpriteRenderer>();
+
+                    JScripts = Resources.Load<Sprite>("Images/Bar/talk4");
+                    judgeRenderer.sprite = JScripts;
+
+                    foreach (GameObject NObj in numtagObj)
+                    {
+                        Destroy(NObj);
+                    }
+
+                    puls = 0;
+
+                    PlayerNum();
+
+                    burst = 1;
+                }
+
+                j++;
             }
         }
     }
