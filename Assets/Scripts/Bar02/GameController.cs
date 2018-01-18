@@ -9,9 +9,7 @@ namespace Assets.Scripts.Bar02 {
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
-
-        private const string KeyFastestPlayTime6 = "FastestPlayTime";
-        private const string KeyFastestPlayTime7 = "FastestPlayTime";
+        
         private enum GameState
         {
             Prepare = 1,
@@ -30,17 +28,17 @@ namespace Assets.Scripts.Bar02 {
 
         private void Start()
         {
-            _gameState = GameState.Prepare;
-            CardSet();
+
         }
         
         private void Update()
         {
+            FirstText();
             turnCard();
             checkCard();
             addFlame();
 
-            if (_gameState == GameState.Prepare)
+            if (_gameState == GameState.Start)
             {
                 if (countPyra == 6)
                 {
@@ -468,7 +466,7 @@ namespace Assets.Scripts.Bar02 {
             {
                 _playTime7 = 0;
             }
-            _gameState = GameState.Prepare;
+            _gameState = GameState.Start;
         }
 
 
@@ -492,13 +490,14 @@ namespace Assets.Scripts.Bar02 {
         /// </summary>
         private void Cleared()
         {
+            _gameState = GameState.Finish;
             resetCard();
             var winObject = Resources.Load<GameObject>("Prefabs/Bar02/win");
             var winCard = Instantiate(winObject, transform.position, Quaternion.identity);
             winCard.transform.position = new Vector2(0, 2);
             winCardRenserer = winCard.GetComponent<SpriteRenderer>();
 
-            _gameState = GameState.Finish;
+            
             if (countPyra == 6)
             {
                 if (_fastestPlayTime6 == 0)
@@ -609,7 +608,7 @@ namespace Assets.Scripts.Bar02 {
             deletedPyramid = 0;
             clearNum = 0;
             _playTime6 = 0;
-            _gameState = GameState.Prepare;
+            _gameState = GameState.Start;
         }
 
 
@@ -633,7 +632,7 @@ namespace Assets.Scripts.Bar02 {
             deletedPyramid = 0;
             clearNum = 0;
             _playTime7 = 0;
-            _gameState = GameState.Prepare;
+            _gameState = GameState.Start;
         }
 
 
@@ -686,6 +685,19 @@ namespace Assets.Scripts.Bar02 {
             _fastestPlayTime6 = 0;
             _fastestPlayTime7 = 0;
             UpdateFastestPlayTime();
+        }
+
+        private void FirstText()
+        {
+            var text = GameObject.Find("Canvas/FastText").transform;
+            if (_gameState == GameState.Prepare)
+            {
+                text.GetComponent<Text>().text = "６段プレイか７段プレイか選んでください";
+            }
+            else
+            {
+                text.GetComponent<Text>().text = null;
+            }
         }
     }
 }
