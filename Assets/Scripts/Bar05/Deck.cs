@@ -9,10 +9,10 @@ public class DEck : MonoBehaviour {
     {
         public enum CardType
         {
-            Spade = 0,
-            Clover,
-            Diamonds,
-            Hearts
+            s = 0,
+            c,
+            d,
+            h
         }
 
         public CardType cardType;
@@ -62,8 +62,8 @@ public class DEck : MonoBehaviour {
             }
         }
         defaultCardList = cardList;
-        //		Debug.Log(defaultCardList.Count);
-
+       Debug.Log(defaultCardList.Count);
+/*
         Transform canvas = GameObject.FindGameObjectWithTag("Canvas").transform;
         for (int i = 0; i < canvas.childCount; i++)
         {
@@ -84,7 +84,7 @@ public class DEck : MonoBehaviour {
             HoldingCard holdingCard = new HoldingCard(child, type, number);
             holdingCardList.Add(holdingCard);
         }
-        GiveOutCards();
+        GiveOutCards(); */
     }
 
     void Update()
@@ -106,4 +106,32 @@ public class DEck : MonoBehaviour {
         holdingCardList[1].numberText.text = cardList[index].number.ToString();
         cardList.RemoveAt(index);
     }
+/*
+    private int _number;
+
+    public int Number
+    {
+        get { return _number; }
+        set { _number = value; }
+    }
+
+    public void TurnCardFaceUp()
+    {
+        TurnCard(true);
+    }
+
+    public void TurnCardFaceDown()
+    {
+        TurnCard(false);
+    }
+
+    private void TurnCard(bool faceUp)
+    {
+        Sprite cardSprite = null;
+
+        if (faceUp)
+        {
+            cardSprite = Resources.Load<Sprite>("Images/Bar/Cards/" + );
+        }
+    } */
 }
