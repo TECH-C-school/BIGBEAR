@@ -454,6 +454,8 @@ namespace Assets.Scripts.Bar02 {
         /// </summary>
         public void onClickResetButton()
         {
+            var text = GameObject.Find("Canvas/FastText").transform;
+            if (text.GetComponent<Text>().text != "") return;
             resetCard();
             clearReset();
             CardSet();
