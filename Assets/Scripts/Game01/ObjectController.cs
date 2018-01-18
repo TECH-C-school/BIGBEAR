@@ -63,7 +63,7 @@ public class ObjectController : MonoBehaviour
         maingame = GameObject.Find("MainCanvas").GetComponent<mainGame>();
         timer = GameObject.Find("timerFrame").GetComponent<timeStarter>();
 
-        player1_stand.gameObject.SetActive(true);
+        player1_stand.gameObject.SetActive(false);
         player1_win.gameObject.SetActive(false);
         player1_draw.gameObject.SetActive(false);
         player1_lost.gameObject.SetActive(false);
@@ -75,7 +75,7 @@ public class ObjectController : MonoBehaviour
         player3_win.gameObject.SetActive(false);
         player3_lost.gameObject.SetActive(false);
 
-        enemy1_stand.gameObject.SetActive(true);
+        enemy1_stand.gameObject.SetActive(false);
         enemy1_win.gameObject.SetActive(false);
         enemy1_draw.gameObject.SetActive(false);
         enemy1_lost.gameObject.SetActive(false);
@@ -111,6 +111,42 @@ public class ObjectController : MonoBehaviour
                 enemy1_stand.gameObject.SetActive(false);
                 player1_draw.gameObject.SetActive(true);
                 enemy1_draw.gameObject.SetActive(true);
+            }
+            if(timer.timerGo == 0 && maingame.touchStart == 0 && maingame.battleLost == 0 && maingame.battleDraw == 0)
+            {
+                player1_stand.gameObject.SetActive(true);
+                enemy1_stand.gameObject.SetActive(true);
+            }
+        }
+        if (maingame.round == 2)
+        {
+            if (timer.timerGo == 10 && maingame.touchStart == 10)
+            {
+                player2_stand.gameObject.SetActive(false);
+                enemy2_stand.gameObject.SetActive(false);
+                player2_win.gameObject.SetActive(true);
+                enemy2_lost.gameObject.SetActive(true);
+            }
+            if (timer.timerGo == 20 && maingame.battleLost == 10)
+            {
+                player2_stand.gameObject.SetActive(false);
+                enemy2_stand.gameObject.SetActive(false);
+                player2_lost.gameObject.SetActive(true);
+                enemy2_win.gameObject.SetActive(true);
+
+                StartCoroutine(Result());
+            }
+            if (maingame.battleDraw == 10)
+            {
+                player2_stand.gameObject.SetActive(false);
+                enemy2_stand.gameObject.SetActive(false);
+                player2_draw.gameObject.SetActive(true);
+                enemy2_draw.gameObject.SetActive(true);
+            }
+            if (timer.timerGo == 0 && maingame.touchStart == 0 && maingame.battleLost == 0 && maingame.battleDraw == 0)
+            {
+                player2_stand.gameObject.SetActive(true);
+                enemy2_stand.gameObject.SetActive(true);
             }
         }
     }
