@@ -52,7 +52,7 @@ namespace Assets.Scripts.Game07
                     GameController.instance.PauseButton.SetActive(false);
                     BackImage.SetActive(true);//BackImageの表示
                     BackText.SetActive(true);
-                    BackText.GetComponent<Text>().text = "Score" + ((int)GameController.instance.m_score).ToString();
+                    BackText.GetComponent<Text>().text = "Score" + (GameController.instance.m_score).ToString();
 
                     int num = 0;
                     int level = (int)GameController.instance.m_gameLevel;

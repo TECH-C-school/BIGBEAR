@@ -24,7 +24,7 @@ namespace Assets.Scripts.Game07
 
         void Update()
         {
-            Debug.Log(isMove);
+            //Debug.Log(isMove);
             if (isMove) { Move(); }
         }
 

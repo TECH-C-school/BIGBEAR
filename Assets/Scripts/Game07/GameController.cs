@@ -16,7 +16,7 @@ namespace Assets.Scripts.Game07
         public GameLevel m_gameLevel = GameLevel.Easy;
         //スコア関係
         const int plus_score = 1;
-        const int minus_score = 10;
+        const int minus_score = 5;
         [HideInInspector]
         public int m_score = 0;
         //UI情報
