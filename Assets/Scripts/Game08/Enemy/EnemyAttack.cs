@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour {
 
+    public GameObject _D;
 
-	void Start () {
+    void Start () {
 		
 	}
 	
@@ -14,13 +15,6 @@ public class EnemyAttack : MonoBehaviour {
 
 
 
-
-
-
-        /*
-        if(transform.position.y > 0) {
-            Destroy(gameObject);
-        }
-        */
-	}
+        _D.transform.parent = null; // 親と子の切り離し
+    }
 }

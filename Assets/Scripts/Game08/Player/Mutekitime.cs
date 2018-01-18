@@ -49,7 +49,7 @@ public class Mutekitime : MonoBehaviour {
 
     IEnumerator WaitForIt()
     {
-        // 1秒間処理を止める
+        // 3秒間処理を止める
         yield return new WaitForSeconds(3);
 
         // 1秒後ダメージフラグをfalseにして点滅を戻す
