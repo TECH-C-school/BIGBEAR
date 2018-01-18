@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    public card[] numbers;
+    public int[] numbers;
+
+    string[] type;
 
     //列挙型...トランプの種類
     public enum PlayingCards
@@ -16,7 +18,7 @@ public class Card : MonoBehaviour
     }
 
     //struct内にまとめることで、構造体名(この場合card)+ 関数名(この場合NumberやPlayingCards)でstruct内を読み込むことができる
-    public struct card
+    public struct toranpucard
     {
         //トランプの種類
         public PlayingCards CardType;
@@ -60,27 +62,73 @@ public class Card : MonoBehaviour
     //ランダムな整数の生成
     public void MakeRandomNumbers()
     {
-        numbers = new card[52];
+        numbers = new int[52];
+
+        type = new string[52];
 
         for (int i = 0; i < 13; i++)  //配列の初期化
         {
-            numbers[i].Number = i + 1;
-            numbers[i].CardType = PlayingCards.s;
+            string cardFileName = "";
+
+            numbers[i] = i + 1;
+
+            if (i < 9)
+            {
+                cardFileName = "0";
+            }
+
+            cardFileName = "s" + cardFileName + numbers[i];
+
+            type[i] = cardFileName;
+            //numbers[i].CardType = PlayingCards.s;
         }
         for (int i = 13; i < 26; i++)
         {
-            numbers[i].Number = i + 1 - 13;
-            numbers[i].CardType = PlayingCards.d;
+            string cardFileName = "";
+
+            numbers[i] = i + 1 - 13;
+
+            if (i < 22)
+            {
+                cardFileName = "0";
+            }
+
+            cardFileName = "d" + cardFileName + numbers[i];
+
+            type[i] = cardFileName;
+            //numbers[i].CardType = PlayingCards.d;
         }
         for (int i = 26; i < 39; i++)
         {
-            numbers[i].Number = i + 1 - 26;
-            numbers[i].CardType = PlayingCards.c;
+            string cardFileName = "";
+
+            numbers[i] = i + 1 - 26;
+
+            if (i < 35)
+            {
+                cardFileName = "0";
+            }
+
+            cardFileName = "c" + cardFileName + numbers[i];
+
+            type[i] = cardFileName;
+            //numbers[i].CardType = PlayingCards.c;
         }
         for (int i = 39; i < 52; i++)
         {
-            numbers[i].Number = i + 1 - 39;
-            numbers[i].CardType = PlayingCards.h;
+            string cardFileName = "";
+
+            numbers[i] = i + 1 - 39;
+
+            if (i < 48)
+            {
+                cardFileName = "0";
+            }
+
+            cardFileName = "h" + cardFileName + numbers[i];
+
+            type[i] = cardFileName;
+            //numbers[i].CardType = PlayingCards.h;
         }
 
         var counter = 0;

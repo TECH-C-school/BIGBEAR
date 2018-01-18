@@ -10,6 +10,11 @@ namespace Assets.Scripts.Bar04
     {
         private Card card;
 
+        private Card.toranpucard toranpu;
+
+        [SerializeField]
+        private Sprite sprite;
+
 
         //プレイヤーカードの作成
         private void PlayerMakeCards()
@@ -17,12 +22,10 @@ namespace Assets.Scripts.Bar04
             //Resources.Load<GameObject>でPrefabsのBar04のCardPlayerの画像情報を読み込んでいる
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/CardPlayer");
 
-            var cardsObject = GameObject.Find("Player");
-
             //for (関数の名前 = 関数ごとの要素; 関数の名前 < 要素の数; 関数の名前+(++or--))
             for (int i = 0; i < 5; i++)
             {
-                
+
 
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 //new Vector3(横軸の幅 - 横軸,縦軸,奥行き)となっている
@@ -37,7 +40,6 @@ namespace Assets.Scripts.Bar04
         {
 
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/CardEnemy");
-            var cardsObject = GameObject.Find("Enemy");
 
             for (int j = 0; j < 5; j++)
             {
@@ -54,21 +56,13 @@ namespace Assets.Scripts.Bar04
         private void Start()
         {
             card = new Card();
+
             card.MakeRandomNumbers();
-
-
-
-
-           // Card card = new Card(1, Card.PalayingCards.s);
-
             PlayerMakeCards();
             EnemyMakeCards();
-            
-            //Debug.Log("カード生成");
-            //Debug.Log(card.Number);
-            //Debug.Log(card.CardType);
+            toranpu = this.GetComponent<Card.toranpucard>();
+            // Card card = new Card(1, Card.PalayingCards.s);
         }
-
 
         //SceneManeger.LoadScene()でシーンを読み込む
         public void TransitionToResult()
