@@ -7,17 +7,22 @@ namespace Assets.Scripts.Bar06
 {
     public class GameController : MonoBehaviour
     {
-
-        int[] cards = new int[52];
-
-        string[] CardsName = 
+         static int[] cards = new int[52];
+         static int y = 4;
+         string[] CardsName = 
             {
             "c01","c02","c03","c04","c05","c06","c07","c08","c09","c10","c11","c12","c13",
             "h01","h02","h03","h04","h05","h06","h07","h08","h09","h10","h11","h12","h13",
             "d01","d02","d03","d04","d05","d06","d07","d08","d09","d10","d11","d12","d13",
             "s01","s02","s03","s04","s05","s06","s07","s08","s09","s10","s11","s12","s13",
             };
-
+        int[] Number =
+            {
+            1,2,3,4,5,6,7,8,9,10,10,10,10,
+            1,2,3,4,5,6,7,8,9,10,10,10,10,
+            1,2,3,4,5,6,7,8,9,10,10,10,10,
+            1,2,3,4,5,6,7,8,9,10,10,10,10,
+            };
         void Start()
         {
             MakeDeck();
@@ -36,13 +41,12 @@ namespace Assets.Scripts.Bar06
                 }
             } 
         }
-        private void Update()
+        public void Update()
         {
             
         }
-
         // 山札をシャッフルで作る
-        private void MakeDeck()
+        public void MakeDeck()
         {
             for (int i = 0; i < cards.Length; i++)
             {
@@ -61,7 +65,7 @@ namespace Assets.Scripts.Bar06
             }
         }
         // カードを２枚ずつ配る
-        private void Dealcards()
+        public void Dealcards()
         {
             for(int i = 0; i < 4; i++)
             {
@@ -69,40 +73,29 @@ namespace Assets.Scripts.Bar06
             } 
         }
         // カードを表示する
-        private void LoadCards(int x, int y,int z)
+        public void LoadCards(int x, int y,int z)
         {
+
             var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x-1]);
             Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
             var card = GameObject.Find("Cards");
             Card.transform.parent = card.transform;
-                 if(x == 14 || x == 27 || x == 40){x = 1;}
-            else if(x == 15 || x == 28 || x == 41){x = 2;}
-            else if(x == 16 || x == 29 || x == 42){x = 3;}
-            else if(x == 17 || x == 30 || x == 43){x = 4;}
-            else if(x == 18 || x == 31 || x == 44){x = 5;}
-            else if(x == 19 || x == 32 || x == 45){x = 6;}
-            else if(x == 20 || x == 33 || x == 46){x = 7;}
-            else if(x == 21 || x == 34 || x == 47){x = 8;}
-            else if(x == 22 || x == 35 || x == 48){x = 9;}
-            else if(x == 23 || x == 36 || x == 49){x = 10;}
-            else if(x == 24 || x == 37 || x == 50){x = 10;}
-            else if(x == 25 || x == 38 || x == 51){x = 10;}
-            else if(x == 26 || x == 39 || x == 52){x = 10;}
             Debug.Log(x);
         }
-
         // ディーラー側のカードに裏向きのカードをかぶせる
-        private void LoadCard()
+        public void LoadCard()
         {
             
         }
         //カードの合計を出す
-        private void Cardsum()
+        public void Cardsum()
         {
+           // var childTransForm = GameObject.Find("Cards").GetComponentInChildren<Transform>();
+           // int sum = 0;
 
         }
         //役の判定
-        private void Role()
+        public void Role()
         {
 
         }
@@ -111,16 +104,31 @@ namespace Assets.Scripts.Bar06
         {
 
         }
-        // クリックしたらカードを追加する
-       /* public void ClickAddCardButton()
+        // クリックしたらカードを追加する(プレイヤー側)
+        public void ClickAddCardButton()
         {
-            
+            int x = cards[y]; 
             var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x - 1]);
-            Card = Instantiate(Card, new Vector2(- 0.5f, 2 - 1f), Quaternion.identity);
+            Card = Instantiate(Card, new Vector2( (-y + 3) - 0.5f,-1f), Quaternion.identity);
             var card = GameObject.Find("Cards");
             Card.transform.parent = card.transform;
+            y++;
+            if (x == 1 || x == 14 || x == 27 || x == 40) { x = 1; }
+            else if (x == 15 || x == 28 || x == 41) { x = 2; }
+            else if (x == 16 || x == 29 || x == 42) { x = 3; }
+            else if (x == 17 || x == 30 || x == 43) { x = 4; }
+            else if (x == 18 || x == 31 || x == 44) { x = 5; }
+            else if (x == 19 || x == 32 || x == 45) { x = 6; }
+            else if (x == 20 || x == 33 || x == 46) { x = 7; }
+            else if (x == 21 || x == 34 || x == 47) { x = 8; }
+            else if (x == 22 || x == 35 || x == 48) { x = 9; }
+            else if (x == 23 || x == 36 || x == 49) { x = 10; }
+            else if (x == 11 || x == 24 || x == 37 || x == 50) { x = 10; }
+            else if (x == 12 || x == 25 || x == 38 || x == 51) { x = 10; }
+            else if (x == 13 || x == 26 || x == 39 || x == 52) { x = 10; }
             Debug.Log(x);
-        }*/
+        }
+        // カードを追加する(ディーラー側)
         // クリックしたら勝負をあきらめる
         public void ClickSurrenderButton()
         {
