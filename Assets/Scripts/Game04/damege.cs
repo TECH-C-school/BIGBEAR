@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class damege : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class damege : MonoBehaviour
 
     public Image gaugeImage;
 
+
+    int var;
     // Use this for initialization
     void Start()
     {
@@ -57,10 +60,29 @@ public class damege : MonoBehaviour
             //gaugeImage.color = Color.red;
         }
 
+        if (Input.GetKeyDown("b"))
+        {
+            var=Random.Range(0, 9);
+            Debug.Log("random");
+        }
+        
+
+        if(var == 5)
+        {
+            armorPoint -= damage;
+            armorPoint = Mathf.Clamp(armorPoint, 0, armorPointMax);
+        }
+
         if (Input.GetKey("v"))
         {
             armorPoint -= damage;
             armorPoint = Mathf.Clamp(armorPoint, 0, armorPointMax);
+        }
+
+        if(armorPoint == 0)
+        {
+            SceneManager.LoadScene("result_04");
+            Debug.Log("result");
         }
     }
 

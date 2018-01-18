@@ -16,9 +16,9 @@ public class score : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         playerTrans = player.GetComponent<Transform>();
-        //********** 開始 **********//
+        
         scoreText.text = "0"; //初期スコアを代入して画面に表示
-                                     //********** 終了 **********//
+                                     
     }
 
     // Update is called once per frame
@@ -37,6 +37,7 @@ public class score : MonoBehaviour {
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
             //If something was hit, the RaycastHit2D.collider will not be null.
+            //敵をクリックしたらスコアが入る
             if (hit.collider.tag == "enemy1")
             {
                 Debug.Log(hit.collider.name);
