@@ -37,7 +37,7 @@ namespace Assets.Scripts.Game07
                 areaEffector2D.enabled = true;
                 boxCollider2D.enabled = true;
                 DOTween.To(() => areaEffector2D.forceMagnitude,
-                Force_Power => areaEffector2D.forceMagnitude = Mathf.Repeat(Force_Power, 10),
+                Force_Power => areaEffector2D.forceMagnitude = -Mathf.Repeat(Force_Power, 10),
                 -10,
                 Wind_Length);
             }
