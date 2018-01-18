@@ -9,8 +9,29 @@ namespace Assets.Scripts.Bar02 {
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
         }
+
+        private const string KeyFastestPlayTime = "FastestPlayTime";
+        private enum GameState
+        {
+            Prepare = 1,
+            Start,
+            Finish
+        }
+
+        private GameState _gameState = GameState.Prepare;
+
+        private float _playTime6 = 0;
+        private float _fastestPlayTime6 = 0;
+
+        private float _playTime7 = 0;
+        private float _fastestPlayTime7 = 0;
+
+
         private void Start()
         {
+            _fastestPlayTime6 = PlayerPrefs.GetFloat(KeyFastestPlayTime, 5999.999f);
+            _fastestPlayTime7 = PlayerPrefs.GetFloat(KeyFastestPlayTime, 5999.999f);
+            _gameState = GameState.Prepare;
             CardSet();
         }
         
@@ -19,6 +40,21 @@ namespace Assets.Scripts.Bar02 {
             turnCard();
             checkCard();
             addFlame();
+
+            if (_gameState == GameState.Prepare)
+            {
+                if (countPyra == 6)
+                {
+                    _playTime6 += Time.deltaTime;
+                }
+                else if (countPyra == 7)
+                {
+                    _playTime7 += Time.deltaTime;
+                }
+            }
+
+            UpdatePlayTime();
+
             if (deletedPyramid == clearPyramid && clearNum==0)
             {
                 Cleared();
@@ -426,6 +462,14 @@ namespace Assets.Scripts.Bar02 {
             CardSet();
             deletedPyramid = 0;
             clearNum = 0;
+            if (countPyra == 6)
+            {
+                _playTime6 = 0;
+            }else if (countPyra == 7)
+            {
+                _playTime7 = 0;
+            }
+            _gameState = GameState.Prepare;
         }
 
 
@@ -454,6 +498,27 @@ namespace Assets.Scripts.Bar02 {
             var winCard = Instantiate(winObject, transform.position, Quaternion.identity);
             winCard.transform.position = new Vector2(0, 2);
             winCardRenserer = winCard.GetComponent<SpriteRenderer>();
+
+            _gameState = GameState.Finish;
+            if (countPyra == 6)
+            {
+                if (_fastestPlayTime6 <= _playTime6) return;
+
+                _fastestPlayTime6 = _playTime6;
+                UpdateFastestPlayTime();
+
+                PlayerPrefs.SetFloat(KeyFastestPlayTime, _fastestPlayTime6);
+            }
+            else if (countPyra == 7)
+            {
+                if (_fastestPlayTime7 <= _playTime7) return;
+
+                _fastestPlayTime7 = _playTime7;
+                UpdateFastestPlayTime();
+
+                PlayerPrefs.SetFloat(KeyFastestPlayTime, _fastestPlayTime7);
+            }
+            
         }
 
 
@@ -520,6 +585,9 @@ namespace Assets.Scripts.Bar02 {
         /// </summary>
         public void turn6()
         {
+            _playTime7 = 0;
+            UpdatePlayTime();
+
             resetCard();
             clearReset();
 
@@ -530,6 +598,8 @@ namespace Assets.Scripts.Bar02 {
             CardSet();
             deletedPyramid = 0;
             clearNum = 0;
+            _playTime6 = 0;
+            _gameState = GameState.Prepare;
         }
 
 
@@ -539,6 +609,9 @@ namespace Assets.Scripts.Bar02 {
         /// </summary>
         public void turn7()
         {
+            _playTime6 = 0;
+            UpdatePlayTime();
+
             resetCard();
             clearReset();
 
@@ -549,6 +622,57 @@ namespace Assets.Scripts.Bar02 {
             CardSet();
             deletedPyramid = 0;
             clearNum = 0;
+            _playTime7 = 0;
+            _gameState = GameState.Prepare;
+        }
+
+
+
+        private void UpdatePlayTime()
+        {
+            if (countPyra == 6)
+            {
+                var timeLabel6 = GameObject.Find("Canvas/Panel/PlayTimeLabel6").transform;
+                int minute = (int)Mathf.Floor(_playTime6) / 60;
+                int second = (int)_playTime6 % 60;
+                string milli = (_playTime6 % 60).ToString("f3");
+                string[] millisecond = milli.Split('.');
+                timeLabel6.GetComponent<Text>().text = minute.ToString() + ":" + second.ToString().PadLeft(2, '0') + "." + millisecond[1];
+            }
+            else if (countPyra == 7)
+            {
+                var timeLabel7 = GameObject.Find("Canvas/Panel/PlayTimeLabel7").transform;
+                int minute = (int)Mathf.Floor(_playTime7) / 60;
+                int second = (int)_playTime7 % 60;
+                string milli = (_playTime7 % 60).ToString("f3");
+                string[] millisecond = milli.Split('.');
+                timeLabel7.GetComponent<Text>().text = minute.ToString() + ":" + second.ToString().PadLeft(2, '0') + "." + millisecond[1];
+            }
+        }
+
+
+
+        private void UpdateFastestPlayTime()
+        {
+            if (countPyra == 6)
+            {
+                var timeLabel6 = GameObject.Find("Canvas/Panel/FastestPlayTimeLabel6").transform;
+                int minute = (int)Mathf.Floor(_fastestPlayTime6) / 60;
+                int second = (int)_fastestPlayTime6 % 60;
+                string milli = (_fastestPlayTime6 % 60).ToString("f3");
+                string[] millisecond = milli.Split('.');
+                timeLabel6.GetComponent<Text>().text = minute.ToString() + ":" + second.ToString().PadLeft(2, '0') + "." + millisecond[1];
+            }
+            else if (countPyra == 7)
+            {
+                var timeLabel7 = GameObject.Find("Canvas/Panel/FastestPlayTimeLabel7").transform;
+                int minute = (int)Mathf.Floor(_fastestPlayTime7) / 60;
+                int second = (int)_fastestPlayTime7 % 60;
+                string milli = (_fastestPlayTime7 % 60).ToString("f3");
+                string[] millisecond = milli.Split('.');
+                timeLabel7.GetComponent<Text>().text = minute.ToString() + ":" + second.ToString().PadLeft(2, '0') + "." + millisecond[1];
+            }
+            
         }
     }
 }
