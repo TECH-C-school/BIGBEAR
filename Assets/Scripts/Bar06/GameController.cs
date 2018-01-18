@@ -16,10 +16,33 @@ namespace Assets.Scripts.Bar06
         private string[] mark = new string[52];
         private int i, j, k, value;
         private string val;
-        public Canvas image_win;
-        public Canvas image_lose;
-        public Canvas image_drow;
 
+        public void win()
+        {
+            var winPrefab = Resources.Load<GameObject>("Prefabs/Bar06/win");
+            var win = Instantiate(winPrefab, transform.position,Quaternion.identity);
+            var winObject = GameObject.Find("Cards");
+            win.transform.position = new Vector2(0,0);
+            win.transform.localScale = new Vector2(0.3f, 0.3f);
+        }
+
+        public void lose()
+        {
+            var losePrefab = Resources.Load<GameObject>("Prefabs/Bar06/lose");
+            var lose = Instantiate(losePrefab, transform.position, Quaternion.identity);
+            var loseObject = GameObject.Find("Cards");
+            lose.transform.position = new Vector2(0, 0);
+            lose.transform.localScale = new Vector2(0.3f, 0.3f);
+        }
+
+        public void draw()
+        {
+            var drawPrefab = Resources.Load<GameObject>("Prefabs/Bar06/draw");
+            var draw = Instantiate(drawPrefab, transform.position, Quaternion.identity);
+            var drawObject = GameObject.Find("Cards");
+            draw.transform.position = new Vector2(0, 0);
+            draw.transform.localScale = new Vector2(2, 2);
+        }
 
         public void MakeDeck()
         {
@@ -64,6 +87,7 @@ namespace Assets.Scripts.Bar06
         public void Start()
         {
             MakeDeck();
+            var cardObject = GameObject.Find("Cards");
             //player default
             for (i = 0; i < 2; i += 1)
             {
@@ -120,6 +144,7 @@ namespace Assets.Scripts.Bar06
         //player addcard
         public void AddCard()
         {
+            var cardObject2 = GameObject.Find("Cards");
             if (pc <= 21)
             {
                 var aCP = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DC] + numbers[DC]);
@@ -146,7 +171,7 @@ namespace Assets.Scripts.Bar06
                 DC ++;
                 if (pc >= 22)
                 {
-                    fight();
+                    lose();
                 }
             }
 
@@ -178,29 +203,39 @@ namespace Assets.Scripts.Bar06
                 }
                 ec = ec + numbers[DC];
                 DC++;
-                if (pc > 21)
+                }
+            if (pc < ec)
+            {
+                if (ec < 22)
                 {
-                    "Prefabs/Bar06/win"fillAmount = 1;
-                }else if (pc < ec)
+                    lose();
+                }
+                else
                 {
-                    
+                    win();
+                }
+            }
+            else if (pc == ec)
+            {
+                draw();
+            }
+            else
+            {
+                if (pc < 22)
+                {
+                    win();
+                }
+                else
+                {
+                    lose();
                 }
             }
         }
 
-
-        public GameObject Score;
-        private GUIText Scoretext;
-        public void Text()
+        public void Result()
         {
-            Scoretext = Score.GetComponent<GUIText>();
+            SceneManager.LoadScene("Result");
         }
-
-        
-       /* public void Result()
-        {
-
-        }*/
     }
 }
  
