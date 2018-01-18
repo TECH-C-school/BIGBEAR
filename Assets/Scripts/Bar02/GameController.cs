@@ -19,7 +19,7 @@ namespace Assets.Scripts.Bar02 {
             turnCard();
             checkCard();
             addFlame();
-            if (deletedPyramid == 21 && clearNum==0)
+            if (deletedPyramid == 28 && clearNum==0)
             {
                 Cleared();
                 clearNum++;
@@ -71,7 +71,7 @@ namespace Assets.Scripts.Bar02 {
 
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Cards");
 
-            int countNumber = 6;
+            int countNumber = 7;
             int countCardNum = 52;
             cardNum = MakeRandCard();
             SpriteRenderer sr = cardPrefab.GetComponent<SpriteRenderer>();
@@ -79,7 +79,7 @@ namespace Assets.Scripts.Bar02 {
             
 
             //ピラミッド
-            for (int i = 1; i <= 6; i++)
+            for (int i = 1; i <= 7; i++)
             {
                 for (int j = 1; j <= countNumber; j++)
                 {
@@ -89,7 +89,7 @@ namespace Assets.Scripts.Bar02 {
                     var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                     cardObject.transform.position = new Vector2(
                         j - (countNumber * 0.5f) - 0.5f ,
-                        i * 0.5f - 1f);
+                        i * 0.5f - 1.5f);
                     _AllObject[countCardNum] = cardObject;
 
                     countCardNum--;
@@ -302,12 +302,12 @@ namespace Assets.Scripts.Bar02 {
         /// </summary>
         private void turnCard()
         {
-            int countParagraph = 6;
-            for(int i = 1; i <= 6; i++)
+            int countParagraph = 7;
+            for(int i = 1; i <= 7; i++)
             {
                 for(int j = 1; j <= countParagraph; j++)
                 {
-                    Vector2 checkPosition = new Vector2(j - (countParagraph * 0.5f) - 0.5f, i * 0.5f - 1f);
+                    Vector2 checkPosition = new Vector2(j - (countParagraph * 0.5f) - 0.5f, i * 0.5f - 1.5f);
                     
                     //checkPositionのところにあるobject取得
                     Collider2D[] checkCard = Physics2D.OverlapPointAll(checkPosition);
