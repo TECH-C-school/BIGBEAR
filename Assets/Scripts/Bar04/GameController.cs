@@ -131,6 +131,8 @@ namespace Assets.Scripts.Bar04
                 Debug.Log(cards[i].number + ":" + cards[i].mark);
             }*/
 
+//Find("");でオブジェクトを呼び出す
+
             //GameObject card = GameObject.Find("c10");
             //card.transform.position = GetPosition(1);
 
@@ -146,18 +148,46 @@ namespace Assets.Scripts.Bar04
             //GameObject card4 = GameObject.Find("c06");
             //card4.transform.position = GetPosition(5);
 
-            for(int i = 0; i < cards.Length; ++i)
+            //prefabを5個作る
+            for (int i = 0; i < 5; i++)
             {
+                var Card = cards[i];
+                string cardString = Card.GetPath();
+            }
+            for (int i = 0; i < 5; ++i)
+            {
+              
                 var prefab = Resources.Load<GameObject>("Prefabs/Bar04/Card");
-                var card = Instantiate(prefab, new Vector2(i,i), Quaternion.identity);
+                var card = Instantiate(prefab, new Vector3(-6 + 3 * i , 1.3f, 0), Quaternion.identity);
                 var spriteRenderer = card.GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cards[i].GetPath());
-                
+
             }
-
         }
+        void Update()
+        {
+            //マウスクリックの判定
+            if (!Input.GetMouseButtonDown(0)) return;
 
-        public Vector2 GetPosition(int index)
+            //クリックされた位置を取得
+            var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            //Collider2D上クリックの判定
+            if (!Physics2D.OverlapPoint(tapPoint)) return;
+
+            //クリックした位置のオブジェクトを取得
+            var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
+            if (!hitObject) return;
+
+            //prefabを呼び出す
+            var prefab = Resources.Load<GameObject>("Prefabs/Bar04/cardselect");
+            //クリックした場所に呼び出す
+            Instantiate(prefab, tapPoint, Quaternion.identity);
+        }
+    }
+}
+
+       /* public Vector2 GetPosition(int index)
         {
             switch (index)
             {
@@ -176,6 +206,8 @@ namespace Assets.Scripts.Bar04
             }
         }
     }
-}
+}*/
+
+
 
 
