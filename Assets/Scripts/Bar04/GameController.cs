@@ -6,15 +6,25 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Bar0404
 {
-    public class GameController : MonoBehaviour
+    public class GameController : SingletonMonoBehaviour<GameController>
     {
 
-        //UI関係のGameObjectの設定
+        //ボタン関係
         public GameObject StartButton;
         public GameObject ChangeButton;
         public GameObject RestartButton;
+
+        //リザルト関係
         public GameObject ScoreScreen;
-        public Text ScoreText;
+        public Text ResultHundText;
+        public Text ResultScoreText;
+
+        //チップ関係
+        public Text HundChiptext;
+        public Text BetChiptext;
+        public GameObject BetUpButton;
+        public GameObject BetDownButton;
+
         //フェイズ管理用
         public Image Phase;
         public Sprite SetchipPhase;
@@ -41,8 +51,8 @@ namespace Assets.Scripts.Bar0404
 
 
         public void Start(){
-
-
+            HundChiptext.text = "" + ScoreManager.Instance.HundChip;
+            BetChiptext.text = "" + ScoreManager.Instance.BetChip;
         }
 
 
@@ -78,6 +88,10 @@ namespace Assets.Scripts.Bar0404
             ChangeButton.SetActive(true);
             CardSort();
             Phase.sprite = CardChangePhase;
+            ScoreManager.Instance.Payment();
+            HundChiptext.text = "" + ScoreManager.Instance.HundChip;
+            BetUpButton.SetActive(false);
+            BetDownButton.SetActive(false);
         }
 
         //入れ替えを実行したときの処理
@@ -92,10 +106,13 @@ namespace Assets.Scripts.Bar0404
                 }
             }
             CardSort();
-            Debug.Log(m_HundMark[0] + "" + m_HundMark[1] + m_HundMark[2] + m_HundMark[3] + m_HundMark[4]);
             ChangeButton.SetActive(false);
             RestartButton.SetActive(true);
             Phase.sprite = ResultPhase;
+            PokerHand.Instance.PokerCheck();
+            ResultHundText.text = ScoreManager.Instance.resulttext;
+            ResultScoreText.text = ScoreManager.Instance.resultChip;
+            ScoreScreen.SetActive(true);
         }
 
         //Restart時の処理
@@ -108,7 +125,39 @@ namespace Assets.Scripts.Bar0404
             RestartButton.SetActive(false);
             StartButton.SetActive(true);
             Phase.sprite = SetchipPhase;
+            ScoreScreen.SetActive(false);
+            ScoreManager.Instance.BetChip = 0;
+            HundChiptext.text = "" + ScoreManager.Instance.HundChip;
+            BetChiptext.text = "0";
+            BetUpButton.SetActive(true);
         }
+
+        //BetUpの処理
+        public void BetUp() {
+            ScoreManager.Instance.BetChip += 10;
+            BetChiptext.text = "" + ScoreManager.Instance.BetChip;
+            if (ScoreManager.Instance.BetChip >= 0) {
+                BetDownButton.SetActive(true);
+            }
+            if (ScoreManager.Instance.BetChip >= 50) {
+                BetUpButton.SetActive(false);
+            }
+        }
+
+        //BetDownの処理
+        public void BetDown()
+        {
+            ScoreManager.Instance.BetChip -= 10;
+            BetChiptext.text = "" + ScoreManager.Instance.BetChip;
+            if (ScoreManager.Instance.BetChip <= 0){
+                BetDownButton.SetActive(false);
+            }
+            if (ScoreManager.Instance.BetChip <= 50)
+            {
+                BetUpButton.SetActive(true);
+            }
+        }
+
 
         //最初のカードを配る        
         public void MakeFirstCards(){
@@ -169,7 +218,6 @@ namespace Assets.Scripts.Bar0404
             var Pokersprict = PokerHund.GetComponent<PokerHand>();
             Pokersprict.Hund = m_HundNumber;
             Pokersprict.HundM = m_HundMark;
-
 
         }
 

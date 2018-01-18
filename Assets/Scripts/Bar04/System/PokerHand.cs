@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Assets.Scripts.Bar0404 {
 
 
 
-    public class PokerHand : MonoBehaviour {
+    public class PokerHand : SingletonMonoBehaviour<PokerHand> {
 
         int[] m_HundNumber;
         char[] m_HundMark;
@@ -30,23 +31,33 @@ namespace Assets.Scripts.Bar0404 {
 
         public void PokerCheck() {
             if (RoyalStraightFlush(m_HundNumber,m_HundMark)){ 
-                Debug.Log("ロイヤルストレートフラッシュ");
+                ScoreManager.Instance.resulttext = "ロイヤルストレートフラッシュ";
+                ScoreManager.Instance.BetChip *= 5;
             }else if (FooCard(m_HundNumber)) {
-                Debug.Log("フォーカード");
+                ScoreManager.Instance.resulttext = "フォーカード";
+                ScoreManager.Instance.BetChip *= 3;
             } else if (FullHouse(m_HundNumber)) {
-                Debug.Log("フルハウス");
+                ScoreManager.Instance.resulttext = "フルハウス";
+                ScoreManager.Instance.BetChip *= 2;
             } else if(Flash(m_HundMark)){
-                Debug.Log("フラッシュ");
-            }else if (Straight(m_HundNumber)) {
-                Debug.Log("ストレート");
+                ScoreManager.Instance.resulttext = "フラッシュ";
+                ScoreManager.Instance.BetChip = (int)Math.Floor(ScoreManager.Instance.BetChip * 1.7);
+            } else if (Straight(m_HundNumber)) {
+                ScoreManager.Instance.resulttext = "ストレート";
+                ScoreManager.Instance.BetChip = (int)Math.Floor(ScoreManager.Instance.BetChip * 1.6);
             } else if (ThreeCard(m_HundNumber)) {
-                Debug.Log("スリーカード");
+                ScoreManager.Instance.resulttext = "スリーカード";
+                ScoreManager.Instance.BetChip = (int)Math.Floor(ScoreManager.Instance.BetChip * 1.5);
             } else if (TwoPare(m_HundNumber)) {
-                Debug.Log("ツーペア");
+                ScoreManager.Instance.resulttext = "ツーペア";
+                ScoreManager.Instance.BetChip = (int)Math.Floor(ScoreManager.Instance.BetChip*1.3);
             } else if (Onepare(m_HundNumber)) {
-                Debug.Log("ワンペア");
+                ScoreManager.Instance.resulttext = "ワンペア";
+            } else {
+                ScoreManager.Instance.resulttext = "ノーペア";
+                ScoreManager.Instance.BetChip = 0;
             }
-
+            ScoreManager.Instance.Refund();
         }
 
         bool Onepare(int[] xyz) {

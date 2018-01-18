@@ -9,8 +9,6 @@ namespace Assets.Scripts.Bar0404
     public class Card : MonoBehaviour
     {
 
-        GameObject mainCamera;
-        Camera main;
         
         public GameObject SelectFlame;
         bool m_select;
@@ -57,7 +55,6 @@ namespace Assets.Scripts.Bar0404
         }
 
         void Start(){
-            mainCamera = GameObject.Find("Main Camera");
         }
 
         void Update(){
