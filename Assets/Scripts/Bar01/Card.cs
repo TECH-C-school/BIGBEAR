@@ -5,8 +5,18 @@ using UnityEngine;
 
 namespace Assets.Scripts.Bar01
 {
+    
     public class Card : MonoBehaviour
     {
+        public Card()
+        {
+
+            cardType = CardTypes.None;
+            cardNumber = 1;
+            front = false;
+            dack = false;
+        }
+
         public enum CardTypes
         {
             None = -1,
@@ -51,12 +61,14 @@ namespace Assets.Scripts.Bar01
         
         public CardTypes CardType
         {
+            set { cardType = value; }
             get { return cardType; }
         }
         
         public int CardNumber
         {
             get { return cardNumber; }
+            set { cardNumber = value; }
         }
 
         public bool OutCard
@@ -106,6 +118,10 @@ namespace Assets.Scripts.Bar01
 
         private void CardFront()
         {
+            if (!cardRenderer)
+            {
+                cardRenderer = GetComponent<SpriteRenderer>();
+            }
             front = true;
             if (!frontSprite)
             {
@@ -117,6 +133,10 @@ namespace Assets.Scripts.Bar01
 
         public void CardFront(bool chang = true)
         {
+            if (!cardRenderer)
+            {
+                cardRenderer = GetComponent<SpriteRenderer>();
+            }
             front = true;
             if (chang)
             {

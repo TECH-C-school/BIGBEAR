@@ -27,6 +27,7 @@ namespace Assets.Scripts.Bar01 {
         public float marginside = 0;
         public Vector3 startPosition = new Vector3(-4.8f, 0.09f, 0);
         public Vector3 endPosition = new Vector3(4.78f, 0.09f, 0);
+        public bool debagMode = false;
 
         private float scrennRatio = 1;
 
@@ -46,8 +47,94 @@ namespace Assets.Scripts.Bar01 {
 
         private void Start()
         {
-            //カード生成（Normal)
-            CreateCardNoaml(startPosition, endPosition, 6, 0.08f);
+            if (debagMode)
+            {
+                ManualCreateStage manualCreate = GetComponent<ManualCreateStage>();
+                Card[] deckCards = new Card[24];
+                for(int i = 0; i < deckCards.Length; ++i)
+                {
+                    deckCards[i] = new Card
+                    {
+                        CardType = manualCreate.DeckCardTypes[i],
+                        CardNumber = manualCreate.DeckCardNumber[i]
+                    };
+                }
+                Card[][] stageCards =
+                {
+                    new Card[1],
+                    new Card[2],
+                    new Card[3],
+                    new Card[4],
+                    new Card[5],
+                    new Card[6],
+                    new Card[7]
+                };
+                for(int i = 0; i< stageCards[0].Length; ++i)
+                {
+                    stageCards[0][i] = new Card
+                    {
+                        CardType = manualCreate.stage1CardTypes[i],
+                        CardNumber = manualCreate.stage1CardNumber[i]
+                    };
+                }
+                for (int i = 0; i < stageCards[1].Length; ++i)
+                {
+                    stageCards[1][i] = new Card
+                    {
+                        CardType = manualCreate.stage2CardTypes[i],
+                        CardNumber = manualCreate.stage2CardNumber[i]
+                    };
+                }
+                for (int i = 0; i < stageCards[2].Length; ++i)
+                {
+                    stageCards[2][i] = new Card
+                    {
+                        CardType = manualCreate.stage3CardTypes[i],
+                        CardNumber = manualCreate.stage3CardNumber[i]
+                    };
+                }
+                for (int i = 0; i < stageCards[3].Length; ++i)
+                {
+                    stageCards[3][i] = new Card
+                    {
+                        CardType = manualCreate.stage4CardTypes[i],
+                        CardNumber = manualCreate.stage4CardNumber[i]
+                    };
+                }
+                for (int i = 0; i < stageCards[4].Length; ++i)
+                {
+                    stageCards[4][i] = new Card
+                    {
+                        CardType = manualCreate.stage5CardTypes[i],
+                        CardNumber = manualCreate.stage5CardNumber[i]
+                    };
+                }
+                for (int i = 0; i < stageCards[5].Length; ++i)
+                {
+                    stageCards[5][i] = new Card
+                    {
+                        CardType = manualCreate.stage6CardTypes[i],
+                        CardNumber = manualCreate.stage6CardNumber[i]
+                    };
+                }
+                for (int i = 0; i < stageCards[6].Length; ++i)
+                {
+                    stageCards[6][i] = new Card
+                    {
+                        CardType = manualCreate.stage7CardTypes[i],
+                        CardNumber = manualCreate.stage7CardNumber[i]
+                    };
+                }
+                CreateCardDebag(startPosition, endPosition, 6, 0.08f,stageCards,deckCards);
+            }
+            else
+            {
+                //カード生成（Normal)
+                //CreateCardNoaml(startPosition, endPosition, 6, 0.08f);
+
+                //カード生成（ランダム)
+                CreateCard(startPosition, endPosition, 6, 0.08f);
+            }
         }
         private void Update()
         {
@@ -105,6 +192,62 @@ namespace Assets.Scripts.Bar01 {
             }
         }
 
+        private void CreateCardDebag(Vector3 startPoint, Vector3 endPoint, int sprit, float interval, Card[][] cards,Card[] decks)
+        {
+            //カードのオブジェクトデータ
+            cardObject = Resources.Load<GameObject>("Prefabs/Bar01/Card");
+
+            //場のトランプとトランプの間隔
+            float setPostion = (endPosition.x - startPoint.x) / sprit;
+            float setPostionX = startPosition.x;
+            float setPostionY = startPosition.y;
+
+            //ファーストポジションの設定
+            for (int i = 0; i < 7; i++)
+            {
+                firstPositions[i] = new GameObject("firstColumn" + i);
+                firstPositions[i].AddComponent<BoxCollider2D>();
+                firstPositions[i].GetComponent<BoxCollider2D>().size = cardObject.GetComponent<BoxCollider2D>().size;
+                firstPositions[i].GetComponent<BoxCollider2D>().isTrigger = true;
+                firstPositions[i].transform.position = new Vector3(setPostionX + setPostion * i, startPosition.y, 1);
+                firstPositions[i].transform.localScale = cardObject.transform.localScale;
+                stageArray[i] = new Stack<Card>();
+            }
+
+            //カードデータの設定
+            //デッキの配置
+            Debug.Log(decks[0].CardNumber);
+            for(int i = decks.Length - 1; i >= 0; --i)
+            {
+                decks[i].dack = true;
+                decks[i].OutCard = false;
+                dackArray.Enqueue(decks[i]); 
+            }
+
+            //ステージの配置
+            for(int c = 0; c < stageArray.Length; ++c)
+            {
+                for(int l = 0; l <= c; ++l)
+                {
+                    GameObject createObject = Instantiate(cardObject, new Vector3(setPostionX + setPostion * c, setPostionY - interval * l, -l), Quaternion.identity);
+                    Card card = createObject.GetComponent<Card>();
+                    card.SetCard(cards[c][l]);
+                    card.From = createObject.transform.position;
+                    card.Column = c;
+                    if(l == c)
+                    {
+                        card.TurnCard(true);
+                    }
+                    else
+                    {
+                        card.TurnCard(false);
+                    }
+                    stageArray[c].Push(card);
+                }
+                //setPostionX += setPostion;
+            }
+        }
+
         private void CreateCardNoaml(Vector3 startPoint, Vector3 endPoint, int sprit, float interval)
         {
             //カードのオブジェクトデータ
@@ -122,7 +265,7 @@ namespace Assets.Scripts.Bar01 {
                 firstPositions[i].AddComponent<BoxCollider2D>();
                 firstPositions[i].GetComponent<BoxCollider2D>().size = cardObject.GetComponent<BoxCollider2D>().size;
                 firstPositions[i].GetComponent<BoxCollider2D>().isTrigger = true;
-                firstPositions[i].transform.position = new Vector3(setPostionX, startPosition.y, 1);
+                firstPositions[i].transform.position = new Vector3(setPostionX + setPostion * i, startPosition.y, 1);
                 firstPositions[i].transform.localScale = cardObject.transform.localScale;
                 stageArray[i] = new Stack<Card>();
             }
@@ -184,6 +327,7 @@ namespace Assets.Scripts.Bar01 {
             }
             for(int i = 0; i < 24; i++)
             {
+                Debug.Log(dackOut.Count);
                 dackArray.Enqueue(dackOut.Pop());
             }
         }
