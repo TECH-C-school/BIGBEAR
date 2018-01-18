@@ -8,12 +8,12 @@ public class drag : MonoBehaviour {
 	void Start () {}
 	// Update is called once per frame
 	void Update () {}
-
+    //マウスドラッグ
     void OnMouseDrag()
     {
         Vector3 objectPointInScreen
             = Camera.main.WorldToScreenPoint(this.transform.position);
-
+        //座標の取得
         Vector3 mousePointInScreen
             = new Vector3(Input.mousePosition.x,
                           Input.mousePosition.y,
@@ -22,7 +22,8 @@ public class drag : MonoBehaviour {
         Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
         mousePointInWorld.z = this.transform.position.z;
         this.transform.position = mousePointInWorld;
+        Vector3 pos = transform.position;
+        pos.z += 1;
+        transform.position = pos;
     }
-
-
 }

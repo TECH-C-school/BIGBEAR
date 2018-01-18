@@ -36,29 +36,5 @@ public class Bar0104 : MonoBehaviour {
             counter++;
         }
         return values;
-    }
-
-    /*private void ClickCards()
-    {
-        //マウスクリックの判定
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        //クリックされた位置を取得
-        var tapPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        //Collider2D上のクリックの判定
-        if (!Physics2D.OverlapPoint(tapPoint)) return;
-        Debug.Log("hogehoge");
-        //クリックした位置のオブジェクトを取得
-        var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
-        Debug.Log(hitObject);
-        if (!hitObject) return;
-
-        Catch = hitObject.transform.gameObject;
-        Debug.Log(Catch);
-
-        //クリックされたカードスクリプトを取得
-        //var card = hitObject.collider.gameObject.GetComponent<Card>();
-        //Debug.Log("hit object is " + card.Number);                            
-    }*/
+    }    
 }

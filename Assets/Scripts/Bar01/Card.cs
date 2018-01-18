@@ -13,14 +13,14 @@ public class Card : MonoBehaviour {
             "d01","d02","d03","d04","d05","d06","d07","d08","d09","d10","d11","d12","d13",
             "s01","s02","s03","s04","s05","s06","s07","s08","s09","s10","s11","s12","s13",           
         };
-    
+    //カードに番号を付与
     int[] CardsNumber = {
             1,2,3,4,5,6,7,8,9,10,11,12,13,
             1,2,3,4,5,6,7,8,9,10,11,12,13,
             1,2,3,4,5,6,7,8,9,10,11,12,13,
             1,2,3,4,5,6,7,8,9,10,11,12,13,            
         };
-    
+    //カードにカラーを付与
     char[] CardsCollar = {
            'c','c','c','c','c','c','c','c','c','c','c','c','c',
            'h','h','h','h','h','h','h','h','h','h','h','h','h',
@@ -49,26 +49,20 @@ public class Card : MonoBehaviour {
 
     private void TurnCard(bool FaceUp)
     {
-
-        Sprite Cardsprite = null;
-        //GameObject Prefabs = null;
-
+        Sprite Cardsprite = null;       
+        //カードオープン
         if (FaceUp)
-        {
-            //CardsCollar[n_Number]+ CardsNumber[n_Number]
+        {           
             Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/" + Cards[m_Number]);
-            Debug.Log(Cards[m_Number]);
-            //Prefabs = Resources.Load<GameObject>("Prefabs/Bar01/Cards/" + Cards[m_Number]);
-            //Debug.Log(Cards[m_Number]);
+            Debug.Log(Cards[m_Number]);           
         }
         else
-        {
-            //Prefabs = Resources.Load<GameObject>("Prefabs/Bar01/Cards/back");
+        {            
             Cardsprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
         }
-        //var GameObject= transform.GetComponent<GameObject>();
-        //GameObject = Prefabs;
         var spriteRenderer = transform.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = Cardsprite;
-    }   
+
+    }
+       
 }
