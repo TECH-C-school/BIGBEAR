@@ -69,12 +69,12 @@ namespace Assets.Scripts.Bar03
                     else
                     {
                         var CardPrefabf = Resources.Load<GameObject>("Prefabs/Bar03/Front/" + Card[m_Cards[NextCard]]);
-                        var cardObject = Instantiate(CardPrefabf, transform.position, Quaternion.identity);
-                        cardObject.transform.position = new Vector3(
+                        var cardObjectf = Instantiate(CardPrefabf, transform.position, Quaternion.identity);
+                        cardObjectf.transform.position = new Vector3(
                             a * 1.7f + -7.9f,
                             -b * -0.25f + 2.35f,
                             0);
-                        cardObject.transform.parent = CardObjectf;
+                        cardObjectf.transform.parent = CardObjectf;
                         NextCard++;
                     }
 
@@ -149,18 +149,6 @@ namespace Assets.Scripts.Bar03
             return values;
         }
 
-        public void OnClick()
-        { 
-            for(var a  = 0; a < 4; a++)
-            {
-
-            }
-
-            for (var b = 0; b < 6; b++)
-            {
-
-            }
-        }
 
         public void TransitionToResult()
         {
