@@ -66,7 +66,6 @@ namespace Assets.Scripts.Bar05
             callBtn = GameObject.Find("Call");
             handRank = gameObject.GetComponent<HandRank>();
             enemy = gameObject.GetComponent<Enemy>();
-            cardS = gameObject.GetComponent<Card>();
         }
 
         private void Start()
@@ -96,7 +95,7 @@ namespace Assets.Scripts.Bar05
                     TurnAndLibber();
                     break;
                 case PhaseEnum.リバー:
-                    ShowDown();
+                    TurnAndLibber();
                     break;
                 case PhaseEnum.ショーダウン:
                     ShowDown();
@@ -288,7 +287,7 @@ namespace Assets.Scripts.Bar05
         void Standby()
         {
             MakeCard();
-            cardS.CardReady();
+            handRank.CheckReady();
             //先行を決める
             if (enemyMoney < playerMoney) preceding = 1;
             else preceding = 0;
@@ -299,7 +298,6 @@ namespace Assets.Scripts.Bar05
 
         void PuriFrop()
         {
-            handRank.CheckReady();
             BetPhase();
         }
 
@@ -319,8 +317,7 @@ namespace Assets.Scripts.Bar05
 
         void ShowDown()
         {
-            CreateBoard();
-            handRank.WinnerCheck();
+            Debug.Log(handRank.WinnerCheck());
         }
 
         public void Win(int winPlayer)

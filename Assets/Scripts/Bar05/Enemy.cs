@@ -12,6 +12,7 @@ namespace Assets.Scripts.Bar05
         private int enemyNumber1;
         private int enemyNumber2;
         private int fieldBet;
+        private int playerBet;
         private int enemyBet;
         private int raiseCount;
         private int firstCount;
@@ -39,6 +40,7 @@ namespace Assets.Scripts.Bar05
         public void EnemyBet()
         {
             fieldBet = phase.fieldBet;
+            playerBet = phase.playerBet;
             enemyBet = phase.enemyBet;
 
             if (phase.phaseEnum == Phase.PhaseEnum.プリフロップ)
@@ -133,14 +135,13 @@ namespace Assets.Scripts.Bar05
         {
             int handPower = 0;
 
-            handRank.BoardReady();
             handPower = handRank.EnemyHandCheck();
 
             int tenRandom = Random.Range(1, 10);
 
             if (strongBool == true || handPower >= 2)
             {
-                if (tenRandom >= 4 )
+                if (tenRandom >= 3)
                 {
                     EnemyRaise();
                 }
@@ -149,7 +150,8 @@ namespace Assets.Scripts.Bar05
                     EnemyContinuation();
                 }
             }
-            else if(attackRaiseBool == true || bigRaiseBool == true || handPower == 1)
+            else if((attackRaiseBool == true || bigRaiseBool == true || handPower == 1)
+                && fieldBet == playerBet || tenRandom >= 4)
             {
                 if (tenRandom == 1 && raiseCount != 1)
                 {

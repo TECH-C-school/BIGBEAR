@@ -50,6 +50,7 @@ namespace Assets.Scripts.Bar05
         private int[] handArray;
         private int[] enemyArray;
         private int[] boardArray;
+        private int[] suitArray;
 
         private void Awake()
         {
@@ -72,23 +73,47 @@ namespace Assets.Scripts.Bar05
                 handArray[i] = playerList[i].GetComponent<Card>().number;
             }
 
+            enemyArray = new int[2];
 
             for (int i = 0; i < enemyList.Count; i++)
             {
                 string strTemp = enemyList[i].GetComponent<Card>().cardStrPath;
                 enemy.Add(strTemp);
+                enemyArray[i] = enemyList[i].GetComponent<Card>().number;
             }
         }
 
         public void BoardReady()
         {
+            board = new List<string>();
             boardArray = new int[15];
+            suitArray = new int[4];
+
             for (int i = 0; i < boardList.Count; i++)
             {
                 string strTemp = boardList[i].GetComponent<Card>().cardStrPath;
                 board.Add(strTemp);
                 int number = int.Parse(strTemp.Substring(1, 2));
                 boardArray[number]++;
+
+                string enumTemp = strTemp.Substring(0, 1);
+
+                switch (enumTemp)
+                {
+                    case "s":
+                        suitArray[0]++;
+                        break;
+                    case "c":
+                        suitArray[1]++;
+                        break;
+                    case "h":
+                        suitArray[2]++;
+                        break;
+                    case "d":
+                        suitArray[3]++;
+                        break;
+                }
+                
             }
         }
 
@@ -99,7 +124,7 @@ namespace Assets.Scripts.Bar05
 
         public int EnemyHandCheck()
         {
-            return enemyRank = HandCheck(enemy);
+            return HandCheck(enemy);
         }
 
         public int HandCheck(List<string> cards)
@@ -121,12 +146,12 @@ namespace Assets.Scripts.Bar05
                 {
                     if (numberCount[i] == 2) pairCount++;
                     if (numberCount[i] == 3) threeCount++;
-                    if (numberCount[i] == 4)fourCount++;
+                    if (numberCount[i] == 4) fourCount++;
                 }
             }
 
             //Flushの判定
-            suitCount = new int[4];
+            suitCount = suitArray;
             for (int i = 0; i < cards.Count; i++)
             {
                 var enumTemp = cards[i].Substring(0, 1);
@@ -184,13 +209,15 @@ namespace Assets.Scripts.Bar05
 
         public int WinnerCheck()
         {
+            BoardReady();
             handRank = HandCheck(hand);
+            BoardReady();
             enemyRank = HandCheck(enemy);
 
             if (handRank < enemyRank) return 0;
             else if (handRank > enemyRank) return 1;
 
-            if (handRank == enemyRank)
+            else
             {
                 for (int i = 0; i < 2; i++)
                 {
