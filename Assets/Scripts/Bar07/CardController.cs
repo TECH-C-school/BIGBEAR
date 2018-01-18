@@ -27,6 +27,8 @@ namespace Assets.Scripts.Bar07
             GC = GameObject.Find("GameController").GetComponent<GameController>();
             RC = GameObject.Find("ResultPlate(Clone)").GetComponent<ResultController>();
             cardRenderer = transform.GetComponent<SpriteRenderer>();
+
+            RC.ResetScore();
         }
 
 

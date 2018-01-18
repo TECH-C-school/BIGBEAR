@@ -9,8 +9,8 @@ namespace Assets.Scripts.Bar07
     {
         private SpriteRenderer player;
         private SpriteRenderer dealer;
-        private GameObject playermessage;
-        private GameObject dealermessage;
+        public GameObject playermessage;
+        public GameObject dealermessage;
 
         //0…lose 1…win
         private Sprite[] resultsprite = new Sprite[2];
@@ -94,6 +94,8 @@ namespace Assets.Scripts.Bar07
             cardstr[50] = "s12";
             cardstr[51] = "s13";
 
+
+
         }
 
 
@@ -108,8 +110,6 @@ namespace Assets.Scripts.Bar07
                 HC.ChangeHistory("D");
 
                 //持ちコインを増やす　倍率は2,2,10
-                //要修正
-                //betcoinsではリセット時も存在する扱いになり、結果不正にコインが増えてしまう
                 CC.CoinResult(CC.betcoins  % 100 / 10 * 2);
 
             }
@@ -152,7 +152,17 @@ namespace Assets.Scripts.Bar07
             }
         }
 
+        //ゲームごとにデータを初期化するための処理
+        public void ResetScore()
+        {
+            playermessage.SetActive(false);
+            dealermessage.SetActive(false);
+            playerscore = 0;
+            dealerscore = 0;
+            ChangeScore(0, false);
+            ChangeScore(0, true);
 
+        }
 
 
 

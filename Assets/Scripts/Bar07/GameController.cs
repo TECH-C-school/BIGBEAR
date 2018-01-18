@@ -7,7 +7,6 @@ namespace Assets.Scripts.Bar07 {
     public class GameController : MonoBehaviour {
 
         private GameObject bgset;
-        private GameObject Card;
         private GameObject Cardflame;
         private GameObject CardflameSub;
         private GameObject faze;
@@ -18,6 +17,7 @@ namespace Assets.Scripts.Bar07 {
         private GameObject ResultPlate;
         private GameObject CoinCounter;
         private GameObject fazeword;
+        private GameObject Card;
 
         //カウントフラグ
         public bool timerflag = false;
@@ -26,12 +26,18 @@ namespace Assets.Scripts.Bar07 {
 
         private int timeri = 0;
         private bool thisfaze;
+
+
         TimerController TC;
         CoinController CC;
+
+
 
         private void Start()
         {
             GameObject canvas = GameObject.Find("Canvas");
+
+            GameObject[] Card = new GameObject[4];
 
             //スタートの時点で定位置に設置する
             //スプライトの生成
@@ -57,6 +63,7 @@ namespace Assets.Scripts.Bar07 {
 
             TC = GameObject.Find("Timer(Clone)").GetComponent<TimerController>();
             CC = GameObject.Find("CoinCounter(Clone)").GetComponent<CoinController>();
+
 
             fazeword = GameObject.Find("f_word");
 
@@ -150,24 +157,28 @@ namespace Assets.Scripts.Bar07 {
             CardCreate(1);
         }
 
+
+
+
         //掛け金決定フェイズ開始の処理
         private void FazeStart()
         {
-            for(int i = 0; i < 4; i++)
+
+            for (int i = 0; i < 4; i++)
             {
-                //次回対策
-                //カードがデストロイされない問題！
-                //せっとあくてぃぶふぁるすするとカードステートもいじらなければいけないのでちとめんどい
-                //あとでかんがえる
-                Card = GameObject.Find("Card(Clone)");
-                Debug.Log(Card);
-                Destroy(Card);
+                Card = GameObject.Find("Card" + (i).ToString());
+                if (Card != null)
+                {
+
+                    Destroy(Card);
+                }
 
             }
 
 
             Sprite fazeword1 = Resources.Load<Sprite>("Images/Bar/f_word2");
             fazeword.GetComponent<SpriteRenderer>().sprite = fazeword1;
+
 
             ResultPlate.SetActive(false);
             CardflameSub.SetActive(true);
@@ -189,8 +200,12 @@ namespace Assets.Scripts.Bar07 {
         public void CardCreate(int pos)
         {
             Card = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Card"), transform.position = new Vector3(-3+pos, 0, -1), Quaternion.identity);
+            Card.name = "Card" + (pos * 2).ToString();
             Card = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Card"), transform.position = new Vector3(2+pos, 0, -1), Quaternion.identity);
+            Card.name = "Card" + (pos * 2 + 1).ToString();
+
         }
+
 
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
