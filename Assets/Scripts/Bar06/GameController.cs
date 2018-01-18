@@ -87,9 +87,9 @@ namespace Assets.Scripts.Bar06
         //カードの合計を出す
         public void Cardsum()
         {
-            for (var aa = 0; aa < PlayerCards.Length; aa++)
+            for (var abc = 0; abc < PlayerCards.Length; abc++)
             {
-                Debug.Log(aa);
+                Debug.Log("合計は" + abc);
             }
         }
         //役の判定
