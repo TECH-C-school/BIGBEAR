@@ -48,6 +48,7 @@ namespace Assets.Scripts.Bar05
 
         [SerializeField]
         private int[] handArray;
+        [SerializeField]
         private int[] enemyArray;
         private int[] boardArray;
         private int[] suitArray;
@@ -117,11 +118,6 @@ namespace Assets.Scripts.Bar05
             }
         }
 
-        void PlayerHandCheck()
-        {
-            handRank = HandCheck(hand);
-        }
-
         public int EnemyHandCheck()
         {
             return HandCheck(enemy);
@@ -129,6 +125,7 @@ namespace Assets.Scripts.Bar05
 
         public int HandCheck(List<string> cards)
         {
+
             numberCount = boardArray;
             int pairCount = 0;
             int threeCount = 0;
@@ -142,12 +139,9 @@ namespace Assets.Scripts.Bar05
 
             for (int i = 1; i <= numberCount.Length - 2; i++)
             {
-                for (int j = 2; j <= 4; j++)
-                {
                     if (numberCount[i] == 2) pairCount++;
                     if (numberCount[i] == 3) threeCount++;
                     if (numberCount[i] == 4) fourCount++;
-                }
             }
 
             //Flushの判定
@@ -171,7 +165,7 @@ namespace Assets.Scripts.Bar05
                         break;
                 }
             }
-            Debug.Log("player:" + suitCount[0] + "," + suitCount[1] + "," + suitCount[2] + "," + suitCount[3]);
+
             bool flush = false;
             //配列の数値が5以上ならフラッシュ
             for (int i = 0; i < suitCount.Length; i++)
@@ -186,8 +180,8 @@ namespace Assets.Scripts.Bar05
                 royalStraightFlush = true;
             
             bool straight = false;
-            
-            for(int i = 1; i < 11; i++)
+
+            for (int i = 1; i < 11; i++)
             {
                 if (numberCount[i] >= 1 && numberCount[i + 1] >= 1 && numberCount[i + 2] >= 1 && 
                     numberCount[i + 3] >= 1 && numberCount[i + 4] >= 1)
@@ -214,8 +208,8 @@ namespace Assets.Scripts.Bar05
             BoardReady();
             enemyRank = HandCheck(enemy);
 
-            if (handRank < enemyRank) return 0;
-            else if (handRank > enemyRank) return 1;
+            if (handRank > enemyRank) return 0;
+            else if (handRank < enemyRank) return 1;
 
             else
             {
@@ -225,15 +219,15 @@ namespace Assets.Scripts.Bar05
                     if (enemyArray[i] == 1) enemyArray[i] = 14;
                 }
 
-                int handMax = Mathf.Max(enemyArray[0], enemyArray[1]);
-                int enemyMax = Mathf.Max(handArray[0], handArray[1]);
+                int handMax = Mathf.Max(handArray[0], handArray[1]);
+                int enemyMax = Mathf.Max(enemyArray[0], enemyArray[1]);
 
                 if (handMax > enemyMax)return 0;
                 else if (enemyMax > handMax) return 1;
                 else if (handMax == enemyMax)
                 {
                     int handMin = Mathf.Min(handArray[0], handArray[1]);
-                    int enemyMin = Mathf.Min(handArray[0], handArray[1]);
+                    int enemyMin = Mathf.Min(enemyArray[0], enemyArray[1]);
 
                     if (handMin > enemyMin)return 0;
                     else if (enemyMin > handMin)return 1;

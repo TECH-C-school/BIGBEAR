@@ -287,7 +287,6 @@ namespace Assets.Scripts.Bar05
         void Standby()
         {
             MakeCard();
-            handRank.CheckReady();
             //先行を決める
             if (enemyMoney < playerMoney) preceding = 1;
             else preceding = 0;
@@ -306,6 +305,7 @@ namespace Assets.Scripts.Bar05
             CreateBoard();
             CreateBoard();
             CreateBoard();
+            handRank.CheckReady();
             BetPhase();
         }
 
@@ -322,9 +322,24 @@ namespace Assets.Scripts.Bar05
 
         public void Win(int winPlayer)
         {
-            //0がプレイヤー
-            //1が敵
-            //-1が引き分け
+            switch(winPlayer)
+            {
+                //0がプレイヤー
+                case 0:
+                    playerMoney += fieldBet;
+                    break;
+
+                //1が敵
+                case 1:
+                    enemyMoney += fieldBet;
+                    break;
+
+                //-1が引き分け
+                case -1:
+                    playerMoney += 1;
+                    enemyMoney += 1;
+                    break;
+            }
         }
     }
 }
