@@ -233,15 +233,17 @@ namespace Assets.Scripts.Bar02
             }
             var card1 = Clickcards.GetComponent<SpriteRenderer>();
             //数字だけ読み込む
-            card1.sprite
-            int number1 = card1.number;
+            string spritename = card1.sprite.ToString();
+            string a = spritename.Substring(1,2);
+           //string number1 = card1;
 
             int[] number1cards = new int[1];
 
             var card2 = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
-            int number2 = card2.number;
+           // var num2 = hitObject.collider.game
+            //int number2 = card2.number;
 
-            if (number1 + number2 == 13)
+            if (card1 + card2 == 13)
             {
                 Debug.Log("13");
             }
