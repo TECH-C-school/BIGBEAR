@@ -16,13 +16,7 @@ namespace Assets.Scripts.Bar06
             "d01","d02","d03","d04","d05","d06","d07","d08","d09","d10","d11","d12","d13",
             "s01","s02","s03","s04","s05","s06","s07","s08","s09","s10","s11","s12","s13",
             };
-        int[] Number =
-            {
-            1,2,3,4,5,6,7,8,9,10,10,10,10,
-            1,2,3,4,5,6,7,8,9,10,10,10,10,
-            1,2,3,4,5,6,7,8,9,10,10,10,10,
-            1,2,3,4,5,6,7,8,9,10,10,10,10,
-            };
+       
         void Start()
         {
             MakeDeck();
@@ -75,11 +69,23 @@ namespace Assets.Scripts.Bar06
         // カードを表示する
         public void LoadCards(int x, int y,int z)
         {
-
             var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x-1]);
             Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
             var card = GameObject.Find("Cards");
             Card.transform.parent = card.transform;
+                  if(x == 1 || x == 14 || x == 27 || x == 40){x = 1;}
+                       else if(x == 15 || x == 28 || x == 41){x = 2;}
+                       else if(x == 16 || x == 29 || x == 42){x = 3;}
+                       else if(x == 17 || x == 30 || x == 43){x = 4;}
+                       else if(x == 18 || x == 31 || x == 44){x = 5;}
+                       else if(x == 19 || x == 32 || x == 45){x = 6;}
+                       else if(x == 20 || x == 33 || x == 46){x = 7;}
+                       else if(x == 21 || x == 34 || x == 47){x = 8;}
+                       else if(x == 22 || x == 35 || x == 48){x = 9;}
+                       else if(x == 23 || x == 36 || x == 49){x = 10;}
+            else if(x == 11 || x == 24 || x == 37 || x == 50){x = 10;}
+            else if(x == 12 || x == 25 || x == 38 || x == 51){x = 10;}
+            else if(x == 13 || x == 26 || x == 39 || x == 52){x = 10;}
             Debug.Log(x);
         }
         // ディーラー側のカードに裏向きのカードをかぶせる
@@ -87,11 +93,15 @@ namespace Assets.Scripts.Bar06
         {
             
         }
+        //cardに数字を付ける
+        public void CardNum()
+        {
+            Sprite[] sp = GetComponent<Sprite>();
+          //  GameObject.Find("Cards").GetComponent(SpriteRenderer);
+        }
         //カードの合計を出す
         public void Cardsum()
         {
-           // var childTransForm = GameObject.Find("Cards").GetComponentInChildren<Transform>();
-           // int sum = 0;
 
         }
         //役の判定
