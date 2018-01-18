@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
@@ -35,6 +36,7 @@ namespace Assets.Scripts.Bar04 {
             Debug.Log("FightButtonClick");
             //デッキを作る
             MakeDeck();
+            Debug.Log(List[5]); Debug.Log(List[6]); Debug.Log(List[7]);
             //山札の上から5枚を配る
             for (var j = 0; j < 5; j++)
             {
@@ -118,109 +120,174 @@ namespace Assets.Scripts.Bar04 {
             {
                 Destroy(cardObject.gameObject);
             }
+            //選択ボタンの
             count1 = 0;
             count2 = 0;
             count3 = 0;
             count4 = 0;
             count5 = 0;
+            
         }
         /// <summary>
         /// 役の判定
         /// </summary>
         public void Prize()
         {
-            int min = 52;
-            int max = 0;
-            //ロイヤルストレートフラッシュ
-            for (int j = 0; j < 5; j++)
+            var win = GameObject.Find("bakarawin");
+            int counter = 0;
+            int x = 0;
+            while(x < 1)
             {
-                if (numbers[j] < min)
+                int min = 52;
+                int max = 0;
+                //ロイヤルストレートフラッシュ
+                for (int j = 0; j < 5; j++)
                 {
-                    min = numbers[j];
-                }
-                if (numbers[j] > max)
-                {
-                    max = numbers[j];
-                }
-            }
-            if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4])
-            {
-                if (numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 42 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 107 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 172 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 237 && min == 0)
-                {
-                    Debug.Log("ロイヤルストレートフラッシュ");
-                }
-            }
-
-            for (int i = 0; i < 5; i++)
-            {
-                if(numbers[i] >= 13)
-                {
-                    if (numbers[i] >= 26)
+                    if (numbers[j] < min)
                     {
-                        if (numbers[i] >= 39)
-                        {
-                            numbers[i] -= 13;
-                        }
-                        numbers[i] -= 13;
+                        min = numbers[j];
                     }
-                    numbers[i] -= 13;
+                    if (numbers[j] > max)
+                    {
+                        max = numbers[j];
+                    }
                 }
-            }
-            int min2 = 52;
-            int max2 = 0;
-            for (int j = 0; j < 5; j++)
-            {
-                if (numbers[j] < min)
+                if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4])
                 {
-                    min = numbers[j];
+                    if (numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 42 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 107 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 172 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 237 && min == 0)
+                    {
+                        counter = 8;
+                        win.transform.position = new Vector2(0, 3.75f);
+                        break;
+                    }
                 }
-                if (numbers[j] > max)
+                //ストレートフラッシュ
+                if (numbers[0] >= 0 && numbers[0] < 13 && numbers[1] >= 0 && numbers[1] < 13 && numbers[2] >= 0 && numbers[2] < 13 && numbers[3] >= 0 && numbers[3] < 13 && numbers[4] >= 0 && numbers[4] < 13 || numbers[0] >= 13 && numbers[0] < 26 && numbers[1] >= 13 && numbers[1] < 26 && numbers[2] >= 13 && numbers[2] < 26 && numbers[3] >= 13 && numbers[3] < 26 && numbers[4] >= 13 && numbers[4] < 26 || numbers[0] >= 26 && numbers[0] < 39 && numbers[1] >= 26 && numbers[1] < 39 && numbers[2] >= 26 && numbers[2] < 39 && numbers[3] >= 26 && numbers[3] < 39 && numbers[4] >= 26 && numbers[4] < 39 || numbers[0] >= 39 && numbers[0] < 52 && numbers[1] >= 39 && numbers[1] < 52 && numbers[2] >= 39 && numbers[2] < 52 && numbers[3] >= 39 && numbers[3] < 52 && numbers[4] >= 39 && numbers[4] < 52)
                 {
-                    max = numbers[j];
+                    if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4])
+                    {
+                        if (max - min == 4)
+                        {
+                            counter = 7;
+                            win.transform.position = new Vector2(0, 3.75f);
+                            break;
+                        }
+                    }
                 }
-            }
-            
-            //ストレート
-            if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4]) 
-            {
-                if (max2 - min2 == 4)
+                
+                //フラッシュ
+                if (numbers[0] >= 0 && numbers[0] < 13 && numbers[1] >= 0 && numbers[1] < 13 && numbers[2] >= 0 && numbers[2] < 13 && numbers[3] >= 0 && numbers[3] < 13 && numbers[4] >= 0 && numbers[4] < 13 || numbers[0] >= 13 && numbers[0] < 26 && numbers[1] >= 13 && numbers[1] < 26 && numbers[2] >= 13 && numbers[2] < 26 && numbers[3] >= 13 && numbers[3] < 26 && numbers[4] >= 13 && numbers[4] < 26 || numbers[0] >= 26 && numbers[0] < 39 && numbers[1] >= 26 && numbers[1] < 39 && numbers[2] >= 26 && numbers[2] < 39 && numbers[3] >= 26 && numbers[3] < 39 && numbers[4] >= 26 && numbers[4] < 39 || numbers[0] >= 39 && numbers[0] < 52 && numbers[1] >= 39 && numbers[1] < 52 && numbers[2] >= 39 && numbers[2] < 52 && numbers[3] >= 39 && numbers[3] < 52 && numbers[4] >= 39 && numbers[4] < 52)
                 {
-                    Debug.Log("ストレート");
+                    counter = 4;
+                    win.transform.position = new Vector2(0, 3.75f);
+                    break;
                 }
-            }
+                for (int i = 0; i < 5; i++)
+                {
+                    if (numbers[i] >= 13)
+                    {
+                        if (numbers[i] >= 26)
+                        {
+                            if (numbers[i] >= 39)
+                            {
+                                numbers[i] = numbers[i] -= 13;
+                            }
+                            numbers[i] = numbers[i] -= 13;
+                        }
+                        numbers[i] = numbers[i] -= 13;
+                    }
+                }
+                int min2 = 52;
+                int max2 = 0;
+                for (int j = 0; j < 5; j++)
+                {
+                    if (numbers[j] < min)
+                    {
+                        min = numbers[j];
+                    }
+                    if (numbers[j] > max)
+                    {
+                        max = numbers[j];
+                    }
+                }
+                //フォーカード
+                if (numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[0] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[3] && numbers[0] == numbers[4] || numbers[0] == numbers[4] && numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[1] == numbers[4] && numbers[1] == numbers[2] && numbers[1] == numbers[3])
+                {
+                    counter = 6;
+                    win.transform.position = new Vector2(0, 3.75f);
+                    break;
+                }
+                //フルハウス
+                if (numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[3] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[3] && numbers[2] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[4] && numbers[2] == numbers[3] || numbers[0] == numbers[2] && numbers[0] == numbers[3] && numbers[1] == numbers[4] || numbers[0] == numbers[2] && numbers[0] == numbers[4] && numbers[1] == numbers[3] || numbers[0] == numbers[3] && numbers[0] == numbers[4] && numbers[1] == numbers[2] || numbers[1] == numbers[2] && numbers[1] == numbers[3] && numbers[0] == numbers[4] || numbers[1] == numbers[2] && numbers[1] == numbers[4] && numbers[0] == numbers[3] || numbers[1] == numbers[3] && numbers[1] == numbers[4] && numbers[0] == numbers[2] || numbers[2] == numbers[3] && numbers[2] == numbers[4] && numbers[0] == numbers[1])
+                {
+                    counter = 5;
+                    win.transform.position = new Vector2(0, 3.75f);
+                    break;
+                }
+                //ストレート
+                if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4])
+                {
+                    if (max2 - min2 == 4)
+                    {
+                        counter = 3;
+                        win.transform.position = new Vector2(0, 3.75f);
+                        break;
+                    }
+                }
+                //スリーカード
+                if (numbers[0] == numbers[1] && numbers[0] == numbers[2] || numbers[0] == numbers[1] && numbers[0] == numbers[3] || numbers[0] == numbers[1] && numbers[0] == numbers[4] || numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[0] == numbers[2] && numbers[0] == numbers[4] || numbers[0] == numbers[3] && numbers[0] == numbers[4] || numbers[1] == numbers[2] && numbers[1] == numbers[3] || numbers[1] == numbers[2] && numbers[1] == numbers[4] || numbers[1] == numbers[3] && numbers[1] == numbers[4] || numbers[2] == numbers[3] && numbers[2] == numbers[4])
+                {
+                    counter = 2;
+                    win.transform.position = new Vector2(0, 3.75f);
+                    break;
+                }
 
-            //フルハウス
-            if (numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[3] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[3] && numbers[2] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[4] && numbers[2] == numbers[3] || numbers[0] == numbers[2] && numbers[0] == numbers[3] && numbers[1] == numbers[4] || numbers[0] == numbers[2] && numbers[0] == numbers[4] && numbers[1] == numbers[3] || numbers[0] == numbers[3] && numbers[0] == numbers[4] && numbers[1] == numbers[2] || numbers[1] == numbers[2] && numbers[1] == numbers[3] && numbers[0] == numbers[4] || numbers[1] == numbers[2] && numbers[1] == numbers[4] && numbers[0] == numbers[3] || numbers[1] == numbers[3] && numbers[1] == numbers[4] && numbers[0] == numbers[2] || numbers[2] == numbers[3] && numbers[2] == numbers[4] && numbers[0] == numbers[1])
-            {
-                Debug.Log("フルハウス");
+                //ツーペア
+                if (numbers[0] == numbers[1] && numbers[2] == numbers[3] || numbers[0] == numbers[1] && numbers[2] == numbers[4] || numbers[0] == numbers[1] && numbers[3] == numbers[4] || numbers[0] == numbers[2] && numbers[1] == numbers[3] || numbers[0] == numbers[2] && numbers[1] == numbers[4] || numbers[0] == numbers[2] && numbers[3] == numbers[4] || numbers[0] == numbers[3] && numbers[1] == numbers[2] || numbers[0] == numbers[3] && numbers[1] == numbers[4] || numbers[0] == numbers[3] && numbers[2] == numbers[4] || numbers[0] == numbers[4] && numbers[1] == numbers[2] || numbers[0] == numbers[4] && numbers[1] == numbers[3] || numbers[0] == numbers[4] && numbers[2] == numbers[3] || numbers[1] == numbers[2] && numbers[3] == numbers[4])
+                {
+                    counter = 1;
+                    win.transform.position = new Vector2(0, 3.75f);
+                    break;
+                }
+                x += 2;
+                //loseを移動(表示)する
+                var lose = GameObject.Find("bakaralose");
+                lose.transform.position = new Vector2(0, 3.75f);
             }
-
-            //ファイブカード
-            if(numbers[0] == numbers[1] && numbers[2] == numbers[3] && numbers[0] == numbers[4] && numbers[2] == numbers[4])
-            {
-                Debug.Log("ファイブカード");
-            }
-
-            //フォーカード
-            if (numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[0] == numbers[1] && numbers[0] == numbers[2] && numbers[0] == numbers[4] || numbers[0] == numbers[1] && numbers[0] == numbers[3] && numbers[0] == numbers[4] || numbers[0] == numbers[4] && numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[1] == numbers[4] && numbers[1] == numbers[2] && numbers[1] == numbers[3])
-            {
-                Debug.Log("フォーカード");
-            }
-
-            //スリーカード
-            if (numbers[0] == numbers[1] && numbers[0] == numbers[2] || numbers[0] == numbers[1] && numbers[0] == numbers[3] || numbers[0] == numbers[1] && numbers[0] == numbers[4] || numbers[0] == numbers[2] && numbers[0] == numbers[3] || numbers[0] == numbers[2] && numbers[0] == numbers[4] || numbers[0] == numbers[3] && numbers[0] == numbers[4]|| numbers[1] == numbers[2] && numbers[1] == numbers[3]|| numbers[1] == numbers[2]&& numbers[1] == numbers[4]|| numbers[1] == numbers[3] && numbers[1] == numbers[4]||numbers[2] == numbers[3] && numbers[2] == numbers[4])
-            {
-                Debug.Log("スリーカード");
-            }
-
-            //ツーペア
-            if (numbers[0] == numbers[1] && numbers[2] == numbers[3] || numbers[0] == numbers[1] && numbers[2] == numbers[4]|| numbers[0] == numbers[1] && numbers[3] == numbers[4]||numbers[0] == numbers[2] && numbers[1] == numbers[3]|| numbers[0] == numbers[2] && numbers[1] == numbers[4] || numbers[0] == numbers[2] && numbers[3] == numbers[4] || numbers[0] == numbers[3] && numbers[1] == numbers[2] || numbers[0] == numbers[3] && numbers[1] == numbers[4] || numbers[0] == numbers[3] && numbers[2] == numbers[4] || numbers[0] == numbers[4] && numbers[1] == numbers[2] || numbers[0] == numbers[4] && numbers[1] == numbers[3] || numbers[0] == numbers[4] && numbers[2] == numbers[3])
+            if (counter == 1)
             {
                 Debug.Log("ツーペア");
             }
-            
-            
+            else if (counter == 2)
+            {
+                Debug.Log("スリーカード");
+            }
+            else if (counter == 3)
+            {
+                Debug.Log("ストレード");
+            }
+            else if (counter == 4)
+            {
+                Debug.Log("フラッシュ");
+            }
+            else if (counter == 5)
+            {
+                Debug.Log("フルハウス");
+            }
+            else if (counter == 6)
+            {
+                Debug.Log("フォーカード");
+            }
+            else if (counter == 7)
+            {
+                Debug.Log("ストレートフラッシュ");
+            }
+            else if (counter == 8)
+            {
+                Debug.Log("ロイヤルストレートフラッシュ");
+            }
         }
+        
         /// <summary>
         /// クリックした場所にcardSerectを配置する
         /// </summary>
@@ -282,12 +349,12 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public int Counter(int x,int y)
         {
+            var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
+            var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
+            var flameBox = GameObject.Find("CardFlame");
             if (x == 0)
             {
                 //カードを選択する
-                var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
-                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
-                var flameBox = GameObject.Find("CardFlame");
                 cardFlame.transform.parent = flameBox.transform;
                 cardFlame.name = "cardSerect" + (y+1);
                 cardFlame.transform.position = new Vector3(y * 2.5f - 5, 0.5f, -1);
@@ -296,7 +363,7 @@ namespace Assets.Scripts.Bar04 {
             else
             {
                 //カードの選択を解除する
-                var cardFlame = GameObject.Find("cardSerect" + (y+1));
+                cardFlame = GameObject.Find("cardSerect" + (y+1));
                 Destroy(cardFlame);
                 x = 0;
             }
@@ -308,22 +375,66 @@ namespace Assets.Scripts.Bar04 {
         public void SerectButton1()
         {
             count1 = Counter(count1,0);
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
+            if (count1 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            } else
+            {
+                myText.text = "選択";//テキストの変更
+            }
         }
         public void SerectButton2()
         {
             count2 = Counter(count2,1);
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
+            if (count2 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            }
+            else
+            {
+                myText.text = "選択";//テキストの変更
+            }
         }
         public void SerectButton3()
         {
             count3 = Counter(count3,2);
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
+            if (count3 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            }
+            else
+            {
+                myText.text = "選択";//テキストの変更
+            }
         }
         public void SerectButton4()
         {
             count4 = Counter(count4,3);
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
+            if (count4 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            }
+            else
+            {
+                myText.text = "選択";//テキストの変更
+            }
         }
         public void SerectButton5()
         {
             count5 = Counter(count5,4);
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
+            if (count5 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            }
+            else
+            {
+                myText.text = "選択";//テキストの変更
+            }
         }
         
         /// <summary>
@@ -331,6 +442,11 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public void MakeDeck()
         {
+            /*List.Add(0);
+            List.Add(1);
+            List.Add(2);
+            List.Add(3);
+            List.Add(4);*/
             //Listに0～51までの数値を追加する
             for (int i = 0; i < 52; i++)
             {
@@ -353,6 +469,7 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public void InitGame()
         {
+            numbers = new int[5];
             //裏面のカードを配置
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/card");
             var Card = GameObject.Find("Cards");
@@ -372,6 +489,11 @@ namespace Assets.Scripts.Bar04 {
             notchange.transform.position = new Vector2(1011, -100);
             var reset = GameObject.Find("Reset");
             reset.transform.position = new Vector2(1011, -200);
+            var lose = GameObject.Find("bakaralose");
+            lose.transform.position = new Vector2(-100,0);
+            var win = GameObject.Find("bakarawin");
+            win.transform.position = new Vector2(-100, 0);
+            
         }
         public int LoadCard(int x, int y)
         {
