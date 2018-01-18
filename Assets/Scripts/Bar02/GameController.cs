@@ -10,7 +10,8 @@ namespace Assets.Scripts.Bar02 {
             SceneManager.LoadScene("Result");
         }
 
-        private const string KeyFastestPlayTime = "FastestPlayTime";
+        private const string KeyFastestPlayTime6 = "FastestPlayTime";
+        private const string KeyFastestPlayTime7 = "FastestPlayTime";
         private enum GameState
         {
             Prepare = 1,
@@ -29,8 +30,6 @@ namespace Assets.Scripts.Bar02 {
 
         private void Start()
         {
-            _fastestPlayTime6 = PlayerPrefs.GetFloat(KeyFastestPlayTime, 5999.999f);
-            _fastestPlayTime7 = PlayerPrefs.GetFloat(KeyFastestPlayTime, 5999.999f);
             _gameState = GameState.Prepare;
             CardSet();
         }
@@ -502,21 +501,33 @@ namespace Assets.Scripts.Bar02 {
             _gameState = GameState.Finish;
             if (countPyra == 6)
             {
+                if (_fastestPlayTime6 == 0)
+                {
+                    _fastestPlayTime6 = _playTime6;
+                    UpdateFastestPlayTime();
+                    return;
+                }
+
                 if (_fastestPlayTime6 <= _playTime6) return;
 
                 _fastestPlayTime6 = _playTime6;
                 UpdateFastestPlayTime();
-
-                PlayerPrefs.SetFloat(KeyFastestPlayTime, _fastestPlayTime6);
+                
             }
             else if (countPyra == 7)
             {
+                if (_fastestPlayTime7 == 0)
+                {
+                    _fastestPlayTime7 = _playTime7;
+                    UpdateFastestPlayTime();
+                    return;
+                }
+
                 if (_fastestPlayTime7 <= _playTime7) return;
 
                 _fastestPlayTime7 = _playTime7;
                 UpdateFastestPlayTime();
-
-                PlayerPrefs.SetFloat(KeyFastestPlayTime, _fastestPlayTime7);
+                
             }
             
         }
@@ -532,7 +543,6 @@ namespace Assets.Scripts.Bar02 {
             {
                 DestroyImmediate(winCardRenserer.gameObject, true);
             }
-
         }
 
 
@@ -654,25 +664,28 @@ namespace Assets.Scripts.Bar02 {
 
         private void UpdateFastestPlayTime()
         {
-            if (countPyra == 6)
-            {
-                var timeLabel6 = GameObject.Find("Canvas/Panel/FastestPlayTimeLabel6").transform;
-                int minute = (int)Mathf.Floor(_fastestPlayTime6) / 60;
-                int second = (int)_fastestPlayTime6 % 60;
-                string milli = (_fastestPlayTime6 % 60).ToString("f3");
-                string[] millisecond = milli.Split('.');
-                timeLabel6.GetComponent<Text>().text = minute.ToString() + ":" + second.ToString().PadLeft(2, '0') + "." + millisecond[1];
-            }
-            else if (countPyra == 7)
-            {
-                var timeLabel7 = GameObject.Find("Canvas/Panel/FastestPlayTimeLabel7").transform;
-                int minute = (int)Mathf.Floor(_fastestPlayTime7) / 60;
-                int second = (int)_fastestPlayTime7 % 60;
-                string milli = (_fastestPlayTime7 % 60).ToString("f3");
-                string[] millisecond = milli.Split('.');
-                timeLabel7.GetComponent<Text>().text = minute.ToString() + ":" + second.ToString().PadLeft(2, '0') + "." + millisecond[1];
-            }
-            
+            var timeLabel6 = GameObject.Find("Canvas/Panel/FastestPlayTimeLabel6").transform;
+            int minute6 = (int)Mathf.Floor(_fastestPlayTime6) / 60;
+            int second6 = (int)_fastestPlayTime6 % 60;
+            string milli6 = (_fastestPlayTime6 % 60).ToString("f3");
+            string[] millisecond6 = milli6.Split('.');
+            timeLabel6.GetComponent<Text>().text = minute6.ToString() + ":" + second6.ToString().PadLeft(2, '0') + "." + millisecond6[1];
+
+            var timeLabel7 = GameObject.Find("Canvas/Panel/FastestPlayTimeLabel7").transform;
+            int minute7 = (int)Mathf.Floor(_fastestPlayTime7) / 60;
+            int second7 = (int)_fastestPlayTime7 % 60;
+            string milli7 = (_fastestPlayTime7 % 60).ToString("f3");
+            string[] millisecond7 = milli7.Split('.');
+            timeLabel7.GetComponent<Text>().text = minute7.ToString() + ":" + second7.ToString().PadLeft(2, '0') + "." + millisecond7[1];
+        }
+
+
+
+        public void FastestReset()
+        {
+            _fastestPlayTime6 = 0;
+            _fastestPlayTime7 = 0;
+            UpdateFastestPlayTime();
         }
     }
 }
