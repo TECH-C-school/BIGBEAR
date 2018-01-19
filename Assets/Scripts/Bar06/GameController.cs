@@ -17,7 +17,7 @@ namespace Assets.Scripts.Bar06
             "d01","d02","d03","d04","d05","d06","d07","d08","d09","d10","d11","d12","d13",
             "s01","s02","s03","s04","s05","s06","s07","s08","s09","s10","s11","s12","s13",
             };
-       
+/*---------------------------------------------------------------------------------------------------------------------------------*/
         void Start()
         {
             MakeDeck();
@@ -43,8 +43,9 @@ namespace Assets.Scripts.Bar06
                     }
                     Debug.Log("Num_is" + PlayerCards[i + j]);
                 }
-            } 
+            }
         }
+/*---------------------------------------------------------------------------------------------------------------------------------*/
         public void Update()
         {
             
@@ -87,9 +88,9 @@ namespace Assets.Scripts.Bar06
         //カードの合計を出す
         public void Cardsum()
         {
-            for (var abc = 0; abc < PlayerCards.Length; abc++)
+            for (var i = 1; i < PlayerCards.Length; i++)
             {
-                Debug.Log("合計は" + abc);
+                Debug.Log("合計は" + i);
             }
         }
         //役の判定
@@ -102,6 +103,8 @@ namespace Assets.Scripts.Bar06
         {
 
         }
+/*---------------------------------------------------------------------------------------------------------------------------------*/
+
         // クリックしたらカードを追加する(プレイヤー側)
         public void ClickAddCardButton()
         {
@@ -111,15 +114,28 @@ namespace Assets.Scripts.Bar06
             var card = GameObject.Find("Cards");
             Card.transform.parent = card.transform;
             y++;
-           /* if (x == 1 || x == 14 || x == 27 || x == 40) { x = 1; }else if (x == 15 || x == 28 || x == 41) { x = 2; }else if (x == 16 || x == 29 || x == 42) { x = 3; }else if (x == 17 || x == 30 || x == 43) { x = 4; }else if (x == 18 || x == 31 || x == 44) { x = 5; }else if (x == 19 || x == 32 || x == 45) { x = 6; }else if (x == 20 || x == 33 || x == 46) { x = 7; }else if (x == 21 || x == 34 || x == 47) { x = 8; }else if (x == 22 || x == 35 || x == 48) { x = 9; }else if (x == 23 || x == 36 || x == 49) { x = 10; }else if (x == 11 || x == 24 || x == 37 || x == 50) { x = 10; }else if (x == 12 || x == 25 || x == 38 || x == 51) { x = 10; }else if (x == 13 || x == 26 || x == 39 || x == 52) { x = 10; }
-            Debug.Log(x);*/
+            Debug.Log(x);
         }
         // カードを追加する(ディーラー側)
+/*---------------------------------------------------------------------------------------------------------------------------------*/
         // クリックしたら勝負をあきらめる
         public void ClickSurrenderButton()
         {
+            Initgame();
+        }
+        public void Initgame()
+        {
+
+
+            RemoveGames();
+            MakeDeck();
+        }
+        public void RemoveGames()
+        {
 
         }
+
+/*---------------------------------------------------------------------------------------------------------------------------------*/
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
