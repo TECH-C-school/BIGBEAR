@@ -18,18 +18,22 @@ namespace Assets.Scripts.Bar05
         private int playerMoneyTemp;
         private int raiseMagnification;
         private GameObject betCanvas;
+        private GameObject startCanvas;
 
         private Phase phase;
         private Enemy enemy;
+
+        private Text playerBetText;
 
         private void Awake()
         {
             enemy = gameObject.GetComponent<Enemy>();
             phase = gameObject.GetComponent<Phase>();
+            betCanvas = GameObject.Find("BetCanvas");
+            startCanvas = GameObject.Find("StartCanvas");
         }
         private void Start()
         {
-            betCanvas = GameObject.Find("BetCanvas");
             raiseMagnification = 2;
         }
 
@@ -39,6 +43,8 @@ namespace Assets.Scripts.Bar05
             playerBetMoney = phase.playerBet;
             enemyBetMoney = phase.enemyBet;
             playerMoney = phase.playerMoney;
+
+            var betText = Resources.Load("Images/Bar/Cards/" + playerMoney);a
         }
 
         void PhaseChange()
@@ -74,6 +80,12 @@ namespace Assets.Scripts.Bar05
             BetChange();
             betCanvas.SetActive(false);
             enemy.EnemyBet();
+        }
+
+        public void StartBtn()
+        {
+            phase.PhaseManagement(phase.phaseEnum);
+            startCanvas.SetActive(false);
         }
 
         //private void RaiseCalculation(int rate)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Assets.Scripts.Bar05
 {
@@ -46,7 +47,7 @@ namespace Assets.Scripts.Bar05
         private int playerNumber;
         private int openCardCount;
         private int betPhaseCount;
-        public int boardCount;
+        private int boardCount;
         private int preceding;
         private bool allInBool;
 
@@ -54,16 +55,23 @@ namespace Assets.Scripts.Bar05
         private GameObject betCanvas;
         private GameObject callBtn;
         private GameObject allInBtn;
+        private GameObject startBtn;
 
         private HandRank handRank;
         private Enemy enemy;
         private Card cardS;
+
+        private IEnumerator ActionCor(float waitSec)
+        {
+            yield return new WaitForSeconds(waitSec);
+        } 
 
         void Awake()
         {
             betCanvas = GameObject.Find("BetCanvas");
             checkBtn = GameObject.Find("Check");
             callBtn = GameObject.Find("Call");
+            startBtn = GameObject.Find("StartCanvas");
             handRank = gameObject.GetComponent<HandRank>();
             enemy = gameObject.GetComponent<Enemy>();
         }
@@ -73,10 +81,9 @@ namespace Assets.Scripts.Bar05
             betCanvas.SetActive(false);
             playerMoney = 20;
             enemyMoney = 20;
-            PhaseManagement(phaseEnum);
         }
 
-        void PhaseManagement(PhaseEnum phases)
+        public void PhaseManagement(PhaseEnum phases)
         {
             betPhaseCount = 0;
             Debug.Log(phaseEnum);
@@ -112,55 +119,53 @@ namespace Assets.Scripts.Bar05
 
             for (int i = 0; i < 4; i++)
             {
-                {
-                    var cardObject = Instantiate(card, transform.position, Quaternion.identity);
-                    var selCard = Instantiate(selectCard);
-                    selCard.name = selectCard.name;
-                    selCard.transform.parent = cardObject.transform;
+                var cardObject = Instantiate(card, transform.position, Quaternion.identity);
+                var selCard = Instantiate(selectCard);
+                selCard.name = selectCard.name;
+                selCard.transform.parent = cardObject.transform;
 
-                    switch (i)
-                    {
-                        case 0:
-                            cardObject.name = "Hand1";
-                            cardObject.transform.position = new Vector3(-0.7f, -2.08f, -0.01f);
-                            handCard.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
-                        case 1:
-                            cardObject.name = "Hand2";
-                            cardObject.transform.position = new Vector3(0.65f, -2.08f, -0.01f);
-                            handCard.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
-                        case 2:
-                            cardObject.name = "EnemyHand1";
-                            cardObject.transform.position = new Vector3(-0.7f, 2.08f, -0.01f);
-                            enemyHand.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
-                        case 3:
-                            cardObject.name = "EnemyHand2";
-                            cardObject.transform.position = new Vector3(0.65f, 2.08f, -0.01f);
-                            enemyHand.Add(cardObject);
-                            cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
-                            break;
-                    }
+                switch (i)
+                {
+                    case 0:
+                        cardObject.name = "Hand1";
+                        cardObject.transform.DOMove(new Vector3(-0.7f, -2.08f, -0.01f), 0.4f);
+                        handCard.Add(cardObject);
+                        cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
+                        break;
+                    case 1:
+                        cardObject.name = "Hand2";
+                        cardObject.transform.DOMove(new Vector3(0.65f, -2.08f, -0.01f), 0.6f);
+                        handCard.Add(cardObject);
+                        cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
+                        break;
+                    case 2:
+                        cardObject.name = "EnemyHand1";
+                        cardObject.transform.DOMove(new Vector3(-0.7f, 2.08f, -0.01f), 0.8f);
+                        cardObject.transform.Rotate(new Vector3(0, 0, 1), 180);
+                        enemyHand.Add(cardObject);
+                        cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
+                        break;
+                    case 3:
+                        cardObject.name = "EnemyHand2";
+                        cardObject.transform.DOMove(new Vector3(0.65f, 2.08f, -0.01f), 1);
+                        cardObject.transform.Rotate(new Vector3(0, 0, 1), 180);
+                        enemyHand.Add(cardObject);
+                        cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
+                        break;
                 }
             }
+
             //プレイヤーのハンド
             for (int i = 0; i < 2; i++)
             {
                 var spriteRenderer = handCard[i].GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardStr[mountList[i]]);
             }
-
-            mountList.RemoveRange(0, 4);
         }
 
         /// <summary>
         /// 山札の数字をランダムにする
         /// </summary>
-
         public static List<int> MakeRandomNumbers()
         {
             List<int> numbers = new List<int>();
@@ -194,27 +199,27 @@ namespace Assets.Scripts.Bar05
             switch (boardCount)
             {
                 case 0:
-                    cardObject.transform.position = new Vector3(-2.7f, 0, -0.01f);
+                    cardObject.transform.DOMove(new Vector3(-2.7f, 0, -0.01f),0.4f);
                     mountList.RemoveRange(0, 1);
                     break;
 
                 case 1:
-                    cardObject.transform.position = new Vector3(-1.35f, 0, -0.01f);
+                    cardObject.transform.DOMove(new Vector3(-1.35f, 0, -0.01f), 0.6f);
                     mountList.RemoveRange(0, 1);
                     break;
 
                 case 2:
-                    cardObject.transform.position = new Vector3(0f, 0, -0.01f);
+                    cardObject.transform.DOMove(new Vector3(0f, 0, -0.01f), 0.8f);
                     mountList.RemoveRange(0, 1);
                     break;
 
                 case 3:
-                    cardObject.transform.position = new Vector3(1.35f, 0, -0.01f);
+                    cardObject.transform.DOMove(new Vector3(1.35f, 0, -0.01f), 1);
                     mountList.RemoveRange(0, 1);
                     break;
 
                 case 4:
-                    cardObject.transform.position = new Vector3(2.7f, 0, -0.01f);
+                    cardObject.transform.DOMove(new Vector3(2.7f, 0, -0.01f), 1);
                     mountList.RemoveRange(0, 1);
                     break;
             }
@@ -287,6 +292,10 @@ namespace Assets.Scripts.Bar05
         void Standby()
         {
             MakeCard();
+
+            
+
+            mountList.RemoveRange(0, 4);
             //先行を決める
             if (enemyMoney < playerMoney) preceding = 1;
             else preceding = 0;
@@ -317,6 +326,13 @@ namespace Assets.Scripts.Bar05
 
         void ShowDown()
         {
+            //プレイヤーのハンド
+            for (int i = 0; i < 2; i++)
+            {
+                var spriteRenderer = enemyHand[i].GetComponent<SpriteRenderer>();
+                spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardStr[mountList[i]]);
+            }
+
             Debug.Log(handRank.WinnerCheck());
         }
 
