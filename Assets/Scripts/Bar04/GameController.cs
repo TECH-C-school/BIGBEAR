@@ -126,7 +126,6 @@ namespace Assets.Scripts.Bar04 {
             count3 = 0;
             count4 = 0;
             count5 = 0;
-            
         }
         /// <summary>
         /// 役の判定
@@ -201,13 +200,13 @@ namespace Assets.Scripts.Bar04 {
                 int max2 = 0;
                 for (int j = 0; j < 5; j++)
                 {
-                    if (numbers[j] < min)
+                    if (numbers[j] < min2)
                     {
-                        min = numbers[j];
+                        min2 = numbers[j];
                     }
-                    if (numbers[j] > max)
+                    if (numbers[j] > max2)
                     {
-                        max = numbers[j];
+                        max2 = numbers[j];
                     }
                 }
                 //フォーカード
@@ -286,6 +285,7 @@ namespace Assets.Scripts.Bar04 {
             {
                 Debug.Log("ロイヤルストレートフラッシュ");
             }
+            
         }
         
         /// <summary>
@@ -375,66 +375,22 @@ namespace Assets.Scripts.Bar04 {
         public void SerectButton1()
         {
             count1 = Counter(count1,0);
-            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
-            if (count1 == 1)
-            {
-                myText.text = "解除";//テキストの変更
-            } else
-            {
-                myText.text = "選択";//テキストの変更
-            }
         }
         public void SerectButton2()
         {
             count2 = Counter(count2,1);
-            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
-            if (count2 == 1)
-            {
-                myText.text = "解除";//テキストの変更
-            }
-            else
-            {
-                myText.text = "選択";//テキストの変更
-            }
         }
         public void SerectButton3()
         {
             count3 = Counter(count3,2);
-            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
-            if (count3 == 1)
-            {
-                myText.text = "解除";//テキストの変更
-            }
-            else
-            {
-                myText.text = "選択";//テキストの変更
-            }
         }
         public void SerectButton4()
         {
             count4 = Counter(count4,3);
-            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
-            if (count4 == 1)
-            {
-                myText.text = "解除";//テキストの変更
-            }
-            else
-            {
-                myText.text = "選択";//テキストの変更
-            }
         }
         public void SerectButton5()
         {
             count5 = Counter(count5,4);
-            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
-            if (count5 == 1)
-            {
-                myText.text = "解除";//テキストの変更
-            }
-            else
-            {
-                myText.text = "選択";//テキストの変更
-            }
         }
         
         /// <summary>
