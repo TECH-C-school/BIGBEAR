@@ -15,8 +15,6 @@ namespace Assets.Scripts.Bar05
         public List<string> hand;
         public List<string> enemy;
         public List<string> board;
-        public List<string> playerBoard;
-        public List<string> enemyBoard;
         public List<GameObject> playerList;
         public List<GameObject> enemyList;
         public List<GameObject> boardList;
@@ -53,7 +51,7 @@ namespace Assets.Scripts.Bar05
         private int[] boardArray;
         private int[] suitArray;
 
-        private void Awake()
+        private void Start()
         {
             phase = gameObject.GetComponent<Phase>();
         }

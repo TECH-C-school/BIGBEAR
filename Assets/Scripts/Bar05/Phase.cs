@@ -11,7 +11,6 @@ namespace Assets.Scripts.Bar05
         public int enemyMoney;
         public int playerBet;
         public int enemyBet;
-        public int betMoney;
         public int fieldBet;
 
         public GameObject card;
@@ -51,63 +50,80 @@ namespace Assets.Scripts.Bar05
         private int preceding;
         private bool allInBool;
 
+        private GameObject cards;
         private GameObject checkBtn;
         private GameObject betCanvas;
         private GameObject callBtn;
         private GameObject allInBtn;
         private GameObject startBtn;
+        private GameObject nowPhase;
 
         private HandRank handRank;
         private Enemy enemy;
         private Card cardS;
+        private Bet betS;
 
         private IEnumerator ActionCor(float waitSec)
         {
             yield return new WaitForSeconds(waitSec);
-        } 
+        }
 
-        void Awake()
+        private void Awake()
         {
-            betCanvas = GameObject.Find("BetCanvas");
-            checkBtn = GameObject.Find("Check");
-            callBtn = GameObject.Find("Call");
+            playerMoney = 20;
+            enemyMoney = 20;
             startBtn = GameObject.Find("StartCanvas");
-            handRank = gameObject.GetComponent<HandRank>();
-            enemy = gameObject.GetComponent<Enemy>();
         }
 
         private void Start()
         {
-            betCanvas.SetActive(false);
-            playerMoney = 20;
-            enemyMoney = 20;
+            handRank = gameObject.GetComponent<HandRank>();
+            enemy = gameObject.GetComponent<Enemy>();
+            betS = gameObject.GetComponent<Bet>();
+
+            betCanvas = GameObject.Find("BetCanvas");
+            checkBtn = GameObject.Find("Check");
+            callBtn = GameObject.Find("Call");
+            nowPhase = GameObject.Find("NowPhase");
         }
 
         public void PhaseManagement(PhaseEnum phases)
         {
+            string nowPhaseStr = "";
+
             betPhaseCount = 0;
+            enemy.betCount = 0;
             Debug.Log(phaseEnum);
             switch (phaseEnum)
             {
                 case PhaseEnum.スタンバイフェイズ:
+                    nowPhaseStr = "word5";
                     Standby();
                     break;
                 case PhaseEnum.プリフロップ:
+                    nowPhaseStr = "word5";
                     PuriFrop();
                     break;
                 case PhaseEnum.フロップ:
+                    nowPhaseStr = "word6";
                     Frop();
                     break;
                 case PhaseEnum.ターン:
+                    nowPhaseStr = "word7";
                     TurnAndLibber();
                     break;
                 case PhaseEnum.リバー:
+                    nowPhaseStr = "word8";
                     TurnAndLibber();
                     break;
                 case PhaseEnum.ショーダウン:
+                    nowPhaseStr = "word9";
                     ShowDown();
                     break;
             }
+            var spriteRenderer = nowPhase.GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite =
+                Resources.Load<Sprite>("Images/Bar/fc_" + nowPhaseStr);
         }
 
         /// <summary>
@@ -116,10 +132,12 @@ namespace Assets.Scripts.Bar05
         private void MakeCard()
         {
             mountList = MakeRandomNumbers();
+            cards = new GameObject(); 
 
             for (int i = 0; i < 4; i++)
             {
                 var cardObject = Instantiate(card, transform.position, Quaternion.identity);
+                cardObject.transform.parent = cards.transform;
                 var selCard = Instantiate(selectCard);
                 selCard.name = selectCard.name;
                 selCard.transform.parent = cardObject.transform;
@@ -134,13 +152,13 @@ namespace Assets.Scripts.Bar05
                         break;
                     case 1:
                         cardObject.name = "Hand2";
-                        cardObject.transform.DOMove(new Vector3(0.65f, -2.08f, -0.01f), 0.6f);
+                        cardObject.transform.DOMove(new Vector3(0.65f, -2.08f, -0.01f), 0.8f);
                         handCard.Add(cardObject);
                         cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
                         break;
                     case 2:
                         cardObject.name = "EnemyHand1";
-                        cardObject.transform.DOMove(new Vector3(-0.7f, 2.08f, -0.01f), 0.8f);
+                        cardObject.transform.DOMove(new Vector3(-0.7f, 2.08f, -0.01f), 0.6f);
                         cardObject.transform.Rotate(new Vector3(0, 0, 1), 180);
                         enemyHand.Add(cardObject);
                         cardObject.GetComponent<Card>().cardStrPath = cardStr[mountList[i]];
@@ -188,6 +206,7 @@ namespace Assets.Scripts.Bar05
         void CreateBoard()
         {
             var cardObject = Instantiate(card, transform.position, Quaternion.identity);
+            cardObject.transform.parent = cards.transform;
             var selCard = Instantiate(selectCard);
             selCard.name = selectCard.name;
             selCard.transform.parent = cardObject.transform;
@@ -261,27 +280,37 @@ namespace Assets.Scripts.Bar05
 
         public void BetPhase()
         {
-            handRank.BoardReady();
-
-            switch (preceding)
+            //コインが無いときは両者最後まで進ませる。
+            if (playerMoney == 0 || enemyMoney == 0)
             {
-                case 0:
-                    PlayerBet();
-                    break;
+                phaseEnum++;
+                PhaseManagement(phaseEnum);
+            }
+            else
+            {
+                handRank.BoardReady();
 
-                case 1:
-                    enemy.EnemyBet();
-                    break;
+                switch (preceding)
+                {
+                    case 0:
+                        PlayerBet();
+                        break;
+
+                    case 1:
+                        enemy.EnemyBet();
+                        break;
+                }
             }
         }
 
         public void PlayerBet()
         {
             betPhaseCount++;
-            if (fieldBet == playerBet && fieldBet == enemyBet && betPhaseCount >= 2)
+            if ((fieldBet == playerBet && fieldBet == enemyBet &&
+                betPhaseCount >= 2) || (fieldBet >= 10 && playerBet == fieldBet))
             {
                 phaseEnum++;
-                PhaseManagement(phaseEnum);
+                PhaseManagement(phaseEnum); 
             }
             else
             {
@@ -289,11 +318,21 @@ namespace Assets.Scripts.Bar05
             }
         }
 
+        void GoEnd()
+        {
+            
+        }
+
         void Standby()
         {
+            Destroy(cards);
+            handCard.Clear();
+            enemyHand.Clear();
+            boardList.Clear();
+
             MakeCard();
 
-            
+            //raiseCount = 0;
 
             mountList.RemoveRange(0, 4);
             //先行を決める
@@ -333,7 +372,7 @@ namespace Assets.Scripts.Bar05
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardStr[mountList[i]]);
             }
 
-            Debug.Log(handRank.WinnerCheck());
+            Win(handRank.WinnerCheck());
         }
 
         public void Win(int winPlayer)
@@ -342,20 +381,30 @@ namespace Assets.Scripts.Bar05
             {
                 //0がプレイヤー
                 case 0:
-                    playerMoney += fieldBet;
+                    playerMoney += fieldBet + enemyBet;
+                    Debug.Log("PlayerWIN");
                     break;
 
                 //1が敵
                 case 1:
-                    enemyMoney += fieldBet;
+                    enemyMoney += fieldBet + playerBet;
+                    Debug.Log("EnemyWIN");
                     break;
 
                 //-1が引き分け
                 case -1:
                     playerMoney += 1;
                     enemyMoney += 1;
+                    Debug.Log("Drow");
                     break;
             }
+
+            enemy.EnemyBetTextChange();
+            enemy.EnemyPhaseChange();
+            betS.BetTextChange();
+            betS.PhaseChange();
+            Debug.Log(startBtn);
+            startBtn.SetActive(true);
         }
     }
 }
