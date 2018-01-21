@@ -9,7 +9,7 @@ namespace Assets.Scripts.Game02 {
     public class GameController : MonoBehaviour {
 		[SerializeField] Button shotBtn;
 		[SerializeField] Button reloadBtn;
-		[SerializeField] Shot _scope;
+		[SerializeField] ScopeController _scope;
 		SpriteRenderer scopeRenderer {
 			get {
 				return _scope.gameObject.GetComponent<SpriteRenderer> ();
@@ -35,9 +35,8 @@ namespace Assets.Scripts.Game02 {
 			var touchPos = Input.mousePosition;
 			var screenPos = Camera.main.ScreenToWorldPoint (touchPos);
 			screenPos.z = -0.5f;
-//			Debug.Log ("Pos:" + screenPos);
 			scopeRenderer.enabled = true;
-			_scope.gameObject.transform.position= screenPos;
+			_scope.Move (screenPos);
 			#if UNITY_EDITOR
 			if(Input.GetKeyDown(KeyCode.S)){
 				_scope.Snipe();
