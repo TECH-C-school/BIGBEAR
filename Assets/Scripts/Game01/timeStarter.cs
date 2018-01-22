@@ -69,15 +69,22 @@ public class timeStarter : MonoBehaviour
         {
             timerGo = 20;
             Attack.gameObject.SetActive(false);
-            RightTime = 0;
+            LeftTime = 5;
+            RightTime = 00;
         }
-        else if(maingame.round == 2 && LeftTime == 3 && RightTime > 50 && 60 > RightTime)
+        else if(maingame.round == 2 && LeftTime == 3)
         {
-            Debug.Log("確認");
             timerGo = 20;
             Attack.gameObject.SetActive(false);
             LeftTime = 3;
-            RightTime = 50;
+            RightTime = 00;
+        }
+        else if (maingame.round == 3 && LeftTime == 1)
+        {
+            timerGo = 20;
+            Attack.gameObject.SetActive(false);
+            LeftTime = 1;
+            RightTime = 00;
         }
 
         PlayerPrefs.SetString("TimeR", stringTimeR);

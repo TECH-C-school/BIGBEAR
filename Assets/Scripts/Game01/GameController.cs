@@ -9,6 +9,7 @@ namespace Assets.Scripts.Game01
     {
         public void TransitionToResult()
         {
+            PlayerPrefs.DeleteKey("round");
             SceneManager.LoadScene("Result");
         }
     }

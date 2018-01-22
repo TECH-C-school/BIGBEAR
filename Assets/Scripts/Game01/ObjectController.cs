@@ -28,8 +28,6 @@ public class ObjectController : MonoBehaviour
     private Image enemy2_draw;
     private Image enemy2_lost;
     private Image enemy3_stand;
-    private Image enemy3_win;
-    private Image enemy3_lost;
 
     mainGame maingame;
     timeStarter timer;
@@ -149,11 +147,41 @@ public class ObjectController : MonoBehaviour
                 enemy2_stand.gameObject.SetActive(true);
             }
         }
+        if (maingame.round == 3)
+        {
+            if (timer.timerGo == 10 && maingame.touchStart == 10)
+            {
+                player3_stand.gameObject.SetActive(false);
+                enemy3_stand.gameObject.SetActive(false);
+                player3_win.gameObject.SetActive(true);
+            }
+            if (timer.timerGo == 20 && maingame.battleLost == 10)
+            {
+                player3_stand.gameObject.SetActive(false);
+                enemy3_stand.gameObject.SetActive(false);
+                player3_lost.gameObject.SetActive(true);
+
+                StartCoroutine(Result());
+            }
+            if (maingame.battleDraw == 10)
+            {
+                player3_stand.gameObject.SetActive(false);
+                enemy3_stand.gameObject.SetActive(false);
+                player3_draw.gameObject.SetActive(true);
+                //enemy3_draw.gameObject.SetActive(true);
+            }
+            if (timer.timerGo == 0 && maingame.touchStart == 0 && maingame.battleLost == 0 && maingame.battleDraw == 0)
+            {
+                player3_stand.gameObject.SetActive(true);
+                enemy3_stand.gameObject.SetActive(true);
+            }
+        }
     }
 
     IEnumerator Result()
     {
         yield return new WaitForSeconds(2f);
+        PlayerPrefs.DeleteKey("round");
         SceneManager.LoadScene("Result");
     }
 }
