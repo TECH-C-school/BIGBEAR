@@ -4,19 +4,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> 同役の時の処理(残り全て)
+ * 今回作業 --> Phase切り替えの画像切り替え実装
+ *              チップ掛ける為のスクリプト作成
+ *              KickerBattle修正(したつもり)
+ *              
  */
 
 /*
- * 次回作業 --> 
- */
-
-/*
- * 今後実装 --> PhaseViewの修正(Prefabにしなきゃいけない?)
- *              チップを掛ける
- *              レイアウト等
+ * 次回作業 --> チップスクリプト作成
  *              相手のAI
- *              KickerBattleがおかしいので修正
+ *              PowerPointのスライド作り
+ */
+
+/*
+ * 今後実装 --> アニメーション
+ *              
  */
 
 namespace Assets.Scripts.Bar05
@@ -65,7 +67,7 @@ namespace Assets.Scripts.Bar05
 
             if (IKASAMAActive)
             {
-                int[] IkasamaDeck = { 0, 1, 7, 8, 2, 3, 4, 5, 6 };
+                int[] IkasamaDeck = { 24, 23, 17, 3, 2, 25, 9, 12, 28};
                 for (int i = 0; i < IkasamaDeck.Length; i++)
                 {
                     Deck[i] = IkasamaDeck[i];
@@ -422,7 +424,7 @@ namespace Assets.Scripts.Bar05
                             str = str + StackCards[x - 2] + ":";
                         }
                     }
-                    //**/Debug.Log(str);
+                    /**/Debug.Log(str);
                 }
                 else if (i == 1)
                 {
@@ -440,7 +442,7 @@ namespace Assets.Scripts.Bar05
                             str = str + StackCards[x - 2] + ":";
                         }
                     }
-                    //**/Debug.Log(str);
+                    /**/Debug.Log(str);
                 }
             }
         }
@@ -587,10 +589,8 @@ namespace Assets.Scripts.Bar05
 
         int Player1HandLevel = 0;
         int Player2HandLevel = 0;
-        //int DebugHandLevel = 0;
         int[] Player1NumberManager = new int[13];
         int[] Player2NumberManager = new int[13];
-        //int[] DebugNumberManager = new int[13];
         int Playercount = 0;
         int Player1SubHandLevel = 0;
         int Player2SubHandLevel = 0;
@@ -610,6 +610,20 @@ namespace Assets.Scripts.Bar05
             for (int i = 0; i < CardList.Length; i++)
             {
                 NumberManager[CardList[i] - 1] = NumberManager[CardList[i] - 1] + 1;
+            }
+            if(Playercount == 0)
+            {
+                for(int i = 0; i < NumberManager.Length; i++)
+                {
+                    Player1NumberManager[i] = NumberManager[i];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < NumberManager.Length; i++)
+                {
+                    Player2NumberManager[i] = NumberManager[i];
+                }
             }
 
             //デバッグ用
@@ -888,21 +902,24 @@ namespace Assets.Scripts.Bar05
 
         //どっちのプレイヤーが勝ちかを調べる
 
+        //WhoWinについて
+        //0は負け 1は引き分け 2は勝ち
+        //後に掛けたチップ×WhoWinをする
         int WhoWin;
 
         private void WhoPlayerWin()
         {
-            WhoWin = 0;
+            WhoWin = 1;
             //**/Debug.Log("Player1is" + Player1HandLevel);
             //**/Debug.Log("Player2is" + Player2HandLevel);
             if (Player1HandLevel > Player2HandLevel)
             {
-                WhoWin = 1;
+                WhoWin = 2;
                 Debug.Log("<color=green>Player1Winner</color>");
             }
             else if (Player1HandLevel < Player2HandLevel)
             {
-                WhoWin = 2;
+                WhoWin = 0;
                 Debug.Log("<color=green>Player2Winner</color>");
             }
             else if (Player1HandLevel == Player2HandLevel)
@@ -911,6 +928,7 @@ namespace Assets.Scripts.Bar05
                 //ロイヤルストレートフラッシュを持ち合わせた場合引き分け
                 if (Player1HandLevel == 9)
                 {
+                    WhoWin = 1;
                     Debug.Log("<color=green>引き分け</color>");
                 }
                 //ストレートフラッシュ
@@ -932,6 +950,7 @@ namespace Assets.Scripts.Bar05
                     }
                     if (DrawFlag)
                     {
+                        WhoWin = 1;
                         Debug.Log("<color=green>引き分け</color>");
                     }
 
@@ -979,14 +998,17 @@ namespace Assets.Scripts.Bar05
                     //判定
                     if (Player1HandLevel == Player2HandLevel)
                     {
+                        WhoWin = 1;
                         Debug.Log("<color=green>引き分け</color>");
                     }
                     else if (Player1HandLevel > Player2HandLevel)
                     {
+                        WhoWin = 2;
                         Debug.Log("<color=green>Player1Winner</color>");
                     }
                     else
                     {
+                        WhoWin = 0;
                         Debug.Log("<color=green>Player2Winner</color>");
                     }
                 }
@@ -1005,20 +1027,24 @@ namespace Assets.Scripts.Bar05
                         //Aで勝負がつく場合
                         if(Player1SubHandLevel == 1)
                         {
+                            WhoWin = 2;
                             Debug.Log("<color=green>Player1Winner</color>");
                         }
                         else
                         {
+                            WhoWin = 0;
                             Debug.Log("<color=green>Player2Winner</color>");
                         }
                     }
                     //A以外で勝負がつく場合
                     else if(Player1SubHandLevel > Player2SubHandLevel)
                     {
+                        WhoWin = 2;
                         Debug.Log("<color=green>Player1Winner</color>");
                     }
                     else
                     {
+                        WhoWin = 0;
                         Debug.Log("<color=green>Player2Winner</color>");
                     }
                 }
@@ -1040,20 +1066,24 @@ namespace Assets.Scripts.Bar05
                             {
                                 if(Player1ThreeCard[a] == 1)
                                 {
+                                    WhoWin = 2;
                                     Debug.Log("<color=green>Player1Winner</color>");
                                 }
                                 else
                                 {
+                                    WhoWin = 0;
                                     Debug.Log("<color=green>Player2Winner</color>");
                                 }
                             }
                             //A以外で勝負
                             else if(Player1ThreeCard[a] > Player2ThreeCard[a])
                             {
+                                WhoWin = 2;
                                 Debug.Log("<color=green>Player1Winner</color>");
                             }
                             else
                             {
+                                WhoWin = 0;
                                 Debug.Log("<color=green>Player2Winner</color>");
                             }
                         }
@@ -1071,14 +1101,17 @@ namespace Assets.Scripts.Bar05
                                         //A同士
                                         if(Player1ThreeCard[a] == Player2ThreeCard[a])
                                         {
+                                            WhoWin = 1;
                                             Debug.Log("<color=green>引き分け</color>");
                                         }
                                         else if(Player1ThreeCard[a] == 1)
                                         {
+                                            WhoWin = 2;
                                             Debug.Log("<color=green>Player1Winner</color>");
                                         }
                                         else
                                         {
+                                            WhoWin = 0;
                                             Debug.Log("<color=green>Player2Winner</color>");
                                         }
                                     }
@@ -1087,10 +1120,12 @@ namespace Assets.Scripts.Bar05
                                     {
                                         if(Player1ThreeCard[a] > Player2ThreeCard[a])
                                         {
+                                            WhoWin = 2;
                                             Debug.Log("<color=green>Player1Winner</color>");
                                         }
                                         else
                                         {
+                                            WhoWin = 0;
                                             Debug.Log("<color=green>Player2Winner</color>");
                                         }
                                     }
@@ -1104,14 +1139,17 @@ namespace Assets.Scripts.Bar05
                                         //A同士
                                         if (Player1ThreeCard[a] == Player2PairCard[0])
                                         {
+                                            WhoWin = 1;
                                             Debug.Log("<color=green>引き分け</color>");
                                         }
                                         else if (Player1ThreeCard[a] == 1)
                                         {
+                                            WhoWin = 2;
                                             Debug.Log("<color=green>Player1Winner</color>");
                                         }
                                         else
                                         {
+                                            WhoWin = 0;
                                             Debug.Log("<color=green>Player2Winner</color>");
                                         }
                                     }
@@ -1120,10 +1158,12 @@ namespace Assets.Scripts.Bar05
                                     {
                                         if (Player1ThreeCard[a] > Player2PairCard[0])
                                         {
+                                            WhoWin = 2;
                                             Debug.Log("<color=green>Player1Winner</color>");
                                         }
                                         else
                                         {
+                                            WhoWin = 0;
                                             Debug.Log("<color=green>Player2Winner</color>");
                                         }
                                     }
@@ -1137,14 +1177,17 @@ namespace Assets.Scripts.Bar05
                                         //A同士
                                         if (Player1PairCard[0] == Player2ThreeCard[a])
                                         {
+                                            WhoWin = 1;
                                             Debug.Log("<color=green>引き分け</color>");
                                         }
                                         else if (Player1PairCard[0] == 1)
                                         {
+                                            WhoWin = 2;
                                             Debug.Log("<color=green>Player1Winner</color>");
                                         }
                                         else
                                         {
+                                            WhoWin = 0;
                                             Debug.Log("<color=green>Player2Winner</color>");
                                         }
                                     }
@@ -1153,10 +1196,12 @@ namespace Assets.Scripts.Bar05
                                     {
                                         if (Player1PairCard[0] > Player2ThreeCard[a])
                                         {
+                                            WhoWin = 2;
                                             Debug.Log("<color=green>Player1Winner</color>");
                                         }
                                         else
                                         {
+                                            WhoWin = 0;
                                             Debug.Log("<color=green>Player2Winner</color>");
                                         }
                                     }
@@ -1169,14 +1214,17 @@ namespace Assets.Scripts.Bar05
                                 //A同士
                                 if (Player1PairCard[0] == Player2PairCard[0])
                                 {
+                                    WhoWin = 1;
                                     Debug.Log("<color=green>引き分け</color>");
                                 }
                                 else if (Player1PairCard[0] == 1)
                                 {
+                                    WhoWin = 2;
                                     Debug.Log("<color=green>Player1Winner</color>");
                                 }
                                 else
                                 {
+                                    WhoWin = 0;
                                     Debug.Log("<color=green>Player2Winner</color>");
                                 }
                             }
@@ -1185,10 +1233,12 @@ namespace Assets.Scripts.Bar05
                             {
                                 if (Player1PairCard[0] > Player2ThreeCard[0])
                                 {
+                                    WhoWin = 2;
                                     Debug.Log("<color=green>Player1Winner</color>");
                                 }
                                 else
                                 {
+                                    WhoWin = 0;
                                     Debug.Log("<color=green>Player2Winner</color>");
                                 }
                             }
@@ -1262,6 +1312,7 @@ namespace Assets.Scripts.Bar05
                     //どっちも0だったら引き分け
                     if(Player1SubHandLevel == 0 || Player2SubHandLevel == 0)
                     {
+                        WhoWin = 1;
                         Debug.Log("<color=green>引き分け</color>");
                     }
                     //Aがあるとき
@@ -1270,20 +1321,24 @@ namespace Assets.Scripts.Bar05
                     {
                         if(Player1SubHandLevel == 1)
                         {
+                            WhoWin = 2;
                             Debug.Log("<color=green>Player1Winner</color>");
                         }
                         else
                         {
+                            WhoWin = 0;
                             Debug.Log("<color=green>Player2Winner</color>");
                         }
                     }
                     //Aが無いとき
                     else if(Player1SubHandLevel > Player2SubHandLevel)
                     {
+                        WhoWin = 2;
                         Debug.Log("<color=green>Player1Winner</color>");
                     }
                     else
                     {
+                        WhoWin = 0;
                         Debug.Log("<color=green>Player2Winner</color>");
                     }
                 }
@@ -1295,14 +1350,17 @@ namespace Assets.Scripts.Bar05
                     {
                         if(Player1StAceFlag)
                         {
+                            WhoWin = 2;
                             Debug.Log("<color=green>Player1Winner</color>");
                         }
                         else if(Player2StAceFlag)
                         {
+                            WhoWin = 0;
                             Debug.Log("<color=green>Player2Winner</color>");
                         }
                         else
                         {
+                            WhoWin = 1;
                             Debug.Log("<color=green>引き分け</color>");
                         }
                     }
@@ -1310,14 +1368,17 @@ namespace Assets.Scripts.Bar05
                     {
                         if(Player1subsubHandLevel > Player2subsubHandLevel)
                         {
+                            WhoWin = 2;
                             Debug.Log("<color=green>Player1Winner</color>");
                         }
                         else if(Player1subsubHandLevel < Player2subsubHandLevel)
                         {
+                            WhoWin = 0;
                             Debug.Log("<color=green>Player2Winner</color>");
                         }
                         else
                         {
+                            WhoWin = 1;
                             Debug.Log("<color=green>引き分け</color>");
                         }
                     }
@@ -1339,20 +1400,24 @@ namespace Assets.Scripts.Bar05
                         {
                             if (Player1ThreeCard[a] == 1)
                             {
+                                WhoWin = 2;
                                 Debug.Log("<color=green>Player1Winner</color>");
                             }
                             else
                             {
+                                WhoWin = 0;
                                 Debug.Log("<color=green>Player2Winner</color>");
                             }
                         }
                         //ペアの数字で勝負がつくとき(A以外)
                         else if (Player1ThreeCard[a] > Player2ThreeCard[a])
                         {
+                            WhoWin = 2;
                             Debug.Log("<color=green>Player1Winner</color>");
                         }
                         else
                         {
+                            WhoWin = 0;
                             Debug.Log("<color=green>Player2Winner</color>");
                         }
                     }
@@ -1374,11 +1439,13 @@ namespace Assets.Scripts.Bar05
                         {
                             if (Player1PairCard[a] == 1)
                             {
+                                WhoWin = 2;
                                 Debug.Log("<color=green>Player1Winner</color>");
                                 break;
                             }
-                            else
+                            else if(Player2PairCard[a] == 1)
                             {
+                                WhoWin = 0;
                                 Debug.Log("<color=green>Player2Winner</color>");
                                 break;
                             }
@@ -1386,11 +1453,13 @@ namespace Assets.Scripts.Bar05
                         //ペアの数字で勝負がつくとき(A以外)
                         else if (Player1PairCard[a] > Player2PairCard[a])
                         {
+                            WhoWin = 2;
                             Debug.Log("<color=green>Player1Winner</color>");
                             break;
                         }
-                        else
+                        else if(Player1PairCard[a] < Player2PairCard[a])
                         {
+                            WhoWin = 0;
                             Debug.Log("<color=green>Player2Winner</color>");
                             break;
                         }
@@ -1414,20 +1483,24 @@ namespace Assets.Scripts.Bar05
                         {
                             if (Player1PairCard[a] == 1)
                             {
+                                WhoWin = 2;
                                 Debug.Log("<color=green>Player1Winner</color>");
                             }
                             else
                             {
+                                WhoWin = 0;
                                 Debug.Log("<color=green>Player2Winner</color>");
                             }
                         }
                         //ペアの数字で勝負がつくとき(A以外)
                         else if (Player1PairCard[a] > Player2PairCard[a])
                         {
+                            WhoWin = 2;
                             Debug.Log("<color=green>Player1Winner</color>");
                         }
                         else
                         {
+                            WhoWin = 0;
                             Debug.Log("<color=green>Player2Winner</color>");
                         }
                     }
@@ -1484,40 +1557,48 @@ namespace Assets.Scripts.Bar05
                         //2枚目もどちらともAだった場合
                         if (Player1subsubHandLevel == Player2subsubHandLevel)
                         {
+                            WhoWin = 1;
                             Debug.Log("<color=green>引き分け</color>");
                         }
                         //2枚目どっちかがAで勝負がつく場合
                         else if (Player1subsubHandLevel == 1)
                         {
+                            WhoWin = 2;
                             Debug.Log("<color=green>Player1Winner</color>");
                         }
                         else
                         {
+                            WhoWin = 0;
                             Debug.Log("<color=green>Player2Winner</color>");
                         }
                     }
                     //2枚目がAでなくて、引き分けだった場合
                     else if (Player1subsubHandLevel == Player2subsubHandLevel)
                     {
+                        WhoWin = 1;
                         Debug.Log("<color=green>引き分け</color>");
                     }
                     //2枚目がAでなくて、勝負がつく場合
                     else if (Player1subsubHandLevel > Player2subsubHandLevel)
                     {
+                        WhoWin = 2;
                         Debug.Log("<color=green>Player1Winner</color>");
                     }
                     else
                     {
+                        WhoWin = 0;
                         Debug.Log("<color=green>Player2Winner</color>");
                     }
                 }
                 //Aがどっちかに入っていて、勝負がつく場合
                 else if (Player1SubHandLevel == 1)
                 {
+                    WhoWin = 2;
                     Debug.Log("<color=green>Player1Winner</color>");
                 }
                 else
                 {
+                    WhoWin = 0;
                     Debug.Log("<color=green>Player2Winner</color>");
                 }
             }
@@ -1530,211 +1611,151 @@ namespace Assets.Scripts.Bar05
                     //2枚目もどちらともAだった場合
                     if (Player1subsubHandLevel == Player2subsubHandLevel)
                     {
+                        WhoWin = 1;
                         Debug.Log("<color=green>引き分け</color>");
                     }
                     //2枚目どっちかがAで勝負がつく場合
                     else if (Player1subsubHandLevel == 1)
                     {
+                        WhoWin = 2;
                         Debug.Log("<color=green>Player1Winner</color>");
                     }
                     else
                     {
+                        WhoWin = 0;
                         Debug.Log("<color=green>Player2Winner</color>");
                     }
                 }
                 //2枚目がAでなくて、引き分けだった場合
                 else if (Player1subsubHandLevel == Player2subsubHandLevel)
                 {
+                    WhoWin = 1;
                     Debug.Log("<color=green>引き分け</color>");
                 }
                 //2枚目がAでなくて、勝負がつく場合
                 else if (Player1subsubHandLevel > Player2subsubHandLevel)
                 {
+                    WhoWin = 2;
                     Debug.Log("<color=green>Player1Winner</color>");
                 }
                 else
                 {
+                    WhoWin = 0;
                     Debug.Log("<color=green>Player2Winner</color>");
                 }
             }
             //1枚目がAではなくて、勝負がつく場合
             else if (Player1HandLevel > Player2HandLevel)
             {
+                WhoWin = 2;
                 Debug.Log("<color=green>Player1Winner</color>");
             }
             else
             {
+                WhoWin = 0;
                 Debug.Log("<color=green>Player2Winner</color>");
             }
             //なげーよ
         }
 
         //ペア系・スリーカード系の判定用
-        int[] Player1Kickers = new int[7];
-        int[] Player2Kickers = new int[7];
+
+        //Player1NumberManager;
+        //Player2NumberManager;
+        int[] Player1Kickers = new int[5];
+        int[] Player2Kickers = new int[5];
         bool Player1AceFlag = false;
         bool Player2AceFlag = false;
-        bool FalseFlag = true;
         int tgt = 0;
         private void KickerBattle()
         {
-            for(int i = 0; i < 2; i++)
+            //Player1
+            tgt = 0;
+            //Aを見る
+            if(Player1NumberManager[0] == 1)
             {
-                //Player1
-                if(i == 0)
+                Player1AceFlag = true;
+            }
+            for(int i = 12; i > 0; i--)
+            {
+                Debug.Log(Player1NumberManager[i]);
+                if(Player1NumberManager[i] == 1)
                 {
-                    tgt = 0;
-                    //キッカーに数字を入れる
-                    for(int y = 0; y < Player1NumHands.Length; y++)
-                    {
-                        //AがあったらFlagをONにする
-                        if(Player1NumHands[y] % 13 + 1 == 1)
-                        {
-                            Player1AceFlag = true;
-                        }
-                        FalseFlag = true;
-                        //比較
-                        for(int x = 0; x < 5; x++)
-                        {
-                            //ペア
-                            if(x <= 2)
-                            {
-                                if (Player1NumHands[y] % 13 + 1 == Player1PairCard[x])
-                                {
-                                    FalseFlag = false;
-                                    break;
-                                }
-                            }
-                            //スリーカード
-                            else
-                            {
-                                if(Player1NumHands[y] % 13 + 1 == Player1ThreeCard[x - 3])
-                                {
-                                    FalseFlag = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if(FalseFlag)
-                        {
-                            Debug.Log(Player1Kickers[tgt]);
-                            Player1Kickers[tgt] = Player1NumHands[y] + 1;
-                            tgt++;
-                        }
-                    }
-                    //ソート
-                    int Left;
-                    int Right;
-                    for(int s = 0; s < Player1Kickers.Length - 1; i++)
-                    {
-                        Left = Player1Kickers[s];
-                        Right = Player1Kickers[s + 1];
-                        //0だったら無視する
-                        if (Left != 0 & Right != 0 & Left > Right)
-                        {
-                            Player1Kickers[s] = Right;
-                            Player1Kickers[s + 1] = Left;
-                            s = 0;
-                        }
-                    }
+                    Player1Kickers[tgt] = i + 1;
+                    Debug.Log(Player1Kickers[tgt]);
+                    tgt++;
                 }
-                //Player2
-                else
+            }
+            //Player2
+            tgt = 0;
+            //Aを見る
+            if (Player2NumberManager[0] == 1)
+            {
+                Player2AceFlag = true;
+            }
+            for (int i = 12; i > 0; i--)
+            {
+                if (Player2NumberManager[i] == 1)
                 {
-                    tgt = 0;
-                    //キッカーに数字を入れる
-                    for (int y = 0; i < Player2NumHands.Length; y++)
-                    {
-                        //AがあったらFlagをONにする
-                        if (Player2NumHands[y] % 13 + 1 == 1)
-                        {
-                            Player2AceFlag = true;
-                        }
-                        FalseFlag = true;
-                        //比較
-                        for (int x = 0; x < 5; x++)
-                        {
-                            //ペア
-                            if (x <= 2)
-                            {
-                                if (Player2NumHands[y] % 13 + 1 == Player2PairCard[x])
-                                {
-                                    FalseFlag = false;
-                                    break;
-                                }
-                            }
-                            //スリーカード
-                            else
-                            {
-                                if (Player2NumHands[y] % 13 + 1 == Player2ThreeCard[x - 3])
-                                {
-                                    FalseFlag = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (FalseFlag)
-                        {
-                            Player2Kickers[tgt] = Player2NumHands[y] + 1;
-                            tgt++;
-                        }
-                    }
-                    //ソート
-                    int Left;
-                    int Right;
-                    for (int s = 0; s < Player2Kickers.Length - 1; i++)
-                    {
-                        Left = Player2Kickers[s];
-                        Right = Player2Kickers[s + 1];
-                        //降順にしたい
-                        if (Left < Right)
-                        {
-                            Player2Kickers[s] = Right;
-                            Player2Kickers[s + 1] = Left;
-                            s = 0;
-                        }
-                    }
+                    Player2Kickers[tgt] = i + 1;
+                    Debug.Log(Player2Kickers[tgt]);
+                    tgt++;
                 }
             }
             //判定
-            bool ThisConclusion = true;
-            //両方ともAだった場合スルーする
-            if (Player1AceFlag & Player2AceFlag)
+            //Aがあれば決着
+            if(Player1AceFlag || Player2AceFlag)
             {
-                //(スルーするので処理は)ないです
+                if(Player1AceFlag & Player2AceFlag)
+                {
+                    for(int i = 0; i < Player1Kickers.Length; i++)
+                    {
+                        if(Player1Kickers[i] > Player2Kickers[i])
+                        {
+                            WhoWin = 2;
+                            Debug.Log("<color=green>Player1Winner</color>");
+                            break;
+                        }
+                        else if(Player1Kickers[i] < Player2Kickers[i])
+                        {
+                            WhoWin = 0;
+                            Debug.Log("<color=green>Player0Winner</color>");
+                            break;
+                        }
+                    }
+                }
+                else if(Player1AceFlag)
+                {
+                    WhoWin = 2;
+                    Debug.Log("<color=green>Player1Winner</color>");
+                }
+                else
+                {
+                    WhoWin = 0;
+                    Debug.Log("<color=green>Player2Winner</color>");
+                }
             }
-            else if(Player1AceFlag)
-            {
-                ThisConclusion = false;
-                Debug.Log("<color=green>Player1Winner</color>");
-            }
-            else if(Player2AceFlag)
-            {
-                ThisConclusion = false;
-                Debug.Log("<color=green>Player2Winner</color>");
-            }
-            //決着が着いていたら入らない
-            if(ThisConclusion)
+            else
             {
                 for (int i = 0; i < Player1Kickers.Length; i++)
                 {
-                    //引き分けはループ
-                    if (Player1Kickers[i] == Player2Kickers[i])
+                    if (Player1Kickers[i] > Player2Kickers[i])
                     {
-                        //なにもしない
-                    }
-                    else if(Player1Kickers[i] > Player2Kickers[i])
-                    {
+                        WhoWin = 2;
                         Debug.Log("<color=green>Player1Winner</color>");
+                        break;
                     }
-                    else
+                    else if (Player1Kickers[i] < Player2Kickers[i])
                     {
+                        WhoWin = 0;
                         Debug.Log("<color=green>Player2Winner</color>");
+                        break;
                     }
                 }
             }
         }
 
+        
         //役の判定ここまで
 
         //ゲーム進行ここから
@@ -1814,16 +1835,19 @@ namespace Assets.Scripts.Bar05
             {
                 TurnStackCard(1);
                 PhaseControll(1);
+                _Phase++;
             }
             if (_Phase == GamePhase.ThirdBet)
             {
                 TurnStackCard(2);
                 PhaseControll(2);
+                _Phase++;
             }
             if (_Phase == GamePhase.FinalBet)
             {
                 TurnStackCard(3);
                 PhaseControll(3);
+                _Phase++;
             }
             if (_Phase == GamePhase.Result)
             {

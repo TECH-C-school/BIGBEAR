@@ -20,5 +20,25 @@ public class PhaseSwitch : MonoBehaviour {
     public void PhaseChange(int PhaseNum)
     {
         Debug.Log("Phase is" + PhaseNum);
+        if(PhaseNum == 0)
+        {
+            MainSpriteRenderer.sprite = PreFlop;
+        }
+        else if (PhaseNum == 1)
+        {
+            MainSpriteRenderer.sprite = Flop;
+        }
+        else if (PhaseNum == 2)
+        {
+            MainSpriteRenderer.sprite = Turn;
+        }
+        else if (PhaseNum == 3)
+        {
+            MainSpriteRenderer.sprite = River;
+        }
+        else if (PhaseNum == 4)
+        {
+            MainSpriteRenderer.sprite = ShowDown;
+        }
     }
 }
