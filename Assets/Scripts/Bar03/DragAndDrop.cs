@@ -36,7 +36,7 @@ namespace Assets.Scripts.Bar03
                 var selfHeight = gameObject.GetComponent<SpriteRenderer>().bounds.size.y;
 
 
-                if (GameController.flag == false&&_number==1)
+                if (GameController.flag == false && _number==1)
                 {
                     if (tapPoint.x >= selfPoint.x - selfWidth / 2 && tapPoint.x <= selfPoint.x + selfWidth / 2 && tapPoint.y >= selfPoint.y - selfHeight / 2 && tapPoint.y <= selfPoint.y + selfHeight / 2)
                     {

@@ -177,6 +177,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(-6.11f, i * 0.31f - -2.05f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card2 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row2[i].Number, Row2[i].mark));
@@ -193,6 +195,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(-4.37f, i * 0.31f - -2.05f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card3 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row3[i].Number, Row3[i].mark));
@@ -209,6 +213,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(-2.633f, i * 0.31f - -2.05f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card4 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row4[i].Number, Row4[i].mark));
@@ -225,6 +231,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(-0.87f, i * 0.31f - -2.362f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card5 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row5[i].Number, Row5[i].mark));
@@ -241,6 +249,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(0.87f, i * 0.31f - -2.362f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card6 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row6[i].Number, Row6[i].mark));
@@ -257,6 +267,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(2.62f, i * 0.31f - -2.362f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card7 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row7[i].Number, Row7[i].mark));
@@ -273,6 +285,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(4.37f, i * 0.31f - -2.362f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card8 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row8[i].Number, Row8[i].mark));
@@ -289,6 +303,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(6.11f, i * 0.31f - -2.362f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card9 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row9[i].Number, Row9[i].mark));
@@ -305,6 +321,8 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(7.85f, i * 0.31f - -2.362f, i * 0.1f);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var card10 = cardObject.GetComponent<Draganddrop>();
+
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row10[i].Number, Row10[i].mark));
@@ -321,6 +339,7 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(-7.85f, 0 - 2.85f, 0);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
+                var Deck = cardObject.GetComponent<Draganddrop>();
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
 
