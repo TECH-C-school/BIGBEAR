@@ -282,6 +282,10 @@ namespace Assets.Scripts.Bar01
                 startCardSetSaveData.stage4CardNumber = manualStage.stage4CardNumber;
                 startCardSetSaveData.stage5CardType = manualStage.stage5CardTypes;
                 startCardSetSaveData.stage5CardNumber = manualStage.stage5CardNumber;
+                startCardSetSaveData.stage6CardType = manualStage.stage6CardTypes;
+                startCardSetSaveData.stage6CardNumber = manualStage.stage6CardNumber;
+                startCardSetSaveData.stage7CardType = manualStage.stage7CardTypes;
+                startCardSetSaveData.stgae7CardNumber = manualStage.stage7CardNumber;
                 startCardSetSaveData.Save();
             }
         }

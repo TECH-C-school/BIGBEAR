@@ -50,94 +50,7 @@ namespace Assets.Scripts.Bar01 {
 
         private void Start()
         {
-            if (debagMode)
-            {
-                ManualCreateStage manualCreate = GetComponent<ManualCreateStage>();
-                Card[] deckCards = new Card[24];
-                for(int i = 0; i < deckCards.Length; ++i)
-                {
-                    deckCards[i] = new Card
-                    {
-                        CardType = manualCreate.DeckCardTypes[i],
-                        CardNumber = manualCreate.DeckCardNumber[i]
-                    };
-                }
-                Card[][] stageCards =
-                {
-                    new Card[1],
-                    new Card[2],
-                    new Card[3],
-                    new Card[4],
-                    new Card[5],
-                    new Card[6],
-                    new Card[7]
-                };
-                for(int i = 0; i< stageCards[0].Length; ++i)
-                {
-                    stageCards[0][i] = new Card
-                    {
-                        CardType = manualCreate.stage1CardTypes[i],
-                        CardNumber = manualCreate.stage1CardNumber[i]
-                    };
-                }
-                for (int i = 0; i < stageCards[1].Length; ++i)
-                {
-                    stageCards[1][i] = new Card
-                    {
-                        CardType = manualCreate.stage2CardTypes[i],
-                        CardNumber = manualCreate.stage2CardNumber[i]
-                    };
-                }
-                for (int i = 0; i < stageCards[2].Length; ++i)
-                {
-                    stageCards[2][i] = new Card
-                    {
-                        CardType = manualCreate.stage3CardTypes[i],
-                        CardNumber = manualCreate.stage3CardNumber[i]
-                    };
-                }
-                for (int i = 0; i < stageCards[3].Length; ++i)
-                {
-                    stageCards[3][i] = new Card
-                    {
-                        CardType = manualCreate.stage4CardTypes[i],
-                        CardNumber = manualCreate.stage4CardNumber[i]
-                    };
-                }
-                for (int i = 0; i < stageCards[4].Length; ++i)
-                {
-                    stageCards[4][i] = new Card
-                    {
-                        CardType = manualCreate.stage5CardTypes[i],
-                        CardNumber = manualCreate.stage5CardNumber[i]
-                    };
-                }
-                for (int i = 0; i < stageCards[5].Length; ++i)
-                {
-                    stageCards[5][i] = new Card
-                    {
-                        CardType = manualCreate.stage6CardTypes[i],
-                        CardNumber = manualCreate.stage6CardNumber[i]
-                    };
-                }
-                for (int i = 0; i < stageCards[6].Length; ++i)
-                {
-                    stageCards[6][i] = new Card
-                    {
-                        CardType = manualCreate.stage7CardTypes[i],
-                        CardNumber = manualCreate.stage7CardNumber[i]
-                    };
-                }
-                CreateCardDebag(startPosition, endPosition, 6, 0.08f,stageCards,deckCards);
-            }
-            else
-            {
-                //カード生成（Normal)
-                //CreateCardNoaml(startPosition, endPosition, 6, 0.08f);
-
-                //カード生成（ランダム)
-                CreateCard(startPosition, endPosition, 6, 0.08f);
-            }
+            //CreateCard(startPosition, endPosition, 6, 0.08f);
         }
         private void Update()
         {
@@ -251,6 +164,14 @@ namespace Assets.Scripts.Bar01 {
             }
         }
 
+
+        /// <summary>
+        /// カードの生成（Normal）バグの疑いあり
+        /// </summary>
+        /// <param name="startPoint"></param>
+        /// <param name="endPoint"></param>
+        /// <param name="sprit"></param>
+        /// <param name="interval"></param>
         private void CreateCardNoaml(Vector3 startPoint, Vector3 endPoint, int sprit, float interval)
         {
             //カードのオブジェクトデータ
@@ -335,6 +256,10 @@ namespace Assets.Scripts.Bar01 {
             }
         }
 
+        /// <summary>
+        /// カード生成時の列のランダム決定
+        /// </summary>
+        /// <returns></returns>
         private int ChackMakeStage()
         {
             for(int t = 0; t < 7; t++)
@@ -357,7 +282,7 @@ namespace Assets.Scripts.Bar01 {
         }
 
         /// <summary>
-        /// カードを生成します。
+        /// カードを生成します。(ランダム)
         /// </summary>
         private void CreateCard(Vector3 startPoint, Vector3 endPoint, int sprit, float interval)
         {
@@ -408,7 +333,10 @@ namespace Assets.Scripts.Bar01 {
             }
         }
 
-
+        /// <summary>
+        /// カードを順番通りに生成
+        /// </summary>
+        /// <returns></returns>
         private Card[] NomalMakeCard()
         {
             Card[] numbers = new Card[52];
@@ -451,6 +379,94 @@ namespace Assets.Scripts.Bar01 {
                 counter++;
             }
             return numbers;
+        }
+
+        /// <summary>
+        /// クリアできる配置のモード
+        /// </summary>
+        private void CreateCardClearMode()
+        {
+            //セーブデータのロード
+            StartCardSetSaveData saveData = StartCardSetSaveData.Instance;
+            saveData.Reload();
+            Card[] deckCards = new Card[24];
+            for (int i = 0; i < deckCards.Length; ++i)
+            {
+                deckCards[i] = new Card
+                {
+                    CardType = saveData.deckCardsType[i],
+                    CardNumber = saveData.deckCardsNumber[i]
+                };
+            }
+            Card[][] stageCards =
+            {
+                    new Card[1],
+                    new Card[2],
+                    new Card[3],
+                    new Card[4],
+                    new Card[5],
+                    new Card[6],
+                    new Card[7]
+            };
+            for (int i = 0; i < stageCards[0].Length; ++i)
+            {
+                stageCards[0][i] = new Card
+                {
+                    CardType = saveData.stage1CaadsType,
+                    CardNumber = saveData.stage1CardNumber
+                };
+            }
+            for (int i = 0; i < stageCards[1].Length; ++i)
+            {
+                stageCards[1][i] = new Card
+                {
+                    CardType = saveData.stage2CardsTyoe[i],
+                    CardNumber = saveData.stage2CardsNumber[i]
+                };
+            }
+            for (int i = 0; i < stageCards[2].Length; ++i)
+            {
+                stageCards[2][i] = new Card
+                {
+                    CardType = saveData.stage3CardsType[i],
+                    CardNumber = saveData.stage3CardsNumber[i]
+                };
+            }
+            for (int i = 0; i < stageCards[3].Length; ++i)
+            {
+                stageCards[3][i] = new Card
+                {
+                    CardType = saveData.stage4CardType[i],
+                    CardNumber = saveData.stage4CardNumber[i]
+                };
+            }
+            for (int i = 0; i < stageCards[4].Length; ++i)
+            {
+                stageCards[4][i] = new Card
+                {
+                    CardType = saveData.stage5CardType[i],
+                    CardNumber = saveData.stage5CardNumber[i]
+                };
+            }
+            for (int i = 0; i < stageCards[5].Length; ++i)
+            {
+                stageCards[5][i] = new Card
+                {
+                    CardType = saveData.stage6CardType[i],
+                    CardNumber = saveData.stage6CardNumber[i]
+                };
+            }
+            for (int i = 0; i < stageCards[6].Length; ++i)
+            {
+                Debug.Log(saveData.stage7CardType[i]);
+                stageCards[6][i] = new Card
+                {
+                    
+                    CardType = saveData.stage7CardType[i],
+                    CardNumber = saveData.stgae7CardNumber[i]
+                };
+            }
+            CreateCardDebag(startPosition, endPosition, 6, 0.08f, stageCards, deckCards);
         }
 
         /// <summary>
@@ -971,6 +987,14 @@ namespace Assets.Scripts.Bar01 {
         {
             startFlg = i;
             startCanvas.enabled = false;
+            if(i == 1)
+            {
+                CreateCard(startPosition, endPosition, 6, 0.08f);
+            }
+            else if(i == 2)
+            {
+                CreateCardClearMode();
+            }
         }
     }
 }
