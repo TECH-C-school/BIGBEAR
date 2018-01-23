@@ -22,7 +22,6 @@ namespace Assets.Scripts.Bar07
             if (CC.mycoins > 0 && CC.createflag == true)
             {
                 CC.coincreate(transform.position);
-                CC.CoinResult(-1);
             }
 
         }

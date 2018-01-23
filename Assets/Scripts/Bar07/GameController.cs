@@ -110,6 +110,7 @@ namespace Assets.Scripts.Bar07 {
                     }
                     else
                     {
+                        CC.BetController(0);
                         FazeStart();
 
                     }
@@ -143,6 +144,8 @@ namespace Assets.Scripts.Bar07 {
                     CC.coins[2].SetActive(false);
                     break;
             }
+
+
 
             timers = 8;
             thisfaze = false;
@@ -188,12 +191,11 @@ namespace Assets.Scripts.Bar07 {
             {
                 CC.betcoins = CC.betcoins * -1;
             }
-
+            
             timers = 12;
             timerflag = true;
             thisfaze = true;
             CC.createflag = true;
-
         }
 
         //指定した分(１＝半枚)位置を右にずらしてカードを２枚ずつ生成する
@@ -204,7 +206,7 @@ namespace Assets.Scripts.Bar07 {
             Card = Instantiate((GameObject)Resources.Load("Prefabs/Bar07/Card"), transform.position = new Vector3(2+pos, 0, -1), Quaternion.identity);
             Card.name = "Card" + (pos * 2 + 1).ToString();
 
-        }
+        } 
 
 
         public void TransitionToResult() {

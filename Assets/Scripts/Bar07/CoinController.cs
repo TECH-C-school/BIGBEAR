@@ -37,12 +37,13 @@ namespace Assets.Scripts.Bar07
         private void Start()
         {
             //子オブジェクトを取得
+            bet = gameObject.transform.FindChild("bet").gameObject;
             counto = gameObject.transform.FindChild("counto").gameObject;
             countt = gameObject.transform.FindChild("countt").gameObject;
             counth = gameObject.transform.FindChild("counth").gameObject;
             counton = gameObject.transform.FindChild("counton").gameObject;
             countte = gameObject.transform.FindChild("countte").gameObject;
-            bet = gameObject.transform.FindChild("bet").gameObject;
+            
             CoinResult(10);
         }
 
@@ -136,6 +137,7 @@ namespace Assets.Scripts.Bar07
                         coins[0].transform.position = ins + new Vector3(0, 0.35f, -1);
 
                         betcoins = 1;
+                        CoinResult(-1);
                         BetController(1);
                     }
                     else if (ins.x > 0)
@@ -148,6 +150,7 @@ namespace Assets.Scripts.Bar07
                         coins[0].transform.position = ins + new Vector3(0, 0.35f, -1);
 
                         betcoins = 10;
+                        CoinResult(-1);
                         BetController(1);
                     }
                     else if (ins.x == 0)
@@ -160,6 +163,7 @@ namespace Assets.Scripts.Bar07
                         coins[0].transform.position = ins + new Vector3(0, 0.35f, -1);
 
                         betcoins = 100;
+                        CoinResult(-1);
                         BetController(1);
                     }
                     break;
@@ -172,9 +176,10 @@ namespace Assets.Scripts.Bar07
                             coins[1] = Instantiate(coin, transform.position, Quaternion.identity);
                         }
                         coins[1].SetActive(true);
-                        coins[1].transform.position = ins + new Vector3(0.48f, 0, -1);
+                        coins[1].transform.position = ins + new Vector3(0.48f, 0, -1.1f);
 
                         betcoins = 2;
+                        CoinResult(-1);
                         BetController(2);
                     }
                     break;
@@ -187,9 +192,10 @@ namespace Assets.Scripts.Bar07
                             coins[2] = Instantiate(coin, transform.position, Quaternion.identity);
                         }
                         coins[2].SetActive(true);
-                        coins[2].transform.position = ins + new Vector3(-0.4f, -0.34f, -1);
+                        coins[2].transform.position = ins + new Vector3(-0.4f, -0.34f, -1.2f);
 
                         betcoins = 3;
+                        CoinResult(-1);
                         BetController(3);
                     }
                     break;
@@ -204,9 +210,10 @@ namespace Assets.Scripts.Bar07
                             coins[1] = Instantiate(coin, transform.position, Quaternion.identity);
                         }
                         coins[1].SetActive(true);
-                        coins[1].transform.position = ins + new Vector3(0.48f, 0, -1);
+                        coins[1].transform.position = ins + new Vector3(0.48f, 0, -1.1f);
 
                         betcoins = 20;
+                        CoinResult(-1);
                         BetController(2);
                     }
                     break;
@@ -218,9 +225,10 @@ namespace Assets.Scripts.Bar07
                             coins[2] = Instantiate(coin, transform.position, Quaternion.identity);
                         }
                         coins[2].SetActive(true);
-                        coins[2].transform.position = ins + new Vector3(-0.4f, -0.34f, -1);
+                        coins[2].transform.position = ins + new Vector3(-0.4f, -0.34f, -1.2f);
 
                         betcoins = 30;
+                        CoinResult(-1);
                         BetController(3);
                     }
                     break;
@@ -235,9 +243,10 @@ namespace Assets.Scripts.Bar07
                             coins[1] = Instantiate(coin, transform.position, Quaternion.identity);
                         }
                         coins[1].SetActive(true);
-                        coins[1].transform.position = ins + new Vector3(0.19f, 0, -1);
+                        coins[1].transform.position = ins + new Vector3(0.19f, 0, -1.1f);
 
                         betcoins = 200;
+                        CoinResult(-1);
                         BetController(2);
                     }
                     break;
@@ -249,9 +258,10 @@ namespace Assets.Scripts.Bar07
                             coins[2] = Instantiate(coin, transform.position, Quaternion.identity);
                         }
                         coins[2].SetActive(true);
-                        coins[2].transform.position = ins + new Vector3(-0.21f, -0.34f, -1);
+                        coins[2].transform.position = ins + new Vector3(-0.21f, -0.34f, -1.2f);
 
                         betcoins = 300;
+                        CoinResult(-1);
                         BetController(3);
                     }
                     break;
@@ -311,30 +321,32 @@ namespace Assets.Scripts.Bar07
 
             //枚数算出
             int number = -1 * (CC.betcoins / 100 + CC.betcoins / 10 + CC.betcoins) % 100 % 10;
-
-            switch (number)
+            if (CC.mycoins >= number)
             {
-                case 1:
-                    CC.coins[0].SetActive(true);
-                    CC.BetController(number);
-                    CC.betcoins = CC.betcoins * -1;
-                    CC.CoinResult(-1);
-                    break;
-                case 2:
-                    CC.coins[0].SetActive(true);
-                    CC.coins[1].SetActive(true);
-                    CC.BetController(number);
-                    CC.betcoins = CC.betcoins * -1;
-                    CC.CoinResult(-2);
-                    break;
-                case 3:
-                    CC.coins[0].SetActive(true);
-                    CC.coins[1].SetActive(true);
-                    CC.coins[2].SetActive(true);
-                    CC.BetController(number);
-                    CC.betcoins = CC.betcoins * -1;
-                    CC.CoinResult(-3);
-                    break;
+                switch (number)
+                {
+                    case 1:
+                        CC.coins[0].SetActive(true);
+                        CC.BetController(number);
+                        CC.betcoins = CC.betcoins * -1;
+                        CC.CoinResult(-1);
+                        break;
+                    case 2:
+                        CC.coins[0].SetActive(true);
+                        CC.coins[1].SetActive(true);
+                        CC.BetController(number);
+                        CC.betcoins = CC.betcoins * -1;
+                        CC.CoinResult(-2);
+                        break;
+                    case 3:
+                        CC.coins[0].SetActive(true);
+                        CC.coins[1].SetActive(true);
+                        CC.coins[2].SetActive(true);
+                        CC.BetController(number);
+                        CC.betcoins = CC.betcoins * -1;
+                        CC.CoinResult(-3);
+                        break;
+                }
             }
 
 

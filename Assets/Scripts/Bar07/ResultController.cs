@@ -152,7 +152,7 @@ namespace Assets.Scripts.Bar07
             }
         }
 
-        //ゲームごとにデータを初期化するための処理
+        //ゲームごとにスコアデータを初期化するための処理
         public void ResetScore()
         {
             playermessage.SetActive(false);
