@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,11 +13,17 @@ namespace Assets.Scripts.Bar05
         public int enemyBetMoney;
         public int playerMoney;
 
+        public GameObject resetBtn;
+
+        private int enemyMoney;
         private int fieldMoneyTemp;
         private int playerMoneyTemp;
         private bool start;
+        private bool menuBool;
         private GameObject betCanvas;
         private GameObject startCanvas;
+        private GameObject menuBtn;
+        private GameObject posePanel;
         private GameObject betText;
         private GameObject betText2;
         private GameObject moneyText;
@@ -34,13 +41,19 @@ namespace Assets.Scripts.Bar05
         {
             betCanvas = GameObject.Find("BetCanvas");
             startCanvas = GameObject.Find("StartCanvas");
+            menuBtn = GameObject.Find("Menu");
+            posePanel = GameObject.Find("PosePanel");
+            resetBtn = GameObject.Find("Reset");
             betText = GameObject.Find("PlayerBet");
             betText2 = GameObject.Find("PlayerBet2");
             moneyText = GameObject.Find("PlayerMoney");
             moneyText2 = GameObject.Find("PlayerMoney2");
             betCanvas.SetActive(false);
+            resetBtn.SetActive(false);
+            posePanel.SetActive(false);
             BetChange();
-            BetTextChange();
+            MoneyTextChange(playerMoney);
+            BetTextChange(0);
         }
 
         void BetChange()
@@ -49,9 +62,17 @@ namespace Assets.Scripts.Bar05
             playerBetMoney = phase.playerBet;
             enemyBetMoney = phase.enemyBet;
             playerMoney = phase.playerMoney;
+            enemyMoney = phase.enemyMoney;
         }
 
-        public void BetTextChange()
+        void PhaseChange()
+        {
+            phase.fieldBet = fieldBetMoney;
+            phase.playerBet = playerBetMoney;
+            phase.playerMoney = playerMoney;
+        }
+
+        public void BetTextChange(int playerBetMoney)
         {
             string betSubStr = playerBetMoney.ToString().Substring(0,1); ;
             string betSubStr2 = "";
@@ -74,16 +95,12 @@ namespace Assets.Scripts.Bar05
             betText.GetComponent<SpriteRenderer>().sprite = textTemp;
         }
 
-        public void PhaseChange()
+        public void MoneyTextChange(int playerMoney)
         {
-            phase.fieldBet = fieldBetMoney;
-            phase.playerBet = playerBetMoney;
-            phase.playerMoney =  playerMoney;
-
             string moneySubStr = playerMoney.ToString().Substring(0, 1);
             string moneySubStr2 = "";
 
-            if (playerMoney > 9)
+            if (playerMoney >= 10)
             {
                 moneySubStr2 = playerMoney.ToString().Substring(1, 1);
 
@@ -93,63 +110,67 @@ namespace Assets.Scripts.Bar05
             }
             else
             {
-                moneyText.transform.position = new Vector3(-6.15f, -1.82f, -1f);
+                moneyText2.GetComponent<SpriteRenderer>().sprite = null;
+                moneyText.transform.localPosition = new Vector3(-6.15f, -1.82f, -1f);
             }
 
             var textTemp = Resources.Load<Sprite>("Images/Bar/t_" + moneySubStr);
             moneyText.GetComponent<SpriteRenderer>().sprite = textTemp;
         }
 
-        public void Check()
+        void GoNext()
         {
-            Debug.Log("Player : Check");
             betCanvas.SetActive(false);
             PhaseChange();
-            BetTextChange();
+            MoneyTextChange(playerMoney);
+            BetTextChange(playerBetMoney);
+            enemy.EnemyBet();
+        }
+
+        public void Check()
+        {
+            BetChange();
+            Debug.Log("Player : Check");
+            betCanvas.SetActive(false);
             enemy.EnemyBet();
         }
 
         public void Call()
         {
-            if (fieldBetMoney > 0)
-            {
-                BetChange();
-                playerMoney -= fieldBetMoney - playerBetMoney;
-                playerBetMoney = fieldBetMoney;
-            }
-            else
-            {
-                playerMoney -= 1;
-                playerBetMoney = 1;
-                fieldBetMoney = 1;
-            }
+            BetChange();
+
+            Debug.Log(fieldBetMoney);
+            playerMoney -= fieldBetMoney - playerBetMoney;
+            playerBetMoney = fieldBetMoney;
 
             Debug.Log("Player : Call");
-            PhaseChange();
-            BetTextChange();
-            betCanvas.SetActive(false);
-            enemy.EnemyBet();
+            GoNext();
         }
 
         public void Raise()
         {
-            Debug.Log("Player : Raise");
             BetChange();
-            
-            fieldBetMoney += 2;
-            playerMoney -= fieldBetMoney - playerBetMoney;
-            playerBetMoney = fieldBetMoney;
 
-            PhaseChange();
-            BetTextChange();
-            betCanvas.SetActive(false);
-            enemy.EnemyBet();
+            if (playerMoney >= 2 || enemyMoney <= 1)
+            {
+                Debug.Log("Player : Raise");
+
+                fieldBetMoney = fieldBetMoney + 2;
+
+                if (fieldBetMoney >= 10)fieldBetMoney = 10;
+
+                playerMoney -= fieldBetMoney - playerBetMoney;
+                playerBetMoney = fieldBetMoney;
+
+                GoNext();
+            }
         }
 
         public void StartBtn()
         {
             if (start == false)
             {
+                phase.phaseEnum = Phase.PhaseEnum.スタンバイフェイズ;
                 phase.PhaseManagement(phase.phaseEnum);
                 startCanvas.SetActive(false);
                 start = true;
@@ -174,6 +195,45 @@ namespace Assets.Scripts.Bar05
         {
             betCanvas.SetActive(false);
             phase.Win(1);
+        }
+
+        public void Menu()
+        {
+            if (menuBool == false)
+            {
+                menuBtn.transform.DOLocalMove(new Vector3(470f, 244f, 0f), 0.8f);
+                menuBool = true;
+                posePanel.SetActive(true);
+                resetBtn.SetActive(true);
+            }
+            else
+            {
+                menuBtn.transform.DOLocalMove(new Vector3(620f, 244f, 0f), 0.8f);
+                menuBool = false;
+                posePanel.SetActive(false);
+                resetBtn.SetActive(false);
+            }
+        }
+
+        public void ResetButton()
+        {
+            Destroy(phase.cards);
+            phase.nowPhase.GetComponent<SpriteRenderer>().sprite = null;
+            menuBtn.transform.DOLocalMove(new Vector3(620f, 244f, 0f), 0.8f);
+            menuBool = false;
+            posePanel.SetActive(false);
+            resetBtn.SetActive(false);
+            phase.playerMoney = 20;
+            phase.enemyMoney = 20;
+            phase.GameReset();
+            start = false;
+            startCanvas.SetActive(true);
+        }
+
+        public void ChangeState()
+        {
+            phase.battleImage.SetActive(false);
+            posePanel.SetActive(false);
         }
     }
 }

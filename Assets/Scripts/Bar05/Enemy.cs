@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Bar05
 {
@@ -12,25 +13,32 @@ namespace Assets.Scripts.Bar05
         private int enemyMoney;
         private int enemyNumber1;
         private int enemyNumber2;
+        private int firstBet;
         private int fieldBet;
         private int playerBet;
         private int enemyBet;
-        private int raiseCount;
+        public int raiseCount;
         private int firstCount;
+        private int textCount;
         public int betCount;
-             
+
         private string enemySuit1;
         private string enemySuit2;
-        private int firstBet;
+        private string enemyTalkStr;
         private bool bigRaiseBool;
         private bool attackRaiseBool;
         private bool strongBool;
         private bool foldBool;
 
+        private GameObject enemyTalk;
         private GameObject enemyBetText;
         private GameObject enemyBetText2;
         private GameObject enemyMoneyText;
         private GameObject enemyMoneyText2;
+
+        private Text enemyTalkText;
+
+        private Image enemyTalkAction;
 
         private void Awake()
         {
@@ -60,7 +68,7 @@ namespace Assets.Scripts.Bar05
 
             if (betCount <= 1 || fieldBet != enemyBet)
             {
-                if (phase.phaseEnum == Phase.PhaseEnum.プリフロップ)
+                if (phase.phaseEnum == Phase.PhaseEnum.word5)
                 {
                     EnemyFirstBet();
                 }
@@ -74,24 +82,27 @@ namespace Assets.Scripts.Bar05
                 }
             }
 
+            var spriteRenderer = Resources.Load<Sprite>("Images/Bar/" + enemyTalkStr);
+            enemyTalkAction.sprite = spriteRenderer;
+
             if (foldBool == false)
             {
-                EnemyPhaseChange();
-                EnemyBetTextChange();
+                phase.fieldBet = fieldBet;
+                phase.enemyBet = enemyBet;
+                phase.enemyMoney = enemyMoney;
+                EnemyMoneyTextChange(enemyMoney);
+                EnemyBetTextChange(enemyBet);
                 phase.PlayerBet();
             }
+            foldBool = false;
         }
 
-        public void EnemyPhaseChange()
+        public void EnemyMoneyTextChange(int enemyMoney)
         {
-            phase.fieldBet = fieldBet;
-            phase.enemyBet = enemyBet;
-            phase.enemyMoney = enemyMoney;
-
             string moneySubStr = enemyMoney.ToString().Substring(0, 1);
             string moneySubStr2 = "";
 
-            if (enemyMoney > 9)
+            if (enemyMoney >= 10)
             {
                 moneySubStr2 = enemyMoney.ToString().Substring(1, 1);
 
@@ -101,19 +112,20 @@ namespace Assets.Scripts.Bar05
             }
             else
             {
-                enemyMoneyText.transform.position = new Vector3(-6.15f, 0.72f, -1f);
+                enemyMoneyText.transform.localPosition = new Vector3(-6.15f, 0.72f, -1f);
+                enemyMoneyText2.GetComponent<SpriteRenderer>().sprite = null;
             }
 
             var textTemp = Resources.Load<Sprite>("Images/Bar/t_" + moneySubStr);
             enemyMoneyText.GetComponent<SpriteRenderer>().sprite = textTemp;
         }
 
-        public void EnemyBetTextChange()
+        public void EnemyBetTextChange(int enemyBet)
         {
             string betSubStr = enemyBet.ToString().Substring(0, 1); ;
             string betSubStr2 = "";
 
-            if (enemyBet > 9)
+            if (enemyBet >= 10)
             {
                 betSubStr2 = enemyBet.ToString().Substring(1, 1);
 
@@ -131,8 +143,21 @@ namespace Assets.Scripts.Bar05
             enemyBetText.GetComponent<SpriteRenderer>().sprite = textTemp;
         }
 
+        private void Text()
+        {
+            phase.enemyTalk.SetActive(true);
+            enemyTalk = phase.enemyTalk;
+            enemyTalkAction = GameObject.Find("DealerAction").GetComponent<Image>();
+            enemyTalkText = phase.enemyText;
+            textCount = 1;
+            phase.enemyTalk.SetActive(false);
+        }
+
         private void EnemyFirstBet()
         {
+            //1度だけ読み込み
+            if (textCount == 0) Text();
+
             attackRaiseBool = false;
             bigRaiseBool = false;
 
@@ -156,7 +181,7 @@ namespace Assets.Scripts.Bar05
             int tenRandom = Random.Range(1, 10);
 
             //強気
-            if (enemyNumber1 + enemyNumber2 >= 20 || enemyNumber1 == enemyNumber2 && raiseCount < 2)
+            if (enemyNumber1 + enemyNumber2 >= 20 || enemyNumber1 == enemyNumber2)
             {
                 strongBool = true;
 
@@ -226,14 +251,15 @@ namespace Assets.Scripts.Bar05
                     EnemyContinuation();
                 }
             }
-            else if((attackRaiseBool == true || bigRaiseBool == true || handPower == 1)
-                && fieldBet == playerBet || tenRandom >= 4)
+            else if(attackRaiseBool == true || bigRaiseBool == true || handPower == 1
+                || fieldBet == enemyBet)
             {
+                
                 if (tenRandom == 1 && raiseCount != 1 && moneyTemp >= 0)
                 {
                     EnemyRaise();
                 }
-                else if (bigRaiseBool == false && moneyTemp >= 0)
+                else if (raiseCount != 1 && bigRaiseBool == false && moneyTemp >= 0)
                 {
                     EnemyRaise();
                     attackRaiseBool = false;
@@ -245,7 +271,7 @@ namespace Assets.Scripts.Bar05
             }
             else
             {
-                if (tenRandom == 9)
+                if (tenRandom <= 4 || enemyBet == fieldBet)
                 {
                     EnemyContinuation();
                 }
@@ -261,13 +287,19 @@ namespace Assets.Scripts.Bar05
         /// </summary>
         void EnemyContinuation()
         {
+            enemyTalk.SetActive(true);
+
             if (fieldBet != enemyBet)
             {
                 enemyMoney -= fieldBet - enemyBet;
                 enemyBet = fieldBet;
+                enemyTalkAction.enabled = true;
+                enemyTalkStr = "talk1";
             }
-
-            Debug.Log("チェックorコール");
+            else
+            {
+                enemyTalkText.text = "チェック";
+            }
         }
 
         /// <summary>
@@ -275,7 +307,7 @@ namespace Assets.Scripts.Bar05
         /// </summary>
         void EnemyRaise()
         {
-            if (fieldBet >= 9)
+            if (fieldBet >= 9 || phase.playerMoney <= 1)
             {
                 EnemyContinuation();
             }
@@ -283,25 +315,26 @@ namespace Assets.Scripts.Bar05
             {
                 raiseCount++;
 
-                fieldBet += 2;
+                fieldBet = fieldBet + 2;
                 enemyMoney -= fieldBet - enemyBet;
-                enemyBet += 2;
                 enemyBet = fieldBet;
 
-                Debug.Log("レイズ");
+                enemyTalk.SetActive(true);
+                enemyTalkText.text = "倍賭け";
             }
         }
 
         void EnemyFold()
         {
-            if (enemyMoney <= 5 || (fieldBet >= 5 && enemyMoney >= 3))
+            if (raiseCount >= 1 || enemyMoney <= 5 || (fieldBet >= 5 && enemyMoney >= 3))
             {
                 EnemyContinuation();
             }
             else
             {
                 foldBool = true;
-                Debug.Log("Fold");
+                enemyTalkAction.enabled = true;
+                enemyTalkStr = "talk3";
                 phase.Win(0);
             }
         }

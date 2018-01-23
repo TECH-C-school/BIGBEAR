@@ -18,6 +18,7 @@ namespace Assets.Scripts.Bar05
         public List<GameObject> playerList;
         public List<GameObject> enemyList;
         public List<GameObject> boardList;
+        public List<string> handList;
 
         public enum RankCheck
         {
@@ -35,6 +36,7 @@ namespace Assets.Scripts.Bar05
         public int handRank;
         public int enemyRank;
 
+        public RankCheck rankCheck;
 
         private int number;
         private int playerPoint;
@@ -123,7 +125,6 @@ namespace Assets.Scripts.Bar05
 
         public int HandCheck(List<string> cards)
         {
-
             numberCount = boardArray;
             int pairCount = 0;
             int threeCount = 0;
@@ -135,11 +136,38 @@ namespace Assets.Scripts.Bar05
             }
             numberCount[14] = numberCount[1];
 
-            for (int i = 1; i <= numberCount.Length - 2; i++)
+            for (int i = 2; i <= numberCount.Length - 1; i++)
             {
-                    if (numberCount[i] == 2) pairCount++;
-                    if (numberCount[i] == 3) threeCount++;
-                    if (numberCount[i] == 4) fourCount++;
+                if (numberCount[i] == 2)
+                {
+                    pairCount++;
+                    //switch (pairCount)
+                    //{
+                    //    case 1:
+                    //        selPairTemp = i;
+                    //        break;
+                    //    case 2:
+                    //        selPairTemp2 = i;
+                    //        break;
+                    //    case 3:
+                    //        selPairTemp = i;
+                    //        break;
+                    //}
+                }
+                if (numberCount[i] == 3)
+                {
+                    threeCount++;
+                    //selThreeTemp = i;
+                    //if (threeCount == 2)
+                    //{
+                    //    selThreeTemp = i;
+                    //}
+                }
+                if (numberCount[i] == 4)
+                {
+                    fourCount++;
+                    //selFourTemp = i;
+                }
             }
 
             //Flushの判定
@@ -186,25 +214,64 @@ namespace Assets.Scripts.Bar05
                     straight = true;
             }
 
-            if (flush && royalStraightFlush) return 9;
-            else if (straight && flush) return 8;
-            else if (fourCount >= 1) return 7;
-            else if (threeCount >= 1 && pairCount >= 1) return 6;
-            else if (flush) return 5;
-            else if (straight) return 4;
-            else if (threeCount >= 1) return 3;
-            else if (pairCount >= 2) return 2;
-            else if (pairCount >= 1) return 1;
-
+            if (flush && royalStraightFlush)
+            {
+                rankCheck = RankCheck.RoyalStraightFlush;
+                return 9;
+            }
+            else if (straight && flush)
+            {
+                rankCheck = RankCheck.StraightFlush;
+                return 8;
+            }
+            else if (fourCount >= 1)
+            {
+                rankCheck = RankCheck.FourOfAKind;
+                return 7;
+            }
+            else if (threeCount >= 1 && pairCount >= 1)
+            {
+                rankCheck = RankCheck.FullHouse;
+                return 6;
+            }
+            else if (flush)
+            {
+                rankCheck = RankCheck.Flush;
+                return 5;
+            }
+            else if (straight)
+            {
+                rankCheck = RankCheck.Straight;
+                return 4;
+            }
+            else if (threeCount >= 1)
+            {
+                rankCheck = RankCheck.ThreeOfAKind;
+                return 3;
+            }
+            else if (pairCount >= 2)
+            {
+                rankCheck = RankCheck.TwoPair;
+                return 2;
+            }
+            else if (pairCount >= 1)
+            {
+                rankCheck = RankCheck.OnePair;
+                return 1;
+            }
             return 0;
         }
 
         public int WinnerCheck()
         {
+            handList = board;
+            handList.AddRange(enemy);
             BoardReady();
             handRank = HandCheck(hand);
+            phase.playerTextTemp = rankCheck.ToString(); 
             BoardReady();
             enemyRank = HandCheck(enemy);
+            phase.enemyTextTemp = rankCheck.ToString();
 
             if (handRank > enemyRank) return 0;
             else if (handRank < enemyRank) return 1;
@@ -232,6 +299,13 @@ namespace Assets.Scripts.Bar05
                 }  
             }
             return -1;
+        }
+
+        public void PhaseEnd()
+        {
+            hand.Clear();
+            enemy.Clear();
+            board.Clear();
         }
     }
 }
