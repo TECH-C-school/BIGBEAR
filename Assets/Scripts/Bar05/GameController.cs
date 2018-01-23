@@ -4,40 +4,51 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> Phase切り替えの画像切り替え実装
- *              チップ掛ける為のスクリプト作成
- *              KickerBattle修正(したつもり)
+ * 今回作業 --> チップスクリプト作成
+ *              ボタン実装
+ *              ゲームの一連の流れ構成
  *              
  */
 
 /*
- * 次回作業 --> チップスクリプト作成
- *              相手のAI
- *              PowerPointのスライド作り
+ * 次回作業 --> 
  */
 
 /*
- * 今後実装 --> アニメーション
- *              
+ * 今後実装 --> 相手のAI
+ *              アニメーション
+ *              両方とも時間切れ。。。
  */
 
 namespace Assets.Scripts.Bar05
 {
     public class GameController : MonoBehaviour
     {
-
+        
         private void Start()
         {
+            MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            Vector3 pos = transform.position;
+            pos.z = 0;
+            transform.position = pos;
             InitGame();
-            //Debug.Log(_Phase);
+            ChipsUpdate();
         }
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("z") || Input.GetKeyDown("x") || Input.GetKeyDown("c") || Input.GetKeyDown("v") || Input.GetKeyDown("space"))
+            if (Input.GetKeyDown("z") || Input.GetKeyDown("x") || Input.GetKeyDown("c") || Input.GetKeyDown("v") || Input.GetKeyDown("space"))
             {
                 Debug.Log("<color=red>--------------------</color>");
                 PhaseChange();
+            }
+            if(Input.GetMouseButtonDown(0))
+            {
+                if(_Phase == GamePhase.Result || _Phase == GamePhase.Continue)
+                {
+                    Debug.Log("<color=red>--------------------</color>");
+                    PhaseChange();
+                }
             }
         }
 
@@ -1719,7 +1730,7 @@ namespace Assets.Scripts.Bar05
                         else if(Player1Kickers[i] < Player2Kickers[i])
                         {
                             WhoWin = 0;
-                            Debug.Log("<color=green>Player0Winner</color>");
+                            Debug.Log("<color=green>Player2Winner</color>");
                             break;
                         }
                     }
@@ -1759,6 +1770,91 @@ namespace Assets.Scripts.Bar05
         //役の判定ここまで
 
         //ゲーム進行ここから
+
+        //チップ処理
+        private void ChipsUpdate()
+        {
+            var ChipInt = GameObject.Find("Num1_Kurai1");
+            for (int i = 0; i < 9; i++)
+            {
+                switch(i)
+                {
+                    case 0:
+                        ChipInt = GameObject.Find("Num1_Kurai1");
+                        break;
+                    case 1:
+                        ChipInt = GameObject.Find("Num1_Kurai2");
+                        break;
+                    case 2:
+                        ChipInt = GameObject.Find("Num1_Kurai3");
+                        break;
+                    case 3:
+                        ChipInt = GameObject.Find("Num2_Kurai1");
+                        break;
+                    case 4:
+                        ChipInt = GameObject.Find("Num2_Kurai2");
+                        break;
+                    case 5:
+                        ChipInt = GameObject.Find("Num2_Kurai3");
+                        break;
+                    case 6:
+                        ChipInt = GameObject.Find("Num3_Kurai1");
+                        break;
+                    case 7:
+                        ChipInt = GameObject.Find("Num3_Kurai2");
+                        break;
+                    case 8:
+                        ChipInt = GameObject.Find("Num3_Kurai3");
+                        break;
+                }
+                var Chips = ChipInt.GetComponent<ChipManager>();
+                switch(i)
+                {
+                    case 0:
+                        Chips.SetChip(Chip, 0);
+                        break;
+                    case 1:
+                        Chips.SetChip(Chip, 0);
+                        break;
+                    case 2:
+                        Chips.SetChip(Chip, 0);
+                        break;
+                    case 3:
+                        Chips.SetChip(MyHaveChip, 1);
+                        break;
+                    case 4:
+                        Chips.SetChip(MyHaveChip, 1);
+                        break;
+                    case 5:
+                        Chips.SetChip(MyHaveChip, 1);
+                        break;
+                    case 6:
+                        Chips.SetChip(Pot, 2);
+                        break;
+                    case 7:
+                        Chips.SetChip(Pot, 2);
+                        break;
+                    case 8:
+                        Chips.SetChip(Pot, 2);
+                        break;
+                }
+            }
+        }
+
+        int Chip = 0;
+        int MyHaveChip = 100;
+        int Pot = 0;
+        private void ChipBet(int Bet)
+        {
+            if(Chip + Bet != -1 & MyHaveChip + Bet >= 0)
+            {
+                Chip = Chip + Bet;
+                MyHaveChip = MyHaveChip - Bet;
+                ChipsUpdate();
+            }
+            Debug.Log("HaveIs" + MyHaveChip);
+            Debug.Log("BetIs" + Chip);
+        }
 
         //初期化処理
         private void InitGame()
@@ -1822,11 +1918,14 @@ namespace Assets.Scripts.Bar05
         //Phaseを進める/戻す
         private void PhaseChange()
         {
+            Vector3 pos = transform.position;
             _Phase++;
             //Phaseを0に戻して初期化をする
             //PhaseはFirstPhase
             if (_Phase == GamePhase.Return)
             {
+                pos.z = 0;
+                transform.position = pos;
                 _Phase = 0;
                 InitGame();
                 PhaseControll(0);
@@ -1835,30 +1934,58 @@ namespace Assets.Scripts.Bar05
             {
                 TurnStackCard(1);
                 PhaseControll(1);
-                _Phase++;
+                //_Phase++;
             }
             if (_Phase == GamePhase.ThirdBet)
             {
                 TurnStackCard(2);
                 PhaseControll(2);
-                _Phase++;
+                //_Phase++;
             }
             if (_Phase == GamePhase.FinalBet)
             {
                 TurnStackCard(3);
                 PhaseControll(3);
-                _Phase++;
+                //_Phase++;
             }
             if (_Phase == GamePhase.Result)
             {
+                switch(WhoWin)
+                {
+                    case 0:
+                        MainSpriteRenderer.sprite = Lose;
+                        break;
+                    case 1:
+                        MainSpriteRenderer.sprite = Draw;
+                        break;
+                    case 2:
+                        MainSpriteRenderer.sprite = Win;
+                        break;
+                }
+                pos.z = -1;
+                transform.position = pos;
                 PhaseControll(4);
+                HyouriIttai();
             }
-            //続けるかを聞く(間を入れているだけ)
+            //続けるかを聞く(チップの返還・Pot処理)
             if (_Phase == GamePhase.Continue)
             {
+                MyHaveChip = MyHaveChip + Pot * WhoWin;
+                Pot = 0;
+                ChipsUpdate();
                 RemoveCards();
             }
             Debug.Log(_Phase);
+        }
+
+        public void HyouriIttai()
+        {
+            for(int i = 1; i < 3; i++)
+            {
+                var cardObject = GameObject.Find("player2Card" + i + "");
+                var card = cardObject.GetComponent<Card>();
+                card.Hyouri();
+            }
         }
 
         //場札をめくる
@@ -1889,6 +2016,62 @@ namespace Assets.Scripts.Bar05
         }
 
         //ゲーム進行ここまで
+
+        //ボタン押した時の挙動
+        public void Chip_Plus()
+        {
+            if(_Phase != GamePhase.Result & _Phase != GamePhase.Continue)
+            {
+                ChipBet(1);
+            }
+        }
+
+        public void Chip_Minus()
+        {
+            if (_Phase != GamePhase.Result & _Phase != GamePhase.Continue)
+            {
+                ChipBet(-1);
+            }
+        }
+
+        public void Button_Call()
+        {
+            if(Chip != 0 & _Phase != GamePhase.Result & _Phase != GamePhase.Continue)
+            {
+                Pot = Pot + Chip;
+                Chip = 0;
+                ChipsUpdate();
+                Debug.Log("<color=red>--------------------</color>");
+                PhaseChange();
+            }
+        } 
+
+        public void Button_Fold()
+        {
+            if (_Phase != GamePhase.Result & _Phase != GamePhase.Continue)
+            {
+                Pot = 0;
+                MyHaveChip = MyHaveChip + Chip;
+                ChipsUpdate();
+                Debug.Log("<color=red>--------------------</color>");
+                for (int i = 1; i < 6; i++)
+                {
+                    var cardObject = GameObject.Find("StackCard" + i + "");
+                    var card = cardObject.GetComponent<Card>();
+                    card.StackView(true);
+                }
+                _Phase = GamePhase.FinalBet;
+                WhoWin = 0;
+                PhaseChange();
+            }
+        }
+
+        //WinLose表示
+        SpriteRenderer MainSpriteRenderer;
+        public Sprite Win;
+        public Sprite Draw;
+        public Sprite Lose;
+
 
         public void TransitionToResult()
         {

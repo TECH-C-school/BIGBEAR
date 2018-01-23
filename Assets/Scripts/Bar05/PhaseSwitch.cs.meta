@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: c164fd3de268c244194234a4d0feafe4
-timeCreated: 1516267386
+timeCreated: 1516691966
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - PreFlop: {fileID: 21300000, guid: f223f8d176f519943ae723d392f794a1, type: 3}
+  - Flop: {fileID: 21300000, guid: b07669d0dca7a6f41a7aac6b89abacd4, type: 3}
+  - Turn: {fileID: 21300000, guid: 62cd0a0662a171f4288810b445e4c501, type: 3}
+  - River: {fileID: 21300000, guid: d46c801cec8cfc441867a36a08783837, type: 3}
+  - ShowDown: {fileID: 21300000, guid: b66f70867f825884a9ab3111c457d740, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

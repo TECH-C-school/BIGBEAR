@@ -15,7 +15,6 @@ public class PhaseSwitch : MonoBehaviour {
     // Use this for initialization
     void Start () {
         MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        Debug.Log("hoge");
     }
     public void PhaseChange(int PhaseNum)
     {
