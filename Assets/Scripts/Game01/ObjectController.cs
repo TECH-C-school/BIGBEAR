@@ -29,8 +29,15 @@ public class ObjectController : MonoBehaviour
     private Image enemy2_lost;
     private Image enemy3_stand;
 
+    private GameObject Exp;
+    private Image Explode1;
+    private Image Explode2;
+    private Image Explode3;
+
     mainGame maingame;
     timeStarter timer;
+
+    int anim = 0;
 
     void Awake()
     {
@@ -54,6 +61,11 @@ public class ObjectController : MonoBehaviour
         enemy2_win = GameObject.Find("Enemy2/win").GetComponent<Image>();
         enemy2_draw = GameObject.Find("Enemy2/draw").GetComponent<Image>();
         enemy3_stand = GameObject.Find("Enemy3/stand").GetComponent<Image>();
+
+        Exp = GameObject.Find("Explode").GetComponent<GameObject>();
+        Explode1 = GameObject.Find("Explode/1").GetComponent<Image>();
+        Explode2 = GameObject.Find("Explode/2").GetComponent<Image>();
+        Explode3 = GameObject.Find("Explode/3").GetComponent<Image>();
     }
 
     void Start ()
@@ -81,6 +93,10 @@ public class ObjectController : MonoBehaviour
         enemy2_win.gameObject.SetActive(false);
         enemy2_draw.gameObject.SetActive(false);
         enemy3_stand.gameObject.SetActive(false);
+
+        Explode1.gameObject.SetActive(false);
+        Explode2.gameObject.SetActive(false);
+        Explode3.gameObject.SetActive(false);
     }
 	
 	void Update ()
@@ -154,12 +170,20 @@ public class ObjectController : MonoBehaviour
                 player3_stand.gameObject.SetActive(false);
                 enemy3_stand.gameObject.SetActive(false);
                 player3_win.gameObject.SetActive(true);
+                Explode1.gameObject.transform.localPosition = new Vector3(200, -60, 0);
+                Explode2.gameObject.transform.localPosition = new Vector3(200, -60, 0);
+                Explode3.gameObject.transform.localPosition = new Vector3(200, -60, 0);
+                StartCoroutine(ExpAnim());
             }
             if (timer.timerGo == 20 && maingame.battleLost == 10)
             {
                 player3_stand.gameObject.SetActive(false);
                 enemy3_stand.gameObject.SetActive(false);
                 player3_lost.gameObject.SetActive(true);
+                Explode1.gameObject.transform.localPosition = new Vector3(-200, -90, 0);
+                Explode2.gameObject.transform.localPosition = new Vector3(-200, -90, 0);
+                Explode3.gameObject.transform.localPosition = new Vector3(-200, -90, 0);
+                StartCoroutine(ExpAnim());
 
                 StartCoroutine(Result());
             }
@@ -168,13 +192,30 @@ public class ObjectController : MonoBehaviour
                 player3_stand.gameObject.SetActive(false);
                 enemy3_stand.gameObject.SetActive(false);
                 player3_draw.gameObject.SetActive(true);
-                //enemy3_draw.gameObject.SetActive(true);
+                StartCoroutine(ExpAnim());
             }
             if (timer.timerGo == 0 && maingame.touchStart == 0 && maingame.battleLost == 0 && maingame.battleDraw == 0)
             {
                 player3_stand.gameObject.SetActive(true);
                 enemy3_stand.gameObject.SetActive(true);
             }
+        }
+    }
+
+    IEnumerator ExpAnim()
+    {
+        if(anim == 0)
+        {
+            Explode1.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+            Explode1.gameObject.SetActive(false);
+            Explode2.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+            Explode2.gameObject.SetActive(false);
+            Explode3.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+            Explode3.gameObject.SetActive(false);
+            anim = 10;
         }
     }
 

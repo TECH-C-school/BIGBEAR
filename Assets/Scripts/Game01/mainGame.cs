@@ -220,7 +220,7 @@ public class mainGame : MonoBehaviour
                             StartCoroutine(LoadScene());
                         }
 
-                        if (timer.LeftTime == 5)
+                        if (timer.LeftTime == 3)
                         {
                             battleDraw = 10;
                             StartCoroutine(WhiteOut());
@@ -266,7 +266,7 @@ public class mainGame : MonoBehaviour
                             StartCoroutine(Clear());
                         }
 
-                        if (timer.LeftTime == 5)
+                        if (timer.LeftTime == 1)
                         {
                             battleDraw = 10;
                             StartCoroutine(WhiteOut());
