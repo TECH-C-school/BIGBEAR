@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
 
-        static int coin = 50;
+        static int coin = 100;
         static int BET = 1;
         static int count1;
         static int count2;
@@ -26,9 +26,12 @@ namespace Assets.Scripts.Bar04 {
             num0 = Instantiate(num0, transform.position, Quaternion.identity);
             num0.transform.position = new Vector2(-2,-4);
             num0.transform.parent = Coin.transform;
-            var num5 = Resources.Load<GameObject>("Prefabs/Bar04/Number/t_5");
+            num0 = Instantiate(num0, transform.position, Quaternion.identity);
+            num0.transform.position = new Vector2(-2.5f, -4);
+            num0.transform.parent = Coin.transform;
+            var num5 = Resources.Load<GameObject>("Prefabs/Bar04/Number/t_1");
             num5 = Instantiate(num5, transform.position, Quaternion.identity);
-            num5.transform.position = new Vector2(-2.5f, -4);
+            num5.transform.position = new Vector2(-3f, -4);
             num5.transform.parent = Coin.transform;
             var Bet = GameObject.Find("Bet");
             var num1 = Resources.Load<GameObject>("Prefabs/Bar04/Number/t_1");
@@ -308,49 +311,41 @@ namespace Assets.Scripts.Bar04 {
             }
             else if (x == 1)
             {
-                coin = coin -= BET;
-                coin = coin += BET * 0;
+                coin = coin += BET * 1;
                 FindNumbers();
             }
             else if (x == 2)
             {
-                coin = coin -= BET;
-                coin = coin += BET * 1;
+                coin = coin += BET * 2;
                 FindNumbers();
             }
             else if (x == 3)
             {
-                coin = coin -= BET;
                 coin = coin += BET * 3;
                 FindNumbers();
             }
             else if (x == 4)
             {
-                coin = coin -= BET;
                 coin = coin += BET * 5;
                 FindNumbers();
             }
             else if (x == 5)
             {
-                coin = coin -= BET;
                 coin = coin += BET * 10;
                 FindNumbers();
             }
             else if (x == 6)
             {
-                coin = coin -= BET;
                 coin = coin += BET * 15;
                 FindNumbers();
             }
             else if (x == 7)
             {
-                coin = coin -= BET;
                 coin = coin += BET * 30;
                 FindNumbers();
             }
             else if (x == 8)
             {
-                coin = coin -= BET;
                 coin = coin += BET * 100;
                 FindNumbers();
             }
@@ -382,31 +377,31 @@ namespace Assets.Scripts.Bar04 {
                                             if (coin >= 900)
                                             {
                                                 coin -= 100;
-                                                x = 9;
+                                                x += 1;
                                             }
                                             coin -= 100;
-                                            x = 8;
+                                            x += 1;
                                         }
                                         coin -= 100;
-                                        x = 7;
+                                        x += 1;
                                     }
                                     coin -= 100;
-                                    x = 6;
+                                    x += 1;
                                 }
                                 coin -= 100;
-                                x = 5;
+                                x += 1;
                             }
                             coin -= 100;
-                            x = 4;
+                            x += 1;
                         }
                         coin -= 100;
-                        x = 3;
+                        x += 1;
                     }
                     coin -= 100;
-                    x = 2;
+                    x += 1;
                 }
                 coin -= 100;
-                x = 1;
+                x += 1;
             }
             switch (coin)
             {
@@ -518,6 +513,7 @@ namespace Assets.Scripts.Bar04 {
                 case 99:
                     LoadNumber2(9, 1);
                     break;
+                case 0:
                 case 10:
                 case 20:
                 case 30:
@@ -644,6 +640,10 @@ namespace Assets.Scripts.Bar04 {
                         break;
                 }
             }
+            else
+            {
+                LoadNumber2(0, 0);
+            }
             if (x >= 1)
             {
                 switch (x)
@@ -732,11 +732,11 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public void MakeDeck()
         {
-            /*List.Add(0);
-            List.Add(1);
-            List.Add(2);
-            List.Add(3);
-            List.Add(4);*/
+            List.Add(12);
+            List.Add(11);
+            List.Add(10);
+            List.Add(9);
+            List.Add(0);/*
             //Listに0～51までの数値を追加する
             for (int i = 0; i < 52; i++)
             {
@@ -752,7 +752,7 @@ namespace Assets.Scripts.Bar04 {
                 int tmp = List[k];
                 List[k] = List[n];
                 List[n] = tmp;
-            }
+            }*/
         }
         /// <summary>
         /// ゲームを初期状態に戻す関数
