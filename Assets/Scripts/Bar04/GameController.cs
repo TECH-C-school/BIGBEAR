@@ -8,6 +8,8 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Bar04 {
     public class GameController : MonoBehaviour {
 
+        static int coin = 50;
+        static int BET = 1;
         static int count1;
         static int count2;
         static int count3;
@@ -19,6 +21,20 @@ namespace Assets.Scripts.Bar04 {
         void Start()
         {
             InitGame();
+            var Coin = GameObject.Find("Coin");
+            var num0 = Resources.Load<GameObject>("Prefabs/Bar04/Number/t_0");
+            num0 = Instantiate(num0, transform.position, Quaternion.identity);
+            num0.transform.position = new Vector2(-2,-4);
+            num0.transform.parent = Coin.transform;
+            var num5 = Resources.Load<GameObject>("Prefabs/Bar04/Number/t_5");
+            num5 = Instantiate(num5, transform.position, Quaternion.identity);
+            num5.transform.position = new Vector2(-2.5f, -4);
+            num5.transform.parent = Coin.transform;
+            var Bet = GameObject.Find("Bet");
+            var num1 = Resources.Load<GameObject>("Prefabs/Bar04/Number/t_1");
+            num1 = Instantiate(num1, transform.position, Quaternion.identity);
+            num1.transform.position = new Vector2(3.2f, -4);
+            num1.transform.parent = Bet.transform;
         }
         void Update()
         {
@@ -450,6 +466,109 @@ namespace Assets.Scripts.Bar04 {
             var win = GameObject.Find("bakarawin");
             win.transform.position = new Vector2(-100, 0);
             
+        }
+        /// <summary>
+        /// BET枚数を変更するボタン
+        /// </summary>
+        public void BetUp()
+        {
+            if(BET > coin)
+            {
+                Debug.Log("これ以上BETできません");
+            }
+            else if(BET < 99)
+            {
+                BET++;
+                if (BET >= 10)
+                {
+                    switch (BET)
+                    {
+                        case 10:case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:
+                            LoadNumber(1,0);
+                            break;
+                        case 20:case 21:case 22:case 23:case 24:case 25:case 26:case 27:case 28:case 29:
+                            LoadNumber(2,0);
+                            break;
+                        case 30:case 31:case 32:case 33:case 34:case 35:case 36:case 37:case 38:case 39:
+                            LoadNumber(3,0);
+                            break;
+                        case 40:case 41:case 42:case 43:case 44:case 45:case 46:case 47:case 48:case 49:
+                            LoadNumber(4,0);
+                            break;
+                        case 50:case 51:case 52:case 53:case 54:case 55:case 56:case 57:case 58:case 59:
+                            LoadNumber(5,0);
+                            break;
+                        case 60:case 61:case 62:case 63:case 64:case 65:case 66:case 67:case 68:case 69:
+                            LoadNumber(6,0);
+                            break;
+                        case 70:case 71:case 72:case 73:case 74:case 75:case 76:case 77:case 78:case 79:
+                            LoadNumber(7,0);
+                            break;
+                        case 80:case 81:case 82:case 83:case 84:case 85:case 86:case 87:case 88:case 89:
+                            LoadNumber(8,0);
+                            break;
+                        case 90:case 91:case 92:case 93:case 94:case 95:case 96:case 97:case 98:case 99:
+                            LoadNumber(9,0);
+                            break;
+                    }
+                }
+                coin--;
+            }
+            else
+            {
+                Debug.Log("MAXBETです");
+            }
+        }
+        public void BetDown()
+        {
+            if (BET < 1)
+            {
+                BET--;
+                if (BET <= 10)
+                {
+                    switch (BET)
+                    {
+                        case 10:case 11:case 12:case 13:case 14: case 15: case 16: case 17:case 18:case 19:
+                            LoadNumber(1,0);
+                            break;
+                        case 20:case 21:case 22:case 23:case 24:case 25:case 26:case 27:case 28:case 29:
+                            LoadNumber(2,0);
+                            break;
+                        case 30:case 31:case 32:case 33: case 34:case 35:case 36:case 37: case 38: case 39:
+                            LoadNumber(3,0);
+                            break;
+                        case 40: case 41: case 42:case 43:case 44:case 45:case 46:case 47:case 48:case 49:
+                            LoadNumber(4,0);
+                            break;
+                        case 50: case 51:case 52:case 53:case 54:case 55:case 56:case 57:case 58: case 59:
+                            LoadNumber(5,0);
+                            break;
+                        case 60:case 61:case 62:case 63: case 64:case 65: case 66:case 67:case 68:case 69:
+                            LoadNumber(6,0);
+                            break;
+                        case 70:case 71:case 72:case 73:case 74:case 75:case 76:case 77:case 78:  case 79:
+                            LoadNumber(7,0);
+                            break;
+                        case 80:case 81:case 82:case 83:case 84:case 85:case 86:case 87:case 88:case 89:
+                            LoadNumber(8,0);
+                            break;
+                        case 90:case 91: case 92:case 93:case 94:case 95:case 96: case 97: case 98: case 99:
+                            LoadNumber(9,0);
+                            break;
+                    }
+                }
+                coin++;
+            }
+            else
+            {
+                Debug.Log("MINBETです");
+            }
+        }
+        public void LoadNumber(int x,int y)
+        {
+            var num = Resources.Load<GameObject>("Prefabs/Bar04/Number/t_" + x);
+            num = Instantiate(num, transform.position, Quaternion.identity);
+            num.transform.position = new Vector2(2.7f - (y*0.5f),-4);
         }
         public int LoadCard(int x, int y)
         {
