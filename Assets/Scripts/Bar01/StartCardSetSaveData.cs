@@ -150,7 +150,7 @@ namespace Assets.Scripts.Bar01
         {
             string filePath = "";
 
-            filePath = "Resources/Prefabs/Bar01/StartCardData.json";
+            filePath = "Assets/Resources/Prefabs/Bar01/StartCardData.json";
             return filePath;
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Bar01 {
     public class GameController : MonoBehaviour {
@@ -22,7 +23,9 @@ namespace Assets.Scripts.Bar01 {
         private Vector3[] outStagePositon = new Vector3[4];
         private GameObject[] dackCards = new GameObject[3];
         private Card[] selectCards;
+        private int startFlg;
 
+        public Canvas startCanvas;
         public float marginTop = 0;
         public float marginside = 0;
         public Vector3 startPosition = new Vector3(-4.8f, 0.09f, 0);
@@ -857,6 +860,23 @@ namespace Assets.Scripts.Bar01 {
             {
                 
             }
+            int gameClear = 0;
+            for(int c = 0; c < 4; ++c)
+            {
+                if(outArray1[c] == 14)
+                {
+                    gameClear++;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            if(gameClear == 3)
+            {
+                //ゲームClear
+                Debug.Log("ゲームクリア");
+            }
 
         }
 
@@ -922,10 +942,35 @@ namespace Assets.Scripts.Bar01 {
                 stageArray[selectCards[0].Column].Peek().TurnCard(true);
             }
             Debug.Log("To card box last card is" + toCardBox.Peek().CardType + ":" + toCardBox.Peek().CardNumber);
+            int gameClear = 0;
+            for (int c = 0; c < 4; ++c)
+            {
+                Debug.Log("outArrey:" + outArray1[c]);
+                if (outArray1[c] == 14)
+                {
+                    gameClear++;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            if (gameClear == 4)
+            {
+                //ゲームClear
+                Debug.Log("ゲームクリア");
+                TransitionToResult();
+            }
         }
 
         public void TransitionToResult() {
             SceneManager.LoadScene("Result");
+        }
+
+        public void GameStartClick(int i)
+        {
+            startFlg = i;
+            startCanvas.enabled = false;
         }
     }
 }
