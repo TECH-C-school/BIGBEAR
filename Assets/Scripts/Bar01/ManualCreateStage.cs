@@ -267,7 +267,7 @@ namespace Assets.Scripts.Bar01
                 manualStage.stage7CardNumber = new int[manualStage.Stage7Max];
             }
 
-            if(GUILayout.Button("Save Star Cards"))
+            if(GUILayout.Button("Save Start Cards"))
             {
                 StartCardSetSaveData startCardSetSaveData = StartCardSetSaveData.Instance;
                 startCardSetSaveData.deckCardsType = manualStage.DeckCardTypes;

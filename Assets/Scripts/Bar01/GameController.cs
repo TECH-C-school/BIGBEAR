@@ -700,14 +700,13 @@ namespace Assets.Scripts.Bar01 {
                     }
 
                     selectCards[selectCards.Length -1].Column = i;
-                    selectCards[selectCards.Length - 1].From = firstPositions[i].transform.position;
+                    selectCards[selectCards.Length - 1].From = firstPositions[i].transform.position + new Vector3(0,0,-1);
                     selectCards[selectCards.Length - 1].gameObject.transform.position = selectCards[selectCards.Length - 1].From;
                     for (int t = 0; t < selectCards.Length -1 ; t++)
                     {
                         selectCards[t].Column = i;
                         selectCards[t].From = firstPositions[i].transform.position;
                     }
-                    selectCards[0].gameObject.transform.position += new Vector3(0, 0, -1);
                 }
             }
             else if(hit.name == "CardFlame")
