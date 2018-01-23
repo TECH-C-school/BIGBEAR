@@ -732,11 +732,6 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public void MakeDeck()
         {
-            List.Add(12);
-            List.Add(11);
-            List.Add(10);
-            List.Add(9);
-            List.Add(0);/*
             //Listに0～51までの数値を追加する
             for (int i = 0; i < 52; i++)
             {
@@ -752,7 +747,7 @@ namespace Assets.Scripts.Bar04 {
                 int tmp = List[k];
                 List[k] = List[n];
                 List[n] = tmp;
-            }*/
+            }
         }
         /// <summary>
         /// ゲームを初期状態に戻す関数
@@ -792,7 +787,7 @@ namespace Assets.Scripts.Bar04 {
         {
             var Coin = GameObject.Find("Coin").transform;
             var Bet = GameObject.Find("Bet").transform;
-            if(BET > coin)
+            if(BET >= coin)
             {
                 Debug.Log("これ以上BETできません");
             }
