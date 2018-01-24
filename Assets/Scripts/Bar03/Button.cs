@@ -17,7 +17,7 @@ public class Button : MonoBehaviour {
             var cardObjectf = Instantiate(CardPrefabf, transform.position, Quaternion.identity);
             cardObjectf.transform.position = new Vector3(
                 a * 1.7f + -7.9f,
-                -b * -0.25f + 2.35f,
+                -a * -0.25f + 2.35f,
                 0);
             cardObjectf.transform.parent = CardObjectf;
             NextCard++;
@@ -28,8 +28,8 @@ public class Button : MonoBehaviour {
             var CardPrefabf = Resources.Load<GameObject>("Prefabs/Bar03/Front/" + Card[m_Cards[NextCard]]);
             var cardObject2f = Instantiate(CardPrefabf, transform.position, Quaternion.identity);
             cardObject2f.transform.position = new Vector3(
-                c * 1.7f + -1.0f,
-                -d * -0.25f + 2.65f,
+                b * 1.7f + -1.0f,
+                -b * -0.25f + 2.65f,
                 0
                 );
             cardObject2f.transform.parent = CardObjectf;
