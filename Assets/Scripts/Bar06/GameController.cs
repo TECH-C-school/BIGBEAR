@@ -87,12 +87,12 @@ namespace Assets.Scripts.Bar06
         //Cardsオブジェクトに入るcard(clone)をDebug.Log()で表示させる
         public void CardNum()
         {
-            GameObject obj = GameObject.Find("Cards");
-            GameObject[] objs = new GameObject[obj.transform.childCount];
-            for(int i = 0; i < objs.Length; ++i)
+            GameObject obj = GameObject.Find("Cards");                    //Cardsオブジェクトの取得
+            GameObject[] objs = new GameObject[obj.transform.childCount]; //配列作成、オブジェクトの子を取得
+            for(int i = 0; i < objs.Length; ++i)                          //子の分だけfor文で回す
             {
-                objs[i] = obj.transform.GetChild(i).gameObject;
-                Debug.Log(objs[i].name);
+                objs[i] = obj.transform.GetChild(i).gameObject;           //ゲームオブジェクトの子に戻す
+                Debug.Log(objs[i].name);                                  
             }
             //Debug.Log(obj.name);
         }
