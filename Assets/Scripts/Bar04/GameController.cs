@@ -59,15 +59,7 @@ namespace Assets.Scripts.Bar04_06
                 return cardString;
             }
 
-            internal void HoldCardFaceUp()
-            {
-                throw new NotImplementedException();
-            }
-
-            internal void HoldCardFaceDown()
-            {
-                throw new NotImplementedException();
-            }
+            
         }
 
         /// <summary>
