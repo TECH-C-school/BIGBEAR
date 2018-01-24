@@ -45,27 +45,31 @@ namespace Assets.Scripts.Bar04 {
         }
         public void ClickFightButton()
         {
-
-            GameObject cardsObject = GameObject.Find("Cards");
-            //Cardsの子要素を消す
-            foreach (Transform cardObject in cardsObject.transform)
+            if (coin != 0)
             {
-                Destroy(cardObject.gameObject);
+                GameObject cardsObject = GameObject.Find("Cards");
+                //Cardsの子要素を消す
+                foreach (Transform cardObject in cardsObject.transform)
+                {
+                    Destroy(cardObject.gameObject);
+                }
+                //デッキを作る
+                MakeDeck();
+                //山札の上から5枚を配る
+                for (var j = 0; j < 5; j++)
+                {
+                    numbers[j] = LoadCard(List[j], j);
+                }
+                //Fightボタンを移動(非表示)する
+                transform.position = new Vector2(1011, -100);
+                //Changeボタン、NotChangeボタンを移動(表示)する
+                var change = GameObject.Find("Change");
+                change.transform.position = new Vector2(1011, 50);
+                var notchange = GameObject.Find("NotChange");
+                notchange.transform.position = new Vector2(1011, 142);
+            } else {
+                Debug.Log("coinがありません");
             }
-            //デッキを作る
-            MakeDeck();
-            //山札の上から5枚を配る
-            for (var j = 0; j < 5; j++)
-            {
-                 numbers[j] = LoadCard(List[j], j);
-            }
-            //Fightボタンを移動(非表示)する
-            transform.position = new Vector2(1011, -100);
-            //Changeボタン、NotChangeボタンを移動(表示)する
-            var change = GameObject.Find("Change");
-            change.transform.position = new Vector2(1011, 50);
-            var notchange = GameObject.Find("NotChange");
-            notchange.transform.position = new Vector2(1011, 142);
         }
         public void ClickChangeButton()
         {
@@ -683,6 +687,42 @@ namespace Assets.Scripts.Bar04 {
                     case 9:
                         LoadNumber2(9,-1);
                         break;
+                }
+                if (x == 1)
+                {
+                    if (x == 2)
+                    {
+                        if (x == 3)
+                        {
+                            if (x == 4)
+                            {
+                                if (x == 5)
+                                {
+                                    if (x == 6)
+                                    {
+                                        if (x == 7)
+                                        {
+                                            if (x == 8)
+                                            {
+                                                if (x == 9)
+                                                {
+                                                    coin += 100;
+                                                }
+                                                coin += 100;
+                                            }
+                                            coin += 100;
+                                        }
+                                        coin += 100;
+                                    }
+                                    coin += 100;
+                                }
+                                coin += 100;
+                            }
+                            coin += 100;
+                        }
+                        coin += 100;
+                    }
+                    coin += 100;
                 }
             }
         }
