@@ -22,8 +22,9 @@ namespace Assets.Scripts.Bar05
         public GameObject card;
         public GameObject cards; //Reset時消すためにpublic化
         public GameObject nowPhase;
-        public GameObject enemyTalk;
         //public GameObject selectCard;
+
+        public Image enemyTalk;//敵の吹き出し
 
         public Text enemyText;
 
@@ -68,9 +69,10 @@ namespace Assets.Scripts.Bar05
         private GameObject allInBtn;
         private GameObject raiseBtn;
         private GameObject startBtn;
-        private GameObject playerTalk;
         private GameObject flameAnim;
         private GameObject phaseAnim;
+
+        private Image playerTalk;
 
         private Text playerText;
 
@@ -111,7 +113,7 @@ namespace Assets.Scripts.Bar05
                 phaseAnim.transform.DOMoveX(-11.5f, 0.4f);
                 flameAnim.transform.DOScaleY(0, 0.7f);
 
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.5f);
 
                 switch (action)
                 {
@@ -134,7 +136,7 @@ namespace Assets.Scripts.Bar05
             }
             else
             {
-                enemyTalk.transform.DOLocalMoveY(-1,1);
+                //enemyTalk.transform.DOLocalMoveY(-1,1);
             }
         }
 
@@ -144,6 +146,8 @@ namespace Assets.Scripts.Bar05
             enemyMoney = 20;
             startBtn = GameObject.Find("StartCanvas");
             enemyText = GameObject.Find("DealerRank").GetComponent<Text>();
+            playerTalk = GameObject.Find("PlayerTalk").GetComponent<Image>();
+            enemyTalk = GameObject.Find("DealerTalk2").GetComponent<Image>();
         }
 
         private void Start()
@@ -157,14 +161,13 @@ namespace Assets.Scripts.Bar05
             nowPhase = GameObject.Find("NowPhase");
             raiseBtn = GameObject.Find("Raise");
             battleImage = GameObject.Find("BattleImage");
-            playerTalk = GameObject.Find("PlayerTalk");
             flameAnim = GameObject.Find("FlameAnim");
             phaseAnim = GameObject.Find("PhaseAnim");
-            enemyTalk = GameObject.Find("DealerTalk2");
             playerText = GameObject.Find("PlayerRank").GetComponent<Text>();
             battleImage.SetActive(false);
-            playerTalk.SetActive(false);
-            enemyTalk.SetActive(false);
+            playerTalk.enabled = false;
+            playerText.text = "";
+            enemyText.text = "";
             colorMultiplication = 1 / 255f;
         }
 
@@ -500,8 +503,8 @@ namespace Assets.Scripts.Bar05
 
             int winner = handRank.WinnerCheck();
 
-            playerTalk.SetActive(true);
-            enemyTalk.SetActive(true);
+            playerTalk.enabled = true;
+            enemyTalk.enabled = true;
 
             playerText.text = playerTextTemp;
 
@@ -572,8 +575,8 @@ namespace Assets.Scripts.Bar05
             enemy.EnemyMoneyTextChange(enemyMoney);
             betS.BetTextChange(playerBet);
             betS.MoneyTextChange(playerMoney);
-            playerTalk.SetActive(false);
-            enemyTalk.SetActive(false);
+            playerTalk.enabled = false;
+            enemyTalk.enabled = false;
             betCanvas.SetActive(false);
             battleImage.SetActive(false);
         }

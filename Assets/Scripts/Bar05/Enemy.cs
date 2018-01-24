@@ -38,7 +38,7 @@ namespace Assets.Scripts.Bar05
 
         private Text enemyTalkText;
 
-        private Image enemyTalk;
+        public Image enemyTalk;
         private Image enemyTalkAction;
 
         private void Awake()
@@ -56,6 +56,19 @@ namespace Assets.Scripts.Bar05
             enemyBetText2 = GameObject.Find("DealerBet2");
             enemyMoneyText = GameObject.Find("DealerMoney");
             enemyMoneyText2 = GameObject.Find("DealerMoney2");
+            enemyTalk = phase.enemyTalk;
+            enemyTalkAction = GameObject.Find("DealerAction").GetComponent<Image>();
+            enemyTalkText = phase.enemyText;
+            enemyTalk.enabled = false;
+            enemyTalkAction.enabled = false;
+        }
+
+        private IEnumerator AnimetionCor() 
+        {
+            yield return new WaitForSeconds(2);
+            enemyTalk.enabled = false;
+            enemyTalkAction.enabled = false;
+            enemyTalkText.text = "";
         }
 
         public void EnemyBet()
@@ -67,7 +80,10 @@ namespace Assets.Scripts.Bar05
             enemyBet = phase.enemyBet;
             enemyMoney = phase.enemyMoney;
 
-            enemyTalkStr = "";
+            StopCoroutine(AnimetionCor());
+
+            enemyTalkAction.enabled = false;
+            enemyTalkText.enabled = false;
 
             if (betCount <= 1 || fieldBet != enemyBet)
             {
@@ -85,10 +101,13 @@ namespace Assets.Scripts.Bar05
                 }
             }
 
+            enemyTalkStr = "";
+            enemyTalk.enabled = true;
+
             var spriteRenderer = Resources.Load<Sprite>("Images/Bar/" + enemyTalkStr);
             enemyTalkAction.sprite = spriteRenderer;
 
-            enemyTalk.rectTransform.DOAnchorPosY(-300f, 0.4f);
+            StartCoroutine(AnimetionCor());
 
             if (foldBool == false)
             {
@@ -148,21 +167,8 @@ namespace Assets.Scripts.Bar05
             enemyBetText.GetComponent<SpriteRenderer>().sprite = textTemp;
         }
 
-        private void Text()
-        {
-            phase.enemyTalk.SetActive(true);
-            enemyTalk = phase.enemyTalk;
-            enemyTalkAction = GameObject.Find("DealerAction").GetComponent<Image>();
-            enemyTalkText = phase.enemyText;
-            textCount = 1;
-            phase.enemyTalk.SetActive(false);
-        }
-
         private void EnemyFirstBet()
         {
-            //1度だけ読み込み
-            if (textCount == 0) Text();
-
             attackRaiseBool = false;
             bigRaiseBool = false;
 
@@ -292,8 +298,6 @@ namespace Assets.Scripts.Bar05
         /// </summary>
         void EnemyContinuation()
         {
-            enemyTalk.SetActive(true);
-
             if (fieldBet != enemyBet)
             {
                 enemyMoney -= fieldBet - enemyBet;
@@ -303,8 +307,7 @@ namespace Assets.Scripts.Bar05
             }
             else
             {
-                enemyTalk.SetActive(true);
-                enemyTalkAction.enabled = false;
+                enemyTalkText.enabled = true;
                 enemyTalkText.text = "チェック";
             }
         }
@@ -326,8 +329,7 @@ namespace Assets.Scripts.Bar05
                 enemyMoney -= fieldBet - enemyBet;
                 enemyBet = fieldBet;
 
-                enemyTalk.SetActive(true);
-                enemyTalkAction.enabled = false;
+                enemyTalkText.enabled = true;
                 enemyTalkText.text = "倍賭け";
             }
         }
