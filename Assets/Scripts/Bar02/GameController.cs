@@ -89,18 +89,18 @@ namespace Assets.Scripts.Bar02
                 //19
                 trump[i].number = (cards[i] - 1) % 13 + 1;
                 trump[i].mark = (Mark)((cards[i] - 1) / 13);
-               // Debug.Log("生成" + trump[i].mark + trump[i].number);
+                //Debug.Log("生成" + trump[i].mark + trump[i].number);
             }
 
             //残りの31枚のカードを山札にする
 
-            remaindertrump = new Card[31];
-            for (int i = 0; i < 31; i++)
+            remaindertrump = new Card[52];
+            for (int i = 21; i < 52; i++)
             {
-
+                
                 remaindertrump[i].number = (cards[i] - 1) % 13 + 1;
                 remaindertrump[i].mark = (Mark)((cards[i] - 1) / 13);
-                //Debug.Log("山札" + remaindertrump[i].mark + remaindertrump[i].number);
+               Debug.Log("山札" + remaindertrump[i].mark + remaindertrump[i].number);
             }
 
             //21枚のカードを表示する
@@ -235,7 +235,7 @@ namespace Assets.Scripts.Bar02
             //数字だけ読み込む
             string spritename = card1.sprite.ToString();
             string a = spritename.Substring(1,2);
-           //string number1 = card1;
+            //string number1 = card1;
 
             int[] number1cards = new int[1];
 
@@ -243,7 +243,7 @@ namespace Assets.Scripts.Bar02
            // var num2 = hitObject.collider.game
             //int number2 = card2.number;
 
-            if (card1 + card2 == 13)
+        /*    if (card1 + card2 == 13)
             {
                 Debug.Log("13");
             }
@@ -256,7 +256,7 @@ namespace Assets.Scripts.Bar02
             var card = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
 
             //次にクリックされるべきカードが判定
-            if (_nextCardNumber != card.number) return;
+            if (_nextCardNumber != card.number) return;*/
 
 
 
