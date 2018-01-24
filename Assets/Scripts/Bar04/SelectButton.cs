@@ -8,19 +8,17 @@ using UnityEngine.UI;
 // Use this for initialization
 public class SelectButton : MonoBehaviour
 {
-
     /// ボタンをクリックした時の処理
     public void OnClick()
     {
+        
         Debug.Log("Button click!");
-        for (var i = 5; i < 10; i++)
-
             //もしGameObject.Findの中のToggle1がisOnされたら
             if (GameObject.Find("Toggle1").GetComponent<Toggle>().isOn)
         {
             //Card1を消す
             Destroy(GameObject.Find("Card1"));
-           //     var eachCard = cards[i];
+            //     var eachCard = cards[i];
         }
 
         if (GameObject.Find("Toggle2").GetComponent<Toggle>().isOn)

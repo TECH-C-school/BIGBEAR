@@ -11,6 +11,10 @@ namespace Assets.Scripts.Bar04
         // Use this for initialization
         void Start()
         {
+            MakeCards();
+        }
+        public void MakeCards()
+        {
             var cards = MakeRandomNumbers();
             //5枚になるまで生成を繰り返す
             for (var i = 0; i < 5; i++)
@@ -28,7 +32,6 @@ namespace Assets.Scripts.Bar04
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardString);
 
             }
-
         }
         public enum Mark
         {
