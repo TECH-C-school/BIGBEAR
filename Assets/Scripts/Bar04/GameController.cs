@@ -4,15 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
+using UniRx;
+using System;
+//DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
 namespace Assets.Scripts.Bar04
 {
+   // DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
     public class GameController : MonoBehaviour
     {
+       // DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
+
         /// <summary>
         /// 自分のカードと相手のカードの生成するPrefabを指定(Inspector)
         /// </summary>
 
-            private enum Gamestate
+        private enum Gamestate
         {
             ini,
             Start,
@@ -40,6 +46,7 @@ namespace Assets.Scripts.Bar04
         private string[] CardDecks;
         //
         private int destroy;
+        //DOTween.Init(false,true,Log)
         //string[] CardDeckini = new string[53];
 
         //  public List<string> CardDeckini = new List<string>();
@@ -101,12 +108,16 @@ namespace Assets.Scripts.Bar04
                 mycards[cardCounter] = CardDecks[cardCounter];
                  CardPrefab.transform.localScale = new Vector3(0.228f, 0.228f, 0.228f);
                 var cardObject = Instantiate(CardPrefab, transform.position, Quaternion.identity);
+                //cardObject.DGLocalMove()
                 ///-----------------------------------------------------------------------------
-
+                
                     cardObject.name = myCardPrefab.name + cardCounter;
-                    cardObject.transform.position = new Vector3(-4.7f + cardCounter * 1.7f, -0.4f, 0f);
-                    //cardObject.
-                }
+                //cardObject.transform.position = new Vector3(-4.7f + cardCounter * 1.7f, -0.4f, 0f);
+
+                 cardObject.transform.DOLocalMove(new Vector3(-4.7f + cardCounter * 1.7f, -0.4f, 0f),2f).SetEase(Ease.InOutQuart);
+                //cardObject.
+                
+            }
                 for (var youcardCounter = 0; youcardCounter < 5; youcardCounter++)
                 {
                 //---------------------------------------------------------------------------------------
@@ -137,6 +148,12 @@ namespace Assets.Scripts.Bar04
                     }*/
                 }
             }
+
+        private void Invoke(Tweener tweener)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// DOTweenFade(未完)
         /// </summary>
