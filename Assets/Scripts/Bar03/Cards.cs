@@ -15,28 +15,40 @@ public class Cards : MonoBehaviour
     private bool _isFront;
     [SerializeField]
     private int _cardCount;
+    [SerializeField]
+    bool _selecting = false;
+    [SerializeField]
+    private int _parering;
+    private Cards[] _parentAry = new Cards[13];
 
+    //カードのｘ
     public int Deck
     {
         get { return _number; }
         set { _number = value; }
     }
 
+    //カードのｙ
     public int DeckNum
     {
         get { return _deckNumber; }
         set { _deckNumber = value; }
     }
+
+    //カードのマーク＆数字(文字列)
     public string String
     {
         get { return _string; }
         set { _string = value; }
     }
+
+    //カードの置かれた順番デッキからカードを送るのにつかわれる
     public int Count
     {
         get { return _cardCount; }
         set { _cardCount = value; }
     }
+    //カードか表かどうか確認する
     public bool IsFront
     {
         get
@@ -50,6 +62,20 @@ public class Cards : MonoBehaviour
         }
     }
 
+    //カードがつながっているか
+    public int pareCard
+    {
+
+        get { return _parering; }
+        set { _parering = value; }
+    }
+
+    //なんで作ったのかよくわかんないやつ
+    public Cards[] pareAry
+    {
+        get { return _parentAry; }
+        set { _parentAry = value; }
+    }
     //ターンカードのfaceUpをtrueにする関数(表)
     public void TurnCardFaceUp()
     {
@@ -78,10 +104,20 @@ public class Cards : MonoBehaviour
         }
         var spriteRenderer = transform.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = cardSprite;
-        
+
     }
     public void cardSelect()
     {
-        GameObject cardPrefabs = Resources.Load<GameObject>("Prefabs/Bar03/Select");
+        GameObject selectCard = Resources.Load<GameObject>("Prefabs/Bar03/Select");
+        if (!_selecting)
+        {
+            _selecting = true;
+            selectCard.SetActive(true);
+        }
+        else
+        {
+            _selecting = false;
+            selectCard.SetActive(false);
+        }
     }
 }

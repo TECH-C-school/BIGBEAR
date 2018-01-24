@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Bar03 {
+namespace Assets.Scripts.Bar03
+{
     public class GameController : MonoBehaviour
     {
         private string _nextCardString = "c01";
         private int _nextCardNumber = 1;
         private int[] _deckMaxNumber = new int[20];
-        private Vector3  thisHit;
+        private Vector3 thisHit;
         private int[] _deckCard = new int[104];
-
         private int _buttonState = 0;
-        private Cards TappedCard　= null;
+        private Cards TappedCard = null;
+        private Cards[] PareringCard = new Cards[104];
+        private GameObject[] obj = new GameObject[13];
+        private int _set = 0;
+        bool _select;
+
 
 
         void Start()
@@ -21,7 +26,7 @@ namespace Assets.Scripts.Bar03 {
             //MakeBackCards();
             CardsSet();
             BackGroundMake();
-        }  
+        }
         void Update()
         {
             ClickCard();
@@ -132,9 +137,11 @@ namespace Assets.Scripts.Bar03 {
                         cardSet.String = cardMarkNumber[count];
                         cardSet.Deck = x;
                         cardSet.DeckNum = y;
+                        cardSet.pareCard = 0;
                         _deckMaxNumber[x] = y;
                         _deckCard[count] = 0;
                         cardSet.Count = count;
+                        cardSet.name = cardSet.String;
                         cardSet.TurnCardFaceDown();
                         count++;
                     }
@@ -148,9 +155,11 @@ namespace Assets.Scripts.Bar03 {
                         cardSet.String = cardMarkNumber[count];
                         cardSet.Deck = x;
                         cardSet.DeckNum = y;
+                        cardSet.pareCard = 0;
                         _deckMaxNumber[x] = y;
                         _deckCard[count] = 0;
                         cardSet.Count = count;
+                        cardSet.name = cardSet.String;
                         cardSet.TurnCardFaceUp();
                         Debug.Log(cardMarkNumber[count]);
                         count++;
@@ -165,7 +174,9 @@ namespace Assets.Scripts.Bar03 {
                 Cards cardSet = cardObject.GetComponent<Cards>();
                 cardSet.String = cardMarkNumber[count];
                 _deckCard[count] = 1;
+                cardSet.pareCard = 0;
                 cardSet.Count = count;
+                cardSet.name = cardSet.String;
                 cardSet.TurnCardFaceDown();
                 count++;
             }
@@ -180,7 +191,7 @@ namespace Assets.Scripts.Bar03 {
             }
             for (int i = 0; i < card.Length; i++)
             {
-                int ransu = Random.Range(1,52);
+                int ransu = Random.Range(1, 52);
                 int kari = card[i];
                 card[i] = card[ransu];
                 card[ransu] = kari;
@@ -200,7 +211,7 @@ namespace Assets.Scripts.Bar03 {
                 }
             }
             return values;
-            }
+        }
         /// <summary>
         /// 背景を作る関数
         /// </summary>
@@ -247,25 +258,25 @@ namespace Assets.Scripts.Bar03 {
 
                 counter++;
             }
-            
+
             return values;
         }
         //配列を二つ作ってランダムに入れ替える関数
         private string[] AryRamdomTwo(string[] values)
         {
             string[] ary = new string[104];
-            for(int i = 0; i < 104; i++)
+            for (int i = 0; i < 104; i++)
             {
-                
+
                 if (i < 52)
                 {
                     ary[i] = values[i];
                 }
                 else
                 {
-                    ary[i] = values[i-52];
+                    ary[i] = values[i - 52];
                 }
-                
+
             }
             var counter = 0;
             while (counter < 104)
@@ -280,6 +291,18 @@ namespace Assets.Scripts.Bar03 {
             return ary;
 
         }
+
+        //selectのプレハブを作成
+        private void selectCard()
+        {
+            GameObject cardSelect = Resources.Load<GameObject>("Prefabs/Bar03/Select");
+            for (int i = 0; i < obj.Length; i++)
+            {
+                obj[i] = Instantiate(cardSelect,new Vector3(30, 30, 0), Quaternion.identity);
+
+            }
+        }
+
         /// <summary>
         /// クリックしたときカードを判定する関数
         /// </summary>
@@ -298,24 +321,28 @@ namespace Assets.Scripts.Bar03 {
             //クリックされた位置のオブジェクトを取得
             var hitObject = Physics2D.Raycast(tapPoint, -Vector3.up);
             if (!hitObject) return;
+           
 
+            if(_set == 0)
+            {
+                selectCard();
+                _set = 1;
+            }
+             
             //クリックされたカードスクリプトを取得
             var card = hitObject.collider.gameObject.GetComponent<Cards>();
-
             
             //クリックされたカードの位置を取得
             Vector3 hitTransform = hitObject.transform.position;
             
-            //クリックされたカードを数字にする
-            int numValue = 0;
 
             //クリックされたカードがデッキのカードだったら
-            if(_deckCard[card.Count] == 1)
+            if (_deckCard[card.Count] == 1)
             {
                 for (int i = 0; i < 10; i++)
                 {
                     _deckCard[card.Count] = 0;
-                    int y = _deckMaxNumber[i]+1;
+                    int y = _deckMaxNumber[i] + 1;
                     Vector3 cardPosition = GameObject.Find("Cards" + i).transform.position;
                     card.transform.parent = GameObject.Find("Cards" + i.ToString()).transform;
                     card.transform.position = new Vector3(cardPosition.x, cardPosition.y - y * 0.31f, cardPosition.z - y * 0.1f);
@@ -331,36 +358,119 @@ namespace Assets.Scripts.Bar03 {
                 }
                 return;
             }
+            //selectのカウント
+            int count = 1;
+            //カードを選択したときにプレハブを付ける
+            if (TappedCard == null && (card.DeckNum == _deckMaxNumber[card.Deck] || card.pareCard >= 1 && _deckMaxNumber[card.Deck] - card.DeckNum == card.pareCard))
+            {
+                for (int i = 0; i <= card.pareCard; i++)
+                {
+                    obj[i].transform.position = new Vector3(hitTransform.x, hitTransform.y - i* 0.31f, hitTransform.z - i * 0.1f);
+                    count++;
+                }
+            }
+            else
+            {
+                for (int x = count + 1; x >= 0; x--)
+                {
+                    obj[x].transform.position = new Vector3(30, 30, 0);
+                }
+            }
+
+            //カードをクリックして一番上にあり裏だったらそのカードを表にする
+            if (_deckMaxNumber[card.Deck] == card.DeckNum && !card.IsFront)
+            {
+                Debug.Log("クリックしたカードを表にします。");
+                card.TurnCardFaceUp();
+                for (int x = count+1; x >= 0; x--)
+                {
+                    obj[x].transform.position = new Vector3(30, 30, 0);
+                }
+                return;
+            }
+
+            //クリックされたカードを数字にする
+            int numValue = 0;
+
+            //クリックしたカードのマークを入れておく場所
+            string cardMark;
+
+            //前回クリックしたカードのマークを入れておく場所
+            string TappedMark = "";
 
             //カードから数字のみをとりだす
-            bool parsed = System.Int32.TryParse(card.String.Substring(1, 2), out numValue);
+            bool parsed01 = System.Int32.TryParse(card.String.Substring(1, 2), out numValue);
 
-            Debug.Log("このデッキのMAX"+_deckMaxNumber[card.Deck]);
-            Debug.Log("このカードのｙ" + card.DeckNum);
+            //カードからマークのみをとりだす
+            cardMark = card.String.Substring(0, 1);
+            Debug.Log("このカードのマークは" + cardMark);
+
+            //前回のカードからマークのみをとりだす
+            if (TappedCard != null)
+            {
+                TappedMark = TappedCard.String.Substring(0, 1);
+                Debug.Log("前のマークは" + TappedMark);
+            }
+
+            //Debug.Log("このデッキのMAX"+_deckMaxNumber[card.Deck]);
+            //Debug.Log("このカードのｙ" + card.DeckNum);
 
 
             //前回クリックカード+1と今回クリックしたカードが同じ
-            if (_nextCardNumber == numValue && card.DeckNum == _deckMaxNumber[card.Deck] && TappedCard != null) {
+            if (_nextCardNumber == numValue && (card.DeckNum == _deckMaxNumber[card.Deck] || _deckMaxNumber[card.Deck]-card.DeckNum == card.pareCard -1 ) && TappedCard != null)
+            {
                 Debug.Log("OK");
-                TappedCard.transform.position = new Vector3(hitTransform.x,hitTransform.y - 0.31f, hitTransform.z - 0.1f);
+                if (TappedCard.pareCard >= 1)
+                {
+                    for (int i1 = card.pareCard; i1 > 0; i1--)
+                    {
+                        TappedCard.pareAry[i1].transform.position = new Vector3(hitTransform.x, hitTransform.y - i1 * 0.31f, hitTransform.z - TappedCard.pareCard - i1 * 0.1f);
+                        _deckMaxNumber[card.Deck]++;
+                        _deckMaxNumber[TappedCard.pareAry[TappedCard.pareCard].Deck]--;
+                        TappedCard.pareAry[i1].DeckNum = _deckMaxNumber[card.Deck];
+                        TappedCard.pareAry[i1].Deck = card.Deck;
+                    }
+                }
+                TappedCard.transform.position = new Vector3(hitTransform.x, hitTransform.y - 0.31f, hitTransform.z - 0.1f);
                 var cardchange = Physics2D.Raycast(tapPoint, -Vector3.up);
                 _deckMaxNumber[card.Deck]++;
                 _deckMaxNumber[TappedCard.Deck]--;
                 TappedCard.DeckNum = _deckMaxNumber[card.Deck];
                 TappedCard.Deck = card.Deck;
+                TappedCard.transform.parent = GameObject.Find("Cards"+card.Deck.ToString()).transform;
+                if (TappedCard.pareCard >= 1)
+                {
+                    TappedCard.pareCard = 0;
+                    TappedCard.transform.parent = GameObject.Find("Cards" + card.Deck.ToString()).transform;
+                    Debug.Log("ペアリングを解除");
+                }
+                if (cardMark == TappedMark)
+                {
+                    TappedCard.pareCard = 0;
+                    card.pareCard =TappedCard.pareCard +1;
+                    card.pareAry[TappedCard.pareCard] = TappedCard;
+                    TappedCard.pareAry[card.pareCard] = card;
+                    TappedCard.transform.parent = card.transform;
+                    Debug.Log("ペアリングは成功");
+                }
+                for (int x = count + 1; x >= 0; x--)
+                {
+                    obj[x].transform.position = new Vector3(30, 30, 0);
+                }
+                TappedCard = null;
+                return;
+            }else if(numValue != 13)
+            {
+
             }
 
-            //カードをクリックして一番上にあり裏だったらそのカードを表にする
-            if(_deckMaxNumber[card.Deck] == card.DeckNum && !card.IsFront)
-            {
-                Debug.Log("クリックしたカードを表にします。");
-                card.TurnCardFaceUp();
-            }
-            
-            
+
+
+
 
             //次のカードを判明させる。13だったら変えない
-            if (numValue != 13) {
+            if (numValue != 13)
+            {
                 _nextCardNumber = numValue + 1;
                 Debug.Log("次は" + _nextCardNumber + "のカードを押してください");
             }
@@ -370,18 +480,24 @@ namespace Assets.Scripts.Bar03 {
                 Debug.Log("次のカードはないです");
             }
             //前回のカードを覚えさせる
-            if (card.DeckNum == _deckMaxNumber[card.Deck])
+            if (card.DeckNum == _deckMaxNumber[card.Deck] || card.pareCard >= 2 && card.pareAry[card.pareCard].DeckNum == _deckMaxNumber[card.Deck])
             {
                 if (TappedCard == null)
                 {
                     TappedCard = card;
+
                 }
                 else
                 {
                     TappedCard = null;
+                    for (int x = count + 1; x >= 0; x--)
+                    {
+                        obj[x].transform.position = new Vector3(30, 30, 0);
+                    }
                 }
             }
-            
+
+
         }
         /// <summary>
         /// ボタンが押された時メニューを開く関数
@@ -402,26 +518,18 @@ namespace Assets.Scripts.Bar03 {
                 Debug.Log("メニューを開きます");
             }
         }
-        public void DeckCardCheck()
-        {
-            for(int x = 0;x < 10; x++)
-            {
-                var deckCheck = GameObject.Find("Cards"+x).transform;
-                
-            }
-
-
-        }
+        
+        //マウスをドラッグしたときになんやかんやする関数（未完成）
         public void DragMouse()
         {
-            
-            if (Input.GetMouseButtonDown(0)) 
+
+            if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = new Ray();
                 RaycastHit hit = new RaycastHit();
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                if(Physics.Raycast(ray.origin, ray.direction,out hit, Mathf.Infinity))
+                if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
                 {
                     if (hit.collider.gameObject)
                     {
@@ -430,7 +538,7 @@ namespace Assets.Scripts.Bar03 {
                 }
             }
         }
-        
+
     }
 
 }
