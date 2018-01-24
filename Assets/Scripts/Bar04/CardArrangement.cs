@@ -7,7 +7,8 @@ namespace Assets.Scripts.Bar04
 {
     public class CardArrangement : MonoBehaviour
     {
-
+        public Card[] cards = new Card[52];
+        public int cardCount = 0;
         // Use this for initialization
         void Start()
         {
@@ -16,11 +17,12 @@ namespace Assets.Scripts.Bar04
         public void MakeCards()
         {
             var cards = MakeRandomNumbers();
+            this.cards = cards;
             //5枚になるまで生成を繰り返す
             for (var i = 0; i < 5; i++)
             {
                 var eachCard = cards[i];
-
+                cardCount = i;
                 string cardString = eachCard.CardString();
 
 
@@ -174,12 +176,7 @@ namespace Assets.Scripts.Bar04
         }
 
 
-        public GameObject obj;
-
-
-
-
-
+        //public GameObject obj;
 
         /*          public class ObjectGenerator : MonoBehaviour
               {
