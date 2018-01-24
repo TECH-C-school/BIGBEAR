@@ -44,6 +44,7 @@ namespace Assets.Scripts.Bar06
                     Debug.Log("Num_is" + PlayerCards[i + j]);
                   }
             }
+            CardNum();
         }
         public void Update()
         {
@@ -87,8 +88,13 @@ namespace Assets.Scripts.Bar06
         public void CardNum()
         {
             GameObject obj = GameObject.Find("Cards");
-
-            Debug.Log(obj);
+            GameObject[] objs = new GameObject[obj.transform.childCount];
+            for(int i = 0; i < objs.Length; ++i)
+            {
+                objs[i] = obj.transform.GetChild(i).gameObject;
+                Debug.Log(objs[i].name);
+            }
+            //Debug.Log(obj.name);
         }
 
        
