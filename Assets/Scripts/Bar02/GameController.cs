@@ -54,7 +54,7 @@ namespace Assets.Scripts.Bar02
     public class GameController : MonoBehaviour
     {
         private Card[] remaindertrump;
-        private int remaindertrump_index = 0;
+        private int remaindertrump_index = 21;
         private int _nextCardNumber = 1;
         private GameObject Clickcards = null;
 
@@ -95,12 +95,12 @@ namespace Assets.Scripts.Bar02
             //残りの31枚のカードを山札にする
 
             remaindertrump = new Card[52];
-            for (int i = 21; i < 52; i++)
+            for (int i =21; i < 52; i++)
             {
                 
                 remaindertrump[i].number = (cards[i] - 1) % 13 + 1;
                 remaindertrump[i].mark = (Mark)((cards[i] - 1) / 13);
-               Debug.Log("山札" + remaindertrump[i].mark + remaindertrump[i].number);
+               //Debug.Log("山札" + remaindertrump[i].mark + remaindertrump[i].number);
             }
 
             //21枚のカードを表示する
