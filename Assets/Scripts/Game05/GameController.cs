@@ -18,6 +18,7 @@ namespace Assets.Scripts.Game05 {
 		private Button pauseButton;
 		[SerializeField]
 		private GameObject pauseBack;
+		[SerializeField] float positionPadding = 5.2f;
 
 		private PlayerController pc;
 		[HideInInspector]
@@ -27,8 +28,6 @@ namespace Assets.Scripts.Game05 {
 		private Difficult difficult;
 		private float moveingPos = 0f;
 		private float maxMoving = 0f;
-
-		private const float POSPADDING = 3.15f;
 		private const float VALUEMAG = 1.5f;
 
         void Start() {
@@ -61,14 +60,14 @@ namespace Assets.Scripts.Game05 {
 			top.name = "LastTower";
 			top.GetComponent<Renderer> ().sortingOrder = num;
             var lastPos = Vector3.zero;
-			lastPos.y = POSPADDING * num;
+			lastPos.y = positionPadding * num;
             top.transform.localPosition = lastPos;
             for(int i = 0; i < num; i++) {
                 var tower = Instantiate(towerInstance, towerParent);
 				tower.name = "Tower";
 				tower.GetComponent<Renderer> ().sortingOrder = (num - (i + 1));
                 var newPos = Vector3.zero;
-				newPos.y = POSPADDING * (num - (i + 1));
+				newPos.y = positionPadding * (num - (i + 1));
                 tower.transform.localPosition = newPos;
             }
 			maxMoving = GameParam.Instance.maxMove * (num + 1);
