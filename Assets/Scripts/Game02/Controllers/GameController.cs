@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Game02 {
-    public class GameController : MonoBehaviour {
+	public class GameController : SingletonMono<GameController> {
 		[SerializeField] Button shotBtn;
 		[SerializeField] Button reloadBtn;
 		[SerializeField] ScopeController _scope;
@@ -22,6 +22,8 @@ namespace Assets.Scripts.Game02 {
 
 		private void Start() {
 			scopeRenderer.enabled = false;
+			reloadBtn.interactable = false;
+			shotBtn.interactable = true;
 		}
 
 		private void Update() {
@@ -29,6 +31,15 @@ namespace Assets.Scripts.Game02 {
 				TouchPoscheck ();
 			if (Input.GetMouseButtonUp (0))
 				scopeRenderer.enabled = false;
+			if (_scope.isReload) {
+				reloadBtn.interactable = true;
+				shotBtn.interactable = false;
+				#if UNITY_EDITOR
+				if(Input.GetKeyDown(KeyCode.R)) {
+					_scope.Reload();
+				}
+				#endif
+			}
 		}
 
 		private void TouchPoscheck() {
@@ -36,7 +47,7 @@ namespace Assets.Scripts.Game02 {
 			var screenPos = Camera.main.ScreenToWorldPoint (touchPos);
 			screenPos.z = -0.5f;
 			scopeRenderer.enabled = true;
-			_scope.Move (screenPos);
+			_scope.Vibration (screenPos);
 			#if UNITY_EDITOR
 			if(Input.GetKeyDown(KeyCode.S)){
 				_scope.Snipe();
