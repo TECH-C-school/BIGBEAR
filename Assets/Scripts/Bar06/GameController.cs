@@ -10,6 +10,7 @@ namespace Assets.Scripts.Bar06
         static int[] cards = new int[52];
         int[] PlayerCards = new int[11];
         static int y = 4;
+        static int counter = 1;
         string[] CardsName = 
             {
             "c01","c02","c03","c04","c05","c06","c07","c08","c09","c10","c11","c12","c13",
@@ -41,6 +42,7 @@ namespace Assets.Scripts.Bar06
                         PlayerCards[i + j] = cards[i + j] % 13;
                     }
                     Debug.Log("Num_is" + PlayerCards[i + j]);
+                  /*  GetSprite("Prefabs / Bar06 / Cards",CardsName[1]);*/
                 }
             }
         }
@@ -82,10 +84,22 @@ namespace Assets.Scripts.Bar06
             var card = GameObject.Find("Cards");
             Card.transform.parent = card.transform;
         }
+
+        /*public Sprite GetSprite(string fileName, string spriteName)
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>(fileName);
+            return System.Array.Find<Sprite>(sprites, (sprite) => sprite.name.Equals(spriteName));
+            string name = "enemy_" + Random.Range(0, 8);
+            Sprite sp = GetSprite("Prefabs/Bar06/Cards",name);
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            sr.sprite = sp;
+        }*/
+        
+        
         //カードの合計を出す
         public void Cardsum()
         {
-          
+             
         }
         //役の判定
         public void Role()
@@ -100,13 +114,17 @@ namespace Assets.Scripts.Bar06
         // クリックしたらカードを追加する(プレイヤー側)
         public void ClickAddCardButton()
         {
-            int x = cards[y]; 
-            var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x - 1]);
-            Card = Instantiate(Card, new Vector2( (-y + 3) - 0.5f,-1f), Quaternion.identity);
-            var card = GameObject.Find("Cards");
-            Card.transform.parent = card.transform;
-            y++;
-            Debug.Log(x);
+            if (counter < 5)
+            {
+                int x = cards[y];
+                var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x - 1]);
+                Card = Instantiate(Card, new Vector2((-y + 3) - 0.5f, -1f), Quaternion.identity);
+                var card = GameObject.Find("Cards");
+                Card.transform.parent = card.transform;
+                y++;
+                counter++;
+                Debug.Log(x);
+            }
         }
         // クリックしたら勝負をあきらめる
         public void ClickSurrenderButton()
