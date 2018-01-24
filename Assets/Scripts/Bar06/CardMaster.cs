@@ -33,6 +33,11 @@ public class CardMaster : MonoBehaviour
         public int second;
     }
 
+    public struct coin
+    {
+        
+    }
+
     sum Sum = new sum();
     private int Vs = 0;
     private float start_time = 1.2f;
@@ -46,6 +51,8 @@ public class CardMaster : MonoBehaviour
         Invoke("Dealercard", 0.7f);
         Invoke("Count", 0.5f);
         Invoke("PlayerNum", 1);
+        Bet();
+        Betpuls();
     }
     private void Update()
     {
@@ -63,6 +70,7 @@ public class CardMaster : MonoBehaviour
     private int puls = 0;
     private int Dpuls = 0;
     private int delobj = 0;
+    private string[] pic = { "Images/Bar/t_0", "Images/Bar/t_1", "Images/Bar/t_2", "Images/Bar/t_3", "Images/Bar/t_4", "Images/Bar/t_5", "Images/Bar/t_6", "Images/Bar/t_7", "Images/Bar/t_8", "Images/Bar/t_9" };
 
     public void PlayerCard()
     {
@@ -3114,6 +3122,80 @@ public class CardMaster : MonoBehaviour
             }
         }
     }
+
+    int Coin = 10;
+    int checker = 0;
+    public void Bet()
+    {
+        if (checker == 0)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                var coinPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin");
+                var coinObject = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+                if (i == 0)
+                {
+                    coinObject.transform.position = new Vector3(-7.3f, -4.4f, 0);
+                }
+                else if (i == 1)
+                {
+                    coinObject.transform.position = new Vector3((i - 0.5f) - 7.3f, -4.4f, 0);
+                }
+                else if (i == 2)
+                {
+                    coinObject.transform.position = new Vector3((i - 1) - 7.3f, -4.4f, 0);
+                }
+                coinObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                SpriteRenderer CoinRenderer = coinObject.GetComponent<SpriteRenderer>();
+                CoinRenderer.sprite = Resources.Load<Sprite>("Images/Bar/t_0");
+            }
+
+            checker = 1;
+        }
+        else if (checker == 1)
+        {
+
+        }
+    }
+    int betcheck = 0;
+    public void Betpuls()
+    {
+        if (betcheck < 11)
+        {
+            var betPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin");
+            var betObject = Instantiate(betPrefab, transform.position, Quaternion.identity);
+            if (betcheck >= 0 && betcheck < 10)
+            {
+                betObject.transform.position = new Vector3(-6.5f, -3, 0);
+            }
+            else if (betcheck == 10)
+            {
+                betObject.transform.position = new Vector3(-6.7f, -3, 0);
+            }
+            betObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+            SpriteRenderer CoinRenderer = betObject.GetComponent<SpriteRenderer>();
+            if (betcheck == 0)
+            {
+                CoinRenderer.sprite = Resources.Load<Sprite>(pic[0]);
+            }
+            else if (betcheck >= 1 && betcheck < 10)
+            {
+                CoinRenderer.sprite = Resources.Load<Sprite>(pic[betcheck]);
+            }
+            else if (betcheck == 10)
+            {
+                CoinRenderer.sprite = Resources.Load<Sprite>(pic[1]);
+                var betPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/coin");
+                var betObject2 = Instantiate(betPrefab2, transform.position, Quaternion.identity);
+                betObject2.transform.position = new Vector3(-6.4f, -3, 0);
+                betObject2.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+                SpriteRenderer CoinRenderer2 = betObject2.GetComponent<SpriteRenderer>();
+                CoinRenderer2.sprite = Resources.Load<Sprite>(pic[0]);
+            }
+        }
+        betcheck++;
+    }
 }
+
 
        
