@@ -30,6 +30,7 @@ namespace Assets.Scripts.Bar0404
         public Sprite SetchipPhase;
         public Sprite CardChangePhase;
         public Sprite ResultPhase;
+        bool cardChange =false;
         
 
         //カード関係の変数
@@ -58,8 +59,7 @@ namespace Assets.Scripts.Bar0404
 
 
         public void Update(){
-            CardClick();
-
+            if (cardChange) { CardClick(); }
         }
 
         //山札をシャッフルするための乱数生成
@@ -86,6 +86,7 @@ namespace Assets.Scripts.Bar0404
             MakeFirstCards();
             StartButton.SetActive(false);
             ChangeButton.SetActive(true);
+            cardChange = true;
             CardSort();
             Phase.sprite = CardChangePhase;
             ScoreManager.Instance.Payment();
@@ -108,6 +109,7 @@ namespace Assets.Scripts.Bar0404
             CardSort();
             ChangeButton.SetActive(false);
             RestartButton.SetActive(true);
+            cardChange = false;
             Phase.sprite = ResultPhase;
             PokerHand.Instance.PokerCheck();
             ResultHundText.text = ScoreManager.Instance.resulttext;
