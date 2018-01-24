@@ -19,6 +19,7 @@ namespace Assets.Scripts.Bar06 {
         public Text DText;                  //相手の数値のテキスト
         public Text CoinText;               //コインテキスト
         public Text BetText;                //ベットテキスト
+        public Text HistoryText;            //履歴テキスト
         public Image image_Lose;            //負け画像
         public Image image_Win;             //勝ち画像
         public Image image_Draw;            //引き分け画像
@@ -70,6 +71,7 @@ namespace Assets.Scripts.Bar06 {
             if(MyNumCount > 21){
                 image_Lose.fillAmount = 1;
                 Coin -= Bet;
+                HistoryText.text += MyNumCount.ToString() + "\n";
                 EndButtun();
             }
 
@@ -142,6 +144,7 @@ namespace Assets.Scripts.Bar06 {
                 image_Win.fillAmount = 1;
                 Coin += Bet;
             }
+            HistoryText.text =  MyNumCount.ToString() + "\n" + HistoryText.text;
             EndButtun();
         }
         public void RestartBottunClick() {
