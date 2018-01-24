@@ -32,8 +32,8 @@ public class GameControll : MonoBehaviour {
     public Image Card_4;
     public Image Card_5;
 
-
-
+    public Canvas CardChangeCanvas;
+    public Canvas HandCheackCanvas;
     // Use this for initialization
     void Start () {
         CardInput();
@@ -166,7 +166,7 @@ public class GameControll : MonoBehaviour {
             "H13","D13","S13","C13"
         };
     }
-    #region 恥ずかしいプログラムゆえ隠す
+    #region カード交換
     public void CardChangeButton()
         // カード交換する 押したときの処理
     {
@@ -202,6 +202,8 @@ public class GameControll : MonoBehaviour {
         Card4 = false;
         Card5 = false;
 
+        StartCoroutine("HandCheack");
+
     }
     #region カード選択ボタン
     public void Card1_Bool()
@@ -226,6 +228,17 @@ public class GameControll : MonoBehaviour {
     }
     #endregion
     #endregion
+
+    IEnumerator HandCheack()
+    {
+
+        yield return new WaitForSeconds(2f);
+        ChangeCanvas = false;
+        CardChangeCanvas.gameObject.SetActive(false);
+        HandCheackCanvas.gameObject.SetActive(true);
+        
+    }
+    
     IEnumerator Drow()
     {
         yield return new WaitForSeconds(0.2f);
