@@ -6,21 +6,22 @@ using UnityEngine;
 using UniRx;
 
 namespace Assets.Scripts.Game02 {
-	public class EnemyContoroller : MonoBehaviour {
+	public class EnemyContoroller : SingletonMono<EnemyContoroller> {
 		[SerializeField] List<EnemyBase> enemys = new List<EnemyBase> ();
 		[SerializeField] List<float> buildingHierarchy = new List<float>();
 		[SerializeField] List<float> buildingColumns = new List<float>();
 		[SerializeField] List<WaveInfo> _waveInfo = new List<WaveInfo>();
 		IntReactiveProperty currentWave = new IntReactiveProperty();
 
+
 		void Start() {
 			EnemyGeneratePosSet ();
-			currentWave.Value = 1;
+			currentWave.Value = 0;
 		}
 
 		void EnemyGeneratePosSet() {
-			var column = new List<int> {1, 2, 3, 4, 5};
-			var hierarchy = new List<int> {1, 2, 3, 4, 5};
+//			var column = new List<int> {1, 2, 3, 4, 5};
+//			var hierarchy = new List<int> {1, 2, 3, 4, 5};
 			for(int i = 0; i < _waveInfo[currentWave.Value].enemyInfos.Count; i++) {
 				var enemy = enemys.FirstOrDefault(e => e.gameObject.activeSelf == false);
 				if (enemy == null)
