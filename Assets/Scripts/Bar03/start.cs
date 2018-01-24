@@ -182,6 +182,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row2[i].Number, Row2[i].mark));
+                    card2.Number = 1;
                 }
                 else
                 {
@@ -200,6 +201,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row3[i].Number, Row3[i].mark));
+                    card3.Number = 1;
                 }
                 else
                 {
@@ -218,6 +220,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row4[i].Number, Row4[i].mark));
+                    card4.Number = 1;
                 }
                 else
                 {
@@ -236,6 +239,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row5[i].Number, Row5[i].mark));
+                    card5.Number = 1;
                 }
                 else
                 {
@@ -254,6 +258,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row6[i].Number, Row6[i].mark));
+                    card6.Number = 1;
                 }
                 else
                 {
@@ -272,6 +277,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row7[i].Number, Row7[i].mark));
+                    card7.Number = 1;
                 }
                 else
                 {
@@ -290,6 +296,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row8[i].Number, Row8[i].mark));
+                    card8.Number = 1;
                 }
                 else
                 {
@@ -308,6 +315,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row9[i].Number, Row9[i].mark));
+                    card9.Number = 1;
                 }
                 else
                 {
@@ -326,6 +334,7 @@ namespace Assets.Scripts.Bar03
                 if (i == 0)
                 {
                     renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + GetCards(Row10[i].Number, Row10[i].mark));
+                    card10.Number = 1;
                 }
                 else
                 {
@@ -339,7 +348,6 @@ namespace Assets.Scripts.Bar03
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
                 cardObject.transform.position = new Vector3(-7.85f, 0 - 2.85f, 0);
                 var renderer = cardObject.GetComponent<SpriteRenderer>();
-                var Deck = cardObject.GetComponent<Draganddrop>();
                 renderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
             }
 

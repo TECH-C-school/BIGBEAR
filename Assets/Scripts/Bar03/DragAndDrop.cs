@@ -53,7 +53,7 @@ namespace Assets.Scripts.Bar03
                         this.transform.position = mousePointInWorld;
 
                         GameController.flag = true;
-                    }
+                    }                      
                 }
                 else
                 {
