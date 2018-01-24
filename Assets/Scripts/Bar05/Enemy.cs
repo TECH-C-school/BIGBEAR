@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Assets.Scripts.Bar05
 {
@@ -30,7 +31,6 @@ namespace Assets.Scripts.Bar05
         private bool strongBool;
         private bool foldBool;
 
-        private GameObject enemyTalk;
         private GameObject enemyBetText;
         private GameObject enemyBetText2;
         private GameObject enemyMoneyText;
@@ -38,6 +38,7 @@ namespace Assets.Scripts.Bar05
 
         private Text enemyTalkText;
 
+        private Image enemyTalk;
         private Image enemyTalkAction;
 
         private void Awake()
@@ -66,6 +67,8 @@ namespace Assets.Scripts.Bar05
             enemyBet = phase.enemyBet;
             enemyMoney = phase.enemyMoney;
 
+            enemyTalkStr = "";
+
             if (betCount <= 1 || fieldBet != enemyBet)
             {
                 if (phase.phaseEnum == Phase.PhaseEnum.word5)
@@ -84,6 +87,8 @@ namespace Assets.Scripts.Bar05
 
             var spriteRenderer = Resources.Load<Sprite>("Images/Bar/" + enemyTalkStr);
             enemyTalkAction.sprite = spriteRenderer;
+
+            enemyTalk.rectTransform.DOAnchorPosY(-300f, 0.4f);
 
             if (foldBool == false)
             {
@@ -298,6 +303,8 @@ namespace Assets.Scripts.Bar05
             }
             else
             {
+                enemyTalk.SetActive(true);
+                enemyTalkAction.enabled = false;
                 enemyTalkText.text = "チェック";
             }
         }
@@ -320,6 +327,7 @@ namespace Assets.Scripts.Bar05
                 enemyBet = fieldBet;
 
                 enemyTalk.SetActive(true);
+                enemyTalkAction.enabled = false;
                 enemyTalkText.text = "倍賭け";
             }
         }

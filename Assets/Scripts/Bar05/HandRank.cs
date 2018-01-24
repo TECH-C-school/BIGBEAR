@@ -138,36 +138,9 @@ namespace Assets.Scripts.Bar05
 
             for (int i = 2; i <= numberCount.Length - 1; i++)
             {
-                if (numberCount[i] == 2)
-                {
-                    pairCount++;
-                    //switch (pairCount)
-                    //{
-                    //    case 1:
-                    //        selPairTemp = i;
-                    //        break;
-                    //    case 2:
-                    //        selPairTemp2 = i;
-                    //        break;
-                    //    case 3:
-                    //        selPairTemp = i;
-                    //        break;
-                    //}
-                }
-                if (numberCount[i] == 3)
-                {
-                    threeCount++;
-                    //selThreeTemp = i;
-                    //if (threeCount == 2)
-                    //{
-                    //    selThreeTemp = i;
-                    //}
-                }
-                if (numberCount[i] == 4)
-                {
-                    fourCount++;
-                    //selFourTemp = i;
-                }
+                if (numberCount[i] == 2) pairCount++;
+                if (numberCount[i] == 3) threeCount++;
+                if (numberCount[i] == 4) fourCount++;
             }
 
             //Flushの判定
@@ -259,6 +232,8 @@ namespace Assets.Scripts.Bar05
                 rankCheck = RankCheck.OnePair;
                 return 1;
             }
+
+            rankCheck = RankCheck.NoPair;
             return 0;
         }
 

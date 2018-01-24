@@ -79,30 +79,39 @@ namespace Assets.Scripts.Bar05
         private Card cardS;
         private Bet betS;
 
+        /// <summary>
+        /// -1～1を勝利アニメで使用
+        /// 
+        /// </summary>
+        /// <param name="waitSec"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         private IEnumerator ActionCor(float waitSec, int action)
         {
-            if (action >= 2)
+            if (action >= 2 && 6 >= action)
             {
                 string nowPhaseStr = phaseEnum.ToString();
                 var spriteRenderer = phaseAnim.GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite =
                     Resources.Load<Sprite>("Images/Bar/fc_" + nowPhaseStr);
 
-                phaseAnim.transform.position = new Vector3(11.5f, 0, -3f);
-                phaseAnim.transform.DOMoveX(0, 1.5f);
-                flameAnim.transform.DOScaleY(1, 1.3f);
+
+                phaseAnim.transform.position = new Vector3(11.5f, 0, -5f);
+                phaseAnim.transform.DOMoveX(0, 0.8f);
+                flameAnim.transform.DOScaleY(1, 1.4f);
             }
 
             yield return new WaitForSeconds(waitSec);
-            //0と1と-1を使用
             if (action <= 1)
             {
                 Win(action);
             }
-            else
+            else if(action >= 2 && 6 >= action)
             {
-                phaseAnim.transform.DOMoveX(-11.5f, 0.5f);
+                phaseAnim.transform.DOMoveX(-11.5f, 0.4f);
                 flameAnim.transform.DOScaleY(0, 0.7f);
+
+                yield return new WaitForSeconds(0.4f);
 
                 switch (action)
                 {
@@ -122,6 +131,10 @@ namespace Assets.Scripts.Bar05
                         ShowDown();
                         break;
                 }
+            }
+            else
+            {
+                enemyTalk.transform.DOLocalMoveY(-1,1);
             }
         }
 
@@ -403,6 +416,9 @@ namespace Assets.Scripts.Bar05
         public void PlayerBet()
         {
             betPhaseCount++;
+
+            StartCoroutine(ActionCor(1,7));
+
             if (fieldBet >= 10 && playerBet == fieldBet)
             {
                 GoShowDown();

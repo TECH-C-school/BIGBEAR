@@ -201,14 +201,14 @@ namespace Assets.Scripts.Bar05
         {
             if (menuBool == false)
             {
-                menuBtn.transform.DOLocalMove(new Vector3(470f, 244f, 0f), 0.8f);
+                menuBtn.transform.DOLocalMove(new Vector3(470f, 244f, 0f), 0.4f);
                 menuBool = true;
                 posePanel.SetActive(true);
                 resetBtn.SetActive(true);
             }
             else
             {
-                menuBtn.transform.DOLocalMove(new Vector3(620f, 244f, 0f), 0.8f);
+                menuBtn.transform.DOLocalMove(new Vector3(620f, 244f, 0f), 0.4f);
                 menuBool = false;
                 posePanel.SetActive(false);
                 resetBtn.SetActive(false);
