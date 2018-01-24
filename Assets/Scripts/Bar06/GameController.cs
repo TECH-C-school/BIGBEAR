@@ -42,8 +42,7 @@ namespace Assets.Scripts.Bar06
                         PlayerCards[i + j] = cards[i + j] % 13;
                     }
                     Debug.Log("Num_is" + PlayerCards[i + j]);
-                  /*  GetSprite("Prefabs / Bar06 / Cards",CardsName[1]);*/
-                }
+                  }
             }
         }
         public void Update()
@@ -83,19 +82,16 @@ namespace Assets.Scripts.Bar06
             Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);   // x % 13
             var card = GameObject.Find("Cards");
             Card.transform.parent = card.transform;
+         }
+        //Cardsオブジェクトに入るcard(clone)をDebug.Log()で表示させる
+        public void CardNum()
+        {
+            GameObject obj = GameObject.Find("Cards");
+
+            Debug.Log(obj);
         }
 
-        /*public Sprite GetSprite(string fileName, string spriteName)
-        {
-            Sprite[] sprites = Resources.LoadAll<Sprite>(fileName);
-            return System.Array.Find<Sprite>(sprites, (sprite) => sprite.name.Equals(spriteName));
-            string name = "enemy_" + Random.Range(0, 8);
-            Sprite sp = GetSprite("Prefabs/Bar06/Cards",name);
-            SpriteRenderer sr = GetComponent<SpriteRenderer>();
-            sr.sprite = sp;
-        }*/
-        
-        
+       
         //カードの合計を出す
         public void Cardsum()
         {
