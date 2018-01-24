@@ -24,6 +24,8 @@ namespace Assets.Scripts.Bar06 {
         public Button BDB;
         private int coin = 10;
         private int bet;
+        private int Pnatural21 = 0;
+        private int Enatural21 = 0;
         
        
         public void Win()
@@ -196,7 +198,14 @@ namespace Assets.Scripts.Bar06 {
                 }
                 playercounter = playercounter + numbers[DeckCounter];
                 DeckCounter++;
+                
+                //ナチュラルブラックジャック判定
+                if(playercounter == 21)
+                {
+                    Pnatural21 = 1;
+                }
             }
+            
 
 
             //ディーラーの初期カードの表示
@@ -249,7 +258,10 @@ namespace Assets.Scripts.Bar06 {
         //プレイヤーのカード追加
         public void AddCard()
         {
+            Pnatural21 = 0;
+
             DeleteBetButton();
+
             var CardObject2 = GameObject.Find("Cards");
             if (playercounter < 22)
             {
@@ -276,12 +288,12 @@ namespace Assets.Scripts.Bar06 {
                 }
                 playercounter = playercounter + numbers[DeckCounter];
                 DeckCounter++;
-                if(playerpositionX > 6)
+                if(playerpositionX > 4)
                 {
                     playerpositionX = -4;
                     playerpositionY = 1;
                 }
-                if (playercounter >= 22)
+                if (playercounter > 21)
                 {
                     Lose();
                 }
@@ -292,6 +304,7 @@ namespace Assets.Scripts.Bar06 {
         public void Battle()
         {
             DeleteBetButton();
+
             var CardObject3 = GameObject.Find("Cards");
             while (enemycounter < 17)
             {
@@ -316,35 +329,54 @@ namespace Assets.Scripts.Bar06 {
                         numbers[DeckCounter] = 1;
                     }
                 }
+                
+                //ディーラーのナチュラルブラックジャック判定
+                if(enemycounter == 21 && Enatural21 == 0)
+                {
+                    if (Pnatural21 == 1)
+                    {
+                        Draw();
+                    }
+                    else
+                    {
+                        Lose();
+                    }
+                }else
+                {
+                    Enatural21 = 1;
+                }
+
                 enemycounter = enemycounter + numbers[DeckCounter];
                 DeckCounter++;
-                if(enemypositionX > 6)
+                if(enemypositionX > 4)
                 {
                     enemypositionX = -4;
                     enemypositionY = 1;
                 }
             }
 
-            if(playercounter < enemycounter)
+            if (playercounter < enemycounter)
             {
-                if(enemycounter < 22)
+                if (enemycounter < 22)
                 {
                     Lose();
-                }else
+                }
+                else
                 {
                     Win();
                 }
-                
             }else if(playercounter == enemycounter)
             {
-                Draw();
-            }else if(playercounter < 22)
-            {
-                Win();
+                if(Pnatural21 == 0)
+                {
+                    Draw();
+                }
             }else
             {
-                Lose();
+                Win();
             }
+           
+            
         }
 
         public void ReSTART()
@@ -375,6 +407,8 @@ namespace Assets.Scripts.Bar06 {
             playercounter = 0;
             enemycounter = 0;
             DeckCounter = 0;
+            Pnatural21 = 0;
+            Enatural21 = 0;
             Start();
 
         }
