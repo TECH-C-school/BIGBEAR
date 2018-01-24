@@ -19,13 +19,23 @@ namespace Assets.Scripts.Game02 {
 		}
 
 		void EnemyGeneratePosSet() {
-			for(int i = 0; i < _waveInfo[currentWave.Value].enemyType.Count; i++) {
+			var column = new List<int> {1, 2, 3, 4, 5};
+			var hierarchy = new List<int> {1, 2, 3, 4, 5};
+			for(int i = 0; i < _waveInfo[currentWave.Value].enemyInfos.Count; i++) {
 				var enemy = enemys.FirstOrDefault(e => e.gameObject.activeSelf == false);
 				if (enemy == null)
 					return;
-				var rnd_h = UnityEngine.Random.Range (1, 6);
-				var rnd_c = UnityEngine.Random.Range (1, 6);
-				var genPos = new Vector3 (buildingColumns [rnd_c], buildingHierarchy [rnd_h], 0);
+//				var rnd_c = column.Count != 1 ? column [UnityEngine.Random.Range (0, hierarchy.Count-1)] : hierarchy[0];
+//				column = column.Where (num => num != rnd_c).ToList ();
+//				foreach(var num in column) {
+//					Debug.Log ("numC:" + num);
+//				}
+//				var rnd_h = hierarchy.Count != 1 ? hierarchy [UnityEngine.Random.Range (0, hierarchy.Count-1)] : hierarchy[0];
+//				hierarchy = hierarchy.Where (num => num != rnd_c).ToList ();
+//				foreach(var num in hierarchy) {
+//					Debug.Log ("numH:" + num);
+//				}
+				var genPos = new Vector3 (buildingColumns [_waveInfo[currentWave.Value].enemyInfos[i].column-1], buildingHierarchy [_waveInfo[currentWave.Value].enemyInfos[i].hierarchy-1], 0);
 				enemy.Generate (genPos);
 			}
 		}
@@ -38,6 +48,13 @@ namespace Assets.Scripts.Game02 {
 
 	[Serializable]
 	public class WaveInfo {
-		public List<EnemyType> enemyType = new List<EnemyType>();
+		public List<EnemyInfo> enemyInfos = new List<EnemyInfo>();
+	}
+
+	[Serializable]
+	public class EnemyInfo {
+		public EnemyType enemyType;
+		public int column;
+		public int hierarchy;
 	}
 }

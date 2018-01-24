@@ -38,7 +38,7 @@ namespace Assets.Scripts.Game02 {
 		}
 
 		void Recoil(Vector3 currentPos) {
-			this.transform.DOLocalJump (currentPos, 0.5f, 1, 1.5f);
+			this.transform.DOLocalJump (currentPos, 0.5f, 1, 1.0f);
 		}
 
 		public IEnumerator Snipe(float delayTime, Vector3 currentPos){
