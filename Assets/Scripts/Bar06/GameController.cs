@@ -95,3 +95,64 @@ namespace Assets.Scripts.Bar06
     }
 }
 
+/*
+ * // カードを２枚ずつ配る
+        private void Dealcards()
+        {
+            for(int i = 0; i < 4; i++)
+            {
+               //Debug.Log(cards[i]);
+            } 
+        }
+        // カードを表示する
+        private void LoadCards(int x, int y,int z)
+        {
+            var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x-1]);
+            Card = Instantiate(Card, new Vector2(y - 0.5f, z * 2 - 1f), Quaternion.identity);
+            var card = GameObject.Find("Cards");
+            Card.transform.parent = card.transform;
+                 if(x == 14 || x == 27 || x == 40){x = 1;}
+            else if(x == 15 || x == 28 || x == 41){x = 2;}
+            else if(x == 16 || x == 29 || x == 42){x = 3;}
+            else if(x == 17 || x == 30 || x == 43){x = 4;}
+            else if(x == 18 || x == 31 || x == 44){x = 5;}
+            else if(x == 19 || x == 32 || x == 45){x = 6;}
+            else if(x == 20 || x == 33 || x == 46){x = 7;}
+            else if(x == 21 || x == 34 || x == 47){x = 8;}
+            else if(x == 22 || x == 35 || x == 48){x = 9;}
+            else if(x == 23 || x == 36 || x == 49){x = 10;}
+            else if(x == 24 || x == 37 || x == 50){x = 10;}
+            else if(x == 25 || x == 38 || x == 51){x = 10;}
+            else if(x == 26 || x == 39 || x == 52){x = 10;}
+            Debug.Log(x);
+        }
+ 
+     {
+            for (int i = 0; i < cards.Length; i++)
+            {
+                cards[i] = i + 1;
+            }
+            System.Random rng = new System.Random();
+            int n = cards.Length;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                int tmp = cards[k];
+                cards[k] = cards[n];
+                cards[n] = tmp;
+                
+            }
+        }
+
+    public void ClickAddCardButton()
+        {
+            
+            var Card = Resources.Load<GameObject>("Prefabs/Bar06/Cards/" + CardsName[x - 1]);
+            Card = Instantiate(Card, new Vector2(- 0.5f, 2 - 1f), Quaternion.identity);
+            var card = GameObject.Find("Cards");
+            Card.transform.parent = card.transform;
+            Debug.Log(x);
+        }
+     
+     */
