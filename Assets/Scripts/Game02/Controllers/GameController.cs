@@ -10,6 +10,9 @@ namespace Assets.Scripts.Game02 {
 		[SerializeField] Button shotBtn;
 		[SerializeField] Button reloadBtn;
 		[SerializeField] ScopeController _scope;
+		[SerializeField] float _shotDelayTime = 1.0f;
+		[SerializeField] float _reloadDelayTime = 3.0f;
+
 		SpriteRenderer scopeRenderer {
 			get {
 				return _scope.gameObject.GetComponent<SpriteRenderer> ();
@@ -27,16 +30,17 @@ namespace Assets.Scripts.Game02 {
 		}
 
 		private void Update() {
+			
 			if(Input.GetMouseButton(0))
 				TouchPoscheck ();
 			if (Input.GetMouseButtonUp (0))
 				scopeRenderer.enabled = false;
-			if (_scope.isReload) {
+			if (_scope._isReload) {
 				reloadBtn.interactable = true;
 				shotBtn.interactable = false;
 				#if UNITY_EDITOR
 				if(Input.GetKeyDown(KeyCode.R)) {
-					_scope.Reload();
+					StartCoroutine(_scope.Reload(_reloadDelayTime));
 				}
 				#endif
 			}
@@ -50,7 +54,7 @@ namespace Assets.Scripts.Game02 {
 			_scope.Vibration (screenPos);
 			#if UNITY_EDITOR
 			if(Input.GetKeyDown(KeyCode.S)){
-				_scope.Snipe();
+				StartCoroutine(_scope.Snipe(_shotDelayTime, screenPos));
 			}
 			#endif
 		}
