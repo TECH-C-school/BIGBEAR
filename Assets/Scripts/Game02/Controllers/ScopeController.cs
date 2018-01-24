@@ -9,6 +9,7 @@ namespace Assets.Scripts.Game02 {
 		[SerializeField] int _maxBulletNum = 5;
 		[SerializeField] List<GameObject> _bulletMagazine = new List<GameObject>();
 		int _bulletRemnant = 0;
+		[SerializeField] Animator bearAnim;
 
 		bool _isShot = false;
 
@@ -45,6 +46,7 @@ namespace Assets.Scripts.Game02 {
 			if (_isReload || _isShot)
 				yield break;
 			_isShot = true;
+			bearAnim.Play ("Shooting", 0, 0);
 			Recoil (currentPos);
 			_bulletRemnant--;
 			_bulletMagazine.FirstOrDefault (bullet => bullet.activeSelf == true).SetActive(false);
@@ -63,6 +65,7 @@ namespace Assets.Scripts.Game02 {
 		}
 
 		public IEnumerator Reload(float delayTime) {
+			bearAnim.Play ("Reload", 0, 0);
 			yield return new WaitForSeconds (delayTime);
 			for(int i = 0; i < _bulletMagazine.Count; i++) {
 				if (i < _maxBulletNum)
