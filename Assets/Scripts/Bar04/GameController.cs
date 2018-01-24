@@ -311,41 +311,49 @@ namespace Assets.Scripts.Bar04 {
             }
             else if (x == 1)
             {
+                coin = coin -= BET;
                 coin = coin += BET * 1;
                 FindNumbers();
             }
             else if (x == 2)
             {
+                coin = coin -= BET;
                 coin = coin += BET * 2;
                 FindNumbers();
             }
             else if (x == 3)
             {
+                coin = coin -= BET;
                 coin = coin += BET * 3;
                 FindNumbers();
             }
             else if (x == 4)
             {
+                coin = coin -= BET;
                 coin = coin += BET * 5;
                 FindNumbers();
             }
             else if (x == 5)
             {
+                coin = coin -= BET;
                 coin = coin += BET * 10;
                 FindNumbers();
             }
             else if (x == 6)
             {
+                coin = coin -= BET;
                 coin = coin += BET * 15;
                 FindNumbers();
             }
             else if (x == 7)
             {
+                coin = coin -= BET;
                 coin = coin += BET * 30;
                 FindNumbers();
             }
             else if (x == 8)
             {
+                coin = coin -= BET;
                 coin = coin += BET * 100;
                 FindNumbers();
             }
@@ -684,11 +692,12 @@ namespace Assets.Scripts.Bar04 {
         public int Counter(int x,int y)
         {
             var serectFlame = Resources.Load<GameObject>("Prefabs/Bar04/cardSerect");
-            var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
             var flameBox = GameObject.Find("CardFlame");
             if (x == 0)
             {
                 //カードを選択する
+
+                var cardFlame = Instantiate(serectFlame, transform.position, Quaternion.identity);
                 cardFlame.transform.parent = flameBox.transform;
                 cardFlame.name = "cardSerect" + (y+1);
                 cardFlame.transform.position = new Vector3(y * 2.5f - 5, 0.5f, -1);
@@ -697,7 +706,7 @@ namespace Assets.Scripts.Bar04 {
             else
             {
                 //カードの選択を解除する
-                cardFlame = GameObject.Find("cardSerect" + (y+1));
+                var cardFlame = GameObject.Find("cardSerect" + (y+1));
                 Destroy(cardFlame);
                 x = 0;
             }
