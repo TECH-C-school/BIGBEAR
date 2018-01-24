@@ -64,7 +64,6 @@ namespace Assets.Scripts.Bar06
                 int tmp = cards[k];
                 cards[k] = cards[n];
                 cards[n] = tmp;
-                
             }
         }
         // カードを２枚ずつ配る
@@ -98,7 +97,6 @@ namespace Assets.Scripts.Bar06
         {
 
         }
-
         // クリックしたらカードを追加する(プレイヤー側)
         public void ClickAddCardButton()
         {
@@ -117,8 +115,6 @@ namespace Assets.Scripts.Bar06
         }
         public void Initgame()
         {
-
-
             RemoveGames();
             MakeDeck();
         }
@@ -126,7 +122,6 @@ namespace Assets.Scripts.Bar06
         {
 
         }
-
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
