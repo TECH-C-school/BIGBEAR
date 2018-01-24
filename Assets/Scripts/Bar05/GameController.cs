@@ -284,6 +284,7 @@ namespace Assets.Scripts.Bar05
         //役を判定する関数群
         private void CheckhandLevels()
         {
+            Debug.Log("--------------------");
             CheckHandLevel(Player1HandLevel, Player1CardList, Player1NumberManager, Player1Marks);
             Debug.Log("--------------------");
             CheckHandLevel(Player2HandLevel, Player2CardList, Player2NumberManager, Player2Marks);
@@ -1846,14 +1847,14 @@ namespace Assets.Scripts.Bar05
         int Pot = 0;
         private void ChipBet(int Bet)
         {
-            if(Chip + Bet != -1 & MyHaveChip + Bet >= 0)
+            if(Chip + Bet != -1 & MyHaveChip - Bet >= 0)
             {
                 Chip = Chip + Bet;
                 MyHaveChip = MyHaveChip - Bet;
                 ChipsUpdate();
             }
-            Debug.Log("HaveIs" + MyHaveChip);
-            Debug.Log("BetIs" + Chip);
+            //Debug.Log("HaveIs" + MyHaveChip);
+            //Debug.Log("BetIs" + Chip);
         }
 
         //初期化処理
