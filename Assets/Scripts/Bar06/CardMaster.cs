@@ -1683,7 +1683,7 @@ public class CardMaster : MonoBehaviour
                         else if (puls > 20)
                         {
                             Sum.second = Dpuls - 20;
-                            Sum.first = Dpuls - Sum.second - 19;
+                            Sum.first = Dpuls - Sum.second - 18;
                         }
 
                         var numPrefab = Resources.Load<GameObject>("Prefabs/Bar06/num");
