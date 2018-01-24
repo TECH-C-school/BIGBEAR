@@ -5,7 +5,7 @@ namespace Assets.Scripts.Bar04
 {
     public class CardClicks : MonoBehaviour
     {
-        private bool cardsclick = false;
+        internal bool cardsclick = false;
         // Use this for initialization
         void update()
         {
@@ -13,11 +13,13 @@ namespace Assets.Scripts.Bar04
             {
                 if (cardsclick == false)
                 {
+                    cardsclick = true;
                     this.tag = "OnClicks";
                     this.GetComponent<Renderer>().sharedMaterial.color = Color.red;
                 }
                 else
                 {
+                    cardsclick = false;
                     this.tag = "OffClicks";
                    
                 }

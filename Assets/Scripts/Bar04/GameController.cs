@@ -85,28 +85,39 @@ namespace Assets.Scripts.Bar04
             /// </summary>
             void CreateCards()
             {
-                Debug.Log("GameController.CreateCards が読み込まれました");
+            //var CardPrefab.transform.localScale = new Vector3(0.228f, 0.228f, 0.228f);
+            Debug.Log("GameController.CreateCards が読み込まれました");
                 //Sequence mySequence = DOTween.Sequence();
                 var myCardPrefab = MyCard;
                 var youCardPrefab = YouCard;
             var cardfase = Instantiate(Resources.Load<GameObject>("Prefabs/Bar04/f_word1"), Resources.Load<GameObject>("Prefabs/Bar04/f_word1").transform.position, Quaternion.identity);
             for (int cardCounter = 0; cardCounter < 5; cardCounter++)
                 {
+               // var CardPrefab.transform.localScale = new Vector3(0.228f, 0.228f, 0.228f);
                 Debug.Log(CardDecks[cardCounter]);
                 var CardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/cards/"+ CardDecks[cardCounter]);
+
                 string[] mycards = new string[5];
                 mycards[cardCounter] = CardDecks[cardCounter];
+                 CardPrefab.transform.localScale = new Vector3(0.228f, 0.228f, 0.228f);
                 var cardObject = Instantiate(CardPrefab, transform.position, Quaternion.identity);
+                ///-----------------------------------------------------------------------------
 
                     cardObject.name = myCardPrefab.name + cardCounter;
                     cardObject.transform.position = new Vector3(-4.7f + cardCounter * 1.7f, -0.4f, 0f);
                     //cardObject.
                 }
-                for (var cardCounter = 0; cardCounter < 5; cardCounter++)
+                for (var youcardCounter = 0; youcardCounter < 5; youcardCounter++)
                 {
-                    var cardObject = Instantiate(youCardPrefab, transform.position, Quaternion.Euler(0, 0, 180));
-                    cardObject.name = youCardPrefab.name + cardCounter;
-                    cardObject.transform.position = new Vector3(-0.91f + cardCounter * 1.2f, 2.17f, 0f);
+                //---------------------------------------------------------------------------------------
+                var CardPrefab = Resources.Load<GameObject>("Prefabs/Bar04/cards/" + CardDecks[youcardCounter+5]);
+                Debug.LogWarning("ちっちゃいよー");
+                CardPrefab.transform.localScale = new Vector3(0.16175f, 0.16175f, 0.16175f);
+                var cardObject = Instantiate(CardPrefab, transform.position, Quaternion.Euler(0, 0, 180));
+
+                    cardObject.name = youCardPrefab.name + youcardCounter;
+
+                    cardObject.transform.position = new Vector3(-0.91f + youcardCounter * 1.2f, 2.17f, 0f);
 
                     //var Initialization = cardObject.GetComponent<CardBox>();
                     //  Number = CardDeckini[cardCounter];// CardDecks[cardCounter];
