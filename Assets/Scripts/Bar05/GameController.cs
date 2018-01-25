@@ -4,19 +4,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> フォールドした時のチップバグ修正
- *              チップの賭け方変更(長押しすると連続で賭けられるようにする)(まだ)
- *              
- */
-
-/*
- * 次回作業 --> 
+ * 今回作業 --> チップの賭け方変更(長押しすると連続で賭けられるようになった)
+ *              チップが0になってから最初のプリフロップで、チップを100に戻せるボタンを追加
+ *              プリフロップ以外は、Betが0でもコール出来るように仕様変更
+ *              Phase毎に賭けられるチップを最大25枚にそれぞれ仕様変更(1ゲーム最大100枚まで)
+ *              Debug.Logの出力を一括管理できるようにした
  */
 
 /*
  * 今後実装 --> 相手のAI
  *              アニメーション
  *              両方とも時間切れ。。。
+ *              Jsonファイルを使って、役の判定がおかしい部分をデバッグ出来るようにしたい
+ */
+
+/*
+ * ひとこと --> 総行数...2924行　--> まさかの3000コンボイ? --> 3000はいかないか(安心)
  */
 
 namespace Assets.Scripts.Bar05
@@ -26,12 +29,14 @@ namespace Assets.Scripts.Bar05
         
         private void Start()
         {
+            DebugLogSetting();
             MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             Vector3 pos = transform.position;
             pos.z = 0;
             transform.position = pos;
             InitGame();
             ChipsUpdate();
+            ChipEmptyCheck();
         }
 
         private void Update()
@@ -41,6 +46,7 @@ namespace Assets.Scripts.Bar05
                 Debug.Log("<color=red>--------------------</color>");
                 PhaseChange();
             }
+
             if(Input.GetMouseButtonDown(0))
             {
                 if(_Phase == GamePhase.Result || _Phase == GamePhase.Continue)
@@ -48,6 +54,58 @@ namespace Assets.Scripts.Bar05
                     Debug.Log("<color=red>--------------------</color>");
                     PhaseChange();
                 }
+            }
+
+            if (B_HoldPlus)
+            {
+                HoldTimer_Plus++;
+                if (HoldTimer_Plus >= 30 & HoldPlus_Continue == false & Chip < 25)
+                {
+                    HoldTimer_Plus = 0;
+                    Debug.Log("Hold_To_Plus");
+                    ChipBet(1);
+                    HoldPlus_Continue = true;
+                }
+                else if(HoldTimer_Plus >= 6 & HoldPlus_Continue == true & Chip < 25)
+                {
+                    HoldTimer_Plus = 0;
+                    ChipBet(1);
+                }
+            }
+
+            if (B_HoldMinus)
+            {
+                HoldTimer_Minus++;
+                if (HoldTimer_Minus >= 30 & HoldMinus_Continue == false)
+                {
+                    HoldTimer_Minus = 0;
+                    Debug.Log("Hold_To_Minus");
+                    ChipBet(-1);
+                    HoldMinus_Continue = true;
+                }
+                else if(HoldTimer_Minus >= 6 & HoldMinus_Continue == true)
+                {
+                    HoldTimer_Minus = 0;
+                    ChipBet(-1);
+                }
+            }
+            
+        }
+
+        //Debug.Logの出力管理
+
+        //全部止める
+        bool DebugLog_AllUnOutput = true;
+
+        //それぞれの関数(DebugLog_AllUnOutputがtrueの時は影響なし)
+        bool DebugLog_MakeCards = true;
+
+        private void DebugLogSetting()
+        {
+            if (DebugLog_AllUnOutput)
+            {
+                Debug.Log("デバッグログがOFFになっています");
+                Debug.logger.logEnabled = false;
             }
         }
 
@@ -61,10 +119,10 @@ namespace Assets.Scripts.Bar05
         /// </summary>
         private void MakeCards()
         {
-            //MakeCards内のDebug.LogをOFFにしています
-            /**/
-            Debug.logger.logEnabled = false;
-
+            if(DebugLog_MakeCards & DebugLog_AllUnOutput == false)
+            {
+                Debug.logger.logEnabled = false;
+            }
             //みやすいよね？ね？
             Debug.Log("--------------------");
             //山札を作る
@@ -203,7 +261,11 @@ namespace Assets.Scripts.Bar05
                     Debug.Log("--------------------");
                 }
             }
-            Debug.logger.logEnabled = true;
+
+            if (DebugLog_MakeCards & DebugLog_AllUnOutput == false)
+            {
+                Debug.logger.logEnabled = true;
+            }
         }
 
         // カードをシャッフルする
@@ -237,7 +299,6 @@ namespace Assets.Scripts.Bar05
                 {
                     case 0:
                         ParentObject = GameObject.Find("Player1_Cards");
-                        //Debug.Log(ParentObject.transform.childCount);
                         break;
                     case 1:
                         ParentObject = GameObject.Find("Player2_Cards");
@@ -1856,6 +1917,16 @@ namespace Assets.Scripts.Bar05
             //Debug.Log("BetIs" + Chip);
         }
 
+        private void ChipEmptyCheck()
+        {
+            if(MyHaveChip == 0)
+            {
+                var ResetButtonpos = GameObject.Find("ResetButton").transform.position;
+                ResetButtonpos.x = 350;
+                GameObject.Find("ResetButton").transform.position = ResetButtonpos;
+            }
+        }
+
         //初期化処理
         private void InitGame()
         {
@@ -1924,6 +1995,7 @@ namespace Assets.Scripts.Bar05
             //PhaseはFirstPhase
             if (_Phase == GamePhase.Return)
             {
+                ChipEmptyCheck();
                 pos.z = 0;
                 transform.position = pos;
                 _Phase = 0;
@@ -2020,7 +2092,7 @@ namespace Assets.Scripts.Bar05
         //ボタン押した時の挙動
         public void Chip_Plus()
         {
-            if(_Phase != GamePhase.Result & _Phase != GamePhase.Continue)
+            if(_Phase != GamePhase.Result & _Phase != GamePhase.Continue & Chip < 25)
             {
                 ChipBet(1);
             }
@@ -2044,6 +2116,11 @@ namespace Assets.Scripts.Bar05
                 Debug.Log("<color=red>--------------------</color>");
                 PhaseChange();
             }
+            else if(Chip == 0 & _Phase != GamePhase.FirstBet & _Phase != GamePhase.Result & _Phase != GamePhase.Continue)
+            {
+                Debug.Log("<color=red>--------------------</color>");
+                PhaseChange();
+            }
         } 
 
         public void Button_Fold()
@@ -2064,6 +2141,52 @@ namespace Assets.Scripts.Bar05
                 _Phase = GamePhase.FinalBet;
                 WhoWin = 0;
                 PhaseChange();
+            }
+        }
+
+        int HoldTimer_Plus = 0;
+        bool B_HoldPlus;
+        bool HoldPlus_Continue;
+        public void HoldPlus()
+        {
+            HoldTimer_Plus = 0;
+            HoldPlus_Continue = false;
+            B_HoldPlus = true;
+        }
+
+        public void HoldOffPlus()
+        {
+            HoldTimer_Plus = 0;
+            HoldPlus_Continue = false;
+            B_HoldPlus = false;
+        }
+
+        int HoldTimer_Minus = 0;
+        bool B_HoldMinus;
+        bool HoldMinus_Continue;
+        public void HoldMinus()
+        {
+            HoldTimer_Minus = 0;
+            HoldMinus_Continue = false;
+            B_HoldMinus = true;
+        }
+
+        public void HoldOffMinus()
+        {
+            HoldTimer_Minus = 0;
+            HoldMinus_Continue = false;
+            B_HoldMinus = false;
+        }
+
+        public void ChipReset()
+        {
+            if(MyHaveChip == 0)
+            {
+                MyHaveChip = 100;
+                ChipsUpdate();
+                var ResetButtonpos = GameObject.Find("ResetButton").transform.position;
+                ResetButtonpos.x = -1000;
+                GameObject.Find("ResetButton").transform.position = ResetButtonpos;
             }
         }
 
