@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Bar06
 {
@@ -16,6 +17,10 @@ namespace Assets.Scripts.Bar06
         private string[] mark = new string[52];
         private int i, j, k, value;
         private string val;
+        public Button figth;
+        public Button Addcard;
+        public Button fAd;
+        public Button fad;
 
         public void win()
         {
@@ -172,6 +177,8 @@ namespace Assets.Scripts.Bar06
                 if (pc >= 22)
                 {
                     lose();
+                    Addcard.enabled = false;
+                    fAd.enabled = false;
                 }
             }
 
@@ -179,6 +186,8 @@ namespace Assets.Scripts.Bar06
         //fight
         public void fight()
         {
+            figth.enabled = false;
+            fad.enabled = false;
             while (ec <= 16)
             {
                 var aECP = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DC] + numbers[DC]);
