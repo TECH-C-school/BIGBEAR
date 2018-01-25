@@ -14,7 +14,6 @@ namespace Assets.Scripts.Game05 {
 	public class Tower : MonoBehaviour {
 		[SerializeField]
 		private TowerType tType;
-		private Button finishButton;
 		private GameController gameController;
 		private bool isSkipped = false;
 		private float startPos = 0;
@@ -22,7 +21,6 @@ namespace Assets.Scripts.Game05 {
 
 		// Use this for initialization
 		void Start () {
-			finishButton = GameObject.Find("FinishButton").GetComponent<Button>();
 			gameController = GameObject.Find("GameController").GetComponent<GameController>();
 		}
 

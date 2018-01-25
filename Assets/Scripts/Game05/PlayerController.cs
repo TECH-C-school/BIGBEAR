@@ -53,19 +53,16 @@ namespace Assets.Scripts.Game05 {
 			tMatch = 0f;
 			pMatch = 0f;
 			var field = tapField.AddComponent<ObservableEventTrigger> ();
-			var barTap = field.OnPointerDownAsObservable()
+			var tapBase = field.OnPointerDownAsObservable()
 				.Where(_ => gc.isStart == true)
-				.Select(_ => 1).Scan((count, add) => count + add)
+				.Select(_ => 1).Scan((count, add) => count + add);
+			var barTap = tapBase
 				.Where(tap => tap % 3 == 1)
 				.Do(_ => PowerDecision());
-			var pTap = field.OnPointerDownAsObservable()
-				.Where(_ => gc.isStart == true)
-				.Select(_ => 1).Scan((count, add) => count + add)
+			var pTap = tapBase
 				.Where(tap => tap % 3 == 2)
 				.Do(_ => TargetMatch());
-			var pendulumTap = field.OnPointerDownAsObservable()
-				.Where(_ => gc.isStart == true)
-				.Select(_ => 1).Scan((count, add) => count + add)
+			var pendulumTap = tapBase
 				.Where(tap => tap % 3 == 0)
 				.Do(_ => StartCoroutine(PileShoot()));
 			Observable.Merge (barTap, pTap, pendulumTap).Subscribe ().AddTo (this.gameObject);

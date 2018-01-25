@@ -28,7 +28,7 @@ namespace Assets.Scripts.Game05 {
 		}
 		// Update is called once per frame
 		void Update () {
-			if (!gc.isPause) {
+			if (!gc.isPause && !gc.IsFinished) {
 				slider.value += upValue;
 				if (slider.value >= slider.maxValue || slider.value <= slider.minValue)
 					upValue *= -1;

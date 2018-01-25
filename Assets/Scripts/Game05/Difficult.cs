@@ -19,35 +19,26 @@ namespace Assets.Scripts.Game05 {
 			get { return diff; }
 		}
 		[SerializeField]
-		private Button easy;
+		private Button easyButton;
 		[SerializeField]
-		private Button normal;
+		private Button normalButton;
 		[SerializeField]
-		private Button hard;
+		private Button hardButton;
 		[SerializeField]
 		private GameObject bg;
 		private GameController gc;
 		// Use this for initialization
 		void Start () {
 			gc = GetComponent<GameController> ();
-			easy.OnClickAsObservable ().Subscribe (_ => {
-				diff = Difficulty.Amateur;
-				PlayGame();
-			});
-			normal.OnClickAsObservable ().Subscribe (_ => {
-				diff = Difficulty.Professional;
-				PlayGame();
-			});
-			hard.OnClickAsObservable ().Subscribe (_ => {
-				diff = Difficulty.Legend;
-				PlayGame();
-			});
-		}
-
-		void PlayGame() {
-			bg.SetActive(false);
-			gc.isStart = true;
-			gc.SetDifficult();
+			var easy = easyButton.OnClickAsObservable ().Do (_ => diff = Difficulty.Amateur);
+			var normal = normalButton.OnClickAsObservable ().Do (_ => diff = Difficulty.Professional);
+			var hard = hardButton.OnClickAsObservable ().Do (_ => diff = Difficulty.Legend);
+			Observable.Merge(easy, normal, hard)
+			.Subscribe(_ => {
+				bg.SetActive(false);
+				gc.isStart = true;
+				gc.SetDifficult();
+			}).AddTo(this.gameObject);
 		}
 	}
 }

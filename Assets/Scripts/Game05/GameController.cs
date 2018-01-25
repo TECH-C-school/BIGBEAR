@@ -19,27 +19,28 @@ namespace Assets.Scripts.Game05 {
 		[SerializeField]
 		private GameObject pauseBack;
 		[SerializeField] float positionPadding = 5.2f;
+		[SerializeField] GameObject resultBack;
+		private Text resultText;
 
 		private PlayerController pc;
 		[HideInInspector]
 		public bool isStart = false;
 		[HideInInspector]
 		public bool isPause = false;
+		public bool IsFinished { get; set; }
 		private Difficult difficult;
 		private float moveingPos = 0f;
 		private float maxMoving = 0f;
 		private const float VALUEMAG = 1.5f;
 
         void Start() {
+			IsFinished = false;
 			pauseButton.OnClickAsObservable ()
 				.Subscribe (_ => {
 					isPause = !isPause;
-					if(pauseBack.activeSelf) 
-						Time.timeScale = 1;
-					else
-						Time.timeScale = 0;
+					Time.timeScale = pauseBack.activeSelf ? 1 : 0;
 					pauseBack.SetActive(!pauseBack.activeSelf);
-				});
+				}).AddTo(this.gameObject);
 			difficult = GetComponent<Difficult> ();
 			var player = Instantiate (playerInstance);
 			player.name = "Player";
@@ -80,6 +81,20 @@ namespace Assets.Scripts.Game05 {
 		public void AddScore(float score, string type) {
 			Debug.LogFormat ("Score : {0}\nType : {1}", score, type);
 			moveingPos += score;
+			if(type == "Last")
+				FlyingResult();
+		}
+
+		void FlyingResult() {
+			IsFinished = true;
+			var movePercent = (moveingPos / maxMoving) * 100;
+			Debug.Log(moveingPos);
+			Debug.Log(movePercent);
+			resultBack.SetActive(true);
+			resultText = resultBack.transform.Find("ResultText").GetComponent<Text>();
+			resultText.text = movePercent >= 90.0f ? "Perfect!"
+				: movePercent >= 50.0f ? "Good"
+				: "Bad";
 		}
     }
 }

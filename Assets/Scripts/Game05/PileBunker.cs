@@ -24,7 +24,7 @@ namespace Assets.Scripts.Game05 {
         void Start() {
 			pc = GameObject.Find ("Player").GetComponent<PlayerController> ();
 			powerFx = transform.Find ("Effect01").gameObject;
-			Debug.Log (powerFx.activeSelf);
+			IsVib = false;
 			initPos = powerFx.transform.localPosition.y;
 			newPos = initPos;
 			minPos = initPos - vibRange;
