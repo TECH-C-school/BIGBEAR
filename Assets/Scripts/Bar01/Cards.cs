@@ -58,8 +58,8 @@ public class Cards : MonoBehaviour
     private int Diamond_Next_Number = 14;
     private int Spade_Next_NUmber = 1;
     private int FloorCardHolder_Count;
-    int gaga;
-    int gennkai;
+    private int gaga;
+    private int gennkai;
 
     private bool OverlaidOK;//重ねていいならtrueになる変数
     private bool SetOK;
@@ -67,6 +67,7 @@ public class Cards : MonoBehaviour
     private bool is_King;
     private bool Mystery;
     private bool stop;
+    private bool Cancell;
 
     void Start()
     {
@@ -83,22 +84,17 @@ public class Cards : MonoBehaviour
         if (selectCred)
         {
             Vector3 setPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            setPosition.z = -14;
+            setPosition.z = -70;
             selectCred.transform.position = setPosition;
         }
         if (0 < deckcount)
         {
             if (exception == false)
-            {/*
-                if (display_deck_card_count > 0)
-                {
-                    Debug.Log(MemoryCards[memory_deck_count - 1].transform.name);
-                    MemoryCards[memory_deck_count - 1].GetComponent<BoxCollider2D>().enabled = true;
-                }
-                */
+            {
                 if (memory_deck_count != 0)
                 {
                     MemoryCards[memory_deck_count - 1].GetComponent<BoxCollider2D>().enabled = true;
+                    //Debug.Log(MemoryCards[memory_deck_count - 1]);
                 }
             }
             //Debug.Log(display_deck_card_count);
@@ -107,19 +103,35 @@ public class Cards : MonoBehaviour
                 //Debug.Log(display_deck_card_count);
                 for (int x = 0; x < 3; x++)
                 {
-                    if (DeckcardHolder[deckcount - 1] = null)
-                        break;
                     //Debug.Log("hoge");
+                    //Debug.Log(DeckcardHolder[deckcount -1]);
+                    if (DeckcardHolder[deckcount - 1] != null)
+                    {
+                        Debug.Log("hpge");
+                        break;
+                    }
+
                     if (memory_deck_count < 0)
+                    {
+                        Debug.Log("hpge");
                         break;
+                    }
+
                     if (display_deck_count == 0)
+                    {
+                        Debug.Log("hpge");
                         break;
-                    if (MemoryCards[memory_deck_count - x ] == null)
+                    }
+                    Debug.Log(MemoryCards[memory_deck_count]);
+                    if (MemoryCards[memory_deck_count - x - 1] == null)
+                    {
+                        Debug.Log("hpge");
                         break;
+                    }
                     Debug.Log("hoge");
-                    MemoryCards[memory_deck_count - x - 1].transform.position = new Vector3(-3f + 0.6f - 0.2f* x, 1.97f, -5 + 1 * x);
-                    display_deck_count--;
-                    //display_deck_card_count--;
+                    MemoryCards[memory_deck_count - x - 1].transform.position = new Vector3(-3f + 0.6f - 0.2f * x, 1.97f, -5 + 1 * x);
+                    display_deck_card_count++;
+                    Debug.Log(display_deck_count);
                 }
             }
         }
@@ -239,36 +251,29 @@ public class Cards : MonoBehaviour
                 {
                     MakeCard = Instantiate(FloorCardHolder[FloorCardHolder_Count], transform.position, Quaternion.identity);
                     MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.15f * j, 0 - 1 * j);
-                    //MakeCard.transform.parent = FloorCheckCard.transform;
                     if (i == 1)
                     {
                         SecondLine[j] = MakeCard;
-                        //SecondLine_Count++;
                     }
                     if (i == 2)
                     {
                         ThirdLine[j] = MakeCard;
-                        //ThirdLine_Count++;
                     }
                     if (i == 3)
                     {
                         FourthLine[j] = MakeCard;
-                        //FourthLine_Count++;
                     }
                     if (i == 4)
                     {
                         FifthLine[j] = MakeCard;
-                        //FifthLine_Count++;
                     }
                     if (i == 5)
                     {
                         SixthLine[j] = MakeCard;
-                        //SixthLine_Count++;
                     }
                     if (i == 6)
                     {
                         SeventhLine[j] = MakeCard;
-                        // SeventhLine_Count++;
                     }
                     FloorCardHolder_Count++;
                     break;
@@ -276,38 +281,31 @@ public class Cards : MonoBehaviour
                 //先頭以外のカードは裏向きに表示する
                 MakeCard = Instantiate(LoadBackCard, transform.position, Quaternion.identity);
                 MakeCard.transform.position = new Vector3(-4.5f + 1.5f * i, -0.1f - 0.15f * j, 0 - 1 * j);
+
                 if (i == 1)
                 {
-                    SecondLine[j] = MakeCard;
-                    //SecondLine_Count++;
+                    SecondLine[j] = MakeCard; ;
                 }
                 if (i == 2)
                 {
                     ThirdLine[j] = MakeCard;
-                    // ThirdLine_Count++;
                 }
                 if (i == 3)
                 {
                     FourthLine[j] = MakeCard;
-                    // FourthLine_Count++;
                 }
                 if (i == 4)
                 {
                     FifthLine[j] = MakeCard;
-                    // FifthLine_Count++;
                 }
                 if (i == 5)
                 {
                     SixthLine[j] = MakeCard;
-                    //SixthLine_Count++;
                 }
                 if (i == 6)
                 {
                     SeventhLine[j] = MakeCard;
-                    // SeventhLine_Count++;
                 }
-                //MakeCard.transform.parent = BackCheckCard.transform;
-
             }
         }
     }
@@ -345,6 +343,7 @@ public class Cards : MonoBehaviour
     private void ClickCard()
     {
         string x = "deckback(Clone)";
+        string y = "deck_cardflame(Clone)";
 
         var InputPosition = Input.mousePosition;
 
@@ -369,20 +368,35 @@ public class Cards : MonoBehaviour
                 Horld = HitObject.transform.gameObject;
                 return;
             }
-            //display_deck_card_count = 0;
+
             DeckTrunCards();
             return;
         }
 
-        //if (HitObject == MemoryCards)
-        RecordPosition = HitObject.transform.position;
         selectCred = HitObject.transform.gameObject;
+        //ResetDeckCard();
+        investigateCard_select();
+
+        if (Cancell == true)
+        {
+            if (selectCred.transform.name == y)
+            {
+                if (DeckcardHolder[deckcount] == null)
+                {
+                    ResetDeckCard();
+                }
+            }
+            selectCred = null;
+            Cancell = false;
+            return;
+        }
+
+        RecordPosition = HitObject.transform.position;
         Debug.Log(selectCred.transform.gameObject.name);
         selectCred.GetComponent<BoxCollider2D>().enabled = false;
         var hoge = selectCred.GetComponentsInChildren<Transform>();
         foreach (Transform child in hoge)
         {
-            //Debug.Log(child.name);
             Children_Card = child.transform.gameObject;
             Children_Card.GetComponent<BoxCollider2D>().enabled = false;
             exception = true;
@@ -405,13 +419,17 @@ public class Cards : MonoBehaviour
         {
             var HitObject = Physics2D.Raycast(TapPoint, -Vector3.up);
             Memory_Select_Cards = HitObject.transform.gameObject;
-
+            Debug.Log(Memory_Select_Cards);
 
             //Debug.Log(Memory_Select_Cards.transform.name);
             InvestigateCard();
+            Debug.Log("hoge");
             OverlaidCard();
+            Debug.Log("hoge");
             SetMarkPlace();
+            Debug.Log("hoge");
             SetKingPosition();
+            Debug.Log("hoge");
             if (OverlaidOK)
             {
                 selectCred.transform.position = new Vector3(HitObject.transform.position.x, HitObject.transform.position.y - 0.17f, HitObject.transform.position.z - 1);
@@ -422,12 +440,15 @@ public class Cards : MonoBehaviour
 
                 if (Mystery)
                 {
-                    if (selectCred.transform.gameObject == MemoryCards[memory_deck_count - 1].transform.gameObject)
+                    if (MemoryCards[memory_deck_count - 1] != null)
                     {
-                        MemoryCards[memory_deck_count - 1] = null;
-                        memory_deck_count--;
-                        display_deck_card_count--;
-                        //Debug.Log(display_deck_card_count);
+                        if (selectCred.transform.gameObject == MemoryCards[memory_deck_count - 1].transform.gameObject)
+                        {
+                            MemoryCards[memory_deck_count - 1] = null;
+                            memory_deck_count--;
+                            display_deck_card_count--;
+                            //Debug.Log(display_deck_card_count);
+                        }
                     }
                 }
                 exception = false;
@@ -473,17 +494,17 @@ public class Cards : MonoBehaviour
                     }
                 }
                 selectCred = null;
-                SetOK = false;
+                is_King = false;
                 exception = false;
                 return;
             }
         }
-        
+
         selectCred.transform.position = RecordPosition;
         selectCred.GetComponent<BoxCollider2D>().enabled = true;
         Children_Card.GetComponent<BoxCollider2D>().enabled = true;
 
-        ResetDeckCard();
+        //ResetDeckCard();
         exception = false;
         selectCred = null;
         Children_Card = null;
@@ -507,29 +528,6 @@ public class Cards : MonoBehaviour
             MemoryCards[x].transform.position = new Vector3(100, 100, 0);
             //Debug.Log(MemoryCards[x].transform.name);
         }
-        //TurnDeckCard = GameObject.Find("DeckCards");
-        if (2 < deckcount)
-        {
-            /*
-            for (int i = 0; i < 2; i++)
-            {
-                MemoryCards[memory_deck_count].transform.position = new Vector3(-10, 0, 0);
-                //Debug.Log(MemoryCards[memory_deck_count].transform.position);
-                memory_deck_count++;
-            }
-
-            MemoryCards[memory_deck_count].transform.position = new Vector3(-3f, 1.97f, -13);
-            //Debug.Log(MemoryCards[memory_deck_count].transform.position);
-            memory_deck_count++;
-
-            /*
-            TurnDeckCard.transform.position = new Vector3(-3f, 1.97f, 0 + - 1 * counter);
-            counter++;
-            MakeCard.transform.parent = TurnDeckCard.transform;
-
-            Debug.Log(TurnDeckCard.transform.position);
-            */
-        }
         for (int x = 0; x < deckcount; x++)
         {
             //Debug.Log("hoge");
@@ -540,30 +538,14 @@ public class Cards : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             if (DeckcardHolder[deckcount] == null)
-            {
-                Debug.Log("hoge");
-                //MemoryDeckBackCard.SetActive(false);
-                /*
-                MemoryDeckBackCard.transform.position = new Vector3(100, 0, 1);
-                Debug.Log(MemoryDeckBackCard.transform.position);
-                */
-
-                //MakeCard = Instantiate(MemoryDeckBackCard, transform.position, Quaternion.identity);
-                //Debug.Log(MakeCard);
-                //MakeCard.transform.position = new Vector3(-40.5f, 50, -1);
-
-                //Destroy(MemoryDeckBackCard);
-                //Debug.Log("hogehoge");
                 return;
-            }
-            //Debug.Log("hoge");
-            
+
             MakeCard = Instantiate(DeckcardHolder[deckcount], transform.position, Quaternion.identity);
             MakeCard.transform.position = new Vector3(-3f + 0.2f * i, 1.97f, -10 - i);
             MemoryCards[memory_deck_count] = MakeCard;
             MemoryCards[memory_deck_count].GetComponent<BoxCollider2D>().enabled = false;
             DeckcardHolder[deckcount] = null;
-            
+
             //Debug.Log(MemoryCards[deckcount].transform.name);
             deckcount++;
             memory_deck_count++;
@@ -586,7 +568,7 @@ public class Cards : MonoBehaviour
             //string xx ;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             for (int i = 0; i < gennkai; i++) sb.Append("(Clone)");
-             huga = huga.Replace("(Clone)", sb.ToString());
+            huga = huga.Replace("(Clone)", sb.ToString());
             //Debug.Log(huga);
             var y = (Card)Card_Character[x];
             string hoge = y.ToString() + "(Clone)";
@@ -598,28 +580,46 @@ public class Cards : MonoBehaviour
                 Debug.Log(Memory_Card_Namber);
 
             }
-            if (hoge == selectCred.transform.name)
-            {
-                ///Debug.Log(Memory_Select_Cards.transform.name);
-                SelectCardNamber = (int)(Card)Card_Character[x];
-                Debug.Log(SelectCardNamber);
-            }
-
             if (gehogeho == Memory_Select_Cards.transform.name)
             {
                 Memory_Card_Namber = (int)(Card)Card_Character[x];
                 Debug.Log(Memory_Card_Namber);
 
             }
+        }
+    }
+
+
+    private void investigateCard_select()
+    {
+        for (int x = 0; x < 52; x++)
+        {
+            string huga = "(Clone)";
+            //string xx ;
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            for (int i = 0; i < gennkai; i++) sb.Append("(Clone)");
+            huga = huga.Replace("(Clone)", sb.ToString());
+            //Debug.Log(huga);
+            var y = (Card)Card_Character[x];
+            string hoge = y.ToString() + "(Clone)";
+            string gehogeho = y.ToString() + huga;
+            //Debug.Log(hoge);
+            if (hoge == selectCred.transform.name)
+            {
+                ///Debug.Log(Memory_Select_Cards.transform.name);
+                SelectCardNamber = (int)(Card)Card_Character[x];
+                return;
+                //Debug.Log(SelectCardNamber);
+            }
             if (gehogeho == selectCred.transform.name)
             {
                 ///Debug.Log(Memory_Select_Cards.transform.name);
                 SelectCardNamber = (int)(Card)Card_Character[x];
-                Debug.Log(SelectCardNamber);
+                return;
             }
         }
+        Cancell = true;
     }
-
     /// <summary>
     /// 重ねていいか調べる
     /// </summary>
@@ -838,7 +838,8 @@ public class Cards : MonoBehaviour
             if (SelectCardNamber == Clover_Next_Number)
             {
                 SetOK = true;
-                Clover_Next_Number++;
+                if (Clover_Next_Number < 40)
+                    Clover_Next_Number++;
             }
         }
         if (Memory_Select_Cards.transform.name == "cardflame_d(Clone)")
@@ -846,7 +847,8 @@ public class Cards : MonoBehaviour
             if (SelectCardNamber == Diamond_Next_Number)
             {
                 SetOK = true;
-                Diamond_Next_Number++;
+                if (Diamond_Next_Number < 27)
+                    Diamond_Next_Number++;
             }
         }
         if (Memory_Select_Cards.transform.name == "cardflame_s(Clone)")
@@ -854,7 +856,8 @@ public class Cards : MonoBehaviour
             if (SelectCardNamber == Spade_Next_NUmber)
             {
                 SetOK = true;
-                Spade_Next_NUmber++;
+                if (Spade_Next_NUmber < 14)
+                    Spade_Next_NUmber++;
             }
         }
         if (Memory_Select_Cards.transform.name == "cardflame_h(Clone)")
@@ -900,15 +903,14 @@ public class Cards : MonoBehaviour
     {
         if (selectCred.transform.name == "deck_cardflame(Clone)")
         {
-            if(DeckcardHolder[deckcount] == null)
+            if (DeckcardHolder[deckcount] == null)
             {
-                for(int x = 0; x < memory_deck_count; x++)
+                for (int x = 0; x < memory_deck_count; x++)
                 {
                     DeckcardHolder[x] = MemoryCards[x];
                     Debug.Log(DeckcardHolder[x].transform.name);
-                    MemoryCards[x].transform.position = new Vector3(100,100,0);
+                    MemoryCards[x].transform.position = new Vector3(100, 100, 0);
                     MemoryCards[x] = null;
-                    //Destroy(MemoryCards[x].transform.gameObject);
                 }
                 deckcount = 0;
                 memory_deck_count = 0;
@@ -917,7 +919,7 @@ public class Cards : MonoBehaviour
                 Horld.transform.position = new Vector3(-4.5f, 1.97f, -1);
                 selectCred.transform.position = new Vector3(-4.5f, 1.97f, 0);
                 Horld = null;
-                exception = true;
+                //exception = true;
                 gennkai++;
             }
         }
