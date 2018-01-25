@@ -13,6 +13,7 @@ namespace Assets.Scripts.Bar04
         /// ボタンをクリックした時の処理
         public void OnClick()
         {
+           
 
             Debug.Log("Button click!");
             var cardArrangement = GameObject.Find("GameController").GetComponent<CardArrangement>();
@@ -31,6 +32,7 @@ namespace Assets.Scripts.Bar04
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + changCard.CardString());
                 cardArrangement.cardCount += 1;
                 //     var eachCard = cards[i];
+                gameObject.SetActive(false);
             }
 
             if (GameObject.Find("Toggle2").GetComponent<Toggle>().isOn)
@@ -89,7 +91,7 @@ namespace Assets.Scripts.Bar04
                 cardArrangement.cardCount += 1;
             }
 
-
+            gameObject.SetActive(false);
         }
     }
 }
@@ -98,3 +100,5 @@ namespace Assets.Scripts.Bar04
 
 
 
+
+        
