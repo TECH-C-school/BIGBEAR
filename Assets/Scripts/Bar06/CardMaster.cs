@@ -33,16 +33,18 @@ public class CardMaster : MonoBehaviour
         public int second;
     }
 
-    public struct coin
-    {
-        
-    }
-
     sum Sum = new sum();
     private int Vs = 0;
     private float start_time = 1.2f;
     private float time = 0f;
     private int gamestart = 0;
+
+    SpriteRenderer CoinRenderer;
+    SpriteRenderer CoinRenderer2;
+    GameObject betPrefab;
+    GameObject betObject;
+    GameObject betPrefab2;
+    GameObject betObject2;
 
 
     void Start()
@@ -52,7 +54,12 @@ public class CardMaster : MonoBehaviour
         Invoke("Count", 0.5f);
         Invoke("PlayerNum", 1);
         Bet();
-        Betpuls();
+        betPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin");
+        betObject = Instantiate(betPrefab, transform.position, Quaternion.identity);
+        betObject.transform.position = new Vector3(-6.5f, -3, 0);
+        betObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+        CoinRenderer = betObject.GetComponent<SpriteRenderer>();
+        CoinRenderer.sprite = Resources.Load<Sprite>(pic[0]);
     }
     private void Update()
     {
@@ -71,6 +78,7 @@ public class CardMaster : MonoBehaviour
     private int Dpuls = 0;
     private int delobj = 0;
     private string[] pic = { "Images/Bar/t_0", "Images/Bar/t_1", "Images/Bar/t_2", "Images/Bar/t_3", "Images/Bar/t_4", "Images/Bar/t_5", "Images/Bar/t_6", "Images/Bar/t_7", "Images/Bar/t_8", "Images/Bar/t_9" };
+   // private string[] trunp = { "Images/Bar/Cards/buck", "Images/Bar/Cards/c01", "Images/Bar/Cards/c02", "Images/Bar/Cards/c03", "Images/Bar/Cards/c04", "Images/Bar/t_5", "Images/Bar/t_6", "Images/Bar/t_7", "Images/Bar/t_8", "Images/Bar/t_9" };
 
     public void PlayerCard()
     {
@@ -1857,7 +1865,13 @@ public class CardMaster : MonoBehaviour
     }
 
 
-
+    GameObject numPrefab;
+    GameObject numObject;
+    SpriteRenderer NumRenderer;
+    GameObject numPrefab2;
+    GameObject numObject2;
+    SpriteRenderer NumRenderer2;
+    int firsttime = 0;
     public void PlayerNum()
     {
 
@@ -1897,126 +1911,138 @@ public class CardMaster : MonoBehaviour
                 Sum.first = puls - Sum.second - 29;
             }
 
-            var numPrefab = Resources.Load<GameObject>("Prefabs/Bar06/num");
-            var numObject = Instantiate(numPrefab, transform.position, Quaternion.identity);
-            numPrefab.tag = "num";
-            numObject.transform.position = new Vector3(0.5f, -4, 0);
-            numObject.transform.localScale = new Vector3(1, 1, 1);
-            SpriteRenderer NumRenderer = numObject.GetComponent<SpriteRenderer>();
-
-
-            switch (Sum.first)
+            if (firsttime == 0)
             {
-                case 1:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 2:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 3:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
-                    NumRenderer.sprite = numScripts;
-                    break;
+                numPrefab = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                numObject = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                numObject.transform.position = new Vector3(0.5f, -4, 0);
+                numObject.transform.localScale = new Vector3(1, 1, 1);
+                NumRenderer = numObject.GetComponent<SpriteRenderer>();
+
+                switch (Sum.first)
+                {
+                    case 1:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 2:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 3:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                }
+
+                numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                numObject2 = Instantiate(numPrefab2, transform.position, Quaternion.identity);
+                numObject2.transform.position = new Vector3(0.9f, -4, 0);
+                numObject2.transform.localScale = new Vector3(1, 1, 1);
+                NumRenderer2 = numObject2.GetComponent<SpriteRenderer>();
+
+
+                switch (Sum.second)
+                {
+                    case 0:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_0");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 1:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 2:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 3:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 4:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_4");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 5:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_5");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 6:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_6");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 7:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_7");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 8:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_8");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                    case 9:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_9");
+                        NumRenderer2.sprite = numScripts;
+                        break;
+                }
             }
-
-            var numPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/num");
-            var numObject2 = Instantiate(numPrefab2, transform.position, Quaternion.identity);
-            numPrefab2.tag = "num";
-            numObject2.transform.position = new Vector3(0.9f, -4, 0);
-            numObject2.transform.localScale = new Vector3(1, 1, 1);
-            SpriteRenderer NumRenderer2 = numObject2.GetComponent<SpriteRenderer>();
-
-
-            switch (Sum.second)
+            else
             {
-                case 0:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_0");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 1:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_1");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 2:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 3:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 4:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_4");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 5:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_5");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 6:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_6");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 7:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_7");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 8:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_8");
-                    NumRenderer2.sprite = numScripts;
-                    break;
-                case 9:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_9");
-                    NumRenderer2.sprite = numScripts;
-                    break;
+                NumRenderer.sprite = Resources.Load<Sprite>(pic[Sum.first]);
+                NumRenderer2.sprite = Resources.Load<Sprite>(pic[Sum.second]);
             }
-
         }
         else
         {
-            var numPrefab = Resources.Load<GameObject>("Prefabs/Bar06/num");
-            var numObject = Instantiate(numPrefab, transform.position, Quaternion.identity);
-            numPrefab.tag = "num";
-            numObject.transform.position = new Vector3(0.75f, -4, 0);
-            numObject.transform.localScale = new Vector3(1, 1, 1);
-            SpriteRenderer NumRenderer = numObject.GetComponent<SpriteRenderer>();
-
-            switch (puls)
+            if (firsttime == 0)
             {
-                case 2:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 3:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 4:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_4");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 5:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_5");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 6:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_6");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 7:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_7");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 8:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_8");
-                    NumRenderer.sprite = numScripts;
-                    break;
-                case 9:
-                    numScripts = Resources.Load<Sprite>("Images/Bar/t_9");
-                    NumRenderer.sprite = numScripts;
-                    break;
+
+
+                numPrefab = Resources.Load<GameObject>("Prefabs/Bar06/num");
+                numObject = Instantiate(numPrefab, transform.position, Quaternion.identity);
+                numObject.transform.position = new Vector3(0.5f, -4, 0);
+                numObject.transform.localScale = new Vector3(1, 1, 1);
+                NumRenderer = numObject.GetComponent<SpriteRenderer>();
+
+                switch (puls)
+                {
+                    case 2:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_2");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 3:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_3");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 4:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_4");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 5:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_5");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 6:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_6");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 7:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_7");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 8:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_8");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                    case 9:
+                        numScripts = Resources.Load<Sprite>("Images/Bar/t_9");
+                        NumRenderer.sprite = numScripts;
+                        break;
+                }
+            }
+            else
+            {
+                NumRenderer.sprite = Resources.Load<Sprite>(pic[puls]);
             }
         }
         if (bj == 0 && puls == 21)
@@ -2039,6 +2065,7 @@ public class CardMaster : MonoBehaviour
             JudgeRenderer.sprite = Resources.Load<Sprite>("Images/Bar/bj_word1");
         }
         delobj = 1;
+        firsttime = 1;
     }
     int burst = 0;
     int bj = 0;
@@ -3083,12 +3110,6 @@ public class CardMaster : MonoBehaviour
 
                     I++;
 
-                    GameObject[] numtagObj = GameObject.FindGameObjectsWithTag("num");
-                    foreach (GameObject NObj in numtagObj)
-                    {
-                        Destroy(NObj);
-                    }
-
                     puls = 0;
 
                     PlayerNum();
@@ -3098,18 +3119,13 @@ public class CardMaster : MonoBehaviour
                         Sprite JScripts = null;
                         var judgePrefab = Resources.Load<GameObject>("Prefabs/Bar06/Judge");
                         var judgeObject = Instantiate(judgePrefab, transform.position, Quaternion.identity);
-                        judgeObject.transform.position = new Vector3(-0.2f, 0, 0);
+                        judgeObject.transform.position = new Vector3(-0.8f, 0, 0);
                         judgeObject.transform.localScale = new Vector3(1, 1, 1);
 
                         SpriteRenderer judgeRenderer = judgeObject.GetComponent<SpriteRenderer>();
 
                         JScripts = Resources.Load<Sprite>("Images/Bar/talk4");
                         judgeRenderer.sprite = JScripts;
-
-                        foreach (GameObject NObj in numtagObj)
-                        {
-                            Destroy(NObj);
-                        }
 
                         puls = 0;
 
@@ -3125,75 +3141,159 @@ public class CardMaster : MonoBehaviour
 
     int Coin = 10;
     int checker = 0;
+    GameObject coinPrefab;
+    GameObject coinObject;
+    GameObject coinObject2;
+    SpriteRenderer CoinRenderer3;
+    SpriteRenderer CoinRenderer4;
+    SpriteRenderer CoinRenderer5;
+    SpriteRenderer CoinRenderer6;
+
+    int betcheck = 0;
+    int tencheck = 0;
+    public void Betpuls()
+    {
+        if (Vs == 0)
+        {
+            if (j == 0)
+            {
+                if (burst == 0)
+                {
+                    if (betcheck <= 10)
+                    {
+
+                        betcheck++;
+
+                        if (betcheck >= 1 && betcheck < 10)
+                        {
+                            CoinRenderer.sprite = Resources.Load<Sprite>(pic[betcheck]);
+                        }
+                        else if (betcheck == 10)
+                        {
+                            CoinRenderer.sprite = Resources.Load<Sprite>(pic[1]);
+                            betObject.transform.position = new Vector3(-6.8f, -3, 0);
+                            betPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/coin");
+                            betObject2 = Instantiate(betPrefab2, transform.position, Quaternion.identity);
+                            betObject2.transform.position = new Vector3(-6.4f, -3, 0);
+                            betObject2.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+                            CoinRenderer2 = betObject2.GetComponent<SpriteRenderer>();
+                            CoinRenderer2.sprite = Resources.Load<Sprite>(pic[0]);
+
+                            tencheck = 1;
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void Betminus()
+    {
+        if (Vs == 0)
+        {
+            if (j == 0)
+            {
+                if (burst == 0)
+                {
+                    if (betcheck > 0)
+                    {
+                        betcheck--;
+
+                        if (betcheck == 0)
+                        {
+                            CoinRenderer.sprite = Resources.Load<Sprite>(pic[betcheck]);
+                        }
+                        if (betcheck >= 1 && betcheck < 10)
+                        {
+                            CoinRenderer.sprite = Resources.Load<Sprite>(pic[betcheck]);
+                            if (tencheck == 1)
+                            {
+                                betObject.transform.position = new Vector3(-6.5f, -3, 0);
+                                betObject2.transform.position = new Vector3(-100, 0, 0);
+                                tencheck = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    int firsttime2 = 0;
+    int tencheck2 = 0;
     public void Bet()
     {
         if (checker == 0)
         {
             for (int i = 0; i < 3; i++)
             {
-                var coinPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin");
-                var coinObject = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+                coinPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin");
+                coinObject = Instantiate(coinPrefab, transform.position, Quaternion.identity);
                 if (i == 0)
                 {
-                    coinObject.transform.position = new Vector3(-7.3f, -4.4f, 0);
+                    CoinRenderer = coinObject.GetComponent<SpriteRenderer>();
+                    coinObject.transform.position = new Vector3(-7.2f, -4.4f, 0);
+                    CoinRenderer.sprite = Resources.Load<Sprite>(pic[0]);
                 }
                 else if (i == 1)
                 {
+                    CoinRenderer5 = coinObject.GetComponent<SpriteRenderer>();
                     coinObject.transform.position = new Vector3((i - 0.5f) - 7.3f, -4.4f, 0);
+                    CoinRenderer5.sprite = Resources.Load<Sprite>(pic[1]);
                 }
                 else if (i == 2)
                 {
+                    CoinRenderer6 = coinObject.GetComponent<SpriteRenderer>();
                     coinObject.transform.position = new Vector3((i - 1) - 7.3f, -4.4f, 0);
+                    CoinRenderer6.sprite = Resources.Load<Sprite>(pic[0]);
                 }
                 coinObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-                SpriteRenderer CoinRenderer = coinObject.GetComponent<SpriteRenderer>();
-                CoinRenderer.sprite = Resources.Load<Sprite>("Images/Bar/t_0");
             }
+
+            coinPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin");
+            coinObject = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            CoinRenderer3 = coinObject.GetComponent<SpriteRenderer>();
+            coinObject.transform.position = new Vector3(-3.7f, -4.4f, 0);
+            coinObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            CoinRenderer3.sprite = Resources.Load<Sprite>(pic[0]);
 
             checker = 1;
         }
         else if (checker == 1)
         {
-
-        }
-    }
-    int betcheck = 0;
-    public void Betpuls()
-    {
-        if (betcheck < 11)
-        {
-            var betPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin");
-            var betObject = Instantiate(betPrefab, transform.position, Quaternion.identity);
             if (betcheck >= 0 && betcheck < 10)
             {
-                betObject.transform.position = new Vector3(-6.5f, -3, 0);
+                CoinRenderer3.sprite = Resources.Load<Sprite>(pic[betcheck]);
+                if (tencheck2 == 1)
+                {
+                    coinObject2.transform.position = new Vector3(-10, -4.4f, 0);
+                    tencheck2 = 0;
+                }
             }
             else if (betcheck == 10)
             {
-                betObject.transform.position = new Vector3(-6.7f, -3, 0);
-            }
-            betObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
-            SpriteRenderer CoinRenderer = betObject.GetComponent<SpriteRenderer>();
-            if (betcheck == 0)
-            {
-                CoinRenderer.sprite = Resources.Load<Sprite>(pic[0]);
-            }
-            else if (betcheck >= 1 && betcheck < 10)
-            {
-                CoinRenderer.sprite = Resources.Load<Sprite>(pic[betcheck]);
-            }
-            else if (betcheck == 10)
-            {
-                CoinRenderer.sprite = Resources.Load<Sprite>(pic[1]);
-                var betPrefab2 = Resources.Load<GameObject>("Prefabs/Bar06/coin");
-                var betObject2 = Instantiate(betPrefab2, transform.position, Quaternion.identity);
-                betObject2.transform.position = new Vector3(-6.4f, -3, 0);
-                betObject2.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
-                SpriteRenderer CoinRenderer2 = betObject2.GetComponent<SpriteRenderer>();
-                CoinRenderer2.sprite = Resources.Load<Sprite>(pic[0]);
+                if (firsttime2 == 0)
+                {
+                    coinPrefab = Resources.Load<GameObject>("Prefabs/Bar06/coin");
+                    coinObject2 = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+                    CoinRenderer4 = coinObject2.GetComponent<SpriteRenderer>();
+                    coinObject2.transform.position = new Vector3(-4.1f, -4.4f, 0);
+                    coinObject2.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                    CoinRenderer4.sprite = Resources.Load<Sprite>(pic[1]);
+                    CoinRenderer3.sprite = Resources.Load<Sprite>(pic[0]);
+
+                    tencheck2 = 1;
+                    firsttime2 = 1;
+                }
+                coinObject2.transform.position = new Vector3(-4.1f, -4.4f, 0);
+                CoinRenderer4.sprite = Resources.Load<Sprite>(pic[1]);
+                CoinRenderer3.sprite = Resources.Load<Sprite>(pic[0]);
+
+                tencheck2 = 1;
+
             }
         }
-        betcheck++;
     }
 }
 
