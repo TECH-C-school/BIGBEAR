@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Assets.Scripts.Bar02 {
     public class GameController : MonoBehaviour {
@@ -28,13 +29,11 @@ namespace Assets.Scripts.Bar02 {
 
         private void Start()
         {
-
+            FirstText();
         }
         
         private void Update()
         {
-            FirstText();
-            turnCard();
             checkCard();
             addFlame();
 
@@ -149,6 +148,8 @@ namespace Assets.Scripts.Bar02 {
                 _AllObject[countCardNum] = cardPlaceObject;
                 countCardNum--;
             }
+
+            turnCard();
         }
         
         
@@ -242,9 +243,31 @@ namespace Assets.Scripts.Bar02 {
 
 
                 //山札のカードをとった場合、裏返して移動
-                placeCard.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[placeCard.sortingOrder]);
-                placeCard.transform.position = new Vector2(3.0f, 2.0f);
-                
+                int order = placeCard.sortingOrder;
+                placeCard.sortingOrder = 1000;
+                RectTransform pCpos = placeCard.gameObject.GetComponent<RectTransform>();
+                Sequence PCseq = DOTween.Sequence();
+                PCseq.Append(
+                    pCpos.DOMove(new Vector3(3.6f, 2.0f, 0), 0.2f)
+                    )
+                .Join(
+                    pCpos.DORotate(new Vector3(0f,90f),0.2f)
+                    )
+                .AppendCallback(() => {
+                    placeCard.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[order]);
+                })
+                .Append(
+                    pCpos.DOMove(new Vector3(3.0f, 2.0f, 0), 0.3f)
+                    )
+                .Join(
+                    pCpos.DORotate(new Vector3(0f, 360f), 0.3f)
+                    )
+                .AppendCallback(()=> {
+                    placeCard.sortingOrder = order;
+                });
+
+                //placeCard.transform.position = new Vector2(3.0f, 2.0f);
+
                 selectCard(0);
                 return;
                 
@@ -277,6 +300,7 @@ namespace Assets.Scripts.Bar02 {
                             deletedPyramid++;
                         }
                         Destroy(click1.gameObject);
+                        turnCard();
                         selectCard(0);
                     }
                 }
@@ -309,6 +333,7 @@ namespace Assets.Scripts.Bar02 {
                     }
                     Destroy(click1.gameObject);
                     Destroy(click2.gameObject);
+                    turnCard();
                 }
 
 
@@ -333,7 +358,8 @@ namespace Assets.Scripts.Bar02 {
             {
                 SpriteRenderer plaCard = place[i].GetComponent<SpriteRenderer>();
                 plaCard.sprite = Resources.Load<Sprite>("Images/Bar/Cards/back");
-                plaCard.transform.position = new Vector2(4.5f, 2.0f);
+                plaCard.gameObject.GetComponent<RectTransform>().DOMove(new Vector2(4.5f, 2.0f), 0.1f);
+                //plaCard.transform.position = new Vector2(4.5f, 2.0f);
             }
         }
 
@@ -401,7 +427,18 @@ namespace Assets.Scripts.Bar02 {
                         if(!UnderCard1 && !UnderCard2)
                         {
                             //表にする
-                            standardCard.sprite= Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[standardCard.sortingOrder]);
+                            RectTransform stpos = standardCard.gameObject.GetComponent<RectTransform>();
+                            Sequence stseq = DOTween.Sequence();
+                            stseq.Append(
+                                stpos.DORotate(new Vector3(0f, 90f), 0.2f)
+                            )
+                            .AppendCallback(() => {
+                                standardCard.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cardNum[standardCard.sortingOrder]);
+                            })
+                            .Append(
+                                stpos.DORotate(new Vector3(0f, 360f), 0.3f)
+                            );
+                            
                         }
                     }
                     
@@ -611,6 +648,7 @@ namespace Assets.Scripts.Bar02 {
             clearNum = 0;
             _playTime6 = 0;
             _gameState = GameState.Start;
+            FirstText();
         }
 
 
@@ -635,10 +673,14 @@ namespace Assets.Scripts.Bar02 {
             clearNum = 0;
             _playTime7 = 0;
             _gameState = GameState.Start;
+            FirstText();
         }
 
 
 
+        /// <summary>
+        /// タイム計測表示
+        /// </summary>
         private void UpdatePlayTime()
         {
             if (countPyra == 6)
@@ -663,6 +705,9 @@ namespace Assets.Scripts.Bar02 {
 
 
 
+        /// <summary>
+        /// ベストタイム表示
+        /// </summary>
         private void UpdateFastestPlayTime()
         {
             var timeLabel6 = GameObject.Find("Canvas/Panel/FastestPlayTimeLabel6").transform;
@@ -682,6 +727,9 @@ namespace Assets.Scripts.Bar02 {
 
 
 
+        /// <summary>
+        /// ベストタイムリセット
+        /// </summary>
         public void FastestReset()
         {
             _fastestPlayTime6 = 0;
@@ -689,6 +737,11 @@ namespace Assets.Scripts.Bar02 {
             UpdateFastestPlayTime();
         }
 
+
+
+        /// <summary>
+        /// 最初の文表示
+        /// </summary>
         private void FirstText()
         {
             var text = GameObject.Find("Canvas/FastText").transform;
