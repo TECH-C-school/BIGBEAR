@@ -9,6 +9,7 @@ namespace Assets.Scripts.Bar02
     public class GameController : MonoBehaviour
     {
         private GameObject hogehoge = null;
+        private int num = 0;
 
         public enum Gamestate
         {
@@ -225,7 +226,7 @@ namespace Assets.Scripts.Bar02
         public void OpenCard()
         {
             var judgecard = GameObject.Find("FieldCards");
-            int num = 0; int counter = 1;
+            num = 0; int counter = 1;
             string once = "";
 
             for (int i = 1; i < 8; i++)
@@ -248,11 +249,7 @@ namespace Assets.Scripts.Bar02
 
                     if (num > 20)
                     {
-                        one.GetComponent<BoxCollider2D>().enabled = true;
-                        var card = one.GetComponent<Cards>();
-                        card.Number = num;
-                        card.CardNumber = stringnum;
-                        card.TurnCardFaceUp();
+                        CardJudge(one, stringnum, true);
                     }
                     else
                     {
@@ -263,26 +260,28 @@ namespace Assets.Scripts.Bar02
                         {
                             if (three.activeSelf == false)
                             {
-                                one.GetComponent<BoxCollider2D>().enabled = true;
-                                var card = one.GetComponent<Cards>();
-                                card.Number = num;
-                                card.CardNumber = stringnum;
-                                card.TurnCardFaceUp();
+                                CardJudge(one, stringnum, true);
                             }
                         }
                         else
                         {
-                            one.GetComponent<BoxCollider2D>().enabled = false;
-                            var card = one.GetComponent<Cards>();
-                            card.CardNumber = stringnum;
-                            card.Number = num;
-                            card.TurnCardFaceDown();
+                            CardJudge(one, stringnum, false);
                         }
                     }
                     num++;
                 }
                 counter++;
             }
+
+        }
+        public void CardJudge(GameObject faceon, int mojinum, bool turn)
+        {
+            faceon.GetComponent<BoxCollider2D>().enabled = turn;
+            var card = faceon.GetComponent<Cards>();
+            card.CardNumber = mojinum;
+            card.Number = num;
+            card.TurnCard(turn);
+
         }
 
     }
