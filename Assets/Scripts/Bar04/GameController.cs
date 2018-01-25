@@ -53,8 +53,22 @@ namespace Assets.Scripts.Bar04
 
         }
 
+       /* public void betnumber()
+        {
+        var number = Resources.Load<GameObject>("Prefabs/Bar04/BetNumber");
+
+        var cardObject = Instantiate(number, transform.position, Quaternion.identity);
+
+        cardObject.transform.position = new Vector3(-1.005f - 2.2f, -4.34f, 0);
+
+        cardObject.transform.parent = cardObject.transform;
+
+        }*/
+
+
         private void Start()
         {
+            //betnumber();
             card = new Card();
 
             card.MakeRandomNumbers();
