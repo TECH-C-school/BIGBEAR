@@ -15,7 +15,7 @@ public class Gamebed : MonoBehaviour {
     public GameObject prefab;
     public Text zandaka;
     public Text goukeibat;
-        
+    
     // Use this for initialization
     void Start() {
         totalcoin = 10;
@@ -29,15 +29,22 @@ public class Gamebed : MonoBehaviour {
 	void Update () {
 		
 	}
-   public void GamecoinOnclick(int Buttontrpe)
+    public void Playerwin()
+    {
+        totalcoin += playercoin + (playercoin);
+        totalcoin += bankecoin + (bankecoin);
+        totalcoin += dawrcoin + (dawrcoin);
+    }
+    public void GamecoinOnclick(int Buttontrpe)
     {
         
         if (Buttontrpe == 0)
         {
             if (playercoin < 3)
             {
-               // totalcoin -1;
-               // zandaka.text.ToString
+                totalcoin -= 1;
+                
+                zandaka.text = totalcoin.ToString();
                 playercoins[playercoin].SetActive(true);
                 playercoin++;
             }
@@ -46,6 +53,8 @@ public class Gamebed : MonoBehaviour {
         {
             if (bankecoin < 3)
             {
+                totalcoin -= 1;
+                zandaka.text = totalcoin.ToString();
                 bankercoins[bankecoin].SetActive(true);
                 bankecoin++;
             }
@@ -55,12 +64,14 @@ public class Gamebed : MonoBehaviour {
         {
             if (dawrcoin < 3)
             {
+                totalcoin -= 1;
+                zandaka.text = totalcoin.ToString();
                 dawrcoins[dawrcoin].SetActive(true);
                 dawrcoin++;
             }
         }
 
 
-
+        goukeibat.text = (playercoin + bankecoin + dawrcoin).ToString();
     }
 }
