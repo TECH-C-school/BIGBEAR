@@ -26,6 +26,7 @@ namespace Assets.Scripts.Bar05
         private string enemySuit1;
         private string enemySuit2;
         private string enemyTalkStr;
+        private string talkTemp;
         private bool bigRaiseBool;
         private bool attackRaiseBool;
         private bool strongBool;
@@ -40,6 +41,8 @@ namespace Assets.Scripts.Bar05
 
         private Image enemyTalk;
         private Image enemyTalkAction;
+
+        private Sprite talkActionSprite;
 
         private void Awake()
         {
@@ -63,16 +66,30 @@ namespace Assets.Scripts.Bar05
             enemyTalkAction.enabled = false;
         }
 
-        private IEnumerator AnimetionCor() 
+        private IEnumerator AnimetionCor(float action) 
         {
-            yield return new WaitForSeconds(2);
-            TalkReset();
+            yield return new WaitForSeconds(action);
+            if (action == 2)
+            {
+                TalkReset();
+            }
+            else //if(action == 0.2f)
+            {
+                enemyTalk.enabled = true;
+                enemyTalkText.text = talkTemp;
+                if (enemyTalkStr != "")
+                {
+                    enemyTalkAction.enabled = true;
+                    enemyTalkAction.sprite = talkActionSprite;
+                }
+            }
         }
 
         void TalkReset()
         {
             enemyTalk.enabled = false;
             enemyTalkAction.enabled = false;
+            talkTemp = "";
             enemyTalkText.text = "";
             enemyTalkStr = "";
         }
@@ -86,32 +103,35 @@ namespace Assets.Scripts.Bar05
             enemyBet = phase.enemyBet;
             enemyMoney = phase.enemyMoney;
 
-            if (betCount <= 1 || fieldBet != enemyBet)
+            if (playerBet == enemyBet && 10 <= fieldBet)
             {
-                StopCoroutine(AnimetionCor());
+                //何も処理せず進む
+            }
+            else if (betCount <= 1 || fieldBet != enemyBet)
+            {
+                StopCoroutine(AnimetionCor(2));
 
                 TalkReset();
-
-                enemyTalk.enabled = true;
 
                 if (phase.phaseEnum == Phase.PhaseEnum.word5)
                 {
                     EnemyFirstBet();
-                }
-                else if (playerBet == enemyBet && 10 <= fieldBet)
-                {
-                    //何も処理せず進める
                 }
                 else
                 {
                     EnemyAfterBet();
                 }
 
-                var spriteRenderer = Resources.Load<Sprite>("Images/Bar/" + enemyTalkStr);
-                enemyTalkAction.sprite = spriteRenderer;
+                talkActionSprite = Resources.Load<Sprite>("Images/Bar/" + enemyTalkStr);
+                enemyTalkAction.enabled = false;
 
-                StartCoroutine(AnimetionCor());
+                //表示処理
+                StartCoroutine(AnimetionCor(0.2f));
+
+                //削除処理
+                StartCoroutine(AnimetionCor(2));
             }
+            
 
             if (foldBool == false)
             {
@@ -315,12 +335,10 @@ namespace Assets.Scripts.Bar05
                 enemyBet = fieldBet;
                 enemyTalkAction.enabled = true;
                 enemyTalkStr = "talk1";
-                Debug.Log("Enemy:Call");
             }
             else
             {
-                enemyTalkText.text = "チェック";
-                Debug.Log("Enemy:Check");
+                talkTemp = "チェック";
             }
         }
 
@@ -341,8 +359,7 @@ namespace Assets.Scripts.Bar05
                 enemyMoney -= fieldBet - enemyBet;
                 enemyBet = fieldBet;
 
-                enemyTalkText.text = "倍賭け";
-                Debug.Log("Enemy:Raise");
+                talkTemp = "倍賭け";
             }
         }
 

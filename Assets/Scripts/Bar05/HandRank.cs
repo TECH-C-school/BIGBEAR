@@ -31,7 +31,7 @@ namespace Assets.Scripts.Bar05
             ThreeOfAKind,
             TwoPair,
             OnePair,
-            NoPair,
+            HighCard,
         }
         public int handRank;
         public int enemyRank;
@@ -233,7 +233,7 @@ namespace Assets.Scripts.Bar05
                 return 1;
             }
 
-            rankCheck = RankCheck.NoPair;
+            rankCheck = RankCheck.HighCard;
             return 0;
         }
 

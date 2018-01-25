@@ -18,6 +18,7 @@ namespace Assets.Scripts.Bar05
         private int enemyMoney;
         private int fieldMoneyTemp;
         private int playerMoneyTemp;
+        private string playerImageStr;
         private bool start;
         private bool menuBool;
         private GameObject betCanvas;
@@ -28,6 +29,11 @@ namespace Assets.Scripts.Bar05
         private GameObject betText2;
         private GameObject moneyText;
         private GameObject moneyText2;
+
+        private Text playerTalkText;
+
+        private Image playerTalk;
+        private Image playerTalkAction;
 
         private Phase phase;
         private Enemy enemy;
@@ -51,13 +57,35 @@ namespace Assets.Scripts.Bar05
             betCanvas.SetActive(false);
             resetBtn.SetActive(false);
             posePanel.SetActive(false);
-            BetChange();
             MoneyTextChange(playerMoney);
             BetTextChange(0);
+            playerTalk = phase.playerTalk;
+            playerTalkAction = GameObject.Find("PlayerAction").GetComponent<Image>();
+            playerTalkText = phase.playerText;
+            playerTalk.enabled = false;
+            playerTalkAction.enabled = false;
+            BetChange();
+        }
+
+        private IEnumerator AnimetionCor()
+        {
+            playerTalk.enabled = true;
+            yield return new WaitForSeconds(2);
+            TalkReset();
+        }
+
+        void TalkReset()
+        {
+            playerTalk.enabled = false;
+            playerTalkAction.enabled = false;
+            playerTalkText.text = "";
+            playerImageStr = "";
         }
 
         void BetChange()
         {
+            TalkReset();
+            StopCoroutine(AnimetionCor());
             fieldBetMoney = phase.fieldBet;
             playerBetMoney = phase.playerBet;
             enemyBetMoney = phase.enemyBet;
@@ -125,13 +153,15 @@ namespace Assets.Scripts.Bar05
             MoneyTextChange(playerMoney);
             BetTextChange(playerBetMoney);
             enemy.EnemyBet();
+            StartCoroutine(AnimetionCor());
         }
 
         public void Check()
         {
             BetChange();
-            Debug.Log("Player : Check");
             betCanvas.SetActive(false);
+            StartCoroutine(AnimetionCor());
+            playerTalkText.text = "チェック";
             enemy.EnemyBet();
         }
 
@@ -139,11 +169,14 @@ namespace Assets.Scripts.Bar05
         {
             BetChange();
 
-            Debug.Log(fieldBetMoney);
             playerMoney -= fieldBetMoney - playerBetMoney;
             playerBetMoney = fieldBetMoney;
 
-            Debug.Log("Player : Call");
+            playerTalkAction.enabled = true;
+            playerImageStr = "talk1";
+            var spriteRenderer = Resources.Load<Sprite>("Images/Bar/" + playerImageStr);
+            playerTalkAction.sprite = spriteRenderer;
+
             GoNext();
         }
 
@@ -153,7 +186,7 @@ namespace Assets.Scripts.Bar05
 
             if (playerMoney >= 2 || enemyMoney <= 1)
             {
-                Debug.Log("Player : Raise");
+                playerTalkText.text = "倍賭け";
 
                 fieldBetMoney = fieldBetMoney + 2;
 
@@ -164,6 +197,18 @@ namespace Assets.Scripts.Bar05
 
                 GoNext();
             }
+        }
+
+        public void Fold()
+        {
+            betCanvas.SetActive(false);
+
+            playerTalkAction.enabled = true;
+            playerImageStr = "talk3";
+            var spriteRenderer = Resources.Load<Sprite>("Images/Bar/" + playerImageStr);
+            playerTalkAction.sprite = spriteRenderer;
+
+            phase.Win(1);
         }
 
         public void StartBtn()
@@ -181,20 +226,6 @@ namespace Assets.Scripts.Bar05
                 phase.PhaseManagement(phase.phaseEnum);
                 startCanvas.SetActive(false);
             }
-        }
-
-        //private void RaiseCalculation(int rate)
-        //{
-        //    playerMoneyTemp = playerMoney;
-        //    fieldMoneyTemp = fieldBetMoney;
-        //    fieldMoneyTemp *= raiseMagnification + rate;
-        //    playerMoneyTemp -= fieldMoneyTemp / raiseMagnification;
-        //}
-
-        public void Fold()
-        {
-            betCanvas.SetActive(false);
-            phase.Win(1);
         }
 
         public void Menu()
