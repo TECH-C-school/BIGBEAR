@@ -26,11 +26,13 @@ namespace Assets.Scripts.Bar01 {
         private int startFlg;
 
         public Canvas startCanvas;
+        public Canvas autoClearCanvas;
         public float marginTop = 0;
         public float marginside = 0;
         public Vector3 startPosition = new Vector3(-4.8f, 0.09f, 0);
         public Vector3 endPosition = new Vector3(4.78f, 0.09f, 0);
         public bool debagMode = false;
+        public bool autoClear = false;
 
         private float scrennRatio = 1;
 
@@ -44,7 +46,6 @@ namespace Assets.Scripts.Bar01 {
             Initialization();
             //カード生成
             //CreateCard(startPosition,endPosition,6,0.08f);
-            
 
         }
 
@@ -64,6 +65,7 @@ namespace Assets.Scripts.Bar01 {
         /// </summary>
         private void Initialization()
         {
+            autoClearCanvas.gameObject.SetActive(false);
             GameObject setObject;
             Vector3 setPosition;
             deck = Resources.Load<GameObject>("Prefabs/Bar01/Deck");
@@ -790,6 +792,10 @@ namespace Assets.Scripts.Bar01 {
                 }      
             }
             selectCard = null;
+            if (AutoClearCheck())
+            {
+                autoClearCanvas.gameObject.SetActive(true);
+            }
             return;
         }
 
@@ -933,6 +939,57 @@ namespace Assets.Scripts.Bar01 {
             for(int i = 0; i < moveCardList.Count; i++)
             {
                 toCardBox.Push(moveCardList[i]);
+            }
+        }
+
+        /// <summary>
+        /// 自動クリアができるか調べる
+        /// </summary>
+        /// <returns></returns>
+        private bool AutoClearCheck()
+        {
+            //山札の数をチェック
+            if(dackArray.Count != 0 || dackOut.Count != 0) { return false; }
+            //場がすべて表だったら
+            for(int i = 0, count = stageArray.Length; i < count ; ++i)
+            {
+                Card[] cards = stageArray[i].ToArray();
+                if(cards.Length == 0) { continue; }
+                Debug.Log("Top Card" + cards[0].CardType.ToString() + cards[0].CardNumber);
+                if (!cards[cards.Length - 1].Front) { return false; }
+            }
+            Debug.Log("自動クリア可能です。");
+            return true;
+        }
+
+        public void AutoClear()
+        {
+            int c = 0;
+            while(c != -1)
+            {
+                for(int i = 0, count = stageArray.Length; i < count; ++i)
+                {
+                    if(stageArray[i].Count == 0)
+                    {
+                        c += 1;
+                        if(c == 7)
+                        {
+                            c = -1;
+                        }
+                        continue;
+                    }
+                    if (outArray1[(int)stageArray[i].Peek().CardType] == stageArray[i].Peek().CardNumber)
+                    {
+                        outArray1[(int)stageArray[i].Peek().CardType]++;
+                        selectCards = new Card[1];
+                        selectCards[0] = stageArray[i].Pop();
+                        selectCards[0].transform.position = outArray[(int)selectCards[0].CardType].Peek().transform.position + new Vector3(0, 0, -1);
+                        selectCards[0].GetComponent<Card>().From = selectCards[0].transform.position;
+                        CardsMove(selectCards, outArray[(int)selectCards[0].CardType]);
+                        selectCards[0].OutCard = true;
+                        c = 0;
+                    }
+                }
             }
         }
 
