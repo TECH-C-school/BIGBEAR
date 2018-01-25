@@ -25,10 +25,10 @@ public class drag : MonoBehaviour {
         //カードの位置
         Vector3 pos = transform.position;
         pos.z -= 1;
-        if(pos.z < -7)
+        if(pos.z < -5)
         {
             pos.z = 0;
-        }             
+        }                     
         transform.position = pos;
     }
 }
