@@ -10,6 +10,7 @@ namespace Assets.Scripts.Bar02
     {
         private GameObject hogehoge = null;
         private int num = 0;
+        public GameObject Cleartext;
 
         public enum Gamestate
         {
@@ -164,6 +165,11 @@ namespace Assets.Scripts.Bar02
         public void ClickCard()
         {
 
+            var Flame = GameObject.Find("cardflame");
+            var homepos = new Vector3(100, 0, 0);
+            var x = GameObject.Find("FieldCards");
+            var FirstCard = x.transform.GetChild(0).gameObject;
+
             //マウスクリックの判定
             if (!Input.GetMouseButtonDown(0)) return; //左クリックされていなければreturn
 
@@ -193,25 +199,32 @@ namespace Assets.Scripts.Bar02
                     hogehoge.SetActive(false);
                     hitObject.collider.gameObject.SetActive(false);
                     hogehoge = null;
+                    Flame.transform.position = homepos;
                 }
                 else
                 {
                     hogehoge = null;
-                    return;
+                    Flame.transform.position = homepos;
                 }
 
             }
             else
             {
                 hogehoge = hitObject.collider.gameObject;
+                Flame.transform.position = hitObject.transform.position;
                 Debug.Log("選んでいるカード" + card.CardNumber);
                 if (card.CardNumber != 13) return;
                 hitObject.collider.gameObject.SetActive(false);
+                Flame.transform.position = homepos;
+            }
+            if ( FirstCard.activeSelf == false )
+            {
+                Debug.Log("Clear!!");
+                Cleartext.SetActive(true);
             }
             return;
             ////クリックされた位置にflameを装着
-            //var Flame = GameObject.Find("cardflame");
-            //Flame.transform.position = hitObject.transform.position;
+            
 
         }
         /*public void OnTriggerStay2D(Collider2D collision)
