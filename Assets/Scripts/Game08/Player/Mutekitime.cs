@@ -30,7 +30,7 @@ public class Mutekitime : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D col)
     {
         //  敵とぶつかったかつダメージフラグがfalse
-        if(!_on_damage && _enemi)
+        if(!_on_damage && _enemi.transform)
         {
             OnDamage();
         }

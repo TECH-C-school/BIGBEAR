@@ -13,8 +13,12 @@ public class EnemyAttack : MonoBehaviour {
 	
 	void Update () {
 
-
-
         _D.transform.parent = null; // 親と子の切り離し
     }
+
+    void OnCollisionEnter2D(Collider2D _col)
+    {
+        //Instantiate();
+    }
+
 }
