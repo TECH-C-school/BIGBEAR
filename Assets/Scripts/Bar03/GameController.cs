@@ -18,7 +18,11 @@ namespace Assets.Scripts.Bar03
         private GameObject[] obj = new GameObject[13];
         private int _set = 0;
         bool _select;
+        private Cards[,] _cards = new Cards[10,50];
+        private int[] checkY = new int[10];
+        private float[] moveY = new float[10];
 
+        
 
 
         void Start()
@@ -26,6 +30,11 @@ namespace Assets.Scripts.Bar03
             //MakeBackCards();
             CardsSet();
             BackGroundMake();
+            for (int x = 0; x < 10; x++)
+            {
+                checkY[x] = 0;
+                moveY[x] = 0.31f;
+            }
         }
         void Update()
         {
@@ -135,13 +144,14 @@ namespace Assets.Scripts.Bar03
                         cardObject.transform.parent = GameObject.Find("Cards" + x.ToString()).transform;
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
-                        cardSet.Deck = x;
-                        cardSet.DeckNum = y;
+                        cardSet.X = x;
+                        cardSet.Y = y;
                         cardSet.pareCard = 0;
                         _deckMaxNumber[x] = y;
                         _deckCard[count] = 0;
                         cardSet.Count = count;
                         cardSet.name = cardSet.String;
+                        _cards[x, y] = cardSet;
                         cardSet.TurnCardFaceDown();
                         count++;
                     }
@@ -153,14 +163,15 @@ namespace Assets.Scripts.Bar03
                         cardObject.transform.parent = GameObject.Find("Cards" + x.ToString()).transform;
                         Cards cardSet = cardObject.GetComponent<Cards>();
                         cardSet.String = cardMarkNumber[count];
-                        cardSet.Deck = x;
-                        cardSet.DeckNum = y;
+                        cardSet.X = x;
+                        cardSet.Y = y;
                         cardSet.pareCard = 0;
                         _deckMaxNumber[x] = y;
                         _deckCard[count] = 0;
                         cardSet.Count = count;
                         cardSet.name = cardSet.String;
                         cardSet.TurnCardFaceUp();
+                        _cards[x,y] = cardSet;
                         Debug.Log(cardMarkNumber[count]);
                         count++;
                     }
@@ -345,10 +356,32 @@ namespace Assets.Scripts.Bar03
                     int y = _deckMaxNumber[i] + 1;
                     Vector3 cardPosition = GameObject.Find("Cards" + i).transform.position;
                     card.transform.parent = GameObject.Find("Cards" + i.ToString()).transform;
-                    card.transform.position = new Vector3(cardPosition.x, cardPosition.y - y * 0.31f, cardPosition.z - y * 0.1f);
+                    card.transform.position = new Vector3(cardPosition.x, cardPosition.y - y * moveY[i], cardPosition.z - y * 0.1f);
+                    card.X = i;
+                    _cards[i, y] = card;
+                    Debug.Log("カードを"+y);
+                    if (y >= 13 && checkY[i] == 0)
+                    {
+                        checkY[i] = 1;
+                        moveY[i] = 0.15f;
+                        for (int x = 1; x < y; x++)
+                        {
+                            if (_cards[card.X, x] != null)
+                            {
+                                _cards[card.X, x].transform.position = new Vector3(_cards[card.X, x].transform.position.x, _cards[card.X, x].transform.position.y + (x * 0.15f), _cards[card.X, x].transform.position.z);
+                                Debug.Log(card.X + "の" +x + "がｙ移動だよ");
+                            }
+                            else
+                            {
+                                Debug.Log("これがでたら何かバグが起きてるよ");
+                            }
+                            
+                        }
+                       card.transform.position = new Vector3(_cards[card.X,y-1].transform.position.x, _cards[card.X, y-1].transform.position.y - 0.15f, _cards[card.X, y-1].transform.position.z-0.1f);
+                    }
                     _deckMaxNumber[i]++;
-                    card.DeckNum = _deckMaxNumber[i];
-                    card.Deck = i;
+                    card.Y = _deckMaxNumber[i];
+                    
                     card.TurnCardFaceUp();
                     if (!Physics2D.OverlapPoint(tapPoint)) return;
                     hitObject = Physics2D.Raycast(tapPoint, -Vector3.up);
@@ -361,7 +394,7 @@ namespace Assets.Scripts.Bar03
             //selectのカウント
             int count = 1;
             //カードを選択したときにプレハブを付ける
-            if (TappedCard == null && (card.DeckNum == _deckMaxNumber[card.Deck] || card.pareCard >= 1 && _deckMaxNumber[card.Deck] - card.DeckNum == card.pareCard))
+            if (TappedCard == null && (card.Y == _deckMaxNumber[card.X] || card.pareCard >= 1 && _deckMaxNumber[card.X] - card.Y == card.pareCard))
             {
                 for (int i = 0; i <= card.pareCard; i++)
                 {
@@ -378,7 +411,7 @@ namespace Assets.Scripts.Bar03
             }
 
             //カードをクリックして一番上にあり裏だったらそのカードを表にする
-            if (_deckMaxNumber[card.Deck] == card.DeckNum && !card.IsFront)
+            if (_deckMaxNumber[card.X] == card.Y && !card.IsFront)
             {
                 Debug.Log("クリックしたカードを表にします。");
                 card.TurnCardFaceUp();
@@ -403,13 +436,10 @@ namespace Assets.Scripts.Bar03
 
             //カードからマークのみをとりだす
             cardMark = card.String.Substring(0, 1);
-            Debug.Log("このカードのマークは" + cardMark);
-
             //前回のカードからマークのみをとりだす
             if (TappedCard != null)
             {
                 TappedMark = TappedCard.String.Substring(0, 1);
-                Debug.Log("前のマークは" + TappedMark);
             }
 
             //Debug.Log("このデッキのMAX"+_deckMaxNumber[card.Deck]);
@@ -417,31 +447,39 @@ namespace Assets.Scripts.Bar03
 
 
             //前回クリックカード+1と今回クリックしたカードが同じ
-            if (_nextCardNumber == numValue && (card.DeckNum == _deckMaxNumber[card.Deck] || _deckMaxNumber[card.Deck]-card.DeckNum == card.pareCard -1 ) && TappedCard != null)
+            if (_nextCardNumber == numValue && (card.Y == _deckMaxNumber[card.X] || _deckMaxNumber[card.X]-card.Y == card.pareCard -1 ) && TappedCard != null)
             {
                 Debug.Log("OK");
-                if (TappedCard.pareCard >= 1)
-                {
-                    for (int i1 = card.pareCard; i1 > 0; i1--)
-                    {
-                        TappedCard.pareAry[i1].transform.position = new Vector3(hitTransform.x, hitTransform.y - i1 * 0.31f, hitTransform.z - TappedCard.pareCard - i1 * 0.1f);
-                        _deckMaxNumber[card.Deck]++;
-                        _deckMaxNumber[TappedCard.pareAry[TappedCard.pareCard].Deck]--;
-                        TappedCard.pareAry[i1].DeckNum = _deckMaxNumber[card.Deck];
-                        TappedCard.pareAry[i1].Deck = card.Deck;
-                    }
-                }
-                TappedCard.transform.position = new Vector3(hitTransform.x, hitTransform.y - 0.31f, hitTransform.z - 0.1f);
+                TappedCard.transform.position = new Vector3(hitTransform.x, hitTransform.y - moveY[card.X], hitTransform.z - 0.1f);
                 var cardchange = Physics2D.Raycast(tapPoint, -Vector3.up);
-                _deckMaxNumber[card.Deck]++;
-                _deckMaxNumber[TappedCard.Deck]--;
-                TappedCard.DeckNum = _deckMaxNumber[card.Deck];
-                TappedCard.Deck = card.Deck;
-                TappedCard.transform.parent = GameObject.Find("Cards"+card.Deck.ToString()).transform;
+                _cards[TappedCard.X, TappedCard.Y] = null;
+                _cards[card.X, card.Y+1] = TappedCard;
+                _deckMaxNumber[card.X]++;
+                _deckMaxNumber[TappedCard.X]--;
+                TappedCard.Y = _deckMaxNumber[card.X];
+                TappedCard.X = card.X;
+                TappedCard.transform.parent = GameObject.Find("Cards"+card.X.ToString()).transform;
+                if (_deckMaxNumber[card.X] >= 13 && checkY[card.X] == 0)
+                {
+                    checkY[card.X] = 1;
+                    moveY[card.X] = 0.15f;
+                    for (int i = 1; i < _deckMaxNumber[card.X]; i++) {
+                        if (_cards[card.X, i] != null)
+                        {
+                            _cards[card.X, i].transform.position = new Vector3(_cards[card.X, i].transform.position.x, _cards[card.X, i].transform.position.y + (i * 0.15f), _cards[card.X, i].transform.position.z);
+                            Debug.Log(card.X + "の" + i + "がｙ移動だよ");
+                        }
+                        else
+                        {
+                            Debug.Log("ここに入っているのか？");
+                        }
+                    }
+                    TappedCard.transform.position = new Vector3(_cards[card.X, _deckMaxNumber[card.X]-1].transform.position.x, _cards[card.X, _deckMaxNumber[card.X] - 1].transform.position.y - 0.15f, _cards[card.X, _deckMaxNumber[card.X] - 1].transform.position.z - 0.1f);
+
+                }
                 if (TappedCard.pareCard >= 1)
                 {
                     TappedCard.pareCard = 0;
-                    TappedCard.transform.parent = GameObject.Find("Cards" + card.Deck.ToString()).transform;
                     Debug.Log("ペアリングを解除");
                 }
                 if (cardMark == TappedMark)
@@ -450,7 +488,6 @@ namespace Assets.Scripts.Bar03
                     card.pareCard =TappedCard.pareCard +1;
                     card.pareAry[TappedCard.pareCard] = TappedCard;
                     TappedCard.pareAry[card.pareCard] = card;
-                    TappedCard.transform.parent = card.transform;
                     Debug.Log("ペアリングは成功");
                 }
                 for (int x = count + 1; x >= 0; x--)
@@ -480,7 +517,7 @@ namespace Assets.Scripts.Bar03
                 Debug.Log("次のカードはないです");
             }
             //前回のカードを覚えさせる
-            if (card.DeckNum == _deckMaxNumber[card.Deck] || card.pareCard >= 2 && card.pareAry[card.pareCard].DeckNum == _deckMaxNumber[card.Deck])
+            if (card.Y == _deckMaxNumber[card.X] || card.pareCard >= 2 && card.pareAry[card.pareCard].Y == _deckMaxNumber[card.X])
             {
                 if (TappedCard == null)
                 {

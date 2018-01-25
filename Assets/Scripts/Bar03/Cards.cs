@@ -22,14 +22,14 @@ public class Cards : MonoBehaviour
     private Cards[] _parentAry = new Cards[13];
 
     //カードのｘ
-    public int Deck
+    public int X
     {
         get { return _number; }
         set { _number = value; }
     }
 
     //カードのｙ
-    public int DeckNum
+    public int Y
     {
         get { return _deckNumber; }
         set { _deckNumber = value; }
