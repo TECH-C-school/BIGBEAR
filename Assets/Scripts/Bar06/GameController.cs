@@ -26,6 +26,7 @@ namespace Assets.Scripts.Bar06 {
         private int bet;
         private int Pnatural21 = 0;
         private int Enatural21 = 0;
+        private int EnaturalJudge = 0;
         
        
         public void Win()
@@ -87,7 +88,8 @@ namespace Assets.Scripts.Bar06 {
             ResetB.enabled = true;
             
         }
-
+        
+        //BETボタン関係の処理
         public void BetUP()
         {
             if(bet < 10)
@@ -98,7 +100,6 @@ namespace Assets.Scripts.Bar06 {
                 }
             }
         }
-
         public void BetDown()
         {
             if (bet > 1)
@@ -106,7 +107,6 @@ namespace Assets.Scripts.Bar06 {
                 bet--;
             }
         }
-
         public void DeleteBetButton()
         {
             BUB.image.fillAmount = 0;
@@ -115,6 +115,7 @@ namespace Assets.Scripts.Bar06 {
             BDB.enabled = false;
         }
 
+        //デッキを作成する処理
         public void MakeDeck()
         {
             System.Random r = new System.Random();
@@ -162,10 +163,13 @@ namespace Assets.Scripts.Bar06 {
         {
             //シャッフルされたデッキの用意
             MakeDeck();
-            if(coin < 5)
+ 
+            //BET機能
+            if (coin < 5)
             {
                 bet = coin;
-            }else
+            }
+            else
             {
                 bet = 5;
             }
@@ -181,33 +185,29 @@ namespace Assets.Scripts.Bar06 {
                 playerCard.transform.position = new Vector3(-4 + i, -2, 0);
                 playerCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
                 playerCard.transform.parent = CardObject.transform;
-                if (numbers[DeckCounter] >= 11)
+
+                //J,Q,Kを10としてカウントする処理
+                if (numbers[DeckCounter] > 10)
                 {
                     numbers[DeckCounter] = 10;
                 }
-                if (numbers[DeckCounter] == 1)
+                //Aを1または11としてカウントする処理
+                if (numbers[DeckCounter] == 1 && playercounter < 11)
                 {
-                    if (playercounter < 11)
-                    {
-                        numbers[DeckCounter] = 11;
-                    }
-                    else
-                    {
-                        numbers[DeckCounter] = 1;
-                    }
+                    numbers[DeckCounter] = 11;
                 }
+                //プレイヤーのカードの合計値を算出する処理
                 playercounter = playercounter + numbers[DeckCounter];
+                
                 DeckCounter++;
                 
-                //ナチュラルブラックジャック判定
+                //プレイヤーのナチュラルブラックジャック判定
                 if(playercounter == 21)
                 {
                     Pnatural21 = 1;
                 }
             }
             
-
-
             //ディーラーの初期カードの表示
             var enemyCardPrefab1 = Resources.Load<GameObject>("Prefabs/Bar06/card");
             var enemyCard1 = Instantiate(enemyCardPrefab1, transform.position, Quaternion.identity);
@@ -221,32 +221,32 @@ namespace Assets.Scripts.Bar06 {
             enemyCard2.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
             enemyCard2.transform.parent = CardObject.transform;
 
-            if (numbers[DeckCounter] >= 11)
+            //J,Q,Kを10としてカウントする処理
+            if (numbers[DeckCounter] > 10)
             {
                 numbers[DeckCounter] = 10;
             }
-            if (numbers[DeckCounter] == 1)
+            //Aを1または11としてカウントする処理
+            if (numbers[DeckCounter] == 1 && enemycounter < 11)
             {
-                if (enemycounter < 11)
-                {
-                    numbers[DeckCounter] = 11;
-                }
-                else
-                {
-                    numbers[DeckCounter] = 1;
-                }
+                numbers[DeckCounter] = 11;
             }
+            //ディーラーのカードの合計値を算出する処理
             enemycounter = enemycounter + numbers[DeckCounter];
+
             DeckCounter++;
 
         }
 
         public void Update()
         {
+            //カードの合計値の表示
             var Score1 = GameObject.Find("Canvas/Score1").GetComponent("Text") as Text;
             Score1.text = enemycounter.ToString();
             var Score2 = GameObject.Find("Canvas/Score2").GetComponent("Text") as Text;
             Score2.text = playercounter.ToString();
+            
+            //BETコイン枚数の表示
             var COIN = GameObject.Find("Canvas/COIN").GetComponent("Text") as Text;
             COIN.text = coin.ToString();
             var BET = GameObject.Find("Canvas/BET").GetComponent("Text") as Text;
@@ -263,6 +263,7 @@ namespace Assets.Scripts.Bar06 {
             DeleteBetButton();
 
             var CardObject2 = GameObject.Find("Cards");
+            //プレイヤーのカード追加
             if (playercounter < 22)
             {
                 var addCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
@@ -271,22 +272,20 @@ namespace Assets.Scripts.Bar06 {
                 addCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
                 addCard.transform.parent = CardObject2.transform;
                 playerpositionX += 2;
-                if (numbers[DeckCounter] >= 11)
+
+                //J,Q,Kを10としてカウントする処理
+                if (numbers[DeckCounter] > 10)
                 {
                     numbers[DeckCounter] = 10;
                 }
-                if (numbers[DeckCounter] == 1)
+                //Aを1または11としてカウントする処理
+                if (numbers[DeckCounter] == 1 && playercounter < 11)
                 {
-                    if (playercounter < 11)
-                    {
-                        numbers[DeckCounter] = 11;
-                    }
-                    else
-                    {
-                        numbers[DeckCounter] = 1;
-                    }
+                    numbers[DeckCounter] = 11;
                 }
+                //プレイヤーのカードの合計値を算出する処理
                 playercounter = playercounter + numbers[DeckCounter];
+
                 DeckCounter++;
                 if(playerpositionX > 4)
                 {
@@ -306,77 +305,97 @@ namespace Assets.Scripts.Bar06 {
             DeleteBetButton();
 
             var CardObject3 = GameObject.Find("Cards");
+            //ディーラーのカード追加
             while (enemycounter < 17)
             {
                 var addEnemyCardPrefab = Resources.Load<GameObject>("Prefabs/Bar06/" + mark[DeckCounter] + numbers[DeckCounter]);
-                var addEnemyCard= Instantiate(addEnemyCardPrefab, transform.position, Quaternion.identity);
+                var addEnemyCard = Instantiate(addEnemyCardPrefab, transform.position, Quaternion.identity);
                 addEnemyCard.transform.position = new Vector3(enemypositionX, 2 + enemypositionY, 0);
                 addEnemyCard.transform.localScale = new Vector3(0.27f, 0.27f, 0.27f);
                 addEnemyCard.transform.parent = CardObject3.transform;
                 enemypositionX += 2;
-                if (numbers[DeckCounter] >= 11)
+                
+                //J,Q,Kを10としてカウントする処理
+                if (numbers[DeckCounter] > 10)
                 {
                     numbers[DeckCounter] = 10;
                 }
-                if (numbers[DeckCounter] == 1)
+                //Aを1または11としてカウントする処理
+                if (numbers[DeckCounter] == 1 && enemycounter < 11)
                 {
-                    if (enemycounter < 11)
+                    numbers[DeckCounter] = 11;
+                }
+                //ディーラーのカードの合計値を算出する処理
+                enemycounter = enemycounter + numbers[DeckCounter];
+
+                DeckCounter++;
+
+                //ディーラーのナチュラルブラックジャック判定
+                if(EnaturalJudge == 0)
+                {
+                    if (enemycounter == 21)
                     {
-                        numbers[DeckCounter] = 11;
+                        Enatural21 = 1;
                     }
                     else
                     {
-                        numbers[DeckCounter] = 1;
+                        EnaturalJudge = 1;
                     }
                 }
                 
-                //ディーラーのナチュラルブラックジャック判定
-                if(enemycounter == 21 && Enatural21 == 0)
-                {
-                    if (Pnatural21 == 1)
-                    {
-                        Draw();
-                    }
-                    else
-                    {
-                        Lose();
-                    }
-                }else
-                {
-                    Enatural21 = 1;
-                }
-
-                enemycounter = enemycounter + numbers[DeckCounter];
-                DeckCounter++;
-                if(enemypositionX > 4)
+                if (enemypositionX > 4)
                 {
                     enemypositionX = -4;
                     enemypositionY = 1;
                 }
             }
 
-            if (playercounter < enemycounter)
+            //ディーラーがナチュラルブラックジャックだった場合の勝敗判定
+            if (Enatural21 == 1)
             {
-                if (enemycounter < 22)
+                //プレイヤーがナチュラルブラックジャックの場合
+                if (Pnatural21 == 1)
+                {
+                    Draw();
+                }
+                //プレイヤーがナチュラルブラックジャックではない場合
+                else
                 {
                     Lose();
+                }
+            }
+            //プレイヤーのみがナチュラルブラックジャックだった場合の勝敗判定
+            else if (Enatural21 == 0 && Pnatural21 == 1)
+            {
+                Win();
+            }
+            //双方がナチュラルブラックではない場合の勝敗判定
+            else if (Enatural21 == 0 && Pnatural21 == 0)
+            {
+                if (playercounter < enemycounter)
+                {
+                    if (enemycounter < 22)
+                    {
+                        Lose();
+                    }
+                    else
+                    {
+                        Win();
+                    }
+                }
+                else if (playercounter == enemycounter)
+                {
+                    Draw();
                 }
                 else
                 {
                     Win();
                 }
-            }else if(playercounter == enemycounter)
-            {
-                if(Pnatural21 == 0)
-                {
-                    Draw();
-                }
-            }else
-            {
-                Win();
             }
-           
-            
+
+
+
+
         }
 
         public void ReSTART()
@@ -409,6 +428,7 @@ namespace Assets.Scripts.Bar06 {
             DeckCounter = 0;
             Pnatural21 = 0;
             Enatural21 = 0;
+            EnaturalJudge = 0;
             Start();
 
         }
