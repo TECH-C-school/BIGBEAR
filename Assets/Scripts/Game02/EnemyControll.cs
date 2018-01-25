@@ -44,6 +44,8 @@ namespace Assets.Scripts.Game02
             -3.90f
         };
 
+
+
         // Use this for initialization
         void Start()
         {

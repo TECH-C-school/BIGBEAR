@@ -13,8 +13,8 @@ namespace Assets.Scripts.Game02
 {
     public class PlayerControll : MonoBehaviour
     {
-
         public const float HIT_TIME = 0.3f;
+        public const int ALL_BULLET = 6;
 
         enum PlayerState
         {
@@ -33,35 +33,27 @@ namespace Assets.Scripts.Game02
         [SerializeField] GameObject m_recoilObject;
         [SerializeField] LayerMask m_hitLayer; // Enemy Default
         [SerializeField] Button m_shotButton;
+        [SerializeField]
+        Button m_reloadButton;
         [SerializeField] Game02.EffectControll m_effectController;
+        [SerializeField] Image[] m_bulletImages;
+
+        private int m_haveBullet;
+        [HideInInspector] public int m_totalUseBullet;
 
         // Use this for initialization
         void Start()
         {
-#if !UNITY_EDITOR
-            m_trigger.OnDragAsObservable()
-                .Subscribe(pointerEventData =>
-                {
-                     m_scope.gameObject.SetActive(true);
-                     m_scope.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, (Input.mousePosition.y + 100.0f), 10));
 
-                }).AddTo(this);
-
-             m_trigger.OnPointerUpAsObservable()
-                .Subscribe(pointerEventData =>
-                {
-                    m_scope.gameObject.SetActive(false);
-                });
-
-#endif
-#if UNITY_EDITOR
-
+            m_haveBullet = ALL_BULLET;
+            //m_effectController.CreateBullet();
             m_trigger.OnMouseDownAsObservable()
                 .Subscribe(pointerEventData =>
                 {
                     m_bearAnim.SetTrigger("SetUpAction");
                     m_scope.gameObject.SetActive(true);
-                    m_shotButton.interactable = true; 
+                    m_shotButton.interactable = true;
+                    m_reloadButton.interactable = false; 
 
                 }).AddTo(this);
 
@@ -73,18 +65,22 @@ namespace Assets.Scripts.Game02
                      float y = Mathf.Cos(Time.time) /10 + (Mathf.Cos(Time.time) * Mathf.Cos(Time.time) / 10 * 2);
 
                      if(m_playerState != PlayerState.Breath)m_swayObject.transform.position = new Vector3(x, y, 10);
-                     m_scope.transform.localPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x , (Input.mousePosition.y + (m_scope.sprite.rect.height/ 3f)), 10));
+                     m_scope.transform.localPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x , (Input.mousePosition.y + (Screen.height / 7f)), 10));
 
                      if (m_playerState == PlayerState.Shot || m_playerState == PlayerState.Reload) return;
 
                      if (m_playerState == PlayerState.Breath)
                      {
-
+                         if (Input.GetKeyUp(KeyCode.Space))
+                         {
+                             ShotBullet();
+                         }
+                         return;
                      }
 
                      if (Input.GetKeyDown(KeyCode.Space))
-                     {  
-                         ShotBullet();
+                     {
+                         m_playerState = PlayerState.Breath;
                      }
                      
                  }).AddTo(this);
@@ -96,14 +92,40 @@ namespace Assets.Scripts.Game02
                     m_bearAnim.SetTrigger("QuitAction");
                     m_scope.gameObject.SetActive(false);
                     m_shotButton.interactable = false;
+                    m_reloadButton.interactable = true;
+                    m_playerState = PlayerState.Idle;
 
                 }).AddTo(this);
-#endif
+
+            m_trigger.OnMouseExitAsObservable()
+                .Subscribe(pointerEventData=>
+                {
+                    m_bearAnim.SetTrigger("QuitAction");
+                    m_scope.gameObject.SetActive(false);
+                    m_shotButton.interactable = false;
+                    m_reloadButton.interactable = true;
+                    m_playerState = PlayerState.Idle;
+
+                }).AddTo(this);
+
+            this.UpdateAsObservable()
+                .Where(_ => Input.GetKeyDown(KeyCode.R) && m_playerState == PlayerState.Idle)
+                .Subscribe(_ => {
+                    Reload();
+                }).AddTo(this);
+
+
         }
 
         public void ShotBullet()
         {
+            if (m_haveBullet == 0)
+            {
+                return;
+            }
+
             RaycastHit2D hit = Physics2D.Raycast(m_scope.transform.position, m_scope.transform.forward, 10, m_hitLayer);
+            if (!hit) return;
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
                 Debug.Log("hit");
@@ -114,8 +136,12 @@ namespace Assets.Scripts.Game02
                 m_effectController.CreateSpark(new Vector2(hit.point.x, hit.point.y - 0.575f), 0);
             }
 
-            m_playerState = PlayerState.Shot;
+            m_bulletImages[ALL_BULLET - m_haveBullet].gameObject.SetActive(false);
+            m_haveBullet -= 1;
+            m_totalUseBullet++;
 
+            m_playerState = PlayerState.Shot;
+            
             m_recoilObject.transform.DOMoveY(1f, 0.3f)
                 .OnComplete(()=> { m_recoilObject.transform.DOMoveY(0f, 1.1f); });
             
@@ -131,6 +157,21 @@ namespace Assets.Scripts.Game02
             m_bearAnim.SetTrigger("ShotAction");
         }
 
+        public void Reload()
+        {
+            m_playerState = PlayerState.Reload;
+            m_haveBullet = ALL_BULLET;
+            foreach (var bullet in m_bulletImages)
+            {
+                bullet.gameObject.SetActive(true);
+            }
+                Observable.Timer(TimeSpan.FromSeconds(3.0f)).Subscribe(_ =>
+            {
+                m_playerState = PlayerState.Idle;
+
+            }).AddTo(this);
+
+        }
 
     } 
 }
