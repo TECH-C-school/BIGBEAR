@@ -17,7 +17,7 @@ public class EnemyAttack : MonoBehaviour {
         //_D.transform.parent = null; // 親と子の切り離し
     }
 
-    void OnCollisionEnter2D(Collider2D _col)
+    void OnTriggerEnter2D(Collider2D _col)
     {
         Instantiate(_tama);
     }
