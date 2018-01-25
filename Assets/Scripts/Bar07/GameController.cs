@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 namespace Assets.Scripts.Bar07
 {
     public class GameController : MonoBehaviour
     {
-        
+        public Text resultText;
+        public Text Rightresulttext;
         public List<Sprite> cardList;
+        public GameObject playerwin;
+        public GameObject playerlose;
+        public GameObject dealewin;
+        public GameObject dealelose;
+        public GameObject f_word4;
+        public GameObject fc_word2;
         enum card
 
         {
@@ -40,9 +47,14 @@ namespace Assets.Scripts.Bar07
             }
             outcard.Add(_card);
             Debug.Log(_card.ToString());
+            
+        }
+        private void Start()
+        {
+            
         }
 
-        void Start()
+        public void syoubu()
         {
             bool natural;
             natural = false;
@@ -90,39 +102,43 @@ namespace Assets.Scripts.Bar07
                     Debug.Log("引き分け");
                 }
             }
-
+            bool playerflag = false;
             if (!natural)
             {
                 if (playerPwer < 6)
                 {
+                    playerflag = true;
+
                     playerPwer = playerPwer + Calculation(playercard[2]);
+                    playerPwer = playerPwer % 10;
                     Debug.Log("びく");
                 }
             }
-
+            
             if (!natural)
             {
+                
                 if (dealerPwer ==2)
                 {
                     dealerPwer = dealerPwer + Calculation(dealercard[2]);
                 }
-               else if (dealerPwer == 3 && Calculation(playercard[2]) ==8)
+               else if (playerflag  && dealerPwer == 3 && Calculation(playercard[2]) ==8)
                 {
                     {
                         Debug.Log("引かない");
                     }
                 }
-                else if(dealerPwer == 4 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 8 
+                else if(playerflag && dealerPwer == 4 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 8 
                         && Calculation(playercard[2]) == 9 && Calculation(playercard[2]) == 0 )
                 {
                     Debug.Log("ぴかない");
                 }
-                else if(dealerPwer ==5 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 2  && Calculation(playercard[2]) == 3 
+                else if(playerflag && dealerPwer ==5 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 2  && Calculation(playercard[2]) == 3 
                         && Calculation(playercard[2]) == 8 && Calculation(playercard[2]) == 9 && Calculation(playercard[2]) == 0 )
                 {
                     Debug.Log("ぴかない");
                 }
-                else if(dealerPwer ==6 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 2 && Calculation(playercard[2]) == 3
+                else if(playerflag && dealerPwer ==6 && Calculation(playercard[2]) == 1 && Calculation(playercard[2]) == 2 && Calculation(playercard[2]) == 3
                         && Calculation(playercard[2]) == 4 && Calculation(playercard[2]) == 5 && Calculation(playercard[2]) == 8 
                         && Calculation(playercard[2]) == 9)
                 {
@@ -130,9 +146,30 @@ namespace Assets.Scripts.Bar07
                 }
 
             }
-         
+            if (playerPwer < dealerPwer)
+            {
+                dealewin.SetActive(true);
+                playerlose.SetActive(true);
+            }
+            else if(playerPwer > dealerPwer)
+            {
+                playerwin.SetActive(true);
+                dealelose.SetActive(true);
+
+            }
+            else if(playerPwer == dealerPwer)
+            {
+                playerlose.SetActive(true);
+                dealelose.SetActive(true);
+            }
             Debug.Log(playerPwer);
             Debug.Log(dealerPwer);
+            resultText.text = playerPwer.ToString();
+            Rightresulttext.text = dealerPwer.ToString();
+            fc_word2.SetActive(false);
+            f_word4.SetActive(true);
+            controlcard();
+
         }
 
         int Calculation(card c)

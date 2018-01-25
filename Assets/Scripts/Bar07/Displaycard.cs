@@ -13,8 +13,8 @@ public class Displaycard : MonoBehaviour {
 	void Update () {
 		
 	}
-    public void numbercard()
+   /* public void numbercard()
     {
         Controller.controlcard();      
-    }
+    }*/
 }
