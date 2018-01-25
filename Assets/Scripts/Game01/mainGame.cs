@@ -77,7 +77,7 @@ public class mainGame : MonoBehaviour
             {
                 interval = UnityEngine.Random.Range(5.0f, 12.0f);
                 randomCheck = 10;
-                Debug.Log(interval);
+                //Debug.Log(interval);
             }
 
             if (count >= interval && timer.timerGo == 0)

@@ -61,7 +61,7 @@ public class timeStarter : MonoBehaviour
             else if (Time.timeScale > 0 && maingame.timeStart == 0)
             {
                 Attack.gameObject.SetActive(false);
-                Debug.Log("stop");
+                //Debug.Log("stop");
             }
         }
         
