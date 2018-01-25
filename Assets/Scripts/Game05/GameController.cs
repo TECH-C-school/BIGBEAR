@@ -52,7 +52,6 @@ namespace Assets.Scripts.Game05 {
 			pc.GenerateScopes (GameParam.Instance.durations[(int)difficult.Diff]);
 			pc.GeneratePendulums (GameParam.Instance.durations[(int)difficult.Diff]);
 			pc.Gauge.UpValue = GameParam.Instance.upValues[(int)difficult.Diff] * VALUEMAG;
-			Debug.Log (maxMoving);
         }
 
         void GenerateTower(int num) {
@@ -88,12 +87,10 @@ namespace Assets.Scripts.Game05 {
 		void FlyingResult() {
 			IsFinished = true;
 			var movePercent = (moveingPos / maxMoving) * 100;
-			Debug.Log(moveingPos);
-			Debug.Log(movePercent);
 			resultBack.SetActive(true);
 			resultText = resultBack.transform.Find("ResultText").GetComponent<Text>();
-			resultText.text = movePercent >= 90.0f ? "Perfect!"
-				: movePercent >= 50.0f ? "Good"
+			resultText.text = movePercent >= GameParam.Instance.upperLimit ? "Perfect!"
+				: movePercent >= GameParam.Instance.middleLimit ? "Good"
 				: "Bad";
 		}
     }

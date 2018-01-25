@@ -34,6 +34,7 @@ namespace Assets.Scripts.Game05 {
 
 		void Start () {
 			transform.localPosition = Vector3.zero;
+            radius = GameParam.Instance.pendulumRad;
 			var newPos = pState == PState.Pendulum ? new Vector3 (0, distance * radius, 0) : transform.localPosition;
 			startPos = newPos;
 			gameObject.SetActive(false);

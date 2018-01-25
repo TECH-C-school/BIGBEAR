@@ -7,20 +7,14 @@ using UniRx.Triggers;
 
 namespace Assets.Scripts.Game05 {
 	public class PlayerController : MonoBehaviour {
-		[SerializeField]
-		private GameObject scopeInstance;
+		[SerializeField] GameObject scopeInstance;
 		private List<GameObject> scopes = new List<GameObject>();
-		[SerializeField]
-		private GameObject pendulumInsance;
-		[SerializeField]
-		private GameObject circleInstance;
+		[SerializeField] GameObject pendulumInsance;
+		[SerializeField] GameObject circleInstance;
 		private List<GameObject> pendulums = new List<GameObject>();
-		[SerializeField]
-		private float coolTime;
-		[SerializeField]
-		private float vibrateRange;
-		[SerializeField]
-		private float vibrateSpeed;
+		[SerializeField] float coolTime;
+		[SerializeField] float vibrateRange;
+		[SerializeField] float vibrateSpeed;
 
 		[HideInInspector]
 		public bool isContact = false;
@@ -53,9 +47,9 @@ namespace Assets.Scripts.Game05 {
 			tMatch = 0f;
 			pMatch = 0f;
 			var field = tapField.AddComponent<ObservableEventTrigger> ();
-			var tapBase = field.OnPointerDownAsObservable()
-				.Where(_ => gc.isStart == true)
-				.Select(_ => 1).Scan((count, add) => count + add);
+            var tapBase = field.OnPointerDownAsObservable()
+                .Where(_ => gc.isStart == true)
+                .Select(_ => 1).Scan((count, add) => count + add);
 			var barTap = tapBase
 				.Where(tap => tap % 3 == 1)
 				.Do(_ => PowerDecision());

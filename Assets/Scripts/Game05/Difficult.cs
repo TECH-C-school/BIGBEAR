@@ -39,6 +39,29 @@ namespace Assets.Scripts.Game05 {
 				gc.isStart = true;
 				gc.SetDifficult();
 			}).AddTo(this.gameObject);
+
+            //easyButton.OnClickAsObservable().Subscribe(_ =>
+            //{
+            //    diff = Difficulty.Amateur;
+            //    SettingDifficult();
+            //}).AddTo(this.gameObject);
+            //normalButton.OnClickAsObservable().Subscribe(_ =>
+            //{
+            //    diff = Difficulty.Professional;
+            //    SettingDifficult();
+            //}).AddTo(this.gameObject);
+            //hardButton.OnClickAsObservable().Subscribe(_ =>
+            //{
+            //    diff = Difficulty.Legend;
+            //    SettingDifficult();
+            //}).AddTo(this.gameObject);
 		}
+
+        //void SettingDifficult()
+        //{
+        //    bg.SetActive(false);
+        //    gc.isStart = true;
+        //    gc.SetDifficult();
+        //}
 	}
 }

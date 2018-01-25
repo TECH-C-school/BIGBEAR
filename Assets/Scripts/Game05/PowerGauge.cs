@@ -30,8 +30,8 @@ namespace Assets.Scripts.Game05 {
 		void Update () {
 			if (!gc.isPause && !gc.IsFinished) {
 				slider.value += upValue;
-				if (slider.value >= slider.maxValue || slider.value <= slider.minValue)
-					upValue *= -1;
+                if (slider.value >= slider.maxValue)
+                    slider.value = 0;
 			}
 		}
 	}
