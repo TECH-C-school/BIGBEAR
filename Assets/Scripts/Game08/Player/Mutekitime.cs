@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Mutekitime : MonoBehaviour {
 
-	private GameObject _enemi;	// 敵の弾を入れる変数
+	public GameObject _enemi;	// 敵の弾を入れる変数
 	public bool _on_damage = false;	// ダメージフラグ
 	private SpriteRenderer _renderer;
 
@@ -13,7 +13,7 @@ public class Mutekitime : MonoBehaviour {
 
 		// 点滅処理の為に呼び出しておく
 		_renderer = gameObject.GetComponent<SpriteRenderer>();
-		_enemi = GameObject.Find ("08_shell2"); // 変数にオブジェクト代入
+		//_enemi = GameObject.Find ("08_shell2"); // 変数にオブジェクト代入
 	}
 	
 	// Update is called once per frame
@@ -30,7 +30,7 @@ public class Mutekitime : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D col)
     {
         //  敵とぶつかったかつダメージフラグがfalse
-        if(!_on_damage && _enemi.transform)
+        if(!_on_damage && _enemi)
         {
             OnDamage();
         }
