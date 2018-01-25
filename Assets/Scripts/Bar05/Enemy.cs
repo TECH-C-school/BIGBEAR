@@ -38,7 +38,7 @@ namespace Assets.Scripts.Bar05
 
         private Text enemyTalkText;
 
-        public Image enemyTalk;
+        private Image enemyTalk;
         private Image enemyTalkAction;
 
         private void Awake()
@@ -66,9 +66,15 @@ namespace Assets.Scripts.Bar05
         private IEnumerator AnimetionCor() 
         {
             yield return new WaitForSeconds(2);
+            TalkReset();
+        }
+
+        void TalkReset()
+        {
             enemyTalk.enabled = false;
             enemyTalkAction.enabled = false;
             enemyTalkText.text = "";
+            enemyTalkStr = "";
         }
 
         public void EnemyBet()
@@ -80,13 +86,14 @@ namespace Assets.Scripts.Bar05
             enemyBet = phase.enemyBet;
             enemyMoney = phase.enemyMoney;
 
-            StopCoroutine(AnimetionCor());
-
-            enemyTalkAction.enabled = false;
-            enemyTalkText.enabled = false;
-
             if (betCount <= 1 || fieldBet != enemyBet)
             {
+                StopCoroutine(AnimetionCor());
+
+                TalkReset();
+
+                enemyTalk.enabled = true;
+
                 if (phase.phaseEnum == Phase.PhaseEnum.word5)
                 {
                     EnemyFirstBet();
@@ -99,15 +106,12 @@ namespace Assets.Scripts.Bar05
                 {
                     EnemyAfterBet();
                 }
+
+                var spriteRenderer = Resources.Load<Sprite>("Images/Bar/" + enemyTalkStr);
+                enemyTalkAction.sprite = spriteRenderer;
+
+                StartCoroutine(AnimetionCor());
             }
-
-            enemyTalkStr = "";
-            enemyTalk.enabled = true;
-
-            var spriteRenderer = Resources.Load<Sprite>("Images/Bar/" + enemyTalkStr);
-            enemyTalkAction.sprite = spriteRenderer;
-
-            StartCoroutine(AnimetionCor());
 
             if (foldBool == false)
             {
@@ -195,8 +199,15 @@ namespace Assets.Scripts.Bar05
             if (enemyNumber1 + enemyNumber2 >= 20 || enemyNumber1 == enemyNumber2)
             {
                 strongBool = true;
+                if (raiseCount <= 1 || tenRandom <= 3)
+                {
+                    EnemyRaise();
+                }
+                else
+                {
+                    EnemyContinuation();
+                }
 
-                EnemyRaise();
             }
             //普通
             else if (enemyNumberAbs == 1 || enemySuit1 == enemySuit2 ||
@@ -304,11 +315,12 @@ namespace Assets.Scripts.Bar05
                 enemyBet = fieldBet;
                 enemyTalkAction.enabled = true;
                 enemyTalkStr = "talk1";
+                Debug.Log("Enemy:Call");
             }
             else
             {
-                enemyTalkText.enabled = true;
                 enemyTalkText.text = "チェック";
+                Debug.Log("Enemy:Check");
             }
         }
 
@@ -329,8 +341,8 @@ namespace Assets.Scripts.Bar05
                 enemyMoney -= fieldBet - enemyBet;
                 enemyBet = fieldBet;
 
-                enemyTalkText.enabled = true;
                 enemyTalkText.text = "倍賭け";
+                Debug.Log("Enemy:Raise");
             }
         }
 

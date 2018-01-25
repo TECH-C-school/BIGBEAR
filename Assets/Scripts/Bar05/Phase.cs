@@ -24,8 +24,10 @@ namespace Assets.Scripts.Bar05
         public GameObject nowPhase;
         //public GameObject selectCard;
 
+        public Image playerTalk;
         public Image enemyTalk;//敵の吹き出し
 
+        public Text playerText;
         public Text enemyText;
 
         public List<int> mountList = new List<int>();
@@ -71,10 +73,6 @@ namespace Assets.Scripts.Bar05
         private GameObject startBtn;
         private GameObject flameAnim;
         private GameObject phaseAnim;
-
-        private Image playerTalk;
-
-        private Text playerText;
 
         private HandRank handRank;
         private Enemy enemy;
@@ -504,7 +502,7 @@ namespace Assets.Scripts.Bar05
             int winner = handRank.WinnerCheck();
 
             playerTalk.enabled = true;
-            enemyTalk.enabled = true;
+            playerText.enabled = true;
 
             playerText.text = playerTextTemp;
 
@@ -513,6 +511,8 @@ namespace Assets.Scripts.Bar05
 
         public void Win(int winPlayer)
         {
+            enemyText.enabled = true;
+            enemyTalk.enabled = true;
             enemyText.text = enemyTextTemp;
 
             string winner = "";
@@ -547,18 +547,19 @@ namespace Assets.Scripts.Bar05
             battleImage.GetComponent<Image>().sprite
                 = Resources.Load<Sprite>("Images/Bar/" + winner);
 
+            enemyBet = 0;
+            playerBet = 0;
+            enemy.EnemyBetTextChange(enemyBet);
+            enemy.EnemyMoneyTextChange(enemyMoney);
+            betS.BetTextChange(playerBet);
+            betS.MoneyTextChange(playerMoney);
+
             if (playerMoney == 0 || enemyMoney == 0)
             {
                 GameOver();
             }
             else
             {
-                enemyBet = 0;
-                playerBet = 0;
-                enemy.EnemyBetTextChange(enemyBet);
-                enemy.EnemyMoneyTextChange(enemyMoney);
-                betS.BetTextChange(playerBet);
-                betS.MoneyTextChange(playerMoney);
                 startBtn.SetActive(true);
             }
         }
@@ -583,7 +584,6 @@ namespace Assets.Scripts.Bar05
 
         private void GameOver()
         {
-            Invoke("GameReset",1f);
             battleImage.SetActive(true);
             betS.resetBtn.SetActive(true);
         }
