@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyAttack : MonoBehaviour {
 
     public GameObject _D;
+    public GameObject _tama;
 
     void Start () {
 		
@@ -13,12 +14,12 @@ public class EnemyAttack : MonoBehaviour {
 	
 	void Update () {
 
-        _D.transform.parent = null; // 親と子の切り離し
+        //_D.transform.parent = null; // 親と子の切り離し
     }
 
     void OnCollisionEnter2D(Collider2D _col)
     {
-        //Instantiate();
+        Instantiate(_tama);
     }
 
 }
