@@ -22,13 +22,22 @@ public class drag : MonoBehaviour {
         Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
         mousePointInWorld.z = this.transform.position.z;
         this.transform.position = mousePointInWorld;
-        //カードの位置
+        //カードの位置        
         Vector3 pos = transform.position;
-        pos.z -= 1;
-        if(pos.z < -5)
-        {
-            pos.z = 0;
-        }                     
+        pos.z = -5;
+        transform.position = pos;        
+    }
+    private void OnMouseDown()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        Debug.Log(Input.mousePosition);
+    }
+    private void OnMouseUp()
+    {
+        Vector3 pos = transform.position;       
+        pos.z = 0; 
+       
         transform.position = pos;
+
     }
 }
