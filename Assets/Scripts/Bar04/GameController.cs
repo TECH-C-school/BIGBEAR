@@ -245,7 +245,7 @@ namespace Assets.Scripts.Bar04 {
                 //ストレート
                 if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4])
                 {
-                    if (max2 - min2 == 4)
+                    if (max2 - min2 == 4 || max2 - min2 == 12)
                     {
                         counter = 3;
                         win.transform.position = new Vector2(0, 3.75f);
