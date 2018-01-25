@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
- * 今回作業 --> チップスクリプト作成
- *              ボタン実装
- *              ゲームの一連の流れ構成
+ * 今回作業 --> フォールドした時のチップバグ修正
+ *              チップの賭け方変更(長押しすると連続で賭けられるようにする)(まだ)
  *              
  */
 
@@ -2053,6 +2052,7 @@ namespace Assets.Scripts.Bar05
             {
                 Pot = 0;
                 MyHaveChip = MyHaveChip + Chip;
+                Chip = 0;
                 ChipsUpdate();
                 Debug.Log("<color=red>--------------------</color>");
                 for (int i = 1; i < 6; i++)
