@@ -17,9 +17,10 @@ namespace Assets.Scripts.Bar04 {
         static int count5;
         static List<int> List = new List<int>(52);
         static int[] numbers = new int[5];
-
         void Start()
         {
+            coin = 100;
+            BET = 1;
             InitGame();
             var Coin = GameObject.Find("Coin");
             var num0 = Resources.Load<GameObject>("Prefabs/Bar04/Number/t_0");
@@ -67,9 +68,15 @@ namespace Assets.Scripts.Bar04 {
                 change.transform.position = new Vector2(1011, 50);
                 var notchange = GameObject.Find("NotChange");
                 notchange.transform.position = new Vector2(1011, 142);
+                //BET変更ボタンを移動(非表示)にする
+                var betup = GameObject.Find("Bet_+");
+                betup.transform.position = new Vector2(1011, -142);
+                var betdown = GameObject.Find("Bet_-");
+                betdown.transform.position = new Vector2(1011, -142);
             } else {
                 Debug.Log("coinがありません");
             }
+
         }
         public void ClickChangeButton()
         {
@@ -172,7 +179,7 @@ namespace Assets.Scripts.Bar04 {
                 }
                 if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4])
                 {
-                    if (numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 42 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 107 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 172 || numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 237 && min == 0)
+                    if (numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 42 && min == 0 && max == 12|| numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 107 && min == 13 && max == 25|| numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 172 && min == 26 && max == 38|| numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4] == 237 && min == 39 && max == 52)
                     {
                         counter = 8;
                         win.transform.position = new Vector2(0, 3.75f);
@@ -200,6 +207,7 @@ namespace Assets.Scripts.Bar04 {
                     win.transform.position = new Vector2(0, 3.75f);
                     break;
                 }
+
                 for (int i = 0; i < 5; i++)
                 {
                     if (numbers[i] >= 13)
@@ -245,7 +253,7 @@ namespace Assets.Scripts.Bar04 {
                 //ストレート
                 if (numbers[0] != numbers[1] && numbers[0] != numbers[2] && numbers[0] != numbers[3] && numbers[0] != numbers[4] && numbers[2] != numbers[1] && numbers[3] != numbers[1] && numbers[4] != numbers[1] && numbers[2] != numbers[3] && numbers[2] != numbers[4] && numbers[3] != numbers[4])
                 {
-                    if (max2 - min2 == 4 || max2 - min2 == 12)
+                    if (max2 - min2 == 4 && numbers[0] <= 8 && numbers[1] <= 8 && numbers[2] <= 8 && numbers[3] <= 8 && numbers[4] <= 8 || max2 - min2 == 12)
                     {
                         counter = 3;
                         win.transform.position = new Vector2(0, 3.75f);
@@ -261,7 +269,7 @@ namespace Assets.Scripts.Bar04 {
                 }
 
                 //ツーペア
-                if (numbers[0] == numbers[1] && numbers[2] == numbers[3] || numbers[0] == numbers[1] && numbers[2] == numbers[4] || numbers[0] == numbers[1] && numbers[3] == numbers[4] || numbers[0] == numbers[2] && numbers[1] == numbers[3] || numbers[0] == numbers[2] && numbers[1] == numbers[4] || numbers[0] == numbers[2] && numbers[3] == numbers[4] || numbers[0] == numbers[3] && numbers[1] == numbers[2] || numbers[0] == numbers[3] && numbers[1] == numbers[4] || numbers[0] == numbers[3] && numbers[2] == numbers[4] || numbers[0] == numbers[4] && numbers[1] == numbers[2] || numbers[0] == numbers[4] && numbers[1] == numbers[3] || numbers[0] == numbers[4] && numbers[2] == numbers[3] || numbers[1] == numbers[2] && numbers[3] == numbers[4])
+                if (numbers[0] == numbers[1] && numbers[2] == numbers[3] || numbers[0] == numbers[1] && numbers[2] == numbers[4] || numbers[0] == numbers[1] && numbers[3] == numbers[4] || numbers[0] == numbers[2] && numbers[1] == numbers[3] || numbers[0] == numbers[2] && numbers[1] == numbers[4] || numbers[0] == numbers[2] && numbers[3] == numbers[4] || numbers[0] == numbers[3] && numbers[1] == numbers[2] || numbers[0] == numbers[3] && numbers[1] == numbers[4] || numbers[0] == numbers[3] && numbers[2] == numbers[4] || numbers[0] == numbers[4] && numbers[1] == numbers[2] || numbers[0] == numbers[4] && numbers[1] == numbers[3] || numbers[0] == numbers[4] && numbers[2] == numbers[3] || numbers[1] == numbers[2] && numbers[3] == numbers[4] || numbers[1] == numbers[3] && numbers[2] == numbers[4] || numbers[1] == numbers[4] && numbers[2] == numbers[3])
                 {
                     counter = 1;
                     win.transform.position = new Vector2(0, 3.75f);
@@ -282,7 +290,7 @@ namespace Assets.Scripts.Bar04 {
             }
             else if (counter == 3)
             {
-                Debug.Log("ストレード");
+                Debug.Log("ストレート");
             }
             else if (counter == 4)
             {
@@ -305,6 +313,7 @@ namespace Assets.Scripts.Bar04 {
                 Debug.Log("ロイヤルストレートフラッシュ");
             }
             Dividend(counter);
+            
         }
         public void Dividend(int x)
         {
@@ -316,7 +325,7 @@ namespace Assets.Scripts.Bar04 {
             else if (x == 1)
             {
                 coin = coin -= BET;
-                coin = coin += BET * 1;
+                coin = coin += BET * 2;
                 FindNumbers();
             }
             else if (x == 2)
@@ -328,42 +337,46 @@ namespace Assets.Scripts.Bar04 {
             else if (x == 3)
             {
                 coin = coin -= BET;
-                coin = coin += BET * 3;
+                coin = coin += BET * 5;
                 FindNumbers();
             }
             else if (x == 4)
             {
                 coin = coin -= BET;
-                coin = coin += BET * 5;
+                coin = coin += BET * 10;
                 FindNumbers();
             }
             else if (x == 5)
             {
                 coin = coin -= BET;
-                coin = coin += BET * 10;
+                coin = coin += BET * 20;
                 FindNumbers();
             }
             else if (x == 6)
             {
                 coin = coin -= BET;
-                coin = coin += BET * 15;
+                coin = coin += BET * 30;
                 FindNumbers();
             }
             else if (x == 7)
             {
                 coin = coin -= BET;
-                coin = coin += BET * 30;
+                coin = coin += BET * 50;
                 FindNumbers();
             }
             else if (x == 8)
             {
                 coin = coin -= BET;
-                coin = coin += BET * 100;
+                coin = coin += BET * 999;
                 FindNumbers();
             }
         }
         public void FindNumbers()
         {
+            if (coin >= 1000)
+            {
+                coin = 999;
+            }
             var Coin = GameObject.Find("Coin").transform;
             foreach (Transform cardObject in Coin.transform)
             {
@@ -688,26 +701,25 @@ namespace Assets.Scripts.Bar04 {
                         LoadNumber2(9,-1);
                         break;
                 }
-                if (x == 1)
+            }
+            if (x == 1)
+            {
+                if (x == 2)
                 {
-                    if (x == 2)
+                    if (x == 3)
                     {
-                        if (x == 3)
+                        if (x == 4)
                         {
-                            if (x == 4)
+                            if (x == 5)
                             {
-                                if (x == 5)
+                                if (x == 6)
                                 {
-                                    if (x == 6)
+                                    if (x == 7)
                                     {
-                                        if (x == 7)
+                                        if (x == 8)
                                         {
-                                            if (x == 8)
+                                            if (x == 9)
                                             {
-                                                if (x == 9)
-                                                {
-                                                    coin += 100;
-                                                }
                                                 coin += 100;
                                             }
                                             coin += 100;
@@ -724,6 +736,7 @@ namespace Assets.Scripts.Bar04 {
                     }
                     coin += 100;
                 }
+                coin += 100;
             }
         }
         /// <summary>
@@ -757,23 +770,66 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public void SerectButton1()
         {
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
             count1 = Counter(count1,0);
+            if (count1 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            } else {
+                myText.text = "選択";
+            }
         }
         public void SerectButton2()
         {
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
             count2 = Counter(count2,1);
+            if (count2 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            }
+            else
+            {
+                myText.text = "選択";
+            }
         }
         public void SerectButton3()
         {
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
             count3 = Counter(count3,2);
+            if (count3 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            }
+            else
+            {
+                myText.text = "選択";
+            }
         }
         public void SerectButton4()
         {
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
             count4 = Counter(count4,3);
+            if (count4 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            }
+            else
+            {
+                myText.text = "選択";
+            }
         }
         public void SerectButton5()
         {
+            var myText = GetComponentInChildren<Text>();//UIのテキストの取得の仕方
             count5 = Counter(count5,4);
+            if (count5 == 1)
+            {
+                myText.text = "解除";//テキストの変更
+            }
+            else
+            {
+                myText.text = "選択";
+            }
         }
         
         /// <summary>
@@ -781,6 +837,13 @@ namespace Assets.Scripts.Bar04 {
         /// </summary>
         public void MakeDeck()
         {
+            /*
+            List.Add(2);
+            List.Add(3);
+            List.Add(4);
+            List.Add(5);
+            List.Add(6);
+            */
             //Listに0～51までの数値を追加する
             for (int i = 0; i < 52; i++)
             {
@@ -816,6 +879,10 @@ namespace Assets.Scripts.Bar04 {
             //Fightボタンを移動(表示)する
             var fihgt = GameObject.Find("Fight");
             fihgt.transform.position = new Vector2(1011, 74);
+            var betup = GameObject.Find("Bet_+");
+            betup.transform.position = new Vector2(850, 69);
+            var betdown = GameObject.Find("Bet_-");
+            betdown.transform.position = new Vector2(550, 69);
             //Fightボタン以外を移動(非表示)する
             var change = GameObject.Find("Change");
             change.transform.position = new Vector2(1011, -100);
@@ -827,6 +894,11 @@ namespace Assets.Scripts.Bar04 {
             lose.transform.position = new Vector2(-100,0);
             var win = GameObject.Find("bakarawin");
             win.transform.position = new Vector2(-100, 0);
+            var button1 = GameObject.Find("Serect").transform;
+            foreach (Transform button in button1.transform)
+            {
+                button.GetComponentInChildren<Text>().text = "選択";
+            }
             
         }
         /// <summary>
