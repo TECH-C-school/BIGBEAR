@@ -84,7 +84,7 @@ namespace Assets.Scripts.Bar06
             var card = GameObject.Find("Cards");
             Card.transform.parent = card.transform;
          }
-        //Cardsオブジェクトに入るcard(clone)をDebug.Log()で表示させる
+        //Cardsオブジェクトに入るcard(clone)を(Clone)を消してDebug.Log()で表示させる
         public void CardNum()
         {
             GameObject obj = GameObject.Find("Cards");                    //Cardsオブジェクトの取得
@@ -92,7 +92,9 @@ namespace Assets.Scripts.Bar06
             for(int i = 0; i < objs.Length; ++i)                          //子の分だけfor文で回す
             {
                 objs[i] = obj.transform.GetChild(i).gameObject;           //ゲームオブジェクトの子に戻す
-                Debug.Log(objs[i].name);                                  
+                string str = objs[i].name;                                //obj[i].nameをstrに置き換える
+                str = str.Replace("(Clone)", "");                         //Replaceで"(Clone)"を"  "(空白)に置き換える
+                Debug.Log(str);                                      
             }
             //Debug.Log(obj.name);
         }
