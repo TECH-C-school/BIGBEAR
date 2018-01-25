@@ -95,18 +95,19 @@ namespace Assets.Scripts.Bar0404 {
 
         bool ThreeCard(int[] xyz){
             bool Answer = false;
+            int SameCard;
             for (int i = 0; i < xyz.Length; i++){
+                SameCard = 0;
                 for (int j = i+ 1 ; j < xyz.Length; j++){
                     if (xyz[i] == xyz[j]) {
-                        for (int k = j + 1; k < xyz.Length; k++)
-                            {
-                            if (xyz[i] == xyz[k])
-                            {
-                                Answer = true;
-                            }
-                }
+                        SameCard++;
                     }
                 }
+                if (SameCard == 2) {
+                    Answer = true;
+                    break;
+                }
+                
             }
             return Answer;
         }
@@ -145,30 +146,21 @@ namespace Assets.Scripts.Bar0404 {
         }
 
         bool FooCard(int[] xyz) {
-            bool Answer =false;
-            for (int i = 0; i < xyz.Length; i++)
-            {
-                for (int j = i + 1; j < xyz.Length; j++)
-                {
-                    if (xyz[i] == xyz[j])
-                    {
-                        for (int k = j + 1; k < xyz.Length; k++)
-                        {
-                            if (xyz[i] == xyz[k])
-                            {
-                                for (int l = k + 1; l < xyz.Length; l++)
-                                {
-                                    if (xyz[i] == xyz[l])
-                                    {
-                                        Answer = true;
-                                    }
-                                }
-                            }
-                        }
+        bool Answer = false;
+            int SameCard;
+            for (int i = 0; i < xyz.Length; i++){
+                SameCard = 0;
+                for (int j = i+ 1 ; j < xyz.Length; j++){
+                    if (xyz[i] == xyz[j]) {
+                        SameCard++;
                     }
                 }
+                if (SameCard == 3) {
+                    Answer = true;
+                    break;
+                }
+                
             }
-
             return Answer;
         }
 
