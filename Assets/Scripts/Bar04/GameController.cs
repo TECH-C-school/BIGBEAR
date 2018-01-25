@@ -70,7 +70,7 @@ namespace Assets.Scripts.Bar04_06
         {
 
             Card[] number = new Card[52];
-            for (int i = 0; i < number.Length; i++)
+            for (int i = 1; i < number.Length; i++)
             {
                 if (i <= 13)
                 {
@@ -131,6 +131,7 @@ namespace Assets.Scripts.Bar04_06
                 var spriteRenderer = cardObject.GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite = Resources.Load<Sprite>("Images/Bar/Cards/" + cards[i].CardString());
 
+
                 
             }
         }
@@ -158,8 +159,10 @@ namespace Assets.Scripts.Bar04_06
             var select = Resources.Load<GameObject>("Prefabs/Bar04/Prefabs/cardselect");
             Instantiate(select, hitObject.transform.position, Quaternion.identity);
 
-            //
-        }
+            //カードセレクトをクリックしたときにそれが消える
+
+
+            }
         /// <summary>
         /// 捨て場に送った枚数分手札に加える
         /// </summary>
