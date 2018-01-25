@@ -21,7 +21,6 @@ namespace Assets.Scripts.Bar06
         void Start()
         {
             MakeDeck();
-            Dealcards();
             int x = 0;
             for (var i = 0; i < 2; i++)
             { 
@@ -41,7 +40,7 @@ namespace Assets.Scripts.Bar06
                     {
                         PlayerCards[i + j] = cards[i + j] % 13;
                     }
-                    Debug.Log("Num_is" + PlayerCards[i + j]);
+                    //Debug.Log("Num_is" + PlayerCards[i + j]);
                   }
             }
             CardNum();
@@ -68,14 +67,6 @@ namespace Assets.Scripts.Bar06
                 cards[n] = tmp;
             }
         }
-        // カードを２枚ずつ配る
-        public void Dealcards()
-        {
-            for(int i = 0; i < 4; i++)
-            {
-               //Debug.Log(cards[i]);
-            } 
-        }
         // カードを表示する
         public void LoadCards(int x, int y,int z)
         {
@@ -87,6 +78,7 @@ namespace Assets.Scripts.Bar06
         //Cardsオブジェクトに入るcard(clone)を(Clone)を消してDebug.Log()で表示させる
         public void CardNum()
         {
+            int num;
             GameObject obj = GameObject.Find("Cards");                    //Cardsオブジェクトの取得
             GameObject[] objs = new GameObject[obj.transform.childCount]; //配列作成、オブジェクトの子を取得
             for(int i = 0; i < objs.Length; ++i)                          //子の分だけfor文で回す
@@ -94,9 +86,19 @@ namespace Assets.Scripts.Bar06
                 objs[i] = obj.transform.GetChild(i).gameObject;           //ゲームオブジェクトの子に戻す
                 string str = objs[i].name;                                //obj[i].nameをstrに置き換える
                 str = str.Replace("(Clone)", "");                         //Replaceで"(Clone)"を"  "(空白)に置き換える
-                Debug.Log(str);                                      
+                str = str.Replace("s", "");
+                str = str.Replace("h", "");
+                str = str.Replace("c", "");
+                str = str.Replace("d", "");
+                num = int.Parse(str);
+                if (num >= 11)
+                {
+                   num = 10;
+                }
+                Debug.Log(num);
             }
-            //Debug.Log(obj.name);
+            
+            
         }
 
        
@@ -127,7 +129,6 @@ namespace Assets.Scripts.Bar06
                 Card.transform.parent = card.transform;
                 y++;
                 counter++;
-                Debug.Log(x);
             }
         }
         // クリックしたら勝負をあきらめる
