@@ -34,9 +34,16 @@ public class MouseDrag : MonoBehaviour {
         //マウスクリックの判定
         if (!Input.GetMouseButtonDown(0)) return;
 
+        Vector3 tmp = GameObject.Find("FrontCards").transform.position;
+        float x = tmp.x;
+        float y = tmp.y;
+        GameObject.Find("FrontCards").transform.position = new Vector2(tmp.x, tmp.y);
+
         //クリックした位置を取得
-        var x = Input.mousePosition;
-        var tapPoint = Camera.main.ScreenToWorldPoint(x);
+        /*
+        var x2 = Input.mousePosition;
+        */
+        var tapPoint = Camera.main.ScreenToWorldPoint(tmp);
         hit = tapPoint;
         hit.z = -9;
 
@@ -45,10 +52,10 @@ public class MouseDrag : MonoBehaviour {
         
         //クリックした位置のオブジェクトを取得
         var hitObject = Physics2D.Raycast(tapPoint, -Vector2.up);
-        //if (!hitObject) return;
 
         startposition = hitObject.transform.gameObject;
         position = startposition.transform.position;
+        
 
         //常に起動させる
         button = true;
