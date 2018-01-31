@@ -5,22 +5,29 @@ using System;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    public GameObject enemyHand;
+    GameObject enemyHand;
+    GameObject betWord;
+    GameObject duelWord;
     public GameObject cardPrefab;
     public Transform playerTrans, enemyTrans, bankerTrans;
     public float cardOffset = 0.5f;
-    public Transform test;
+    //public Transform test;
+
     /*
     public List<string> playerCards = new List<string>();
     public List<string> enemyCards = new List<string>();
     public List<string> bankerCards = new List<string>();
     */
+
+    //public string playerCards[] = new string[];
+    public string x;
+
     CurrCard[] defaultCardsArray, shuffeledArray, cardBack;
     CurrCard[] playerArray, enemyArray, bankerArray;
 
     int maxCardsPerRound = 9;
     bool isGiven = false;
-
+    bool isOpened = false;
 
     class CurrCard
     {
@@ -49,7 +56,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     void Start()
     {
-        playerArray = new CurrCard[9];
+        playerArray = new CurrCard[2];
         enemyArray = new CurrCard[2];
         bankerArray = new CurrCard[5];
 
@@ -58,21 +65,13 @@ public class NewBehaviourScript : MonoBehaviour
 
         CreateDefaultDeck();
         shuffeledArray = makeShuffledDeck(defaultCardsArray);
+        //Debug.Log(playerArray[0].cardValue);
     }
 
     void Update()
     {
-        if (!isGiven && Input.GetMouseButtonDown(0)) GiveCards();
-        if (Input.GetMouseButtonDown(0))
-        {
-            enemyHand = GameObject.Find("back");
-            enemyHand.gameObject.SetActive(false);
-
-            for (int i = 0; i < enemyArray.Length; i++)
-            {
-                enemyArray[i].cardTrans.gameObject.SetActive(true);
-            }
-        }
+        if (!isGiven && Input.GetMouseButtonDown(0)) GiveCards(); betWording();
+        //if (!isOpened &&Input.GetMouseButtonDown(1)) flipEnemyCard();
     }
 
     void CreateDefaultDeck()
@@ -116,6 +115,9 @@ public class NewBehaviourScript : MonoBehaviour
                 playerArray[i].cardTrans.position = playerTrans.position;
                 Debug.Log("player " + playerArray[i].cardValue);
 
+                //playerCards.Add(playerArray[i].cardValue);
+                x = playerArray[i].cardValue.ToString();
+
                 Vector3 pos = playerArray[i].cardTrans.position;
                 pos.x += i * cardOffset;
                 playerArray[i].cardTrans.position = pos;
@@ -154,9 +156,32 @@ public class NewBehaviourScript : MonoBehaviour
         isGiven = true;
     }
 
-    void flipEnemyCard()
+     public void flipEnemyCard()
     {
+        duelWording();
+        enemyHand = GameObject.Find("back");
+        Debug.Log(enemyHand);
+        enemyHand.gameObject.SetActive(false);
 
+        for (int i = 0; i < enemyArray.Length; i++)
+        {
+            enemyArray[i].cardTrans.gameObject.SetActive(true);
+        }
+    }
+
+    void betWording()
+    {
+        betWord = GameObject.Find("betword1");
+        //Debug.Log(betWord);
+        //betWord.gameObject.SetActive(true);
+    }
+
+    void duelWording()
+    {
+        duelWord = GameObject.Find("duelword");
+        //Debug.Log(duelWord);
+        //betWord.gameObject.SetActive(false);
+        //duelWord.gameObject.SetActive(true);
     }
     /*
         CurrCard[] makeShuffledDeck(CurrCard[] shuffledArray)
