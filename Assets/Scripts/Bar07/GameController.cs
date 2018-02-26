@@ -31,6 +31,8 @@ namespace Assets.Scripts.Bar07 {
         GameObject playerwin;
         GameObject bankerwin;
         GameObject history;
+        GameObject winb;
+        GameObject winp;
         public Text text1;
         public Text text2;
         public Text text3;
@@ -83,6 +85,9 @@ namespace Assets.Scripts.Bar07 {
             playerwin = GameObject.Find("playerwin");
             bankerwin = GameObject.Find("bankerwin");
             history = GameObject.Find("history");
+            winb = GameObject.Find("winb");
+            winp = GameObject.Find("winp");
+
 
             int a = 10000;
             int b = 1;
@@ -141,6 +146,9 @@ namespace Assets.Scripts.Bar07 {
                 coin1.SetActive(true);
                 coin2.SetActive(true);
                 coin3.SetActive(true);
+                winp.SetActive(false);
+                winb.SetActive(false);
+
 
             }
             if (mode == 0)
@@ -370,7 +378,8 @@ namespace Assets.Scripts.Bar07 {
                    
                     h = his+h;
                     history.GetComponent<Text>().text = h;
-
+                    winp.SetActive(true);
+                    
                 }
 
 
@@ -383,6 +392,7 @@ namespace Assets.Scripts.Bar07 {
                     his = "B";
                     h = his + h;
                     history.GetComponent<Text>().text = h;
+                    winb.SetActive(true);
                 }
                 else
                 {
@@ -413,6 +423,7 @@ namespace Assets.Scripts.Bar07 {
                     his = "P";
                     h = his + h;
                     history.GetComponent<Text>().text = h;
+                    winp.SetActive(true);
 
                 }
 
@@ -426,6 +437,7 @@ namespace Assets.Scripts.Bar07 {
                     his = "B";
                     h = his + h;
                     history.GetComponent<Text>().text = h;
+                    winb.SetActive(true);
                 }
                 else
                 {
@@ -638,6 +650,7 @@ namespace Assets.Scripts.Bar07 {
                     his = "P";
                     h = his+h;
                     history.GetComponent<Text>().text = h;
+                    winp.SetActive(true);
 
                 }
 
@@ -651,6 +664,7 @@ namespace Assets.Scripts.Bar07 {
                     his = "B";
                     h = his+h;
                     history.GetComponent<Text>().text = h;
+                    winb.SetActive(true);
                 }
                 else
                 {
