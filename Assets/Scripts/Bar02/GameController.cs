@@ -57,7 +57,10 @@ namespace Assets.Scripts.Bar02
         private int remaindertrump_index = 21;
         private int _nextCardNumber = 1;
         private GameObject Clickcards = null;
-
+        private GameObject Clickcards2 = null;
+        private int counter = 0;
+        static int number1 = 0;
+        static int number2 = 0;
 
 
         public void Start()
@@ -147,18 +150,16 @@ namespace Assets.Scripts.Bar02
         void Update()
         {
             ClickCard();
-
+            
         }
 
 
         public void TransitionToResult()
         {
             SceneManager.LoadScene("Result");
-
-
-
-
+            
         }
+        
         //山札をクリックしたとき、隣にカードを配置する
         public void Yamahuda()
         {
@@ -183,7 +184,7 @@ namespace Assets.Scripts.Bar02
             // }
 
             var cardPrefab = Resources.Load<GameObject>("Prefabs/Bar02/Card");
-            var cardsObject = GameObject.Find("Cards");
+            var cardsObject = GameObject.Find("YamahudaCards");
             //Card[] trump = new Card[53];
             //for (int i = 22; i < 53; i++)
             //{
@@ -196,7 +197,7 @@ namespace Assets.Scripts.Bar02
             {
 
                 var cardObject = Instantiate(cardPrefab, transform.position, Quaternion.identity);
-                cardObject.transform.parent = GameObject.Find("Cards").transform;
+                cardObject.transform.parent = GameObject.Find("YamahudaCards").transform;
                 cardObject.transform.position = new Vector3(
                        5f,
                        -3.5f,
@@ -226,36 +227,70 @@ namespace Assets.Scripts.Bar02
             if (!hitObject) return;
 
             //2つのカードの数字の合計値が13であればそのカードを非表示にする
-            if (Clickcards == null)
+            if (Clickcards != null)
+            {
+                Clickcards2 = hitObject.collider.gameObject;
+                var card2 = Clickcards2.GetComponent<SpriteRenderer>();
+                string spritename2 = card2.sprite.ToString();
+                string a2 = spritename2.Substring(1, 2);
+                number2 = int.Parse(a2);
+                Debug.Log(number2);
+                counter++;
+            }
+            else 
             {
                 Clickcards = hitObject.collider.gameObject;
-                return;
-            }
-            var card1 = Clickcards.GetComponent<SpriteRenderer>();
-            //数字だけ読み込む
-            string spritename = card1.sprite.ToString();
-            string a = spritename.Substring(1,2);
-
-            int number1 = int.Parse(a);
+                var card1 = Clickcards.GetComponent<SpriteRenderer>();
+                //数字だけ読み込む
+                string spritename = card1.sprite.ToString();
+                string a = spritename.Substring(1, 2);
+                number1 = int.Parse(a);
+                Debug.Log(number1);
+                counter++;
+                if(number1 == 13)
+                {
+                    MoveCard();
+                    number1 = 0;
+                    counter = 0;
+                }
+            } 
+            
             
             //var card2 = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
-            var card2 = Clickcards.GetComponent<SpriteRenderer>();
-            string spritename2 = card2.sprite.ToString();
-            string a2 = spritename2.Substring(1, 2);
-            int number2 = int.Parse(a2);
-
-            if (number1 + number2 == 13)
+            
+            
+            if(counter == 2)
             {
-                Debug.Log("13");
-            }
+                if (number1 + number2 == 13)
+                {
+                    Debug.Log("13");
+                    MoveCard();
+                }
 
-            else
-            {
-                Debug.Log("13ではない");
-            }
+                else
+                {
+                    Debug.Log("13ではない");
 
+                }
+                number1 = 0;
+                number2 = 0;
+                counter = 0;
+                Clickcards = null;
+                Clickcards2 = null;
+
+
+            }
+        }
+        private void MoveCard()
+        {
+            Destroy(Clickcards);
+            Destroy(Clickcards2);
+            /* Clickcards.transform.position = new Vector2(100,100);
+             Clickcards2.transform.position = new Vector2(100, 100);*/
+           
         }
 
+        
     }
 
 }
