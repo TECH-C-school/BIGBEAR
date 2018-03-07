@@ -235,15 +235,16 @@ namespace Assets.Scripts.Bar02
             //数字だけ読み込む
             string spritename = card1.sprite.ToString();
             string a = spritename.Substring(1,2);
-            //string number1 = card1;
 
-            int[] number1cards = new int[1];
+            int number1 = int.Parse(a);
+            
+            //var card2 = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
+            var card2 = Clickcards.GetComponent<SpriteRenderer>();
+            string spritename2 = card2.sprite.ToString();
+            string a2 = spritename2.Substring(1, 2);
+            int number2 = int.Parse(a2);
 
-            var card2 = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
-           // var num2 = hitObject.collider.game
-            //int number2 = card2.number;
-
-        /*    if (card1 + card2 == 13)
+            if (number1 + number2 == 13)
             {
                 Debug.Log("13");
             }
@@ -252,16 +253,6 @@ namespace Assets.Scripts.Bar02
             {
                 Debug.Log("13ではない");
             }
-            //クリックされたカードスクリプトを取得
-            var card = hitObject.collider.gameObject.GetComponent<SpriteRenderer>();
-
-            //次にクリックされるべきカードが判定
-            if (_nextCardNumber != card.number) return;*/
-
-
-
-
-
 
         }
 
